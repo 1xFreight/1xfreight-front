@@ -1,0 +1,43 @@
+.quotes-page {
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.quotes-page .page-header h4{
+    font-size: 1.25rem;
+    color: #545454;
+}
+
+.quotes-page .page-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3.75rem;
+}
+
+.quotes-page .page-header p {
+    font-size: 0.875rem;
+    color: #545454;
+}
+
+.quotes-page .page-header .refresh {
+    display: flex;
+    gap: 2.25rem;
+    align-items: center;
+}
+
+.quotes-page .refresh-btn {
+    width: 3.75rem;
+    height: 3.75rem;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+}
+
+.quotes-page .quotes-table-wrapper {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}

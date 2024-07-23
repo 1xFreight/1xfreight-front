@@ -1,0 +1,225 @@
+.quotes-table {
+    width: calc(100vw);
+    overflow: scroll;
+    height: 500px;
+    position: relative;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    padding: 0 1.5rem;
+}
+
+.quotes-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.25rem;
+    border: unset;
+    min-width: 1600px;
+    box-sizing: border-box;
+}
+
+.quotes-table thead {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+}
+
+.quotes-table thead tr {
+    width: 100%;
+}
+
+.quotes-table tr>th {
+    text-align: left;
+    padding-left: 1.25rem;
+    background: white;
+    height: 3.75rem;
+    border-top: 1px solid #545454;
+    border-bottom: 1px solid #545454;
+    border-collapse: collapse;
+}
+
+.quotes-table tr th {
+    font-size: 1rem;
+    color: #545454;
+    font-weight: 400;
+}
+
+.quotes-table tr>th:nth-child(1){
+    border-radius: 1rem 0 0 1rem;
+    border-right: 1px solid #EFEFEF;
+    border-left: 1px solid #545454;
+}
+
+.quotes-table tr>th:nth-last-child(1){
+    border-radius: 0 1rem 1rem 0;
+    border-right: 1px solid #545454;
+}
+
+.quotes-table tr>td:nth-child(1){
+    border-radius: 1rem 0 0 1rem;
+    width: 9.875rem;
+    border-right: 1px solid #EFEFEF;
+}
+
+.quotes-table tr>td:nth-child(2){
+   width: 5rem;
+}
+
+.quotes-table tr>td:nth-last-child(1){
+    border-radius: 0 1rem 1rem 0;
+}
+
+.quotes-table td {
+    padding-left: 1.25rem;
+}
+
+.quotes-table tr:nth-of-type(even){
+    background: white;
+}
+
+.quotes-table tr:nth-of-type(odd){
+    background: #F9F9F9;
+}
+
+.quotes-table tr>td {
+    height: 4.625rem;
+}
+
+.quotes-table .active-quote-status.CONFIRMED {
+    background: #04C900;
+}
+
+.quotes-table .active-quote-status.REQUESTED {
+    background: #A1AFFF;
+}
+
+.quotes-table .active-quote-status.BOOKED {
+    border: 1px solid #04C900;
+    color: #04C900;
+}
+
+.quotes-table .active-quote-status {
+    width: 7.45rem;
+    height: 1.45rem;
+    font-size: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 0.9375rem;
+    color: white;
+    box-sizing: border-box;
+}
+
+.quotes-table .main-text {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #545454;
+}
+
+.quotes-table .sub-text {
+    padding-top: 0.25rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #939393;
+}
+
+.quotes-table .pickup .location, .quotes-table .drop .location {
+    display: flex;
+    position: relative;
+}
+
+.quotes-table .pickup .location svg, .quotes-table .drop .location svg {
+    position: absolute;
+    left: calc(-24px - 0.25rem);
+}
+
+.quotes-table tr>th:nth-child(3){
+    padding-left: calc(24px + 0.25rem);
+}
+
+.quotes-table tr>th:nth-last-child(1){
+    min-width: 24rem;
+    width: 25%;
+}
+
+.quotes-table tr td .price .full-price::after {
+    content: "00";
+    color: #545454;
+    font-size: 0.875rem;
+    position: absolute;
+    top: -0.2rem
+}
+
+.quotes-table .price {
+    color: #0020DD;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    gap: 1.5rem;
+    min-width: 10.5rem;
+    justify-content: space-between;
+}
+
+.quotes-table .price span,.quotes-table .price .currency {
+    color: #545454;
+}
+
+.quotes-table .price .currency {
+    font-size: 1.25rem;
+}
+
+.quotes-table .price .full-price {
+    position: relative;
+}
+
+.quotes-table .end {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 1rem;
+    align-items: center;
+    gap: 1rem
+}
+
+.quotes-table .quote-action-button {
+    height: 3.45rem;
+    width: 12rem;
+    border-radius: .9rem;
+    background: #0020DD;
+    color: white;
+    font-size: 1rem;
+    transition: all 250ms ease-in-out;
+    box-sizing: border-box;
+}
+
+.quotes-table .quote-action-button:disabled {
+    background: transparent;
+    color: #A1AFFF;
+    border: 1px solid #A1AFFF;
+}
+
+.quotes-table .no-data {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+    font-size: 2rem;
+    color: #0020DD;
+}
+
+.quotes-table::-webkit-scrollbar-thumb{
+    background: #0020DD;
+    border-radius: 1rem;
+}
+
+.quotes-table::-webkit-scrollbar{
+    width: 0.6rem;
+}
+
+.quotes-table::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.quotes-table::-webkit-scrollbar-corner{
+    background: transparent;
+}

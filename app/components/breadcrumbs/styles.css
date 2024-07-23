@@ -1,0 +1,17 @@
+.breadcrumbs-get-quote {
+    height: 5.625rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 2.5rem;
+    background: white;
+    border: 1px solid #A7A7A7;
+    color: #939393;
+}
+
+.breadcrumbs-get-quote .item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-right: 1rem;
+}

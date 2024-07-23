@@ -1,0 +1,145 @@
+.main-menu {
+    height: 4.6875rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.45rem 2.5rem 0.45rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    align-items: center;
+    overflow: hidden;
+}
+
+.main-menu .logo svg {
+    width: auto;
+    height: 3.45rem;
+}
+
+.main-menu .user-menu {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    height: 3.45rem;
+}
+
+.main-menu .user-menu .user-photo {
+    width: 3.375rem;
+    height: 3.375rem;
+    border: 1px solid #EFEFEF;
+    border-radius: 100%;
+    box-sizing: border-box;
+}
+
+.main-menu .user-menu .user {
+    display: flex;
+    gap: 1.5rem;
+    color: #545454;
+    letter-spacing: 0.0625rem;
+    border: 0.5px solid #A7A7A7;
+    border-radius: 3.125rem;
+}
+
+.main-menu .user-menu .user-name div:nth-child(2){
+    font-size: 0.625rem;
+}
+
+.main-menu .user-menu .user-name div:nth-child(1){
+    font-size: 1rem;
+}
+
+.main-menu .user-menu .user-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-menu .user-menu .open-extra-menu {
+    display: flex;
+    align-items: center;
+    padding-right: 2rem;
+}
+
+.main-menu .user-menu .notifications {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
+.main-menu .user-menu .notifications .number {
+    position: absolute;
+    top: -15%;
+    right: -15%;
+    height: 1.3125rem;
+    min-width: 1.3125rem;
+    background: #0020DD;
+    color: white;
+    border-radius: 100%;
+    font-size: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-menu .navigation {
+    display: flex;
+    height: 100%;
+    gap: 2.5rem;
+    padding-bottom: 0.35rem;
+}
+
+.admin-menu , .carrier-menu , .seller-menu{
+    height: 100%;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.admin-menu .new-demo, .seller-menu .get-quote {
+    height: 100%;
+    display: flex;
+    gap: 1rem;
+    background: #0020DD;
+    color: white;
+    align-items: center;
+    padding: 0 3rem;
+    transition: all 250ms ease-in-out;
+    border-radius: 3.125rem;
+}
+
+.admin-menu .item {
+    display: flex;
+    gap: 0.5rem;
+    transition: all 250ms ease-in-out;
+}
+
+.admin-menu .item:hover {
+    opacity: 0.75;
+    color: #0020DD;
+}
+
+.admin-menu .item:hover svg path {
+    fill: #0020DD;
+}
+
+.admin-menu .new-demo:hover {
+    opacity: 0.75;
+}
+
+.main-menu .navigation .item {
+    display: flex;
+    gap: 0.5rem;
+    transition: all 250ms ease-in-out;
+}
+
+.main-menu .navigation .item:hover {
+    opacity: 0.75;
+    color: #0020DD;
+}
+
+.main-menu .navigation .item:hover svg path {
+    fill: #0020DD;
+}
+
+.main-menu .navigation .new-demo:hover, .main-menu .navigation .get-quote:hover {
+    opacity: 0.75;
+}
