@@ -1,0 +1,36 @@
+.search-input-custom-wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    min-width: 10rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+
+    & svg {
+        position: absolute;
+        z-index: 1;
+        margin-left: 0.5rem;
+    }
+
+    & input[type="text"] {
+        height: 3rem;
+        width: 100%;
+        padding:1rem 1rem 1rem calc(0.5rem + 24px + 1%) !important;
+        border-radius: 1rem;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        transition: all 250ms ease-in-out;
+        font-size: 0.75rem;
+        color: #545454;
+
+        &:focus {
+            outline: unset;
+            border: 1px solid #0020DD;
+        }
+
+        &::placeholder {
+            color: #A7A7A7;
+        }
+    }
+}

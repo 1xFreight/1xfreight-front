@@ -1,11 +1,11 @@
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
-import { ActiveQuoteStatusEnum } from "@/common/enums/active-quote-status.enum";
+import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
 
 export const mockData: QuotePreviewI[] = [
   {
     id: "001722",
-    status: ActiveQuoteStatusEnum.REQUESTED,
+    status: QuoteStatusEnum.REQUESTED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -21,7 +21,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001723",
-    status: ActiveQuoteStatusEnum.CONFIRMED,
+    status: QuoteStatusEnum.CONFIRMED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -37,7 +37,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001724",
-    status: ActiveQuoteStatusEnum.BOOKED,
+    status: QuoteStatusEnum.BOOKED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -53,7 +53,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001722",
-    status: ActiveQuoteStatusEnum.REQUESTED,
+    status: QuoteStatusEnum.REQUESTED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -69,7 +69,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001723",
-    status: ActiveQuoteStatusEnum.CONFIRMED,
+    status: QuoteStatusEnum.CONFIRMED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -85,7 +85,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001724",
-    status: ActiveQuoteStatusEnum.BOOKED,
+    status: QuoteStatusEnum.BOOKED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -101,7 +101,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001722",
-    status: ActiveQuoteStatusEnum.REQUESTED,
+    status: QuoteStatusEnum.REQUESTED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -117,7 +117,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001723",
-    status: ActiveQuoteStatusEnum.CONFIRMED,
+    status: QuoteStatusEnum.CONFIRMED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -133,7 +133,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001724",
-    status: ActiveQuoteStatusEnum.BOOKED,
+    status: QuoteStatusEnum.BOOKED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -149,7 +149,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001722",
-    status: ActiveQuoteStatusEnum.REQUESTED,
+    status: QuoteStatusEnum.REQUESTED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -165,7 +165,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001723",
-    status: ActiveQuoteStatusEnum.CONFIRMED,
+    status: QuoteStatusEnum.CONFIRMED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -181,7 +181,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001724",
-    status: ActiveQuoteStatusEnum.BOOKED,
+    status: QuoteStatusEnum.BOOKED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -197,7 +197,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001722",
-    status: ActiveQuoteStatusEnum.REQUESTED,
+    status: QuoteStatusEnum.REQUESTED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -213,7 +213,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001723",
-    status: ActiveQuoteStatusEnum.CONFIRMED,
+    status: QuoteStatusEnum.CONFIRMED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",
@@ -229,7 +229,7 @@ export const mockData: QuotePreviewI[] = [
   },
   {
     id: "001724",
-    status: ActiveQuoteStatusEnum.BOOKED,
+    status: QuoteStatusEnum.BOOKED,
     pickupAddress: "Clinton, IA 45987",
     pickupDate: "Feb 26 7AM-5PM",
     dropDate: "Feb 26 7AM-5PM",

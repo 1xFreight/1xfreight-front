@@ -1,0 +1,8 @@
+export enum QuoteStatusEnum {
+  CONFIRMED = "CONFIRMED",
+  REQUESTED = "REQUESTED",
+  BOOKED = "BOOKED",
+  RETURNED = "RETURNED",
+  CLOSED = "CLOSED",
+  CANCELED = "CANCELED",
+}

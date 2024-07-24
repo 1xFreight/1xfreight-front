@@ -8,6 +8,8 @@
     background: white;
     align-items: center;
     overflow: hidden;
+    position: relative;
+    z-index: 100;
 }
 
 .main-menu .logo svg {

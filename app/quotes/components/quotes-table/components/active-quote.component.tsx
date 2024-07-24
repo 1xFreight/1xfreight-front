@@ -1,10 +1,10 @@
 import "../active-quote/styles.css";
-import QuoteStatusComponent from "@/app/quotes/components/quotes-table/quote-status.component";
-import { ActiveQuoteStatusEnum } from "@/common/enums/active-quote-status.enum";
+import QuoteStatusComponent from "@/app/quotes/components/quotes-table/components/quote-status.component";
+import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import ArrowUp from "@/public/icons/24px/arrow-up.svg";
 import ArrowDown from "@/public/icons/24px/arrow-down.svg";
 import PriceCommaFormat from "@/common/utils/number-comma.utils";
-import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/action-button.component";
+import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/components/action-button.component";
 
 export default function ActiveQuoteComponent() {
   return (
@@ -12,7 +12,7 @@ export default function ActiveQuoteComponent() {
       <div className={"quote"}>
         <div className={"title"}>Quote#</div>
         <div className={"number"}>01722</div>
-        <QuoteStatusComponent status={ActiveQuoteStatusEnum.CONFIRMED} />
+        <QuoteStatusComponent status={QuoteStatusEnum.CONFIRMED} />
       </div>
 
       <div className={"details"}>
@@ -69,7 +69,7 @@ export default function ActiveQuoteComponent() {
           <div className={"currency"}>USD</div>
         </div>
 
-        <QuoteActionButtonComponent status={ActiveQuoteStatusEnum.CONFIRMED} />
+        <QuoteActionButtonComponent status={QuoteStatusEnum.CONFIRMED} />
       </div>
     </div>
   );

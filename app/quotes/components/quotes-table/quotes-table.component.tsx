@@ -1,8 +1,8 @@
 import "./styles.css";
-import QuoteStatusComponent from "@/app/quotes/components/quotes-table/quote-status.component";
+import QuoteStatusComponent from "@/app/quotes/components/quotes-table/components/quote-status.component";
 import ArrowUp from "@/public/icons/24px/arrow-up.svg";
 import ArrowDown from "@/public/icons/24px/arrow-down.svg";
-import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/action-button.component";
+import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/components/action-button.component";
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 
