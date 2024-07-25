@@ -1,22 +1,18 @@
 import "./styles.css";
 import ChevronRight from "@/public/icons/16px/chevron-right.svg";
 
-interface BreadcrumbsI {
-  background: string | null;
+export interface BreadcrumbsI {
   items: BreadcrumbsItem[];
 }
 
-interface BreadcrumbsItem {
-  href: string;
+export interface BreadcrumbsItem {
+  href?: string;
   title: string;
 }
 
-export default function BreadcrumbsComponent({
-  items,
-  background,
-}: BreadcrumbsI) {
+export default function BreadcrumbsComponent({ items }: BreadcrumbsI) {
   return (
-    <div className={"breadcrumbs-get-quote"}>
+    <div className={"general-breadcrumbs"}>
       {items &&
         items.map(({ href, title }, index) => (
           <div className={"item"} key={title}>
