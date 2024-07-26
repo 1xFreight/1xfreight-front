@@ -1,4 +1,5 @@
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
+import React from "react";
 
 interface QuoteActionButtonI {
   status: QuoteStatusEnum;
@@ -10,9 +11,7 @@ const textMapping = {
   [QuoteStatusEnum.BOOKED]: "View Quotes",
 };
 
-export default function QuoteActionButtonComponent({
-  status,
-}: QuoteActionButtonI) {
+function QuoteActionButtonComponent({ status }: QuoteActionButtonI) {
   return (
     <button
       className={`quote-action-button`}
@@ -22,3 +21,5 @@ export default function QuoteActionButtonComponent({
     </button>
   );
 }
+
+export default React.memo(QuoteActionButtonComponent);

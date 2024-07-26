@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { RegisterQuoteContext } from "@/app/get-quote/ftl-ltl/register-quote.context";
+import { RegisterQuoteContext } from "@/app/get-quote/register-quote.context";
 
 const useRegisterQuoteContext = () => {
   return useContext(RegisterQuoteContext);

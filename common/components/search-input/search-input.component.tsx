@@ -2,7 +2,7 @@
 
 import Search from "@/public/icons/24px/search.svg";
 import "./styles.css";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface CustomSearchInputI {
   width?: string;
@@ -10,7 +10,7 @@ interface CustomSearchInputI {
   setSearch: Dispatch<SetStateAction<string>>;
 }
 
-export default function SearchInputComponent({
+function SearchInputComponent({
   placeholder,
   width,
   setSearch,
@@ -32,3 +32,5 @@ export default function SearchInputComponent({
     </div>
   );
 }
+
+export default React.memo(SearchInputComponent);

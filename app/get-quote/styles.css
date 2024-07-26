@@ -46,18 +46,77 @@
     }
 }
 
-.select-trans-mode {
-    padding-top: 5rem;
-    gap: 1rem;
+.get-quote-layout {
+    position: relative;
+    height: calc(100vh - 4.6875rem);
+    overflow: hidden;
+}
 
-    & h4 {
-        font-size: 1.5rem;
-        color: #545454;
-        font-weight: 700;
+.rq-step-controller {
+    width: calc(100% - 24.5rem);
+    height: 4.6875rem;
+    position: absolute;
+    bottom: 0;
+    background: white;
+    border: 1px solid #A7A7A7;
+    box-sizing: border-box;
+    margin-left: 24.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+    animation-delay: 0.2s;
+
+    & button {
+        border-radius: 0.75rem;
+        width: 15rem;
+        height: 3rem;
+        font-weight: 300;
+        font-size: 1.25rem;
     }
 
+    & .back-btn {
+        margin-left: 1rem;
+        background: transparent;
+        color: #545454;
+        border: 1px solid #C0C4DC;
+    }
+
+    & .next-btn {
+        margin-right: 1rem;
+    }
+}
+
+.get-quote-page {
     & h2 {
+        font-size: 1.5rem;
+        color: #545454;
+        font-weight: 600;
+    }
+
+    & h4 {
         font-size: 1.25rem;
         font-weight: 300;
+        color: #545454;
+        /*margin-top: 0.5rem;*/
+    }
+
+    padding-top: 1.5rem;
+
+    .create-template {
+        width: 17rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: center;
+        height: 3rem;
+        border-radius: 1rem;
+        font-size: .75rem;
+        font-weight: 300;
+
+        & svg {
+            position: absolute;
+            left: 1rem;
+        }
     }
 }

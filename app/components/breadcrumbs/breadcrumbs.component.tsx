@@ -1,5 +1,6 @@
 import "./styles.css";
 import ChevronRight from "@/public/icons/16px/chevron-right.svg";
+import React from "react";
 
 export interface BreadcrumbsI {
   items: BreadcrumbsItem[];
@@ -10,12 +11,12 @@ export interface BreadcrumbsItem {
   title: string;
 }
 
-export default function BreadcrumbsComponent({ items }: BreadcrumbsI) {
+function BreadcrumbsComponent({ items }: BreadcrumbsI) {
   return (
     <div className={"general-breadcrumbs"}>
       {items &&
         items.map(({ href, title }, index) => (
-          <div className={"item"} key={title}>
+          <div className={"item fade-in-left"} key={title}>
             {index >= 1 ? <ChevronRight /> : ""}
             <p
               style={{
@@ -29,3 +30,5 @@ export default function BreadcrumbsComponent({ items }: BreadcrumbsI) {
     </div>
   );
 }
+
+export default React.memo(BreadcrumbsComponent);

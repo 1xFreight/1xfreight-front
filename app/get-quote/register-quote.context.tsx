@@ -8,11 +8,14 @@ import {
   useState,
 } from "react";
 import { RegisterQuoteStepsEnum } from "@/app/get-quote/ftl-ltl/enums/steps.enum";
+import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
 
 interface RegisterQuoteContextI {
   breadcrumbs: BreadcrumbsItem[];
   stepNumber: number;
   setStepNumber: Dispatch<SetStateAction<number>>;
+  type: QuoteTypeEnum | null;
+  setType: Dispatch<SetStateAction<QuoteTypeEnum>>;
 }
 
 const defaultContextValues: RegisterQuoteContextI = {
@@ -23,6 +26,8 @@ const defaultContextValues: RegisterQuoteContextI = {
   ],
   stepNumber: 1,
   setStepNumber: () => {},
+  type: null,
+  setType: () => {},
 };
 
 export const RegisterQuoteContext =
@@ -33,7 +38,8 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(1);
+  const [stepNumber, setStepNumber] = useState<number>(2);
+  const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.FCL);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
       title: "Request Quote",
@@ -41,6 +47,8 @@ export const RegisterQuoteContextProvider = ({
   ]);
 
   useEffect(() => {
+    if (breadcrumbs.length >= stepNumber) return;
+
     setBreadcrumbs([
       ...breadcrumbs,
       {
@@ -51,11 +59,15 @@ export const RegisterQuoteContextProvider = ({
 
   return (
     <RegisterQuoteContext.Provider
-      value={{
-        breadcrumbs,
-        stepNumber,
-        setStepNumber,
-      }}
+      value={
+        {
+          breadcrumbs,
+          stepNumber,
+          setStepNumber,
+          type,
+          setType,
+        } as RegisterQuoteContextI
+      }
     >
       {children}
     </RegisterQuoteContext.Provider>

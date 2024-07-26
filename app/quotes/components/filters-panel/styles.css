@@ -77,6 +77,9 @@
     border: 1px solid #0020DD;
     color: #0020DD;
 
+    & svg {
+    }
+
     & svg path {
         fill: #0020DD;
     }
@@ -110,10 +113,6 @@
     &:hover {
         border: 1px solid #0020DD;
         color: #0020DD;
-    }
-
-    & svg {
-        width: 0.7rem;
     }
 
     & svg path {
@@ -191,7 +190,7 @@
         padding: 1rem;
         box-sizing: border-box;
         border-radius: 1rem;
-        border: 1px solid #0020DD;
+        border: 1px solid #A7A7A7;
 
         & .item {
             display: flex;
@@ -235,7 +234,7 @@
         }
 
         & .body {
-            border-bottom: 1px solid #0020DD;
+            border-bottom: 1px solid #A7A7A7;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
         }
@@ -262,7 +261,7 @@
         display: flex;
         align-items: center;
         padding-bottom: 1rem;
-        border-bottom: 1px solid #0020DD;
+        border-bottom: 1px solid #A7A7A7;
         margin-bottom: 1rem;
         justify-content: space-between;
 
@@ -344,10 +343,10 @@
         border-radius: 0.25rem;
 
         & svg {
-            width: 1.25rem;
+            /*width: 1.25rem;*/
 
             & path {
-                stroke: #F9F9F9;
+                fill: #F9F9F9;
             }
         }
 

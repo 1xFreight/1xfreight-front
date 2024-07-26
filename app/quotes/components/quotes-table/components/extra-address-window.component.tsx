@@ -1,11 +1,12 @@
 import { QuoteAddressI } from "@/common/interfaces/quote-preview.interface";
 import Arrow from "@/public/icons/20px/Arrow 2.svg";
+import React from "react";
 
 interface ExtraAWI {
   stops: QuoteAddressI[];
 }
 
-export default function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
+function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
   return (
     <div className={"extra-address-window"}>
       <h4>Stops</h4>
@@ -28,3 +29,5 @@ export default function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
     </div>
   );
 }
+
+export default React.memo(ExtraAddressWindowComponent);
