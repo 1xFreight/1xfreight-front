@@ -6,7 +6,28 @@
     display: flex;
 
     & .rq-page-wrapper {
+        width: 100%;
+        overflow-y: scroll;
+        padding-left: 22rem;
+        margin-left: -22rem;
+        margin-bottom: 9.5rem;
 
+        &::-webkit-scrollbar-thumb{
+            background: #0020DD;
+            border-radius: 1rem;
+        }
+
+        &::-webkit-scrollbar{
+            width: 0.6rem;
+        }
+
+        &::-webkit-scrollbar-track{
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-corner{
+            background: transparent;
+        }
     }
 
     & .steps-container-wrapper {
@@ -85,5 +106,18 @@
             font-size: 1rem;
             font-weight: 300;
         }
+    }
+
+}
+
+@media (max-width: 1400px) {
+    .left-steps-menu .rq-page-wrapper {
+
+            padding-left: 0rem;
+            margin-left: 0rem;
+    }
+
+    .steps-container-wrapper .steps-container {
+        width: 15rem;
     }
 }

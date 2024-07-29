@@ -1,0 +1,172 @@
+.rq-templates {
+    width: 100%;
+
+    & .create-template {
+        width: 17rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: center;
+        height: 3rem;
+        border-radius: 1rem;
+        font-size: .75rem;
+        font-weight: 300;
+
+        & svg {
+            position: absolute;
+            left: 1rem;
+        }
+    }
+
+    .action-panel {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+    & .search-template {
+        width: 25rem;
+        height: 3rem;
+    }
+
+    & table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.25rem;
+        border: unset;
+        min-width: 1000px;
+        box-sizing: border-box;
+        margin-top: 1.5rem;
+    }
+
+    & thead {
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 2;
+        background: red;
+    }
+
+    & thead tr {
+        width: 100%;
+    }
+
+    & tr>th {
+        text-align: left;
+        padding-left: 2.5rem;
+        background: white;
+        height: 3.75rem;
+        border-top: 1px solid #545454;
+        border-bottom: 1px solid #545454;
+        border-collapse: collapse;
+    }
+
+    & tr th {
+        font-size: 1rem;
+        color: #545454;
+        font-weight: 400;
+    }
+
+    & tr>th:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+        border-right: 1px solid #EFEFEF;
+        border-left: 1px solid #545454;
+    }
+
+    & tr>th:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+        border-right: 1px solid #545454;
+    }
+
+    & tr>td:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+    }
+
+    & tr>td:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+    }
+
+    & tr:nth-of-type(even){
+        background: white;
+    }
+
+    & tr:nth-of-type(odd){
+        background: #F9F9F9;
+    }
+
+    & td {
+        padding-left: 2.5rem;
+    }
+
+    & tr>td {
+        height: 4.625rem;
+        box-sizing: border-box;
+    }
+
+    & .main-text {
+        font-weight: 400;
+        font-size: 0.875rem;
+        color: #545454;
+    }
+
+    & .sub-text {
+        padding-top: 0.25rem;
+        font-weight: 400;
+        font-size: 0.75rem;
+        color: #939393;
+    }
+
+    &  .pickup .location, .drop .location {
+        display: flex;
+        position: relative;
+        width: max-content;
+    }
+
+    & .pickup .location>svg:nth-child(1), .drop .location>svg:nth-child(1) {
+        position: absolute;
+        left: calc(-24px - 0.25rem);
+    }
+
+    & .template-actions {
+        display: flex;
+        justify-content: end;
+        padding-right: 2.5rem;
+        gap: 3rem;
+        align-items: center;
+
+    }
+
+    & tr:hover td {
+        & .template-actions .chevron-svg {
+            & svg path{
+                fill: #0020DD;
+            }
+        }
+
+        cursor: pointer;
+    }
+
+    & .edit-template-btn {
+        background: transparent;
+        color: #545454;
+        display: flex;
+        gap: 2rem;
+        border: 1px solid #A7A7A7;
+        height: 3rem;
+        align-items: center;
+        padding: 0 1rem;
+        border-radius: 1rem;
+        font-weight: 300;
+        white-space: nowrap;
+
+        &:hover {
+            border-color: #0020DD;
+            color: #0020DD;
+
+            & svg path {
+                fill: #0020DD;
+            }
+        }
+    }
+
+}

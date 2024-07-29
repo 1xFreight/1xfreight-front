@@ -1,6 +1,7 @@
 import { QuoteAddressI } from "@/common/interfaces/quote-preview.interface";
 import Arrow from "@/public/icons/20px/Arrow 2.svg";
 import React from "react";
+import "./styles.css";
 
 interface ExtraAWI {
   stops: QuoteAddressI[];

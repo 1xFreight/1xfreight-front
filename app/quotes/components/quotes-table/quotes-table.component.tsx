@@ -6,7 +6,7 @@ import Info from "@/public/icons/14px/info-circle.svg";
 import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/components/action-button.component";
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
-import ExtraAddressWindowComponent from "@/app/quotes/components/quotes-table/components/extra-address-window.component";
+import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];

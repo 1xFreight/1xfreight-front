@@ -1,0 +1,183 @@
+.rq-pickup-form {
+    width: 100%;
+
+    .pickup-form {
+        width: 100%;
+        background: white;
+        padding: 1.5rem;
+        box-sizing: border-box;
+        border-radius: 1.25rem;
+        flex-wrap: wrap;
+
+        select {
+            width: 15rem;
+            height: 3rem;
+            border: 1px solid #A7A7A7;
+            border-radius: 1rem;
+            padding: 0 2rem;
+            color: #545454;
+        }
+
+        h2,h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            color: #545454;
+            font-weight: 500;
+        }
+
+        input[type="radio"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+            accent-color: #0020DD;
+        }
+
+        input {
+            border: 1px solid #939393;
+            border-radius: 0.75rem;
+            height: 3rem;
+            padding: 1rem;
+        }
+
+        ::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+            z-index: 2;
+        }
+
+        input[type="date"] {
+            position: relative;
+        }
+
+
+        .form-header {
+            height: 3rem;
+            border-bottom: 1px solid #939393;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input-wrapper {
+            display: flex;
+            position: relative;
+            align-items: center;
+
+            svg {
+                position: absolute;
+                left: 0.5rem;
+                z-index: 1;
+            }
+
+            input {
+                padding-left: 2.5rem;
+            }
+
+            input:focus {
+                border: 1px solid #0020DD;
+            }
+
+        }
+
+        .shipping-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .address-input {
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+
+
+        .date-time-details {
+            display: flex;
+            width: 100%;
+            gap: 1rem;
+            flex-wrap: wrap;
+
+            &>div {
+                max-width: calc(50% - 0.5rem);
+                min-width: 20rem;
+                width: 100%;
+            }
+
+            .radio-btn {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+
+                .radio-yes,.radio-no {
+                    display: flex;
+                    gap: 0.5rem;
+                    height: 3rem;
+                    border: 1px solid transparent;
+                    align-items: center;
+                    width: 5rem;
+                    padding: 0 0.5rem;
+                    border-radius: 1rem;
+
+                    &:hover {
+                        border-color: #0020DD;
+                    }
+                }
+            }
+        }
+
+        .date-time-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #A7A7A7;
+
+
+            &>div {
+                max-width: calc(50% - 0.5rem);
+                width: 100%;
+            }
+
+            .date-input {
+                min-width: 20rem;
+            }
+
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: nowrap;
+            min-width: 31rem;
+
+        }
+
+        .time-input-range {
+            position: relative;
+            width: min-content;
+
+            span {
+                position: absolute;
+                bottom: -1.25rem;
+                font-size: 0.65rem;
+                color: #A7A7A7;
+            }
+        }
+    }
+
+}
