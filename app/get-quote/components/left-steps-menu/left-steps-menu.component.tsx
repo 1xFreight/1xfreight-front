@@ -12,7 +12,10 @@ export default function LeftStepsMenuComponent({
   children: ReactNode;
 }) {
   const { stepNumber, type } = useRegisterQuoteContext();
-  const steps = useMemo(() => Object.values(stepsMapping[type]), [type]);
+  const steps = useMemo(
+    () => (type ? Object.values(stepsMapping[type]) : null),
+    [type],
+  );
 
   const stepStatus = (index: number) => {
     if (index > stepNumber) return "";

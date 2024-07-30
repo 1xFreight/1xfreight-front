@@ -8,12 +8,12 @@ import Link from "next/link";
 export default function SellerMenuComponent() {
   return (
     <div className={"seller-menu"}>
-      <Link className={"get-quote"} href={"/"}>
+      <Link className={"get-quote"} href={"/get-quote"}>
         <AddNote />
         Get Quote
       </Link>
 
-      <Link className={"item"} href={"/"}>
+      <Link className={"item"} href={"/quotes"}>
         <Document />
         Quotes
       </Link>

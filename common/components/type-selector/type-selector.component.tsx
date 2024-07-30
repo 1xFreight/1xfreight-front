@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "./styles.css";
 interface TypeSelectorI {
   typeEnum: any;
+  inputName: string;
 }
 
-function TypeSelectorComponent({ typeEnum }: TypeSelectorI) {
+function TypeSelectorComponent({ typeEnum, inputName }: TypeSelectorI) {
   const [type, setType] = useState<keyof typeof typeEnum>(
     Object.keys(typeEnum)[0],
   );
@@ -22,6 +23,15 @@ function TypeSelectorComponent({ typeEnum }: TypeSelectorI) {
           </div>
         ),
       )}
+      <input
+        type={"text"}
+        style={{
+          display: "none",
+        }}
+        value={type as string}
+        onChange={() => {}}
+        name={inputName}
+      />
     </div>
   );
 }

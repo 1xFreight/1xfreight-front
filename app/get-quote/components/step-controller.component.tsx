@@ -4,7 +4,8 @@ import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.
 import React from "react";
 
 function StepControllerComponent() {
-  const { stepNumber, setStepNumber } = useRegisterQuoteContext();
+  const { stepNumber, setStepNumber, validateAndGoForward } =
+    useRegisterQuoteContext();
 
   return (
     <>
@@ -16,11 +17,8 @@ function StepControllerComponent() {
           >
             Back
           </button>
-          <button
-            className={"next-btn"}
-            onClick={() => setStepNumber((numb) => numb + 1)}
-          >
-            Next
+          <button className={"next-btn"} onClick={() => validateAndGoForward()}>
+            Next {stepNumber}
           </button>
         </div>
       )}

@@ -1,5 +1,6 @@
+"use client";
+
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
-import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 import "./styles.css";
 import ArrowUp from "@/public/icons/24px/arrow-up.svg";
 import ArrowDown from "@/public/icons/24px/arrow-down.svg";
@@ -8,8 +9,17 @@ import Chevron from "@/public/icons/16px/chevron-right.svg";
 import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
 import Info from "@/public/icons/14px/info-circle.svg";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
+import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
+import { PageStateEnum } from "@/app/get-quote/register-quote.context";
+import { useEffect } from "react";
 
 export default function RqTemplatesComponent() {
+  const { setCanChangePage } = useRegisterQuoteContext();
+
+  useEffect(() => {
+    setCanChangePage(PageStateEnum.NO_VALIDITY);
+  }, []);
+
   return (
     <div className={"rq-templates"}>
       <div className={"template-title"}>

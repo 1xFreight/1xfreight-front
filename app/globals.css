@@ -243,4 +243,11 @@ button:disabled {
   }
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("../public/icons/24px/chevron-down.svg") !important;
+}
+
 

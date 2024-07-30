@@ -1,31 +1,64 @@
 "use client";
 
-import ChevronDown from "@/public/icons/24px/chevron-down.svg";
 import Clock from "@/public/icons/24px/clock.svg";
 import Calendar from "@/public/icons/24px/calendar.svg";
 import MapMarker from "@/public/icons/30px/map-marker.svg";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
-import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import "./styles.css";
-import { useCallback, useMemo } from "react";
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import AccesorialsComponent from "@/app/get-quote/components/accesorials.component";
+import React from "react";
+import { getOrdinalSuffix } from "@/common/utils/number.utils";
 
 enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
   FCFS = "FCFS",
 }
 
-export default function PickupFormComponent() {
+interface LocationFormComponentI {
+  index: number;
+  title: string;
+}
+
+function LocationFormComponent({ index, title }: LocationFormComponentI) {
+  const toggleAddDateTime = (state: boolean) => {
+    const elShippingType = document.getElementById(
+      `shipping-hours-type form-${index}`,
+    );
+    const elDateTimeInputs = document.getElementById(
+      `date-time-inputs form-${index}`,
+    );
+
+    function showDetails() {
+      if (!elShippingType || !elDateTimeInputs) return;
+      elShippingType.style.display = "block";
+      elShippingType.setAttribute("required", "true");
+      elDateTimeInputs.style.display = "flex";
+      elDateTimeInputs.setAttribute("required", "true");
+    }
+
+    function hideDetails() {
+      if (!elShippingType || !elDateTimeInputs) return;
+      elShippingType.style.display = "none";
+      elShippingType.setAttribute("required", "false");
+      elDateTimeInputs.style.display = "none";
+      elDateTimeInputs.setAttribute("required", "false");
+    }
+
+    state ? showDetails() : hideDetails();
+  };
+
   return (
-    <div className={"rq-pickup-form"}>
-      <div className={"pickup-form"}>
+    <div className={"rq-location-form"}>
+      <div className={"location-form"}>
         <div className={"form-header"}>
-          <h2>1st Pickup</h2>
+          <h2>
+            {getOrdinalSuffix(index)} {title}
+          </h2>
         </div>
 
-        <form className={"shipping-form"}>
+        <form className={"shipping-form"} id={`location-form-${index}`}>
           <div className={"address-input"}>
             <h3>Address</h3>
             <div className={"form-input-wrapper"}>
@@ -35,6 +68,7 @@ export default function PickupFormComponent() {
                 name={"address"}
                 className={"form-input"}
                 placeholder={"Origin (Location or City, ST, ZIP)"}
+                required
               />
             </div>
           </div>
@@ -50,7 +84,7 @@ export default function PickupFormComponent() {
                     name={"add-time"}
                     id={"add-time-yes"}
                     value={"yes"}
-                    defaultChecked
+                    onClick={() => toggleAddDateTime(true)}
                   />
                   <h5>Yes</h5>
                 </div>
@@ -60,19 +94,30 @@ export default function PickupFormComponent() {
                     name={"add-time"}
                     id={"add-time-no"}
                     value={"no"}
+                    defaultChecked
+                    onClick={() => toggleAddDateTime(false)}
                   />
                   <h5>No</h5>
                 </div>
               </div>
             </div>
 
-            <div className={"shipping-hours-type"}>
+            <div
+              className={"shipping-hours-type"}
+              id={`shipping-hours-type form-${index}`}
+            >
               <h3>Shipping Hours</h3>
-              <TypeSelectorComponent typeEnum={ShippingHoursEnum} />
+              <TypeSelectorComponent
+                typeEnum={ShippingHoursEnum}
+                inputName={"shipping-hours-type"}
+              />
             </div>
           </div>
 
-          <div className={"date-time-inputs"}>
+          <div
+            className={"date-time-inputs"}
+            id={`date-time-inputs form-${index}`}
+          >
             <div className={"date-input"}>
               <h3>Date</h3>
               <div className={"form-input-wrapper"}>
@@ -80,7 +125,7 @@ export default function PickupFormComponent() {
                 <input
                   type={"date"}
                   min={disablePastDates()}
-                  value={disablePastDates()}
+                  defaultValue={disablePastDates()}
                 />
               </div>
             </div>
@@ -91,8 +136,8 @@ export default function PickupFormComponent() {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="pickup-time-start">
-                    <option value="" selected disabled>
+                  <select name="location-time-start" defaultValue={"any"}>
+                    <option value="0" disabled>
                       Pickup hours
                     </option>
                     <option value="unknown">Call or email to schedule</option>
@@ -111,8 +156,8 @@ export default function PickupFormComponent() {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="pickup-time-end">
-                    <option value="" selected disabled>
+                  <select name="location-time-end" defaultValue={"0"}>
+                    <option value="0" disabled>
                       Time range end
                     </option>
                     {generatePickHours().map((time, index) => (
@@ -128,9 +173,20 @@ export default function PickupFormComponent() {
             </div>
           </div>
 
-          <AccesorialsComponent />
+          <AccesorialsComponent title={`${title} Accesorials`} index={index} />
+
+          <div className={"form-notes"}>
+            <h3>Notes</h3>
+            <textarea
+              placeholder={"Type here additional information..."}
+              rows={5}
+              name={"location-notes"}
+            />
+          </div>
         </form>
       </div>
     </div>
   );
 }
+
+export default React.memo(LocationFormComponent);

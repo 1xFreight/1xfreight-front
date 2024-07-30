@@ -120,7 +120,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem 5rem;
+    gap: 1.5rem 2rem;
 
     .option {
         display: flex;
@@ -130,8 +130,14 @@
 }
 
 .acsrls-spoiler {
-    display: none;
+    display: flex;
     gap: 5rem;
+    height: 0;
+    overflow: hidden;
+    transition: all 400ms ease-out;
+    opacity: 0;
+    width: 0;
+    border-top: 1px solid #A7A7A7;
 
     select {
         padding-left: 1rem !important;
@@ -146,7 +152,44 @@
     border-radius: 1rem;
     padding: 0.5rem 1rem;
     border: 1px solid #939393;
-    transition: all 500ms ease-in-out;
+    transition: all 250ms ease-in-out;
+
+    h4 {
+        font-size: 0.875rem;
+        color:#545454;
+        font-weight: 500;
+    }
+
+    .show-btn {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 250ms ease-in-out;
+        cursor: pointer;
+    }
+
+    &.open-spoiler {
+        .acsrls-spoiler {
+            height: 7rem;
+            opacity: 1;
+            width: 100%;
+            padding-top: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .show-btn svg {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+select,input[type="checkbox"] {
+    cursor: pointer;
+}
+
+select {
+    padding-right: 5rem !important;
 }
 
 @media (max-width: 1400px) {
@@ -154,4 +197,41 @@
         width: calc(100% - 17.5rem);
         margin-left: 17.5rem;
     }
+}
+
+.form-number-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -1.75rem;
+    padding-bottom: 1rem;
+
+    button {
+        height: 3rem;
+        width: 18rem;
+        display: flex;
+        border-radius: 1rem;
+        align-items: center;
+        padding: 0 1.5rem;
+        justify-content: center;
+        gap: 2rem;
+        font-size: 1.25rem;
+        font-weight: 300;
+
+        &:disabled {
+            border: 1px solid #A7A7A7;
+            color: #A7A7A7;
+            background: transparent;
+
+            svg path {
+                fill: #A7A7A7;
+            }
+        }
+    }
+
+    .delete-more-form {
+        background: transparent;
+        color: rgba(221, 0, 32, 0.5);
+        border: 1px solid rgba(221, 0, 32, 0.5);
+    }
+
 }

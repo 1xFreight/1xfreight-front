@@ -1,13 +1,24 @@
-.rq-pickup-form {
+.rq-location-form {
     width: 100%;
 
-    .pickup-form {
+    .location-form {
         width: 100%;
         background: white;
         padding: 1.5rem;
         box-sizing: border-box;
         border-radius: 1.25rem;
         flex-wrap: wrap;
+
+        .shipping-hours-type {
+            display: none;
+        }
+
+
+        .form-notes textarea {
+            width: 100%;
+            padding: 1rem;
+            height: auto;
+        }
 
         select {
             width: 15rem;
@@ -35,7 +46,7 @@
             accent-color: #0020DD;
         }
 
-        input {
+        input, textarea {
             border: 1px solid #939393;
             border-radius: 0.75rem;
             height: 3rem;
@@ -139,21 +150,15 @@
         }
 
         .date-time-inputs {
-            display: flex;
+            display: none;
             flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 1rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid #A7A7A7;
 
-
-            &>div {
-                max-width: calc(50% - 0.5rem);
-                width: 100%;
-            }
-
-            .date-input {
-                min-width: 20rem;
+            .date-input input{
+                width: 15rem;
             }
 
         }
@@ -164,6 +169,11 @@
             align-items: end;
             flex-wrap: nowrap;
             min-width: 31rem;
+
+            select {
+                width: 22.5rem;
+                padding: 0 0 0 2.5rem;
+            }
 
         }
 
