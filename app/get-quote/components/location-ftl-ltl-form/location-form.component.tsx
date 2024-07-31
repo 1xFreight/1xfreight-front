@@ -24,10 +24,10 @@ interface LocationFormComponentI {
 function LocationFormComponent({ index, title }: LocationFormComponentI) {
   const toggleAddDateTime = (state: boolean) => {
     const elShippingType = document.getElementById(
-      `shipping-hours-type form-${index}`,
+      `shipping-hours-type form-${title}-${index}`,
     );
     const elDateTimeInputs = document.getElementById(
-      `date-time-inputs form-${index}`,
+      `date-time-inputs form-${title}-${index}`,
     );
 
     function showDetails() {
@@ -58,7 +58,10 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
           </h2>
         </div>
 
-        <form className={"shipping-form"} id={`location-form-${index}`}>
+        <form
+          className={"shipping-form"}
+          id={`location-form-${title}-${index}`}
+        >
           <div className={"address-input"}>
             <h3>Address</h3>
             <div className={"form-input-wrapper"}>
@@ -104,7 +107,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
 
             <div
               className={"shipping-hours-type"}
-              id={`shipping-hours-type form-${index}`}
+              id={`shipping-hours-type form-${title}-${index}`}
             >
               <h3>Shipping Hours</h3>
               <TypeSelectorComponent
@@ -116,7 +119,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
 
           <div
             className={"date-time-inputs"}
-            id={`date-time-inputs form-${index}`}
+            id={`date-time-inputs form-${title}-${index}`}
           >
             <div className={"date-input"}>
               <h3>Date</h3>
@@ -173,7 +176,10 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
             </div>
           </div>
 
-          <AccesorialsComponent title={`${title} Accesorials`} index={index} />
+          <AccesorialsComponent
+            title={`${title} Accesorials`}
+            index={index + title}
+          />
 
           <div className={"form-notes"}>
             <h3>Notes</h3>

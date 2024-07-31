@@ -8,14 +8,17 @@ import {
   useState,
 } from "react";
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
-import { FtlLtlStepsEnum } from "@/app/get-quote/enums/ftl-ltl-steps.enum";
-import { number } from "prop-types";
 
 export enum PageStateEnum {
   CAN_CHANGE = "CAN_CHANGE",
   INVALID = "INVALID",
   CHECK = "CHECK",
   NO_VALIDITY = "NO_VALIDITY",
+}
+
+export interface DataCollectorI {
+  form: string;
+  data: any[];
 }
 
 interface RegisterQuoteContextI {
@@ -28,6 +31,7 @@ interface RegisterQuoteContextI {
   canChangePage: PageStateEnum;
   validateAndGoForward: () => void;
   addData: (data: any) => void;
+  addBreadcrumb: (title: string) => void;
 }
 
 const defaultContextValues: RegisterQuoteContextI = {
@@ -43,6 +47,7 @@ const defaultContextValues: RegisterQuoteContextI = {
   setCanChangePage: () => {},
   validateAndGoForward: () => {},
   addData: () => {},
+  addBreadcrumb: () => {},
   canChangePage: PageStateEnum.INVALID,
 };
 
@@ -54,7 +59,7 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(3);
+  const [stepNumber, setStepNumber] = useState<number>(5);
   const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.FTL);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
@@ -64,7 +69,6 @@ export const RegisterQuoteContextProvider = ({
   const [canChangePage, setCanChangePage] = useState<PageStateEnum>(
     PageStateEnum.INVALID,
   );
-  const [lastPage, setLastPage] = useState<number>(1);
   const [dataCollector, setDataCollector] = useState<Array<any>>([]);
 
   const validateAndGoForward = () => {
@@ -74,8 +78,24 @@ export const RegisterQuoteContextProvider = ({
     setCanChangePage(PageStateEnum.CHECK);
   };
 
-  const addData = (data: any) => {
+  const addData = (data: DataCollectorI) => {
+    dataCollector.map(({ form }) => {
+      if (form === data.form) {
+        setDataCollector((prevState) =>
+          prevState.filter((storedData) => storedData.form !== data.form),
+        );
+      }
+    });
+
     setDataCollector((prevState) => [...prevState, data]);
+  };
+
+  const addBreadcrumb = (title: string) => {
+    setBreadcrumbs((prevBreadcrumbs) => {
+      const newBreadcrumbs = [...prevBreadcrumbs];
+      newBreadcrumbs[stepNumber] = { title };
+      return newBreadcrumbs;
+    });
   };
 
   useEffect(() => {
@@ -84,20 +104,6 @@ export const RegisterQuoteContextProvider = ({
       setCanChangePage(PageStateEnum.INVALID);
     }
   }, [canChangePage]);
-
-  useEffect(() => {
-    if (stepNumber > lastPage) {
-      setLastPage(stepNumber);
-    }
-    if (breadcrumbs.length >= stepNumber) return;
-
-    setBreadcrumbs([
-      ...breadcrumbs,
-      {
-        title: Object.values(FtlLtlStepsEnum)[stepNumber - 1],
-      },
-    ]);
-  }, [stepNumber]);
 
   useEffect(() => {
     console.log("new data added to collector");
@@ -117,6 +123,7 @@ export const RegisterQuoteContextProvider = ({
           setCanChangePage,
           canChangePage,
           addData,
+          addBreadcrumb,
         } as RegisterQuoteContextI
       }
     >

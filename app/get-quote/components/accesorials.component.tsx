@@ -2,7 +2,7 @@ import ChevronDown from "@/public/icons/24px/chevron-down.svg";
 
 interface AccesorialsComponentI {
   title: string;
-  index: number;
+  index: string;
 }
 
 export default function AccesorialsComponent({

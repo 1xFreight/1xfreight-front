@@ -1,0 +1,157 @@
+.shipment-details-page {
+    width: 100%;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input {
+        width: 15rem;
+    }
+
+    select {
+        border-radius: .75rem;
+        padding: 0 1rem;
+    }
+
+    .title {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+    }
+
+    .reference-no-wrapper{
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+    }
+
+    .reference-no-actions {
+        width: 100%;
+        display: flex;
+        gap: 2rem;
+        height: 2.25rem;
+
+        button {
+            background: transparent;
+            color: #0020DD;
+            display: flex;
+            align-items: center;
+            width: 15rem;
+            justify-content: center;
+            gap: 1rem;
+            border-radius: 0.75rem;
+            transition: all 250ms ease-in-out;
+
+            svg path{
+                fill: #0020DD;
+            }
+
+            &:disabled {
+                color: #A7A7A7 !important;
+                svg path {
+                    fill: #A7A7A7;
+                }
+            }
+
+            &.delete {
+                background: transparent;
+                color: rgba(221, 0, 32, 0.5);
+            }
+
+        }
+
+    }
+
+    .reference-item {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0.5rem;
+        gap: .25rem;
+
+        div {
+            display: flex;
+            gap: 2rem;
+        }
+    }
+
+    .equipment-type {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+
+    .packing-info-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+
+        &>div {
+            width: 15rem;
+            display: flex;
+        }
+
+        h5 {
+          margin-bottom: 0.25rem;
+        }
+
+        .packing-type div:nth-last-of-type(1) input {
+            width: 4.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .packing-type div:nth-child(1) select {
+            width: 9.75rem;
+            padding-right: 1rem !important;
+        }
+
+    }
+
+    .packing-info .general-type-selector {
+        white-space: nowrap;
+
+        .type-selector {
+            padding: 0 0.5rem;
+        }
+    }
+
+    .weight-input-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 15rem;
+
+        .weight-input {
+            display: flex;
+
+            input {
+                width: 7.5rem;
+                border-radius: 0.75rem 0 0 0.75rem;
+                border-right: unset;
+            }
+
+            .general-type-selector {
+                width: 100%;
+
+                .type-selector:nth-child(1) {
+                    border-radius: unset;
+                }
+            }
+
+        }
+    }
+
+
+
+}

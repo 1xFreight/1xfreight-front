@@ -14,15 +14,22 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
 
       <div className={"address-list location"}>
         {stops.map(({ address, date }, index) => (
-          <>
+          <div
+            key={address + index}
+            style={{
+              display: "flex",
+              gap: "1.5rem",
+              alignItems: "center",
+            }}
+          >
             {index !== 0 && <Arrow />}
 
-            <div className={"address"} key={address + index}>
+            <div className={"address"}>
               <div className={"main-text"}>{address}</div>
 
               <div className={"sub-text"}>{date}</div>
             </div>
-          </>
+          </div>
         ))}
       </div>
 

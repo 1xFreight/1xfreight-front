@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LocationFormComponent from "@/app/get-quote/components/ftl-ltl-forms/location-form.component";
+import LocationFormComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 import "./styles.css";
 import { formDataToJSON } from "@/common/utils/formData.util";
@@ -10,14 +10,14 @@ import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 
 export default function DropPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);
-  const { setCanChangePage, canChangePage, addData } =
+  const { setCanChangePage, canChangePage, addData, addBreadcrumb } =
     useRegisterQuoteContext();
 
   const dataCollector = () => {
     const data = [];
 
     for (let i = 1; i <= numberOfLocations; i++) {
-      const form = document.forms[`location-form-${i}`];
+      const form = document.forms[`location-form-Drop-${i}`];
       const valid = form[0].reportValidity();
 
       if (!valid) {
@@ -31,7 +31,8 @@ export default function DropPageComponent() {
       data.push(formDataToJSON(formData));
     }
 
-    addData(data);
+    addBreadcrumb(data[0].address);
+    addData({ form: "drop", data });
     setCanChangePage(PageStateEnum.CAN_CHANGE);
   };
 

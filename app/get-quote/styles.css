@@ -88,20 +88,55 @@
 }
 
 .get-quote-page {
-    & h2 {
+    padding-top: 1.5rem;
+
+    h2 {
         font-size: 1.5rem;
         color: #545454;
         font-weight: 600;
     }
 
-    & h4 {
+    h4 {
         font-size: 1.25rem;
         font-weight: 300;
         color: #545454;
         /*margin-top: 0.5rem;*/
     }
 
-    padding-top: 1.5rem;
+    h3 {
+        font-size: 1.15rem;
+        color: #545454;
+        font-weight: 500;
+    }
+
+    h5 {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #545454;
+
+        span {
+            color: #A7A7A7;
+            font-weight: 400;
+            font-size: 0.875rem;
+        }
+    }
+
+    input, textarea {
+        border: 1px solid #939393;
+        border-radius: 0.75rem;
+        height: 3rem;
+        padding: 1rem;
+    }
+
+    select {
+        width: 15rem;
+        height: 3rem;
+        border: 1px solid #A7A7A7;
+        border-radius: 1rem;
+        padding: 0 2rem;
+        color: #545454;
+    }
+
 }
 
 .acsrls-spoiler .options-wrapper {
@@ -234,4 +269,20 @@ select {
         border: 1px solid rgba(221, 0, 32, 0.5);
     }
 
+}
+
+@media (max-width: 1550px) {
+    .acsrls-spoiler-wrapper.open-spoiler {
+        .acsrls-spoiler {
+            height: 10rem;
+        }
+    }
+}
+
+@media (max-width: 1250px) {
+    .acsrls-spoiler-wrapper.open-spoiler {
+        .acsrls-spoiler {
+            height: 19rem;
+        }
+    }
 }

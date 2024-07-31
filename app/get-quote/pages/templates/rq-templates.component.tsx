@@ -14,11 +14,11 @@ import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { useEffect } from "react";
 
 export default function RqTemplatesComponent() {
-  const { setCanChangePage } = useRegisterQuoteContext();
+  const { setCanChangePage, canChangePage } = useRegisterQuoteContext();
 
   useEffect(() => {
     setCanChangePage(PageStateEnum.NO_VALIDITY);
-  }, []);
+  }, [canChangePage]);
 
   return (
     <div className={"rq-templates"}>

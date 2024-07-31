@@ -4,7 +4,7 @@ import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.
 import BreadcrumbsComponent from "@/app/components/breadcrumbs/breadcrumbs.component";
 
 export default function RqBreadcrumbsComponent() {
-  const { breadcrumbs, setStepNumber } = useRegisterQuoteContext();
+  const { breadcrumbs } = useRegisterQuoteContext();
 
   return (
     <div>{breadcrumbs && <BreadcrumbsComponent items={breadcrumbs} />}</div>

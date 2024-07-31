@@ -9,11 +9,12 @@ import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
 
 export default function ModeOfTransportationComponent() {
-  const { setType, setStepNumber } = useRegisterQuoteContext();
+  const { setType, setStepNumber, addBreadcrumb } = useRegisterQuoteContext();
 
   const selectType = (type: QuoteTypeEnum) => {
     setType(type);
     setStepNumber(2);
+    addBreadcrumb(type);
   };
 
   return (
