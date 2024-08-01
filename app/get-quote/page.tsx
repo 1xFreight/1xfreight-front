@@ -9,16 +9,27 @@ const TemplatesPage = dynamic(
 );
 const PickupPage = dynamic(
   () =>
-    import("@/app/get-quote/pages/ftl-ltl/pickup-drop/pickup-page.component"),
+    import("@/app/get-quote/pages/pickup-drop-ftl-ltl/pickup-page.component"),
 );
 const DropPage = dynamic(
-  () => import("@/app/get-quote/pages/ftl-ltl/pickup-drop/drop-page.component"),
+  () => import("@/app/get-quote/pages/pickup-drop-ftl-ltl/drop-page.component"),
 );
 const ShipmentDetails = dynamic(
   () =>
     import(
-      "@/app/get-quote/pages/ftl-ltl/shipment-details/shipment-details.component"
+      "@/app/get-quote/pages/shipment-details-ftl/components/shipment-page-wrapper.component"
     ),
+);
+const PartnersPage = dynamic(
+  () => import("@/app/get-quote/pages/partners/partners.component"),
+);
+
+const MembersPage = dynamic(
+  () => import("@/app/get-quote/pages/team-members/team-members.component"),
+);
+
+const ReviewPage = dynamic(
+  () => import("@/app/get-quote/pages/review/review.component"),
 );
 
 export default function GetQuotePage() {
@@ -30,6 +41,9 @@ export default function GetQuotePage() {
     <PickupPage key={"page-3"} />,
     <DropPage key={"page-4"} />,
     <ShipmentDetails key={"page-5"} />,
+    <PartnersPage key={"page-6"} />,
+    <MembersPage key={"page-7"} />,
+    <ReviewPage key={"page-8"} />,
   ];
 
   return (

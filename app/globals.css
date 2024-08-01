@@ -75,6 +75,20 @@ body {
   background: #EFEFEF;
   font-family: "SF Pro Display", sans-serif;
   letter-spacing: 0.0625rem;
+
+  ::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    z-index: 2;
+  }
 }
 
 @layer utilities {
@@ -247,7 +261,16 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: url("../public/icons/24px/chevron-down.svg") !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 

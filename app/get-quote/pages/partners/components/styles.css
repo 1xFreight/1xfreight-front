@@ -1,0 +1,145 @@
+.partners-table {
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.25rem;
+        border: unset;
+        min-width: 1200px;
+        box-sizing: border-box;
+    }
+
+    thead {
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 2;
+    }
+
+    thead tr {
+        width: 100%;
+    }
+
+    tr>th {
+        text-align: left;
+        padding-left: 1.25rem;
+        background: white;
+        height: 3.75rem;
+        border-top: 1px solid #545454;
+        border-bottom: 1px solid #545454;
+        border-collapse: collapse;
+    }
+
+    tr th {
+        font-size: 1rem;
+        color: #545454;
+        font-weight: 400;
+    }
+
+    tr>th:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+        border-right: 1px solid #EFEFEF;
+        border-left: 1px solid #545454;
+    }
+
+    tr>th:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+        border-right: 1px solid #545454;
+    }
+
+    tr>td:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+        width: 2rem;
+        border-right: 1px solid #EFEFEF;
+        padding-left: 0;
+
+        div {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+
+    tr>td:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+        width: 20rem;
+        max-width: 20rem;
+        overflow-x: scroll;
+
+        &::-webkit-scrollbar-thumb{
+            background: #0020DD;
+            border-radius: 1rem;
+        }
+
+        &::-webkit-scrollbar{
+            width: 0.5rem;
+            height: 0.1rem;
+        }
+
+        &::-webkit-scrollbar-track{
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-corner{
+            background: transparent;
+        }
+    }
+
+    td {
+        padding-left: 1.25rem;
+        vertical-align: center;
+    }
+
+    tr:nth-of-type(even){
+        background: white;
+    }
+
+    tr:nth-of-type(odd){
+        background: #F9F9F9;
+    }
+
+    tr>td {
+        height: 3rem;
+        box-sizing: border-box;
+        width: 10rem;
+    }
+
+    .main-text {
+        font-weight: 400;
+        font-size: 0.875rem;
+        color: #545454;
+    }
+
+    .partner-tag {
+        height: 1.5rem;
+        background: #C0C4DC;
+        padding: 0 1rem;
+        border-radius: 0.75rem;
+        color: white;
+        width: max-content;
+        white-space: nowrap;
+
+        &.FTL {
+            background-color: #A1AFFF;
+        }
+
+        &.LTL {
+            background-color: #82C181;
+        }
+
+        &.OCEAN {
+            background-color: #00c9c1;
+        }
+
+        &.AIR {
+            background-color: #00c5e5;
+        }
+    }
+
+    .table-tags {
+        display: flex;
+        gap: 0.5rem;
+        margin-right: 1rem;
+    }
+}

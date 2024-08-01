@@ -1,0 +1,48 @@
+.partners-page {
+    width: 100%;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .partner-filters {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            gap: 2rem;
+
+            select {
+                border: unset;
+                width: 10rem;
+                padding: 0 1rem;
+            }
+        }
+
+        button {
+            width: 15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 0.75rem;
+
+            svg {
+                position: absolute;
+                left: 1rem;
+            }
+        }
+    }
+
+    .select-all {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        input {
+            /*accent-color: #04C900;*/
+        }
+    }
+
+}

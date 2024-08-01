@@ -90,6 +90,65 @@
 .get-quote-page {
     padding-top: 1.5rem;
 
+    .form-input-wrapper {
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        svg {
+            position: absolute;
+            left: 0.5rem;
+            z-index: 1;
+        }
+
+        input {
+            padding-left: 2.5rem;
+        }
+
+        input:focus {
+            border: 1px solid #0020DD;
+        }
+
+    }
+
+    .radio-btn {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+
+        .radio-yes,.radio-no {
+            display: flex;
+            gap: 0.5rem;
+            height: 3rem;
+            border: 1px solid transparent;
+            align-items: center;
+            width: 5rem;
+            padding: 0 0.5rem;
+            border-radius: 1rem;
+
+            &:hover {
+                border-color: #0020DD;
+            }
+        }
+    }
+
+    input[type="checkbox"] {
+        width: 1.5rem;
+        height: 1.5rem;
+        accent-color: #0020DD;
+
+        &:checked {
+            background: #0020DD;
+        }
+    }
+
+    input[type="radio"] {
+        width: 1.5rem;
+        height: 1.5rem;
+        cursor: pointer;
+        accent-color: #0020DD;
+    }
+
     h2 {
         font-size: 1.5rem;
         color: #545454;
@@ -128,6 +187,12 @@
         padding: 1rem;
     }
 
+    textarea {
+        width: 100%;
+        padding: 1rem;
+        height: auto;
+    }
+
     select {
         width: 15rem;
         height: 3rem;
@@ -140,16 +205,6 @@
 }
 
 .acsrls-spoiler .options-wrapper {
-
-    input[type="checkbox"] {
-        width: 1.5rem;
-        height: 1.5rem;
-        accent-color: #0020DD;
-
-        &:checked {
-            background: #0020DD;
-        }
-    }
 
     flex-wrap: wrap;
     height: 100%;
@@ -221,10 +276,6 @@
 
 select,input[type="checkbox"] {
     cursor: pointer;
-}
-
-select {
-    padding-right: 5rem !important;
 }
 
 @media (max-width: 1400px) {
