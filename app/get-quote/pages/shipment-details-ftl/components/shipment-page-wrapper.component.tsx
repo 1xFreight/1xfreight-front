@@ -25,8 +25,7 @@ export default function ShipmentPageWrapperComponent() {
     const data = formDataToJSON(formData);
 
     addData({ form: "shipment_details", data });
-    // setCanChangePage(PageStateEnum.CAN_CHANGE);
-    setCanChangePage(PageStateEnum.INVALID);
+    setCanChangePage(PageStateEnum.CAN_CHANGE);
   };
 
   useEffect(() => {

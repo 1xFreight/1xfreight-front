@@ -34,7 +34,7 @@ export default function TeamMembersComponent() {
     const emailList = [];
 
     const checkboxes = document.querySelectorAll(
-      'div.pt-wrapper input[type="checkbox"]',
+      'div.tmn-wrapper input[type="checkbox"]',
     );
 
     checkboxes.forEach((checkbox) => {

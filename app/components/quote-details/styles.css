@@ -1,0 +1,168 @@
+.quote-ftl {
+    width: 100%;
+    border-radius: 1rem;
+    background: white;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: end;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+
+        div {
+            display: flex;
+            align-items: end;
+            gap: 0.5rem;
+        }
+    }
+
+    .info-2blocks {
+        display: flex;
+        width: 100%;
+        gap: 5rem;
+        align-items: center;
+
+        div {
+            max-width: 50%;
+            width: 100%;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #A7A7A7;
+            padding-bottom: 1rem;
+            align-items: center;
+
+            svg {
+                margin-right: 1rem;
+            }
+        }
+    }
+
+    .locations {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        width: 100%;
+
+        & .locations-wrapper .location-item:nth-last-of-type(1) .circle-line {
+            display: none;
+        }
+
+        .location-title {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .locations-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #A7A7A7;
+
+            .location-item {
+                display: flex;
+                gap: 1rem;
+                position: relative;
+            }
+
+            .location-item h3:nth-child(1) {
+                width: 10rem;
+            }
+
+            .location-circle {
+                width: 1.75rem;
+                height: 1.75rem;
+                min-width: 1.75rem;
+                min-height: 1.75rem;
+                border-radius: 100%;
+                background: #0020DD;
+            }
+
+            .circle-line {
+                position: absolute;
+                height: calc(100% + 2.5rem);
+                width: 1px;
+                background: #0020DD;
+                margin-left: 0.875rem;
+            }
+
+            .location-info {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                width: 100%;
+
+                &>h3 {
+                    white-space: nowrap;
+                }
+
+                div {
+                    display: flex;
+                    gap: 1rem;
+
+                    svg {
+                        min-width: 30px;
+                    }
+
+                    h3 {
+                        max-width: 70%;
+                    }
+                }
+            }
+        }
+    }
+
+    .hazard-warning {
+        display: flex;
+        width: 100%;
+        border-radius: 1rem;
+        border: 2px solid #ED0000;
+        padding: 1rem;
+        color: white;
+        align-items: center;
+        gap: 2rem;
+
+        svg {
+            width: 3.5rem;
+            height: 3.5rem;
+
+            path {
+                fill: #ED0000;
+
+            }
+        }
+
+        .info {
+
+            div {
+                display: flex;
+                gap: 2rem;
+                align-items: end;
+            }
+
+            h3 {
+                color: #ED0000;
+            }
+        }
+    }
+
+    .special-instructions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        div {
+            display: flex;
+            gap: 1.5rem;
+        }
+    }
+
+
+}

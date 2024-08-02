@@ -11,7 +11,7 @@ import AccesorialsComponent from "@/app/get-quote/components/accesorials.compone
 import React from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
 
-enum ShippingHoursEnum {
+export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
   FCFS = "FCFS",
 }
@@ -84,7 +84,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"radio-yes"}>
                   <input
                     type={"radio"}
-                    name={"add-time"}
+                    name={"addTime"}
                     id={"add-time-yes"}
                     value={"yes"}
                     onClick={() => toggleAddDateTime(true)}
@@ -94,7 +94,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"radio-no"}>
                   <input
                     type={"radio"}
-                    name={"add-time"}
+                    name={"addTime"}
                     id={"add-time-no"}
                     value={"no"}
                     defaultChecked
@@ -112,7 +112,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
               <h3>Shipping Hours</h3>
               <TypeSelectorComponent
                 typeEnum={ShippingHoursEnum}
-                inputName={"shipping-hours-type"}
+                inputName={"shippingHoursType"}
               />
             </div>
           </div>
@@ -129,6 +129,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                   type={"date"}
                   min={disablePastDates()}
                   defaultValue={disablePastDates()}
+                  name={"date"}
                 />
               </div>
             </div>
@@ -139,15 +140,17 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="location-time-start" defaultValue={"any"}>
+                  <select name="locationTimeStart" defaultValue={"any"}>
                     <option value="0" disabled>
                       Pickup hours
                     </option>
                     <option value="unknown">Call or email to schedule</option>
-                    <option value="any">Any time during business hours</option>
+                    <option value="Any time during business hours">
+                      Any time during business hours
+                    </option>
 
                     {generatePickHours().map((time, index) => (
-                      <option key={time + index} value="time">
+                      <option key={time + index} value={time}>
                         {time}
                       </option>
                     ))}
@@ -159,12 +162,12 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="location-time-end" defaultValue={"0"}>
+                  <select name="locationTimeEnd" defaultValue={"0"}>
                     <option value="0" disabled>
                       Time range end
                     </option>
                     {generatePickHours().map((time, index) => (
-                      <option key={time + index} value="time">
+                      <option key={time + index} value={time}>
                         {time}
                       </option>
                     ))}
@@ -186,7 +189,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
             <textarea
               placeholder={"Type here additional information..."}
               rows={5}
-              name={"location-notes"}
+              name={"locationNotes"}
             />
           </div>
         </form>
