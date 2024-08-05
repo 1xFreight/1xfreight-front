@@ -32,6 +32,10 @@ const ReviewPage = dynamic(
   () => import("@/app/get-quote/pages/review/review.component"),
 );
 
+const SendPage = dynamic(
+  () => import("@/app/get-quote/pages/send/send.component"),
+);
+
 export default function GetQuotePage() {
   const { stepNumber } = useRegisterQuoteContext();
 
@@ -44,6 +48,7 @@ export default function GetQuotePage() {
     <PartnersPage key={"page-6"} />,
     <MembersPage key={"page-7"} />,
     <ReviewPage key={"page-8"} />,
+    <SendPage key={"page-9"} />,
   ];
 
   return (

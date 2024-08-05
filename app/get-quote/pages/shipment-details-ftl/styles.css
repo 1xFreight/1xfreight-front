@@ -173,7 +173,7 @@
     }
 
     .emergency-and-un {
-        display: flex;
+        display: none;
         gap: 2rem;
         flex-wrap: wrap;
         padding-bottom: 1rem;

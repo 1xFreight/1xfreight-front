@@ -18,7 +18,7 @@ function StepControllerComponent() {
             Back
           </button>
           <button className={"next-btn"} onClick={() => validateAndGoForward()}>
-            Next {stepNumber}
+            Next
           </button>
         </div>
       )}

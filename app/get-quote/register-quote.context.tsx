@@ -32,6 +32,7 @@ interface RegisterQuoteContextI {
   validateAndGoForward: () => void;
   addData: (data: any) => void;
   getData: (formName: string) => any[];
+  saveData: () => boolean;
   addBreadcrumb: (title: string) => void;
 }
 
@@ -49,6 +50,7 @@ const defaultContextValues: RegisterQuoteContextI = {
   validateAndGoForward: () => {},
   addData: () => {},
   getData: () => [],
+  saveData: () => false,
   addBreadcrumb: () => {},
   canChangePage: PageStateEnum.INVALID,
 };
@@ -61,8 +63,8 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(8);
-  const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.FTL);
+  const [stepNumber, setStepNumber] = useState<number>(1);
+  const [type, setType] = useState<QuoteTypeEnum | null>(null);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
       title: "Request Quote",
@@ -105,6 +107,10 @@ export const RegisterQuoteContextProvider = ({
     });
   };
 
+  const saveData = () => {
+    return Math.random() < 0.5;
+  };
+
   useEffect(() => {
     if (canChangePage === PageStateEnum.CAN_CHANGE) {
       setStepNumber(stepNumber + 1);
@@ -132,6 +138,7 @@ export const RegisterQuoteContextProvider = ({
           addData,
           addBreadcrumb,
           getData,
+          saveData,
         } as RegisterQuoteContextI
       }
     >

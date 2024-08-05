@@ -13,15 +13,20 @@ import StickyNotes from "@/public/icons/30px/sticky-notes-2.svg";
 import OpenBox from "@/public/icons/30px/open-box.svg";
 import Routes from "@/public/icons/30px/routes.svg";
 import Biohazard from "@/public/icons/30px/hazardous-material.svg";
+import TempUp from "@/public/icons/30px/temperature-arrow-up(1).svg";
+import TempDown from "@/public/icons/30px/temperature-arrow-down(1).svg";
 import {
+  extractAccesorialsShipment,
   extractAccessorialsFromObj,
   extractReferenceNo,
 } from "@/common/utils/data-convert.utils";
 import { formatDate } from "@/common/utils/date.utils";
 import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
+import React from "react";
 
-export default function QuoteFtlComponent({ quote }: any) {
+function QuoteFtlComponent({ quote }: any) {
   const reference = extractReferenceNo(quote.shipment);
+  const accShipment = extractAccesorialsShipment(quote.shipment);
 
   return (
     <div className={"quote-ftl"}>
@@ -45,7 +50,13 @@ export default function QuoteFtlComponent({ quote }: any) {
           <EqTruck />
 
           <h4>Equipment: </h4>
-          <h3>{quote.equipment}</h3>
+          <h3
+            style={{
+              textTransform: "capitalize",
+            }}
+          >
+            {quote.shipment.equipment_type.toLowerCase()}
+          </h3>
         </div>
       </div>
 
@@ -123,7 +134,7 @@ export default function QuoteFtlComponent({ quote }: any) {
                   className={"location-item"}
                   key={location.address + index + "drop"}
                 >
-                  <h3>DELIVERY {quote.pickup.length > 1 ? index + 1 : ""}</h3>
+                  <h3>DELIVERY {quote.drop.length > 1 ? index + 1 : ""}</h3>
 
                   <div className={"location-circle"}>
                     <div className={"circle-line"}></div>
@@ -182,7 +193,13 @@ export default function QuoteFtlComponent({ quote }: any) {
           <div>
             <Database />
             <h4>Packing method: </h4>
-            <h3>{quote.shipment.packing_method.toLowerCase()}</h3>
+            <h3
+              style={{
+                textTransform: "capitalize",
+              }}
+            >
+              {quote.shipment.packing_method.toLowerCase()}
+            </h3>
           </div>
 
           <div>
@@ -196,7 +213,7 @@ export default function QuoteFtlComponent({ quote }: any) {
           <div>
             <OpenBox />
             <h4>Commodity: </h4>
-            <h3>{quote.commodity}</h3>
+            <h3>{quote.shipment.commodity}</h3>
           </div>
 
           <div>
@@ -223,9 +240,25 @@ export default function QuoteFtlComponent({ quote }: any) {
           <div>
             <Cog />
             <h4>Accessorials: </h4>
-            <h3>{quote.accessorials}</h3>
+            <h3>{accShipment?.join(", ")}</h3>
           </div>
         </div>
+
+        {quote.shipment.equipment_type === "reefer" && (
+          <div className={"info-2blocks temp-reefer"}>
+            <div>
+              <TempUp />
+              <h4>Max Temp: </h4>
+              <h3>{quote.shipment.max_temp_reefer + " "}°F</h3>
+            </div>
+
+            <div>
+              <TempDown />
+              <h4>Min Temp: </h4>
+              <h3>{quote.shipment.min_temp_reefer + " "}°F</h3>
+            </div>
+          </div>
+        )}
 
         {quote.shipment.hazardous_goods === "yes" && (
           <div className={"hazard-warning"}>
@@ -246,15 +279,19 @@ export default function QuoteFtlComponent({ quote }: any) {
           </div>
         )}
 
-        <div className={"special-instructions"}>
-          <div>
-            <StickyNotes />
-            <h4>Special instructions:</h4>
-          </div>
+        {!!quote.shipment.special_instructions && (
+          <div className={"special-instructions"}>
+            <div>
+              <StickyNotes />
+              <h4>Special instructions:</h4>
+            </div>
 
-          <h3>{quote.shipment.special_instructions}</h3>
-        </div>
+            <h3>{quote.shipment.special_instructions}</h3>
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
+export default React.memo(QuoteFtlComponent);

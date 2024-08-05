@@ -273,4 +273,46 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #0020DD;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+@media (max-width: 1440px) {
+  body {
+    font-size: 0.75em;
+  }
+}
+
+@media (max-width: 1240px) {
+  body {
+    font-size: 0.5em;
+  }
+}
+
+@media (max-width: 1100px) {
+  body {
+    font-size: 0.25em;
+  }
+}

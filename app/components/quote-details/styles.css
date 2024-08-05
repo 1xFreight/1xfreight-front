@@ -43,6 +43,13 @@
         }
     }
 
+    .temp-reefer {
+        svg {
+            fill: #0020DD;
+            scale: 0.9;
+        }
+    }
+
     .locations {
         display: flex;
         gap: 2rem;

@@ -96,4 +96,44 @@
         }
     }
 
+    .save-template {
+        display: flex;
+        flex-direction: column;
+        background: #F9FAFF;
+        padding: 1.5rem;
+        gap: 1rem;
+        border-radius: 1rem;
+        margin-bottom: 1.5rem;
+
+        div {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        input[type="text"] {
+            width: 25rem;
+        }
+    }
+
+    .show-err {
+        outline: 2px solid #ED0000;
+        position: relative;
+
+        .err-message {
+            display: flex;
+            color: #ED0000;
+            opacity: 0.5;
+            left: 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+    }
+
+    .err-message {
+        transition: all 300ms ease-in-out;
+        opacity: 0;
+        position: absolute;
+        bottom: -1.5rem;
+    }
+
 }

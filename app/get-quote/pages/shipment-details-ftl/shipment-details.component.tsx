@@ -40,6 +40,21 @@ function ShipmentDetailsComponent() {
     if (value < 1) return (event.target.value = String(0));
   };
 
+  const showHazardInputs = (show: boolean) => {
+    const elWrapper: HTMLDivElement = document.getElementsByClassName(
+      "emergency-and-un",
+    )[0] as HTMLDivElement;
+    const inputs = document.querySelectorAll(".emergency-and-un input");
+
+    elWrapper.style.display = show ? "flex" : "none";
+
+    if (inputs && show) {
+      inputs.forEach((input) => input.setAttribute("required", "true"));
+    } else {
+      inputs.forEach((input) => input.removeAttribute("required"));
+    }
+  };
+
   return (
     <div>
       <form name={"shipment-details-ftl-form"}>
@@ -71,7 +86,7 @@ function ShipmentDetailsComponent() {
                   Choose an option
                 </option>
                 <option value={"reefer"}>Reefer</option>
-                <option>Unknown</option>
+                <option value={"unknown"}>Unknown</option>
               </select>
             </div>
 
@@ -229,7 +244,12 @@ function ShipmentDetailsComponent() {
             <h3>Hazardous Goods</h3>
             <div className={"radio-btn"}>
               <div className={"radio-yes"}>
-                <input type={"radio"} name={"hazardous_goods"} value={"yes"} />
+                <input
+                  type={"radio"}
+                  name={"hazardous_goods"}
+                  value={"yes"}
+                  onClick={() => showHazardInputs(true)}
+                />
                 <h5>Yes</h5>
               </div>
               <div className={"radio-no"}>
@@ -238,6 +258,7 @@ function ShipmentDetailsComponent() {
                   name={"hazardous_goods"}
                   value={"no"}
                   defaultChecked
+                  onClick={() => showHazardInputs(false)}
                 />
                 <h5>No</h5>
               </div>
@@ -251,7 +272,6 @@ function ShipmentDetailsComponent() {
                 type={"text"}
                 name={"un_id_number"}
                 placeholder={"Type here..."}
-                required
               />
             </div>
 
@@ -261,7 +281,6 @@ function ShipmentDetailsComponent() {
                 type={"text"}
                 name={"emergency_name"}
                 placeholder={"Type here..."}
-                required
               />
             </div>
 
@@ -271,7 +290,6 @@ function ShipmentDetailsComponent() {
                 type={"tel"}
                 name={"emergency_phone"}
                 placeholder={"Type here..."}
-                required
                 pattern="^(\+?1)?[0-9]{9,10}$"
                 title={"Invalid phone number, +1 XXXX XXXXXX"}
                 onChange={(ev) =>

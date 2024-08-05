@@ -6,6 +6,7 @@ import Link from "next/link";
 import AdminMenuComponent from "@/app/components/menu/admin-menu.component";
 import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
 import SellerMenuComponent from "@/app/components/menu/seller-menu.component";
+import AvatarComponent from "@/app/components/avatar/avatar.component";
 
 export default function MainMenu() {
   return (
@@ -27,7 +28,7 @@ export default function MainMenu() {
         </div>
 
         <div className={"user"}>
-          <div className={"user-photo"}></div>
+          <AvatarComponent username={"Mark J"} />
 
           <div className={"user-name"}>
             <div>Mark Jhonston</div>

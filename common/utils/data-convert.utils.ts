@@ -43,3 +43,24 @@ export function extractReferenceNo(obj: any) {
 
   return references.length ? references : null;
 }
+
+export function extractAccesorialsShipment(obj: any) {
+  if (!obj) return;
+
+  const accessorials = [
+    "tarps",
+    "frozen",
+    "load_bars",
+    "straps",
+    "team_drivers",
+  ];
+  const currentAcc = [];
+
+  Object.keys(obj).map((key) => {
+    if (accessorials.includes(key)) {
+      currentAcc.push(key.replace("_", " "));
+    }
+  });
+
+  return currentAcc.length ? currentAcc : null;
+}
