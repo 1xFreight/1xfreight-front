@@ -29,8 +29,8 @@ function ShipmentDetailsComponent() {
     } else {
       el1.style.display = "none";
       el2.style.display = "none";
-      elInput1.setAttribute("required", "false");
-      elInput2.setAttribute("required", "false");
+      elInput1.removeAttribute("required");
+      elInput2.removeAttribute("required");
     }
   };
 
@@ -78,15 +78,14 @@ function ShipmentDetailsComponent() {
               <h5>Equipment type</h5>
 
               <select
-                defaultValue={"0"}
+                defaultValue={"unknown"}
                 name={"equipment_type"}
                 onChange={(ev) => showTempInputs(ev.target.value)}
               >
-                <option disabled value={"0"}>
-                  Choose an option
-                </option>
+                <option value={"unknown"}>unknown</option>
                 <option value={"reefer"}>Reefer</option>
-                <option value={"unknown"}>Unknown</option>
+                <option value={"unknown"}>unknown</option>
+                <option value={"unknown"}>unknown</option>
               </select>
             </div>
 

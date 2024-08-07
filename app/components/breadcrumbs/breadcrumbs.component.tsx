@@ -12,7 +12,7 @@ export interface BreadcrumbsItem {
 }
 
 function BreadcrumbsComponent({ items }: BreadcrumbsI) {
-  const breadcrumbs = useMemo(() => items.filter((b) => b), [items]);
+  const breadcrumbs = useMemo(() => items?.filter((b) => b), [items]);
 
   return (
     <div className={"general-breadcrumbs"}>

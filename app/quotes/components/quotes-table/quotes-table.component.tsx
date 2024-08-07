@@ -7,6 +7,7 @@ import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/com
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
+import Link from "next/link";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];

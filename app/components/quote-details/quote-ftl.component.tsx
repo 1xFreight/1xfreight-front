@@ -55,7 +55,7 @@ function QuoteFtlComponent({ quote }: any) {
               textTransform: "capitalize",
             }}
           >
-            {quote.shipment.equipment_type.toLowerCase()}
+            {quote.shipment?.equipment_type?.toLowerCase()}
           </h3>
         </div>
       </div>
@@ -106,13 +106,14 @@ function QuoteFtlComponent({ quote }: any) {
                       </div>
                     )}
 
-                    {!!location.locationNotes.length && (
-                      <div>
-                        <StickyNotes />
-                        <h4>Notes:</h4>
-                        <h3>{location.locationNotes}</h3>
-                      </div>
-                    )}
+                    {!!location.locationNotes &&
+                      !!location.locationNotes.length && (
+                        <div>
+                          <StickyNotes />
+                          <h4>Notes:</h4>
+                          <h3>{location.locationNotes}</h3>
+                        </div>
+                      )}
 
                     {locationAccessorials && (
                       <div>
@@ -168,13 +169,14 @@ function QuoteFtlComponent({ quote }: any) {
                       </div>
                     )}
 
-                    {!!location.locationNotes.length && (
-                      <div>
-                        <StickyNotes />
-                        <h4>Notes:</h4>
-                        <h3>{location.locationNotes}</h3>
-                      </div>
-                    )}
+                    {!!location.locationNotes &&
+                      !!location.locationNotes.length && (
+                        <div>
+                          <StickyNotes />
+                          <h4>Notes:</h4>
+                          <h3>{location.locationNotes}</h3>
+                        </div>
+                      )}
 
                     {locationAccessorials && (
                       <div>
@@ -198,14 +200,14 @@ function QuoteFtlComponent({ quote }: any) {
                 textTransform: "capitalize",
               }}
             >
-              {quote.shipment.packing_method.toLowerCase()}
+              {quote.shipment?.packing_method?.toLowerCase()}
             </h3>
           </div>
 
           <div>
             <Archive />
             <h4>Packing type: </h4>
-            <h3>{quote.shipment.packing_type}</h3>
+            <h3>{quote.shipment?.packing_type}</h3>
           </div>
         </div>
 
@@ -213,18 +215,18 @@ function QuoteFtlComponent({ quote }: any) {
           <div>
             <OpenBox />
             <h4>Commodity: </h4>
-            <h3>{quote.shipment.commodity}</h3>
+            <h3>{quote.shipment?.commodity}</h3>
           </div>
 
           <div>
             <Gym />
             <h4>Weight: </h4>
             <h3>
-              {quote.shipment.weight +
+              {quote.shipment?.weight +
                 " " +
-                quote.shipment.weight_type.toLowerCase() +
+                quote.shipment?.weight_type?.toLowerCase() +
                 ", " +
-                quote.shipment.quantity +
+                quote.shipment?.quantity +
                 " units"}
             </h3>
           </div>
@@ -234,7 +236,7 @@ function QuoteFtlComponent({ quote }: any) {
           <div>
             <DollarSign />
             <h4>Goods value: </h4>
-            <h3>${quote.shipment.goods_value}.00</h3>
+            <h3>${quote.shipment?.goods_value}.00</h3>
           </div>
 
           <div>
@@ -244,23 +246,23 @@ function QuoteFtlComponent({ quote }: any) {
           </div>
         </div>
 
-        {quote.shipment.equipment_type === "reefer" && (
+        {quote.shipment?.equipment_type === "reefer" && (
           <div className={"info-2blocks temp-reefer"}>
             <div>
               <TempUp />
               <h4>Max Temp: </h4>
-              <h3>{quote.shipment.max_temp_reefer + " "}°F</h3>
+              <h3>{quote.shipment?.max_temp_reefer + " "}°F</h3>
             </div>
 
             <div>
               <TempDown />
               <h4>Min Temp: </h4>
-              <h3>{quote.shipment.min_temp_reefer + " "}°F</h3>
+              <h3>{quote.shipment?.min_temp_reefer + " "}°F</h3>
             </div>
           </div>
         )}
 
-        {quote.shipment.hazardous_goods === "yes" && (
+        {quote.shipment?.hazardous_goods === "yes" && (
           <div className={"hazard-warning"}>
             <Biohazard />
 
@@ -268,25 +270,25 @@ function QuoteFtlComponent({ quote }: any) {
               <h3>This shipment contains hazardous commodities!</h3>
 
               <div>
-                <h4>UN: {quote.shipment.un_id_number}</h4>
+                <h4>UN: {quote.shipment?.un_id_number}</h4>
                 <h4>
-                  Emergency Contact: {quote.shipment.emergency_name},{" "}
-                  {quote.shipment.emergency_phone}{" "}
-                  {quote.shipment.emergency_phone2}
+                  Emergency Contact: {quote.shipment?.emergency_name},{" "}
+                  {quote.shipment?.emergency_phone}{" "}
+                  {quote.shipment?.emergency_phone2}
                 </h4>
               </div>
             </div>
           </div>
         )}
 
-        {!!quote.shipment.special_instructions && (
+        {!!quote.shipment?.special_instructions && (
           <div className={"special-instructions"}>
             <div>
               <StickyNotes />
               <h4>Special instructions:</h4>
             </div>
 
-            <h3>{quote.shipment.special_instructions}</h3>
+            <h3>{quote.shipment?.special_instructions}</h3>
           </div>
         )}
       </div>

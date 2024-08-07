@@ -1,0 +1,10 @@
+.default-loading-component {
+    width: 10rem;
+    height: 10rem;
+    opacity: 0;
+    animation-delay: 0.65s;
+
+    svg path{
+        fill: #0020DD;
+    }
+}

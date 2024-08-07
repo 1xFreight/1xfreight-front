@@ -4,11 +4,27 @@
     flex-direction: column;
     gap: 1.5rem;
 
+    .filters-panel {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        white-space: nowrap;
+
+        .general-type-selector:nth-child(2) {
+            width: 20rem;
+        }
+        .general-type-selector:nth-child(1) {
+            width: 12rem;
+        }
+    }
+
     .page-breadcrumb {
         width: 100%;
         background: white;
         border-top: 1px solid #A7A7A7;
         border-bottom: 1px solid #A7A7A7;
+        z-index: 1;
     }
 
     .q-table-wrapper table{
@@ -30,6 +46,7 @@
         box-sizing: border-box;
         position: relative;
         margin-top: -1.5rem;
+        z-index: 1;
 
         tr td .price .full-price::after {
             content: "00";
@@ -158,6 +175,11 @@
 
     .q-table-wrapper {
         width: 100%;
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0 0.25rem;
+        }
 
         thead {
             position: sticky;

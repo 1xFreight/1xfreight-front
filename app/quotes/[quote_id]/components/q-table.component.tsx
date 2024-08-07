@@ -1,6 +1,12 @@
-import numberCommaFormat from "@/common/utils/number-comma.utils";
+"use client";
 
-export default function QTableComponent() {
+import numberCommaFormat from "@/common/utils/number-comma.utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+export default function QTableComponent({ quotes }) {
+  const pathname = usePathname();
+
   return (
     <div className={"q-table-wrapper"}>
       <table>
@@ -14,38 +20,50 @@ export default function QTableComponent() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div className={"company-title"}>Fortus Group</div>
-            </td>
-            <td>
-              <div>
-                <div className={"main-text"}>Apr 24,2024</div>
-                <div className={"sub-text active"}>Active</div>
-              </div>
-            </td>
-            <td>
-              <div>
-                <div className={"main-text"}>$ 2.33</div>
-                <div className={"sub-text"}>Total est. miles: 2,499</div>
-              </div>
-            </td>
-            <td>
-              <div className={"price"}>
-                <div className={"full-price"}>
-                  <span>$</span>
-                  {numberCommaFormat(1300)}
-                </div>
-                <div className={"currency"}>USD</div>
-              </div>
-            </td>
-            <td>
-              <div className={"end"}>
-                <button className={"view"}>View Quote</button>
-                <button className={"accept"}>Accept Quote</button>
-              </div>
-            </td>
-          </tr>
+          {quotes &&
+            quotes.length &&
+            quotes.map((quote, index) => (
+              <tr key={`${quote.company}-${index}`}>
+                <td>
+                  <div className={"company-title"}>{quote.company}</div>
+                </td>
+                <td>
+                  <div>
+                    <div className={"main-text"}>{quote.date}</div>
+                    <div className={`sub-text ${quote.status}`}>
+                      {quote.status}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <div className={"main-text"}>
+                      $ {quote.estimatedPerMile}
+                    </div>
+                    <div className={"sub-text"}>
+                      Total est. miles: {quote.totalMiles}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div className={"price"}>
+                    <div className={"full-price"}>
+                      <span>$</span>
+                      {numberCommaFormat(quote.price)}
+                    </div>
+                    <div className={"currency"}>USD</div>
+                  </div>
+                </td>
+                <td>
+                  <div className={"end"}>
+                    <Link href={`${pathname}/${quote.id}`}>
+                      <button className={"view"}>View Quote</button>
+                    </Link>
+                    <button className={"accept"}>Accept Quote</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
