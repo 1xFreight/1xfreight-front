@@ -18,7 +18,7 @@ export default function SellerMenuComponent() {
         Quotes
       </Link>
 
-      <Link className={"item"} href={"/"}>
+      <Link className={"item"} href={"/shipments"}>
         <Flag />
         Shipments
       </Link>

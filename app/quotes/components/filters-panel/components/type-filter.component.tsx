@@ -1,26 +1,12 @@
-"use client";
-
-import { useState } from "react";
-
-enum TypeFilterEnum {
-  ALL = "ALL",
-  FTL = "FTL",
-  LTL = "LTL",
-  FCL = "FCL",
-  AIR = "AIR",
-}
-
-export default function TypeFilterComponent() {
-  const [type, setType] = useState<TypeFilterEnum>(TypeFilterEnum.ALL);
-
+export default function TypeFilterComponent({ type, setType, typeEnum }: any) {
   return (
     <div className={"quote-type-filter-selector"}>
-      {(Object.keys(TypeFilterEnum) as Array<keyof typeof TypeFilterEnum>).map(
-        (key) => (
+      {(Object.keys(typeEnum) as Array<keyof typeof typeEnum>).map(
+        (key, index) => (
           <div
-            key={key}
+            key={"quote-type-filter-selector" + index}
             className={`type-selector ${type === key ? "active" : ""}`}
-            onClick={() => setType(TypeFilterEnum[key])}
+            onClick={() => setType(typeEnum[key])}
           >
             {key}
           </div>

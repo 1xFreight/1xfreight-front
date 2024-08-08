@@ -1,0 +1,15 @@
+.shipments-page {
+    width: 100%;
+
+    .page-header h4{
+        font-size: 1.25rem;
+        color: #545454;
+    }
+
+    .page-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 3rem;
+    }
+}
