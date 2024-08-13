@@ -1,0 +1,83 @@
+.status-dropdown-menu {
+    color: #939393;
+    font-size: 0.75rem;
+    background: white;
+    padding: 1.4rem 0.5rem 0.5rem 0.5rem;
+    margin-top: -1rem;
+    border-radius: 0 0 1rem 1rem;
+    position: absolute;
+    z-index: 9;
+    width: 10rem;
+    border: 1px solid #939393;
+}
+
+.status-dropdown-menu .item {
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+        border: 1px solid #0020DD;
+        color: #0020DD;
+    }
+
+    & svg path {
+        fill: #939393;
+    }
+
+    &.active svg path {
+        fill: #0020DD;
+    }
+
+    &.active {
+        color: #0020DD;
+    }
+}
+
+.status-dropdown .backdrop {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    top: 0;
+    left: 0;
+    z-index: 8;
+}
+
+.status-filter-dropdown {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    width: 10rem;
+    justify-content: space-between;
+    background: white;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    padding: 0 .15rem 0 0.75rem;
+    font-size: 0.75rem;
+    color: #939393;
+    border: 1px solid transparent;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+}
+
+.status-filter-dropdown:hover,.status-filter-dropdown.active {
+    border: 1px solid #0020DD;
+    color: #0020DD;
+
+    & svg {
+    }
+
+    & svg path {
+        fill: #0020DD;
+    }
+}

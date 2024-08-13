@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import ChevronDown from "@/public/icons/24px/chevron-down.svg";
 import Checked from "@/public/icons/24px/checked-tick.svg";
+import "./styles.css";
 
-export default function StatusFilterDropdownComponent() {
-  const [status, setStatus] = useState<Array<QuoteStatusEnum>>([]);
+function StatusFilterDropdownComponent({ status, setStatus }: any) {
   const [open, setOpen] = useState<boolean>(false);
 
   const isStatusSelected = (key) => {
@@ -58,3 +58,5 @@ export default function StatusFilterDropdownComponent() {
     </div>
   );
 }
+
+export default memo(StatusFilterDropdownComponent);

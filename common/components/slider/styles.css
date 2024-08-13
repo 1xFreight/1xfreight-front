@@ -1,0 +1,32 @@
+.default-slider-wrapper {
+    width: 4rem;
+    height: 1.7rem;
+    min-height: 1.7rem;
+    background: #A7A7A7;
+    border-radius: 1rem;
+    border: 1px solid #939393;
+    display: flex;
+    align-items: center;
+    box-sizing: content-box;
+    padding: 0.07rem 0.1rem;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+
+    .slider-thumb {
+        width: 1.65rem;
+        height: 1.65rem;
+        background: white;
+        border-radius: 100%;
+        margin-left: 0;
+        transition: all 300ms ease-in-out;
+    }
+
+    &.active {
+        background: #0020DD;
+        border-color: #0020DD;
+
+        .slider-thumb {
+            margin-left: calc(4rem - 1.65rem);
+        }
+    }
+}

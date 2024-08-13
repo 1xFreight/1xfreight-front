@@ -32,7 +32,7 @@
         border-collapse: separate;
         border-spacing: 0;
         border: unset;
-        min-width: 1200px;
+        min-width: 500px;
         box-sizing: border-box;
         position: relative;
     }
@@ -42,7 +42,7 @@
         border-collapse: separate;
         border-spacing: 0;
         border: unset;
-        min-width: 1200px;
+        min-width: 800px;
         box-sizing: border-box;
         position: relative;
         margin-top: -1.5rem;
@@ -121,12 +121,6 @@
             /*width: 10rem;*/
         }
 
-        .main-text {
-            font-weight: 400;
-            font-size: 0.875rem;
-            color: #545454;
-        }
-
         .pickup .location>svg:nth-child(1), .drop .location>svg:nth-child(1) {
             position: absolute;
             left: calc(-24px - 0.25rem);
@@ -152,25 +146,8 @@
 
     }
 
-    .main-text {
-        font-weight: 400;
-        font-size: 0.875rem;
-        color: #545454;
-    }
-
     .sub-text {
         padding-top: 0.25rem;
-        font-weight: 400;
-        font-size: 0.75rem;
-        color: #939393;
-
-        &.active {
-            color: #82C181;
-        }
-
-        &.expired {
-            color: #ED0000;
-        }
     }
 
     .q-table-wrapper {

@@ -103,12 +103,6 @@
         box-sizing: border-box;
     }
 
-    & .main-text {
-        font-weight: 400;
-        font-size: 0.875rem;
-        color: #545454;
-    }
-
     & .sub-text {
         padding-top: 0.25rem;
         font-weight: 400;

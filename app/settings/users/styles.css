@@ -1,0 +1,156 @@
+.members-table-settings {
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.25rem;
+        border: unset;
+        min-width: 1200px;
+        box-sizing: border-box;
+    }
+
+    thead {
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 2;
+    }
+
+    thead tr {
+        width: 100%;
+    }
+
+    tr>th {
+        text-align: left;
+        padding-left: 1.25rem;
+        background: white;
+        height: 3.75rem;
+        border-top: 1px solid #545454;
+        border-bottom: 1px solid #545454;
+        border-collapse: collapse;
+    }
+
+    tr th {
+        font-size: 1rem;
+        color: #545454;
+        font-weight: 400;
+    }
+
+    tr>th:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+        border-right: 1px solid #EFEFEF;
+        border-left: 1px solid #545454;
+    }
+
+    tr>th:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+        border-right: 1px solid #545454;
+    }
+
+    tr>td:nth-child(1){
+        border-radius: 1rem 0 0 1rem;
+        width: 2rem;
+        border-right: 1px solid #EFEFEF;
+        padding-left: 0;
+
+        div {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+
+    tr>td:nth-last-child(1){
+        border-radius: 0 1rem 1rem 0;
+        width: 20rem;
+    }
+
+    td {
+        padding-left: 1.25rem;
+        vertical-align: center;
+    }
+
+    tr:nth-of-type(even){
+        background: white;
+    }
+
+    tr:nth-of-type(odd){
+        background: #F9F9F9;
+    }
+
+    tr>td {
+        height: 3rem;
+        box-sizing: border-box;
+        width: 10rem;
+    }
+
+    .main-text {
+        text-transform: capitalize;
+
+        &.active {
+            color: #5BAE59;
+        }
+
+        &.inactive {
+            color: #ED0000;
+        }
+    }
+
+}
+
+.users-page {
+    width: 100%;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+
+    .users-filters {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            gap: 2rem;
+        }
+
+        button {
+            width: 15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 0.75rem;
+
+            svg {
+                position: absolute;
+                left: 1rem;
+            }
+        }
+    }
+
+    .new-user-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        &>div {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+
+            &>div {
+                max-width: 50%;
+                width: 100%;
+            }
+        }
+
+        h3 span{
+            color: #ED0000;
+        }
+    }
+
+}

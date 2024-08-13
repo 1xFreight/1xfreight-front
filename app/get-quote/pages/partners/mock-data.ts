@@ -1,12 +1,14 @@
 import { PartnerI } from "@/app/get-quote/pages/partners/components/partners-table.component";
 
-export const partnersMock: PartnerI[] = [
+export const partnersMock = [
   {
     company: "Ship Fortus LTD",
     contact: "Ion Ioxa",
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -14,6 +16,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -32,6 +36,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -50,6 +56,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -57,6 +65,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -64,6 +74,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -82,6 +94,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -100,6 +114,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Fortus LTD",
@@ -107,6 +123,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -114,6 +132,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -132,6 +152,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -150,6 +172,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -157,6 +181,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Fortus LTD",
@@ -164,6 +190,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -182,6 +210,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -200,6 +230,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -207,6 +239,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -214,6 +248,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -232,6 +268,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -250,6 +288,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Fortus LTD",
@@ -257,6 +297,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Fortus LTD",
@@ -264,6 +306,8 @@ export const partnersMock: PartnerI[] = [
     email: "info@shipfortus.com",
     location: "Detroit , MI 12345",
     tags: ["Ocean", "FTL", "LTL"],
+    phone: "+1000222999",
+    status: "inactive",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -282,6 +326,8 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "active",
   },
   {
     company: "Ship Test Fortus Test LTD",
@@ -300,5 +346,7 @@ export const partnersMock: PartnerI[] = [
       "Test",
       "Test",
     ],
+    phone: "+1000222999",
+    status: "inactive",
   },
 ];

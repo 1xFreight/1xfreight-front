@@ -1,14 +1,28 @@
+"use client";
+
 import React, { useState } from "react";
 import "./styles.css";
 interface TypeSelectorI {
   typeEnum: any;
   inputName: string;
+  type;
+  setType: any;
 }
 
-function TypeSelectorComponent({ typeEnum, inputName }: TypeSelectorI) {
-  const [type, setType] = useState<keyof typeof typeEnum>(
+function TypeSelectorComponent({
+  typeEnum,
+  inputName,
+  type,
+  setType,
+}: TypeSelectorI) {
+  const [localType, setLocalType] = useState<keyof typeof typeEnum>(
     Object.keys(typeEnum)[0],
   );
+
+  if (!type && !setType) {
+    type = localType;
+    setType = setLocalType;
+  }
 
   return (
     <div className={"general-type-selector"}>

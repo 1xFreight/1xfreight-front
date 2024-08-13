@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import Checked from "@/public/icons/24px/checked-tick.svg";
 
-export default function SelectOwnerComponent() {
-  const [owners, setOwners] = useState<Array<any>>([]);
+function SelectOwnerComponent({ owners, setOwners }: any) {
   const [searchOwner, setSearchOwner] = useState<string>();
   const [foundOwners, setFoundOwners] = useState([
     "test@test.com",
@@ -67,3 +66,5 @@ export default function SelectOwnerComponent() {
     </>
   );
 }
+
+export default memo(SelectOwnerComponent);

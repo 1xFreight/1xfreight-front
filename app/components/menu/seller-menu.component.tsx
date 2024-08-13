@@ -28,7 +28,7 @@ export default function SellerMenuComponent() {
         Analytics
       </Link>
 
-      <Link className={"item"} href={"/"}>
+      <Link className={"item"} href={"/settings"}>
         <Settings />
         Settings
       </Link>

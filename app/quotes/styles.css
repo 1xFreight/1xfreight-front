@@ -1,5 +1,5 @@
 .quotes-page {
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
 .quotes-page .page-header h4{
@@ -12,7 +12,7 @@
     flex-direction: row;
     justify-content: space-between;
     height: 3rem;
-    margin-bottom: -1.25rem;
+    margin-top: 1rem;
 }
 
 .quotes-page .quotes-table-wrapper {

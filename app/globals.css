@@ -353,20 +353,32 @@ input[type=number] {
 
 
 @media (max-width: 1440px) {
-  body {
-    font-size: 0.75em;
+  html {
+    font-size: 14px;
+
+    svg {
+      transform: scale(0.9);
+    }
   }
 }
 
 @media (max-width: 1240px) {
-  body {
-    font-size: 0.5em;
+  html {
+    font-size: 12px;
+
+    svg {
+      transform: scale(0.8);
+    }
   }
 }
 
 @media (max-width: 1100px) {
-  body {
-    font-size: 0.25em;
+  html {
+    font-size: 10px;
+
+    svg {
+      transform: scale(0.7);
+    }
   }
 }
 
@@ -407,3 +419,72 @@ h6 {
   color: #A7A7A7;
   font-weight: 400;
 }
+
+.price span, .price .currency {
+  color: #545454;
+}
+
+.price .currency {
+  font-size: 1.25rem;
+}
+
+.price .full-price {
+  position: relative;
+}
+
+.price {
+  color: #0020DD;
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  gap: 1.5rem;
+  min-width: 10.5rem;
+  justify-content: space-between;
+}
+
+.price span, .price .currency {
+  color: #545454;
+}
+
+.price .currency {
+  font-size: 2rem;
+}
+
+.price .full-price {
+  position: relative;
+}
+
+.price .full-price::after {
+  content: "00";
+  color: #545454;
+  font-size: 0.875rem;
+  position: absolute;
+  top: -0.2rem
+}
+
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sub-text {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: #939393;
+
+  &.active {
+    color: #82C181;
+  }
+
+  &.expired {
+    color: #ED0000;
+  }
+}
+
+.main-text {
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #545454;
+}
+

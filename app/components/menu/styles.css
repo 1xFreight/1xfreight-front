@@ -37,7 +37,7 @@
     gap: 1.5rem;
     color: #545454;
     letter-spacing: 0.0625rem;
-    border: 0.5px solid #A7A7A7;
+    border: 1px solid #A7A7A7;
     border-radius: 3.125rem;
 }
 
@@ -69,8 +69,8 @@
 
 .main-menu .user-menu .notifications .number {
     position: absolute;
-    top: -15%;
-    right: -15%;
+    top: 5%;
+    right: 5%;
     height: 1.3125rem;
     min-width: 1.3125rem;
     background: #0020DD;

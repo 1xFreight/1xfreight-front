@@ -1,51 +1,3 @@
-.price span, .price .currency {
-    color: #545454;
-}
-
-.price .currency {
-    font-size: 1.25rem;
-}
-
-.price .full-price {
-    position: relative;
-}
-
-.price {
-    color: #0020DD;
-    font-size: 2rem;
-    font-weight: 600;
-    display: flex;
-    gap: 1.5rem;
-    min-width: 10.5rem;
-    justify-content: space-between;
-}
-
-.price span, .price .currency {
-    color: #545454;
-}
-
-.price .currency {
-    font-size: 2rem;
-}
-
-.price .full-price {
-    position: relative;
-}
-
-.price .full-price::after {
-    content: "00";
-    color: #545454;
-    font-size: 0.875rem;
-    position: absolute;
-    top: -0.2rem
-}
-
-.price-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 .request-id-page {
     width: 100%;
     padding-bottom: 2rem;
@@ -128,7 +80,7 @@
     }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1200px) {
     .content-wrapper {
         flex-wrap: wrap;
 

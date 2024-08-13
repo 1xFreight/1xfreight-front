@@ -23,8 +23,6 @@ export default function ChatComponent() {
           <Chat />
           <h5>Chat with carriere</h5>
         </div>
-
-        <Expand />
       </div>
 
       <div className={"chat-body"}>
