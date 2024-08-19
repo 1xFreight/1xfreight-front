@@ -14,7 +14,8 @@
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-freeze": "^1.0.4"
+    "react-freeze": "^1.0.4",
+    "use-debounce": "^10.0.3"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

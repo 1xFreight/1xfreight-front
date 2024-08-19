@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 
 interface StoreDataI {
   name: string;
@@ -8,17 +14,21 @@ interface StoreDataI {
 interface StoreContextI {
   addToStore: (newData: StoreDataI) => any;
   getFromStore: (name: string) => any;
+  session: any;
+  setSession: Dispatch<SetStateAction<any>>;
 }
 
 const defaultContextValues = {
   addToStore: () => {},
   getFromStore: () => {},
+  setSession: () => {},
 };
 
 export const StoreContext = createContext<StoreContextI>(defaultContextValues);
 
 export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
   const [store, setStore] = useState<StoreDataI[]>([]);
+  const [session, setSession] = useState();
 
   const addToStore = (newData: StoreDataI) => {
     setStore((prevState) => {
@@ -38,6 +48,8 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         addToStore,
         getFromStore,
+        session,
+        setSession,
       }}
     >
       {children}

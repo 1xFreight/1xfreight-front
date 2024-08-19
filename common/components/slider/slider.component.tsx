@@ -29,6 +29,7 @@ export default function SliderComponent({
         }}
         value={active.toString()}
         name={inputName}
+        readOnly
       />
     </>
   );

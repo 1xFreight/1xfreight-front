@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LocationFormComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 import "./styles.css";
@@ -10,8 +10,16 @@ import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 
 export default function PickupPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);
-  const { setCanChangePage, canChangePage, addData, addBreadcrumb } =
+  const { setCanChangePage, canChangePage, addData, addBreadcrumb, getData } =
     useRegisterQuoteContext();
+  const _default = useMemo(() => getData("default"), [getData]);
+  const _defaultAddresses = useMemo(() => {
+    const addr = _default.addresses.filter(
+      ({ address_type }) => address_type === "pickup",
+    );
+    setNumberOfLocations(addr.length >= 1 ? addr.length : 1);
+    return addr;
+  }, [_default]);
 
   const dataCollector = () => {
     const data = [];
@@ -25,8 +33,6 @@ export default function PickupPageComponent() {
       }
 
       const formData = new FormData(form);
-
-      // TODO: ConvertJSON to Backend DTO before push
 
       data.push(formDataToJSON(formData));
     }
@@ -59,6 +65,7 @@ export default function PickupPageComponent() {
             index={index + 1}
             title={"Pickup"}
             key={index}
+            _default={_defaultAddresses[index]}
           />
         ))}
 
@@ -84,7 +91,7 @@ export default function PickupPageComponent() {
           }
           disabled={numberOfLocations >= 5}
         >
-          <PlusCircle /> Add Another Pickup
+          <PlusCircle /> Add Pickup
         </button>
       </div>
     </div>

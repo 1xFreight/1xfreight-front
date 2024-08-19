@@ -36,9 +36,9 @@ export default function ReviewComponent() {
       return setCanChangePage(PageStateEnum.INVALID);
     }
 
-    const templateName = document
-      .getElementsByName("template_name")[0]
-      .reportValidity();
+    const templateName = document.getElementsByName("template_name")[0];
+
+    templateName.reportValidity();
 
     console.log("template-valid: ", templateName);
 
@@ -60,7 +60,7 @@ export default function ReviewComponent() {
         currency,
         quoteType: qType[0].checked ? qType[0].value : qType[1].value,
         saveTemplate,
-        templateName: saveTemplate ? templateName : null,
+        templateName: saveTemplate ? templateName.value : null,
       },
     });
 

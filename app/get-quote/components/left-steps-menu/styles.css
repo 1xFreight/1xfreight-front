@@ -110,14 +110,14 @@
 
 }
 
-@media (max-width: 1400px) {
-    .left-steps-menu .rq-page-wrapper {
+/*@media (max-width: 1400px) {*/
+/*    .left-steps-menu .rq-page-wrapper {*/
 
-            padding-left: 0rem;
-            margin-left: 0rem;
-    }
+/*            padding-left: 0rem;*/
+/*            margin-left: 0rem;*/
+/*    }*/
 
-    .steps-container-wrapper .steps-container {
-        width: 15rem;
-    }
-}
+/*    .steps-container-wrapper .steps-container {*/
+/*        width: 15rem;*/
+/*    }*/
+/*}*/

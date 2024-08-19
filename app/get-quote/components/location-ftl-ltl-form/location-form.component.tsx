@@ -8,7 +8,7 @@ import "./styles.css";
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import AccesorialsComponent from "@/app/get-quote/components/accesorials.component";
-import React from "react";
+import React, { useEffect } from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
 
 export enum ShippingHoursEnum {
@@ -19,9 +19,19 @@ export enum ShippingHoursEnum {
 interface LocationFormComponentI {
   index: number;
   title: string;
+  _default?: any;
 }
 
-function LocationFormComponent({ index, title }: LocationFormComponentI) {
+function LocationFormComponent({
+  index,
+  title,
+  _default,
+}: LocationFormComponentI) {
+  useEffect(() => {
+    if (_default?.date) {
+      toggleAddDateTime(true);
+    }
+  }, [_default]);
   const toggleAddDateTime = (state: boolean) => {
     const elShippingType = document.getElementById(
       `shipping-hours-type form-${title}-${index}`,
@@ -72,6 +82,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 className={"form-input"}
                 placeholder={"Origin (Location or City, ST, ZIP)"}
                 required
+                defaultValue={_default?.address}
               />
             </div>
           </div>
@@ -88,6 +99,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                     id={"add-time-yes"}
                     value={"yes"}
                     onClick={() => toggleAddDateTime(true)}
+                    defaultChecked={!!_default?.date}
                   />
                   <h5>Yes</h5>
                 </div>
@@ -97,7 +109,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                     name={"addTime"}
                     id={"add-time-no"}
                     value={"no"}
-                    defaultChecked
+                    defaultChecked={!_default?.date}
                     onClick={() => toggleAddDateTime(false)}
                   />
                   <h5>No</h5>
@@ -113,6 +125,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
               <TypeSelectorComponent
                 typeEnum={ShippingHoursEnum}
                 inputName={"shippingHoursType"}
+                selectedEl={_default?.shipping_hours}
               />
             </div>
           </div>
@@ -128,7 +141,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <input
                   type={"date"}
                   min={disablePastDates()}
-                  defaultValue={disablePastDates()}
+                  defaultValue={_default?.date ?? disablePastDates()}
                   name={"date"}
                 />
               </div>
@@ -140,7 +153,10 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="locationTimeStart" defaultValue={"any"}>
+                  <select
+                    name="locationTimeStart"
+                    defaultValue={_default?.time_start ?? "any"}
+                  >
                     <option value="0" disabled>
                       Pickup hours
                     </option>
@@ -162,7 +178,10 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
                 <div className={"form-input-wrapper"}>
                   <Clock />
 
-                  <select name="locationTimeEnd" defaultValue={"0"}>
+                  <select
+                    name="locationTimeEnd"
+                    defaultValue={_default?.time_end ?? "0"}
+                  >
                     <option value="0" disabled>
                       Time range end
                     </option>
@@ -182,6 +201,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
           <AccesorialsComponent
             title={`${title} Accesorials`}
             index={index + title}
+            _default={_default}
           />
 
           <div className={"form-notes"}>
@@ -190,6 +210,7 @@ function LocationFormComponent({ index, title }: LocationFormComponentI) {
               placeholder={"Type here additional information..."}
               rows={5}
               name={"locationNotes"}
+              defaultValue={_default?.notes}
             />
           </div>
         </form>

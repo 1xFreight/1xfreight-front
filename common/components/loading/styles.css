@@ -2,7 +2,7 @@
     width: 10rem;
     height: 10rem;
     opacity: 0;
-    animation-delay: 0.65s;
+    animation-delay: 0.15s;
 
     svg path{
         fill: #0020DD;

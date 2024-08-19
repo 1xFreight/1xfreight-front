@@ -1,3 +1,5 @@
+"use client";
+
 import Logo from "@/public/logo/1xfreight-logo.svg";
 import Bell from "@/public/icons/40px/bell.svg";
 import Dots from "@/public/icons/24px/3-dots.svg";
@@ -7,8 +9,12 @@ import AdminMenuComponent from "@/app/components/menu/admin-menu.component";
 import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
 import SellerMenuComponent from "@/app/components/menu/seller-menu.component";
 import AvatarComponent from "@/app/components/avatar/avatar.component";
+import useStore from "@/common/hooks/use-store.context";
+import { useEffect } from "react";
 
 export default function MainMenu() {
+  const { session } = useStore();
+
   return (
     <header className={"main-menu"}>
       <div className={"navigation"}>
@@ -28,11 +34,11 @@ export default function MainMenu() {
         </div>
 
         <div className={"user"}>
-          <AvatarComponent username={"Mark J"} />
+          <AvatarComponent username={session.name} />
 
           <div className={"user-name"}>
-            <div>Mark Jhonston</div>
-            <div>admin</div>
+            <div>{session.name}</div>
+            <div>{session.role}</div>
           </div>
 
           <div className={"open-extra-menu"}>

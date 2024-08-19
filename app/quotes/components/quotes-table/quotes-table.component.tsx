@@ -8,6 +8,8 @@ import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
 import Link from "next/link";
+import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
+import { toShortId } from "@/common/utils/data-convert.utils";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
@@ -35,95 +37,127 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
             {!!rows.length &&
               rows.map(
                 ({
-                  id,
+                  _id,
                   status,
-                  pickupAddress,
-                  dropAddress,
+                  addresses,
                   ref,
                   refDetails,
                   equipment,
                   currency,
+                  references,
                   price,
                   type,
-                  weight,
-                  weightDetails,
-                }) => (
-                  <tr key={id}>
-                    <td>
-                      <div className={"number"}>{id}</div>
-                      <QuoteStatusComponent status={status} />
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{type}</div>
-                    </td>
-                    <td className={"pickup"}>
-                      <div className={"location main-text"}>
-                        <ArrowUp />
-                        {pickupAddress[0].address}
+                  quote_type,
+                  details,
+                  goods_value,
+                }) => {
+                  const pickupAddress = addresses.filter(
+                    ({ address_type }) => address_type === "pickup",
+                  );
+                  const dropAddress = addresses.filter(
+                    ({ address_type }) => address_type === "drop",
+                  );
+                  const shipment = details[0];
+                  return (
+                    <tr key={_id}>
+                      <td>
+                        <div className={"id-number"}>{toShortId(_id)}</div>
+                        <QuoteStatusComponent status={status} />
+                      </td>
+                      <td>
+                        <div className={"main-text"}>{type}</div>
+                      </td>
+                      <td className={"pickup"}>
+                        <div className={"location main-text"}>
+                          <ArrowUp />
+                          {pickupAddress[0].address}
 
-                        {pickupAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{pickupAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={pickupAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {pickupAddress[0].date}
-                      </div>
-                    </td>
-                    <td className={"drop"}>
-                      <div className={"location main-text"}>
-                        <ArrowDown />
-                        {dropAddress[0].address}
-
-                        {dropAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{dropAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={dropAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {dropAddress[0].date}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{weight} lbs</div>
-                      <div className={"sub-text"}>{weightDetails}</div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{ref}</div>
-                      <div className={"sub-text"}>{refDetails}</div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{equipment}</div>
-                    </td>
-                    <td>
-                      <div className={"end"}>
-                        <div className={"price"}>
-                          <div className={"full-price"}>
-                            <span>$</span>
-                            {numberCommaFormat(price)}
-                          </div>
-                          <div className={"currency"}>{currency}</div>
+                          {pickupAddress.length >= 2 && (
+                            <>
+                              <div className={"extra-address"}>
+                                +{pickupAddress.length - 1}
+                                <Info />
+                                <ExtraAddressWindowComponent
+                                  stops={pickupAddress}
+                                />
+                              </div>
+                            </>
+                          )}
                         </div>
+                        <div className={"date sub-text"}>
+                          {pickupAddress[0].date}
+                        </div>
+                      </td>
+                      <td className={"drop"}>
+                        <div className={"location main-text"}>
+                          <ArrowDown />
+                          {dropAddress[0].address}
 
-                        <QuoteActionButtonComponent status={status} />
-                      </div>
-                    </td>
-                  </tr>
-                ),
+                          {dropAddress.length >= 2 && (
+                            <>
+                              <div className={"extra-address"}>
+                                +{dropAddress.length - 1}
+                                <Info />
+                                <ExtraAddressWindowComponent
+                                  stops={dropAddress}
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                        <div className={"date sub-text"}>
+                          {dropAddress[0].date}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>
+                          {numberCommaFormat(shipment.weight)}{" "}
+                          {shipment.weight_unit}
+                        </div>
+                        <div
+                          className={"sub-text"}
+                          style={{
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {shipment.packing_method.replace("_", " ")}/
+                          {shipment.commodity}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>
+                          {references?.length ? references[0] : "#0000000000"}
+                        </div>
+                        <div className={"sub-text"}>
+                          Value:
+                          {" " +
+                            numberCommaFormat(shipment.goods_value) +
+                            ` ${currency} /`}
+                          {" " + quote_type.replace("_", " ")}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>{equipment}</div>
+                      </td>
+                      <td>
+                        <div className={"end"}>
+                          <div></div>
+                          {/*<div className={"price"}>*/}
+                          {/*  <div className={"full-price"}>*/}
+                          {/*    <span>$</span>*/}
+                          {/*    {numberCommaFormat(shipment.goods_value)}*/}
+                          {/*  </div>*/}
+                          {/*  <div className={"currency"}>{currency}</div>*/}
+                          {/*</div>*/}
+
+                          <QuoteActionButtonComponent
+                            status={status.toUpperCase() as QuoteStatusEnum}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                },
               )}
           </tbody>
         </table>

@@ -11,9 +11,16 @@ import User from "@/public/icons/35px/user-plus.svg";
 import Truck from "@/public/icons/30px/eq-truck.svg";
 import { usePathname } from "next/navigation";
 import "../styles.css";
+import { postWithAuth } from "@/common/utils/fetchAuth.util";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function LeftMenuComponent() {
   const pathname = usePathname();
+
+  const logoutDebounced = useDebouncedCallback(
+    () => postWithAuth("/auth/logout", {}).then(() => window.location.reload()),
+    400,
+  );
 
   const menuItems = [
     {
@@ -70,7 +77,7 @@ export default function LeftMenuComponent() {
         ))}
       </div>
 
-      <button>
+      <button onClick={() => logoutDebounced()}>
         <SignOut />
         Logout
       </button>

@@ -7,6 +7,7 @@ interface TypeSelectorI {
   inputName: string;
   type;
   setType: any;
+  selectedEl?: any;
 }
 
 function TypeSelectorComponent({
@@ -14,9 +15,10 @@ function TypeSelectorComponent({
   inputName,
   type,
   setType,
+  selectedEl,
 }: TypeSelectorI) {
   const [localType, setLocalType] = useState<keyof typeof typeEnum>(
-    Object.keys(typeEnum)[0],
+    selectedEl ?? Object.keys(typeEnum)[0],
   );
 
   if (!type && !setType) {
@@ -43,8 +45,8 @@ function TypeSelectorComponent({
           display: "none",
         }}
         value={type as string}
-        onChange={() => {}}
         name={inputName}
+        readOnly={true}
       />
     </div>
   );

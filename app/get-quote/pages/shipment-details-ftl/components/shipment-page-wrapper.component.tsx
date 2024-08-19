@@ -1,14 +1,15 @@
 "use client";
 
 import ShipmentDetailsComponent from "@/app/get-quote/pages/shipment-details-ftl/shipment-details.component";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { formDataToJSON } from "@/common/utils/formData.util";
 
 export default function ShipmentPageWrapperComponent() {
-  const { setCanChangePage, canChangePage, addBreadcrumb, addData } =
+  const { setCanChangePage, canChangePage, getData, addData } =
     useRegisterQuoteContext();
+  const _default = useMemo(() => getData("default"), [getData]);
 
   const dataCollector = () => {
     const form = document.forms[`shipment-details-ftl-form`];
@@ -19,8 +20,6 @@ export default function ShipmentPageWrapperComponent() {
     }
 
     const formData = new FormData(form);
-
-    // TODO: ConvertJSON to Backend DTO before push
 
     const data = formDataToJSON(formData);
 
@@ -34,5 +33,5 @@ export default function ShipmentPageWrapperComponent() {
     dataCollector();
   }, [canChangePage]);
 
-  return <ShipmentDetailsComponent />;
+  return <ShipmentDetailsComponent _default={_default} />;
 }

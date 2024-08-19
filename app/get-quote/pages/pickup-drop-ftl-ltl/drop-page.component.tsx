@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LocationFormComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 import "./styles.css";
@@ -10,8 +10,16 @@ import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 
 export default function DropPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);
-  const { setCanChangePage, canChangePage, addData, addBreadcrumb } =
+  const { setCanChangePage, canChangePage, addData, addBreadcrumb, getData } =
     useRegisterQuoteContext();
+  const _default = useMemo(() => getData("default"), [getData]);
+  const _defaultAddresses = useMemo(() => {
+    const addr = _default.addresses.filter(
+      ({ address_type }) => address_type === "drop",
+    );
+    setNumberOfLocations(addr.length >= 1 ? addr.length : 1);
+    return addr;
+  }, [_default]);
 
   const dataCollector = () => {
     const data = [];
@@ -25,8 +33,6 @@ export default function DropPageComponent() {
       }
 
       const formData = new FormData(form);
-
-      // TODO: ConvertJSON to Backend DTO before push
 
       data.push(formDataToJSON(formData));
     }
@@ -55,7 +61,12 @@ export default function DropPageComponent() {
       {Array(numberOfLocations)
         .fill(1)
         .map((x, index) => (
-          <LocationFormComponent index={index + 1} title={"Drop"} key={index} />
+          <LocationFormComponent
+            index={index + 1}
+            title={"Drop"}
+            key={index}
+            _default={_defaultAddresses[index]}
+          />
         ))}
 
       <div className={"form-number-actions"}>
@@ -80,7 +91,7 @@ export default function DropPageComponent() {
           }
           disabled={numberOfLocations >= 5}
         >
-          <PlusCircle /> Add Another Drop
+          <PlusCircle /> Add Drop
         </button>
       </div>
     </div>

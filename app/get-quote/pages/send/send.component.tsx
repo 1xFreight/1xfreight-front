@@ -1,23 +1,33 @@
 "use client";
 import "./styles.css";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Checked from "@/public/icons/24px/checked-tick.svg";
 import Cross from "@/public/icons/24px/cross.svg";
 import Loading from "@/public/icons/loading.svg";
 import Link from "next/link";
+import { useDebouncedCallback } from "use-debounce";
 
-export default function SendComponent() {
+function SendComponent() {
   const { saveData } = useRegisterQuoteContext();
   const [status, setStatus] = useState<null | boolean>(null);
 
+  const debouncedSaveData = useDebouncedCallback(async () => {
+    try {
+      await saveData();
+      setStatus(true);
+    } catch (error) {
+      setStatus(false);
+    }
+  }, 2000); // 500ms debounce delay (adjust as needed)
+
   useEffect(() => {
-    setTimeout(() => setStatus(saveData), 2000);
-  }, []);
+    debouncedSaveData(); // Call the debounced function instead of saveData directly
+  }, [debouncedSaveData]);
 
   const retrySaveData = () => {
-    setStatus(null);
-    setTimeout(() => setStatus(saveData), 1000);
+    // setStatus(null);
+    // setTimeout(() => setStatus(saveData), 1000);
   };
 
   const iconByStatus = () => {
@@ -56,3 +66,5 @@ export default function SendComponent() {
   };
   return <div className={"send-page"}>{iconByStatus()}</div>;
 }
+
+export default memo(SendComponent);

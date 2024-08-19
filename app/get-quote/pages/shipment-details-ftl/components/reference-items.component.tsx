@@ -3,36 +3,56 @@
 import { useState } from "react";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 
-export default function ReferenceItemsComponent() {
-  const [itemsNumb, setItemsNumb] = useState<number>(1);
+export default function ReferenceItemsComponent({
+  _default,
+}: {
+  _default?: any;
+}) {
+  const [itemsNumb, setItemsNumb] = useState<number>(
+    _default?.references?.length ?? 1,
+  );
 
   return (
     <div className={"reference-no-wrapper"}>
       {Array(itemsNumb)
         .fill(1)
-        .map((x, index) => (
-          <div className={"reference-item"} key={`ref-item-${index}`}>
-            <h5>
-              PO/Reference No. <span>(optional)</span>
-            </h5>
+        .map((x, index) => {
+          let defType = null;
+          let defNumber = null;
 
-            <div>
-              <select name={`reference_type${index}`} defaultValue={"0"}>
-                <option value={"0"} disabled>
-                  Choose an option
-                </option>
-                <option>Unknown</option>
-                <option>Unknown</option>
-              </select>
+          if (_default?.references?.length) {
+            defType = _default?.references[index]?.split("/")[0];
+            defNumber = _default?.references[index]?.split("/")[1];
+          }
 
-              <input
-                type={"text"}
-                placeholder={"Set reference No."}
-                name={`reference_no${index}`}
-              />
+          return (
+            <div className={"reference-item"} key={`ref-item-${index}`}>
+              <h5>
+                PO/Reference No. <span>(optional)</span>
+              </h5>
+
+              <div>
+                <select
+                  name={`reference_type${index}`}
+                  defaultValue={defType ?? "0"}
+                >
+                  <option value={"0"} disabled>
+                    Choose an option
+                  </option>
+                  <option value={"Unknown"}>Unknown</option>
+                  <option>Unknown</option>
+                </select>
+
+                <input
+                  type={"text"}
+                  placeholder={"Set reference No."}
+                  name={`reference_no${index}`}
+                  defaultValue={defNumber}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
       <div className={"reference-no-actions"}>
         <button

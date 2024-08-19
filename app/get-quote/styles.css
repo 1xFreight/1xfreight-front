@@ -278,12 +278,12 @@ select,input[type="checkbox"] {
     cursor: pointer;
 }
 
-@media (max-width: 1400px) {
-    .rq-step-controller {
-        width: calc(100% - 17.5rem);
-        margin-left: 17.5rem;
-    }
-}
+/*@media (max-width: 1400px) {*/
+/*    .rq-step-controller {*/
+/*        width: calc(100% - 17.5rem);*/
+/*        margin-left: 17.5rem;*/
+/*    }*/
+/*}*/
 
 .form-number-actions {
     display: flex;

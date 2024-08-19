@@ -6,7 +6,11 @@ interface QuoteStatusI {
 }
 
 function QuoteStatusComponent({ status }: QuoteStatusI) {
-  return <div className={`active-quote-status ${status}`}>{status}</div>;
+  return (
+    <div className={`active-quote-status ${status.toUpperCase()}`}>
+      {status.toUpperCase()}
+    </div>
+  );
 }
 
 export default React.memo(QuoteStatusComponent);

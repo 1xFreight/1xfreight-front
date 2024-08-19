@@ -1,13 +1,16 @@
 import ChevronDown from "@/public/icons/24px/chevron-down.svg";
+import { accessorialsConvertToText } from "@/common/utils/data-convert.utils";
 
 interface AccesorialsComponentI {
   title: string;
   index: string;
+  _default?: any;
 }
 
 export default function AccesorialsComponent({
   title,
   index,
+  _default,
 }: AccesorialsComponentI) {
   function toggleSpoiler() {
     const elWrapper = document.getElementById(
@@ -15,6 +18,13 @@ export default function AccesorialsComponent({
     );
     elWrapper.classList.toggle("open-spoiler");
   }
+
+  const isChecked = (acc: string) => {
+    const isTrue = _default?.accessorials?.find(
+      (_acc) => accessorialsConvertToText(acc) === _acc,
+    );
+    return !!isTrue;
+  };
 
   return (
     <div
@@ -35,8 +45,11 @@ export default function AccesorialsComponent({
       <div className={"acsrls-spoiler"} id={"accesorial-spoiler"}>
         <div className={"location-type"}>
           <h4>Delivery Location Type</h4>
-          <select name={"deliveryLocationType"}>
-            <option>Business</option>
+          <select
+            name={"deliveryLocationType"}
+            defaultValue={_default?.location_type}
+          >
+            <option value={"Business"}>Business</option>
             <option>Unknown</option>
             <option>Unknown</option>
           </select>
@@ -44,32 +57,56 @@ export default function AccesorialsComponent({
 
         <div className={"options-wrapper"}>
           <div className={"option"}>
-            <input type={"checkbox"} name={"LAF"} />
+            <input
+              type={"checkbox"}
+              name={"LAF"}
+              defaultChecked={isChecked("LAF")}
+            />
             <h4>Limited Access Fee</h4>
           </div>
 
           <div className={"option"}>
-            <input type={"checkbox"} name={"PJR"} />
+            <input
+              type={"checkbox"}
+              name={"PJR"}
+              defaultChecked={isChecked("PJR")}
+            />
             <h4>Pallet Jack Required</h4>
           </div>
 
           <div className={"option"}>
-            <input type={"checkbox"} name={"AR"} />
+            <input
+              type={"checkbox"}
+              name={"AR"}
+              defaultChecked={isChecked("AR")}
+            />
             <h4>Appointment Required</h4>
           </div>
 
           <div className={"option"}>
-            <input type={"checkbox"} name={"NPTD"} />
+            <input
+              type={"checkbox"}
+              name={"NPTD"}
+              defaultChecked={isChecked("NPTD")}
+            />
             <h4>Notify Prior To Delivery</h4>
           </div>
 
           <div className={"option"}>
-            <input type={"checkbox"} name={"ID"} />
+            <input
+              type={"checkbox"}
+              name={"ID"}
+              defaultChecked={isChecked("ID")}
+            />
             <h4>Inside Delivery</h4>
           </div>
 
           <div className={"option"}>
-            <input type={"checkbox"} name={"LGDR"} />
+            <input
+              type={"checkbox"}
+              name={"LGDR"}
+              defaultChecked={isChecked("LGDR")}
+            />
             <h4>Lift-Gate Deliver Required</h4>
           </div>
         </div>

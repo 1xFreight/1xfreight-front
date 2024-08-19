@@ -1,7 +1,7 @@
 import "./styles.css";
 import ReferenceItemsComponent from "@/app/get-quote/pages/shipment-details-ftl/components/reference-items.component";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
-import React from "react";
+import React, { useEffect } from "react";
 import { event } from "jquery";
 
 enum PackingMethodEnum {
@@ -14,7 +14,14 @@ enum WeightEnum {
   KG = "kg",
 }
 
-function ShipmentDetailsComponent() {
+function ShipmentDetailsComponent({ _default }: { _default: any }) {
+  const _defaultDetails = _default?.details[0];
+
+  useEffect(() => {
+    if (_defaultDetails?.hazardous_goods) {
+      showHazardInputs(true);
+    }
+  }, [_default]);
   const showTempInputs = (value: string) => {
     const el1 = document.getElementById("min-temp-reefer");
     const el2 = document.getElementById("max-temp-reefer");
@@ -55,6 +62,11 @@ function ShipmentDetailsComponent() {
     }
   };
 
+  const isChecked = (_acc) => {
+    const isTrue = _defaultDetails?.accessorials?.find((acc) => acc === _acc);
+    return !!isTrue;
+  };
+
   return (
     <div>
       <form name={"shipment-details-ftl-form"}>
@@ -70,7 +82,7 @@ function ShipmentDetailsComponent() {
           <div className={"reference-no"}>
             <h3>Reference No.</h3>
 
-            <ReferenceItemsComponent />
+            <ReferenceItemsComponent _default={_default} />
           </div>
 
           <div className={"equipment-type"}>
@@ -97,6 +109,7 @@ function ShipmentDetailsComponent() {
                 name={"commodity"}
                 placeholder={"Type here..."}
                 required
+                defaultValue={_defaultDetails?.commodity}
               />
             </div>
 
@@ -110,6 +123,7 @@ function ShipmentDetailsComponent() {
                 required
                 min={1}
                 onChange={(ev) => checkPositive(ev)}
+                defaultValue={_defaultDetails?.goods_value}
               />
             </div>
 
@@ -125,6 +139,7 @@ function ShipmentDetailsComponent() {
                 type={"number"}
                 name={"max_temp_reefer"}
                 placeholder={"0°"}
+                defaultValue={_defaultDetails?.max_temp}
               />
             </div>
 
@@ -140,6 +155,7 @@ function ShipmentDetailsComponent() {
                 type={"number"}
                 name={"min_temp_reefer"}
                 placeholder={"0°"}
+                defaultValue={_defaultDetails?.min_temp}
               />
             </div>
           </div>
@@ -159,6 +175,7 @@ function ShipmentDetailsComponent() {
                 <TypeSelectorComponent
                   typeEnum={PackingMethodEnum}
                   inputName={"packing_method"}
+                  selectedEl={_defaultDetails?.packing_method?.toUpperCase()}
                 />
               </div>
 
@@ -183,6 +200,7 @@ function ShipmentDetailsComponent() {
                     required
                     min={1}
                     onChange={(ev) => checkPositive(ev)}
+                    defaultValue={_defaultDetails?.quantity}
                   />
                 </div>
               </div>
@@ -198,10 +216,12 @@ function ShipmentDetailsComponent() {
                     required
                     min={1}
                     onChange={(ev) => checkPositive(ev)}
+                    defaultValue={_defaultDetails?.weight}
                   />
                   <TypeSelectorComponent
                     typeEnum={WeightEnum}
                     inputName={"weight_type"}
+                    selectedEl={_defaultDetails?.weight_unit?.toUpperCase()}
                   />
                 </div>
               </div>
@@ -213,27 +233,47 @@ function ShipmentDetailsComponent() {
 
             <div className={"accessorials-items"}>
               <div>
-                <input type={"checkbox"} name={"tarps"} />
+                <input
+                  type={"checkbox"}
+                  name={"tarps"}
+                  defaultChecked={isChecked("tarps")}
+                />
                 <h5>Tarps</h5>
               </div>
 
               <div>
-                <input type={"checkbox"} name={"frozen"} />
+                <input
+                  type={"checkbox"}
+                  name={"frozen"}
+                  defaultChecked={isChecked("frozen")}
+                />
                 <h5>Frozen</h5>
               </div>
 
               <div>
-                <input type={"checkbox"} name={"load_bars"} />
+                <input
+                  type={"checkbox"}
+                  name={"load_bars"}
+                  defaultChecked={isChecked("load bars")}
+                />
                 <h5>Load Bars</h5>
               </div>
 
               <div>
-                <input type={"checkbox"} name={"straps"} />
+                <input
+                  type={"checkbox"}
+                  name={"straps"}
+                  defaultChecked={isChecked("straps")}
+                />
                 <h5>Straps</h5>
               </div>
 
               <div>
-                <input type={"checkbox"} name={"team_drivers"} />
+                <input
+                  type={"checkbox"}
+                  name={"team_drivers"}
+                  defaultChecked={isChecked("team drivers")}
+                />
                 <h5>Team Drivers</h5>
               </div>
             </div>
@@ -248,6 +288,7 @@ function ShipmentDetailsComponent() {
                   name={"hazardous_goods"}
                   value={"yes"}
                   onClick={() => showHazardInputs(true)}
+                  defaultChecked={_defaultDetails?.hazardous_goods}
                 />
                 <h5>Yes</h5>
               </div>
@@ -256,7 +297,7 @@ function ShipmentDetailsComponent() {
                   type={"radio"}
                   name={"hazardous_goods"}
                   value={"no"}
-                  defaultChecked
+                  defaultChecked={!_defaultDetails?.hazardous_goods}
                   onClick={() => showHazardInputs(false)}
                 />
                 <h5>No</h5>
@@ -271,6 +312,7 @@ function ShipmentDetailsComponent() {
                 type={"text"}
                 name={"un_id_number"}
                 placeholder={"Type here..."}
+                defaultValue={_defaultDetails?.un_number}
               />
             </div>
 
@@ -280,6 +322,7 @@ function ShipmentDetailsComponent() {
                 type={"text"}
                 name={"emergency_name"}
                 placeholder={"Type here..."}
+                defaultValue={_defaultDetails?.emergency_contact}
               />
             </div>
 
@@ -294,6 +337,7 @@ function ShipmentDetailsComponent() {
                 onChange={(ev) =>
                   (ev.target.value = ev.target.value.replace(/\s/g, ""))
                 }
+                defaultValue={_defaultDetails?.emergency_phone1}
               />
             </div>
 
@@ -310,6 +354,7 @@ function ShipmentDetailsComponent() {
                 onChange={(ev) =>
                   (ev.target.value = ev.target.value.replace(/\s/g, ""))
                 }
+                defaultValue={_defaultDetails?.emergency_phone2}
               />
             </div>
           </div>
@@ -320,6 +365,7 @@ function ShipmentDetailsComponent() {
               rows={5}
               placeholder={"Type here..."}
               name={"special_instructions"}
+              defaultValue={_defaultDetails?.notes}
             />
           </div>
         </div>

@@ -4,10 +4,15 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useEffect,
   useState,
 } from "react";
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
+import { convertQuoteToApiFormat } from "@/common/utils/data-convert.utils";
+import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
+import useStore from "@/common/hooks/use-store.context";
+import { useDebouncedCallback } from "use-debounce";
 
 export enum PageStateEnum {
   CAN_CHANGE = "CAN_CHANGE",
@@ -18,7 +23,7 @@ export enum PageStateEnum {
 
 export interface DataCollectorI {
   form: string;
-  data: any[];
+  data: any;
 }
 
 interface RegisterQuoteContextI {
@@ -74,7 +79,56 @@ export const RegisterQuoteContextProvider = ({
     PageStateEnum.INVALID,
   );
   const [dataCollector, setDataCollector] = useState<Array<any>>([]);
+  const { session } = useStore();
 
+  const getLastDataDebounced = useDebouncedCallback(() => {
+    getWithAuth("/quote?limit=1").then((res) => {
+      let _default = {};
+      let addresses = [];
+      if (session.auto_commodity) {
+        _default["details"] = [
+          {
+            commodity: res[0].details[0].commodity,
+          },
+        ];
+      }
+
+      if (session.auto_pickup) {
+        const pickupA = res[0].addresses.filter(
+          ({ address_type }) => address_type === "pickup",
+        );
+
+        pickupA.map(({ address_type, address }) => {
+          addresses.push({
+            address,
+            address_type,
+          });
+        });
+      }
+
+      if (session.auto_delivery) {
+        const dropA = res[0].addresses.filter(
+          ({ address_type }) => address_type === "drop",
+        );
+
+        dropA.map(({ address_type, address }) => {
+          addresses.push({
+            address,
+            address_type,
+          });
+        });
+      }
+
+      if (addresses.length) {
+        _default["addresses"] = addresses;
+      }
+
+      addData({
+        form: "default",
+        data: _default,
+      });
+    });
+  }, 500);
   const validateAndGoForward = () => {
     if (canChangePage === PageStateEnum.NO_VALIDITY)
       return setCanChangePage(PageStateEnum.CAN_CHANGE);
@@ -107,9 +161,12 @@ export const RegisterQuoteContextProvider = ({
     });
   };
 
-  const saveData = () => {
-    return Math.random() < 0.5;
-  };
+  const saveData = useCallback(async () => {
+    return postWithAuth(
+      "/quote/create",
+      convertQuoteToApiFormat(dataCollector, type!),
+    );
+  }, [dataCollector, type]);
 
   useEffect(() => {
     if (canChangePage === PageStateEnum.CAN_CHANGE) {
@@ -119,9 +176,24 @@ export const RegisterQuoteContextProvider = ({
   }, [canChangePage]);
 
   useEffect(() => {
+    if (
+      session &&
+      (session.auto_commodity || session.auto_delivery || session.auto_pickup)
+    ) {
+      getLastDataDebounced();
+    }
+  }, []);
+
+  useEffect(() => {
     console.log("new data added to collector");
     console.log(dataCollector);
   }, [dataCollector]);
+
+  useEffect(() => {
+    if (stepNumber == 9) {
+      console.log(convertQuoteToApiFormat(dataCollector, type!));
+    }
+  }, [stepNumber]);
 
   return (
     <RegisterQuoteContext.Provider

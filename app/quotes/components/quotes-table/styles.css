@@ -1,13 +1,19 @@
 .quotes-table {
     width: 100%;
     overflow: scroll;
-    height: calc(100vh - 140px);
+    height: calc(100vh - 9.8125rem);
     position: relative;
     border-radius: 1.125rem 1.875rem 2rem 2rem;
     box-sizing: border-box;
     /*to have space for stops window , and dont overflow:hidden it*/
     padding: 100px 1px 0 1px;
     margin-top: -120px;
+
+    .id-number {
+        font-size: 0.9rem;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
 }
 
 .quotes-table-placeholder {
