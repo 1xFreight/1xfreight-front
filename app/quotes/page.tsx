@@ -7,35 +7,22 @@ import FiltersPanelComponent from "@/app/quotes/components/filters-panel/filters
 import { useEffect, useMemo, useState } from "react";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import LoadingComponent from "@/common/components/loading/loading.component";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function QuotesPage() {
-  const [quotes, setQuotes] = useState([]);
+  const [quotes, setQuotes] = useState();
   const [loading, setLoading] = useState(true);
 
+  const getQuotesDebounced = useDebouncedCallback(() => {
+    setLoading(true);
+    getWithAuth("/quote").then((data) => setQuotes(data));
+    setTimeout(() => setLoading(false), 500);
+  }, 1000);
+
   useEffect(() => {
-    async function fetchQuotes() {
-      try {
-        const data = await getWithAuth("/quote");
-        setQuotes(data);
-      } catch (error) {
-        console.error("Error fetching quotes:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    return () => {
-      fetchQuotes();
-    };
+    getQuotesDebounced();
   }, []);
-
-  if (loading) {
-    return (
-      <div>
-        <LoadingComponent />
-      </div>
-    );
-  }
 
   return (
     <div className={"quotes-page page"}>
@@ -48,7 +35,11 @@ export default function QuotesPage() {
       </div>
 
       <div className={"container"}>
-        <QuotesTableComponent rows={quotes} />
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <QuotesTableComponent rows={quotes} />
+        )}
       </div>
     </div>
   );

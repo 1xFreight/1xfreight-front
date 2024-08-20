@@ -14,11 +14,11 @@ export default function DropPageComponent() {
     useRegisterQuoteContext();
   const _default = useMemo(() => getData("default"), [getData]);
   const _defaultAddresses = useMemo(() => {
-    const addr = _default.addresses.filter(
+    const addr = _default?.addresses.filter(
       ({ address_type }) => address_type === "drop",
     );
-    setNumberOfLocations(addr.length >= 1 ? addr.length : 1);
-    return addr;
+    setNumberOfLocations(addr?.length >= 1 ? addr?.length : 1);
+    return addr?.length ? addr : [];
   }, [_default]);
 
   const dataCollector = () => {

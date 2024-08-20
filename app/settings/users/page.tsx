@@ -7,10 +7,47 @@ import "@/app/get-quote/pages/team-members/styles.css";
 import MembersTableComponent from "@/app/settings/components/members-table.component";
 import "./styles.css";
 import RightModalComponent from "@/common/components/right-form-modal/right-modal.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
+import { formDataToJSON } from "@/common/utils/formData.util";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
 
 export default function UsersSettingsPage() {
   const [open, setOpen] = useState<boolean>(false);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const saveDate = useDebouncedCallback(
+    (data) => {
+      postWithAuth("/users/create-member", data);
+    },
+    1000,
+    { leading: true },
+  );
+
+  const validateAndSave = () => {
+    const form = document.forms["newUserForm"];
+    const valid = form.reportValidity();
+
+    if (valid) {
+      const formData = new FormData(form);
+      saveDate(formDataToJSON(formData));
+      setOpen(false);
+      getMembersDebounced();
+    }
+  };
+
+  const getMembersDebounced = useDebouncedCallback(() => {
+    setLoading(true);
+    getWithAuth("/users/members").then((data) => {
+      setMembers(data);
+      setLoading(false);
+    });
+  }, 1000);
+
+  useEffect(() => {
+    getMembersDebounced();
+  }, []);
 
   return (
     <div className={"users-page"}>
@@ -31,23 +68,44 @@ export default function UsersSettingsPage() {
       </div>
 
       <div className={"tm-wrapper"}>
-        <MembersTableComponent members={partnersMock} />
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <MembersTableComponent members={members} />
+        )}
       </div>
 
-      <RightModalComponent open={open} setOpen={setOpen} title={"Add User"}>
+      <RightModalComponent
+        open={open}
+        setOpen={setOpen}
+        title={"Add User"}
+        action={validateAndSave}
+      >
         <form name={"newUserForm"} className={"new-user-form"}>
           <div>
             <div>
               <h3>
-                Full Name <span>*</span>
+                Name <span>*</span>
               </h3>
-              <input type={"text"} placeholder={"Type here..."} />
+              <input
+                type={"text"}
+                name={"name"}
+                placeholder={"Type here..."}
+                required
+                maxLength={20}
+              />
             </div>
             <div>
               <h3>
-                Role <span>*</span>
+                Position <span>*</span>
               </h3>
-              <input type={"text"} placeholder={"Type here..."} />
+              <input
+                type={"text"}
+                name={"position"}
+                placeholder={"Type here..."}
+                maxLength={20}
+                required
+              />
             </div>
           </div>
 
@@ -56,13 +114,43 @@ export default function UsersSettingsPage() {
               <h3>
                 Email <span>*</span>
               </h3>
-              <input type={"text"} placeholder={"Type here..."} />
+              <input
+                type={"text"}
+                name={"email"}
+                placeholder={"Type here..."}
+                required
+              />
             </div>
             <div>
               <h3>
                 Phone <span>*</span>
               </h3>
-              <input type={"text"} placeholder={"Type here..."} />
+              <input
+                type={"text"}
+                name={"phone"}
+                placeholder={"Type here..."}
+                pattern="^(\+?1)?[0-9]{9,10}$"
+                title={"Invalid phone number, +1 XXXX XXXXXX"}
+                onChange={(ev) =>
+                  (ev.target.value = ev.target.value.replace(/\s/g, ""))
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <div>
+              <h3>Status</h3>
+              <select
+                className={"status-select"}
+                name={"status"}
+                defaultValue={"active"}
+                required
+              >
+                <option value={"active"}>active</option>
+                <option value={"inactive"}>inactive</option>
+              </select>
             </div>
           </div>
         </form>

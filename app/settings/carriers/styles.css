@@ -161,11 +161,16 @@
             justify-content: center;
             position: relative;
             border-radius: 0.75rem;
+            height: 3rem;
 
             svg {
                 position: absolute;
                 left: 1rem;
             }
+        }
+
+        input {
+            height: 3rem !important;
         }
     }
 

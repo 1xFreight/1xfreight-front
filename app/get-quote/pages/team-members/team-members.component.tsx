@@ -8,11 +8,28 @@ import { partnersMock } from "@/app/get-quote/pages/partners/mock-data";
 import MembersTableComponent from "@/app/get-quote/pages/team-members/components/members-table.component";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
 
 export default function TeamMembersComponent() {
   const [searchText, setSearch] = useState<string>();
   const { addData, setCanChangePage, canChangePage } =
     useRegisterQuoteContext();
+  const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState(true);
+
+  const getMembersDebounced = useDebouncedCallback(() => {
+    setLoading(true);
+    getWithAuth("/users/members").then((data) => {
+      setMembers(data);
+      setLoading(false);
+    });
+  }, 1000);
+
+  useEffect(() => {
+    getMembersDebounced();
+  }, []);
 
   const selectAll = (value: boolean) => {
     const checkboxes = document.querySelectorAll(
@@ -79,7 +96,11 @@ export default function TeamMembersComponent() {
       </div>
 
       <div className={"tm-wrapper"}>
-        <MembersTableComponent members={partnersMock} />
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <MembersTableComponent members={members} />
+        )}
       </div>
     </div>
   );

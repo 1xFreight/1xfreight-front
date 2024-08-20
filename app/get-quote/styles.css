@@ -80,6 +80,10 @@
         background: transparent;
         color: #545454;
         border: 1px solid #C0C4DC;
+
+        &:disabled {
+            opacity: 0.5;
+        }
     }
 
     & .next-btn {

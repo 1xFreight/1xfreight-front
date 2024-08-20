@@ -6,18 +6,20 @@ import Clock from "@/public/icons/24px/clock.svg";
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import { CurrencyEnum } from "@/common/enums/currency.enum";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import Cross from "@/public/icons/24px/cross.svg";
 import QuoteFtlComponent from "@/app/components/quote-details/quote-ftl.component";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { isValidEmail } from "@/common/utils/email.util";
+import LoadingComponent from "@/common/components/loading/loading.component";
 
 export default function ReviewComponent() {
   const { getData, type, canChangePage, setCanChangePage, addData } =
     useRegisterQuoteContext();
   const [emailList, setEmailList] = useState([]);
   const [quote, setQuote] = useState<any>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const emailL = getData("partners");
@@ -25,7 +27,9 @@ export default function ReviewComponent() {
     const pickup = getData("pickup");
     const drop = getData("drop");
     const shipment = getData("shipment_details");
-    setQuote({ type, pickup, drop, shipment });
+    const _default = getData("default");
+    setQuote({ type, pickup, drop, shipment, default: _default });
+    setLoading(false);
   }, [getData]);
 
   const dataCollector = () => {
@@ -39,8 +43,6 @@ export default function ReviewComponent() {
     const templateName = document.getElementsByName("template_name")[0];
 
     templateName.reportValidity();
-
-    console.log("template-valid: ", templateName);
 
     if (!templateName) {
       return setCanChangePage(PageStateEnum.INVALID);
@@ -100,6 +102,7 @@ export default function ReviewComponent() {
   };
 
   useEffect(() => {
+    if (loading) return;
     const partnersEl = document.getElementsByClassName("selected-partners")[0];
 
     if (!emailList) {
@@ -114,6 +117,8 @@ export default function ReviewComponent() {
       partnersEl.classList.remove("show-err");
     }
   }, [emailList]);
+
+  if (loading) return <LoadingComponent />;
 
   return (
     <div className={"review-page"}>
@@ -151,7 +156,10 @@ export default function ReviewComponent() {
           <div className={"currency"}>
             <h3>Currency</h3>
 
-            <select name={"currency"} defaultValue={CurrencyEnum.USD}>
+            <select
+              name={"currency"}
+              defaultValue={quote?.default?.currency ?? CurrencyEnum.USD}
+            >
               {Object.values(CurrencyEnum).map((cur) => (
                 <option key={cur} value={cur}>
                   {cur}
@@ -166,7 +174,12 @@ export default function ReviewComponent() {
 
           <div className={"radio-btn"}>
             <div className={"radio-yes"}>
-              <input type={"radio"} name={"quote_type"} value={"live_load"} />
+              <input
+                type={"radio"}
+                name={"quote_type"}
+                value={"live_load"}
+                defaultChecked={quote?.default?.quote_type === "live_load"}
+              />
               <h5>Live load</h5>
             </div>
             <div className={"radio-no"}>
@@ -174,7 +187,7 @@ export default function ReviewComponent() {
                 type={"radio"}
                 name={"quote_type"}
                 value={"quote"}
-                defaultChecked
+                defaultChecked={quote?.default?.quote_type === "quote"}
               />
               <h5>Quote</h5>
             </div>

@@ -6,11 +6,13 @@ function RightModalComponent({
   setOpen,
   children,
   title,
+  action,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
   title: string;
+  action?: any;
 }) {
   if (!open) return;
 
@@ -28,7 +30,12 @@ function RightModalComponent({
           <button className={"cancel"} onClick={() => setOpen(false)}>
             Cancel
           </button>
-          <button className={"confirm"}>Confirm</button>
+          <button
+            className={"confirm"}
+            onClick={() => (action ? action() : null)}
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>

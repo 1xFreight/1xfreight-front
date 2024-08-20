@@ -41,9 +41,7 @@ export default function MainMenu() {
             <div>{session.role}</div>
           </div>
 
-          <div className={"open-extra-menu"}>
-            <Dots />
-          </div>
+          <div className={"open-extra-menu"}>{/*<Dots />*/}</div>
         </div>
       </div>
     </header>

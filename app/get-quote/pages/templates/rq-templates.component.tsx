@@ -12,22 +12,29 @@ import ExtraAddressWindowComponent from "@/common/components/extra-addresses-win
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { useEffect, useMemo, useState } from "react";
-import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import { useDebouncedCallback } from "use-debounce";
+import LoadingComponent from "@/common/components/loading/loading.component";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
 
 export default function RqTemplatesComponent() {
   const { setCanChangePage, canChangePage, addData, validateAndGoForward } =
     useRegisterQuoteContext();
   const [templates, setTemplates] = useState();
+  const [loading, setLoading] = useState(true);
 
-  const getTemplatesDebounced = useDebouncedCallback(
-    () =>
-      getWithAuth("/quote/templates").then((data) => {
-        setTemplates(data);
-      }),
-    2000,
-    { leading: true },
-  );
+  const getTemplatesDebounced = useDebouncedCallback(() => {
+    setLoading(true);
+    getWithAuth("/quote/templates").then((data) => {
+      setTemplates(data);
+      setLoading(false);
+    });
+  }, 1000);
+
+  const deleteTemplateDebounced = useDebouncedCallback((id) => {
+    postWithAuth("/quote/delete-template", { template_id: id });
+  }, 500);
 
   useEffect(() => {
     getTemplatesDebounced();
@@ -61,95 +68,125 @@ export default function RqTemplatesComponent() {
       </div>
 
       <div className={"templates-list"}>
-        <table>
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Equipment</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {templates &&
-              templates?.map(({ name, quote_data, _id }, index) => {
-                const pickupAddress = quote_data.addresses.filter(
-                  ({ address_type }) => address_type === "pickup",
-                );
-                const dropAddress = quote_data.addresses.filter(
-                  ({ address_type }) => address_type === "drop",
-                );
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>Pickup</th>
+                <th>Drop</th>
+                <th>Equipment</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {templates &&
+                templates?.map(({ name, quote_data, _id }, index) => {
+                  const pickupAddress = quote_data.addresses.filter(
+                    ({ address_type }) => address_type === "pickup",
+                  );
+                  const dropAddress = quote_data.addresses.filter(
+                    ({ address_type }) => address_type === "drop",
+                  );
+                  let open = false;
 
-                return (
-                  <tr
-                    key={_id + index}
-                    onClick={() => selectTemplate(quote_data)}
-                  >
-                    <td>
-                      <div className={"main-text"}>{name}</div>
-                    </td>
-                    <td className={"pickup"}>
-                      <div className={"location main-text"}>
-                        <ArrowUp />
-                        {pickupAddress[0].address}
+                  return (
+                    <tr
+                      key={_id + index}
+                      onClick={() => selectTemplate(quote_data)}
+                    >
+                      <td>
+                        <div className={"main-text"}>{name}</div>
+                      </td>
+                      <td className={"pickup"}>
+                        <div className={"location main-text"}>
+                          <ArrowUp />
+                          {pickupAddress[0].address}
 
-                        {pickupAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{pickupAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={pickupAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {pickupAddress[0].date}
-                      </div>
-                    </td>
-                    <td className={"drop"}>
-                      <div className={"location main-text"}>
-                        <ArrowDown />
-                        {dropAddress[0].address}
-
-                        {dropAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{dropAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={dropAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {dropAddress[0].date}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>53’ Dryvan, 53’ Reefer</div>
-                    </td>
-                    <td>
-                      <div className={"template-actions"}>
-                        <button className={"edit-template-btn"}>
-                          <Edit /> Edit Template
-                        </button>
-
-                        <div className={"chevron-svg"}>
-                          <Chevron />
+                          {pickupAddress.length >= 2 && (
+                            <>
+                              <div className={"extra-address"}>
+                                +{pickupAddress.length - 1}
+                                <Info />
+                                <ExtraAddressWindowComponent
+                                  stops={pickupAddress}
+                                />
+                              </div>
+                            </>
+                          )}
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                        <div className={"date sub-text"}>
+                          {pickupAddress[0].date}
+                        </div>
+                      </td>
+                      <td className={"drop"}>
+                        <div className={"location main-text"}>
+                          <ArrowDown />
+                          {dropAddress[0].address}
+
+                          {dropAddress.length >= 2 && (
+                            <>
+                              <div className={"extra-address"}>
+                                +{dropAddress.length - 1}
+                                <Info />
+                                <ExtraAddressWindowComponent
+                                  stops={dropAddress}
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                        <div className={"date sub-text"}>
+                          {dropAddress[0].date}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>
+                          53’ Dryvan, 53’ Reefer
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"template-actions"}>
+                          <button
+                            className={"edit-template-btn"}
+                            onClick={(ev) => {
+                              ev.stopPropagation();
+                              document.getElementById(
+                                name + index,
+                              ).style.display = "flex";
+                            }}
+                          >
+                            Delete Template
+                          </button>
+
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <ConfirmActionComponent
+                              title={`Delete template "${name}" ?`}
+                              id={name + index}
+                              action={() => {
+                                deleteTemplateDebounced(_id);
+                                getTemplatesDebounced();
+                              }}
+                            />
+                          </div>
+
+                          <div className={"chevron-svg"}>
+                            <Chevron />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

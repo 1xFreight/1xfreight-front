@@ -16,21 +16,21 @@ export default function MembersTableComponent({
         <thead>
           <tr>
             <th></th>
-            <th>Contact</th>
+            <th>Name</th>
             <th>Email</th>
           </tr>
         </thead>
         <tbody>
           {members &&
-            members.map(({ contact, email }, index) => (
-              <tr key={index + email + contact}>
+            members.map(({ name, email, status }, index) => (
+              <tr key={index + email}>
                 <td>
                   <div>
                     <input type={"checkbox"} name={email} />
                   </div>
                 </td>
                 <td>
-                  <div className={"main-text"}>{contact}</div>
+                  <div className={"main-text"}>{name}</div>
                 </td>
                 <td>
                   <div className={"main-text"}>{email}</div>

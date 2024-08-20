@@ -347,8 +347,8 @@ input[type=number] {
 }
 
 .fade-in {
-  -webkit-animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-  animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+  -webkit-animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 }
 
 

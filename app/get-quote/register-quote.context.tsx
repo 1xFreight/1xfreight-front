@@ -123,6 +123,9 @@ export const RegisterQuoteContextProvider = ({
         _default["addresses"] = addresses;
       }
 
+      _default["quote_type"] = session.quote_type;
+      _default["currency"] = session.currency;
+
       addData({
         form: "default",
         data: _default,
@@ -178,7 +181,10 @@ export const RegisterQuoteContextProvider = ({
   useEffect(() => {
     if (
       session &&
-      (session.auto_commodity || session.auto_delivery || session.auto_pickup)
+      (session.auto_commodity ||
+        session.auto_delivery ||
+        session.auto_pickup ||
+        session.quote_type)
     ) {
       getLastDataDebounced();
     }
