@@ -8,8 +8,9 @@ import "./styles.css";
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import AccesorialsComponent from "@/app/get-quote/components/accesorials.component";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
+import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/place-autocomplete.component";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -27,11 +28,13 @@ function LocationFormComponent({
   title,
   _default,
 }: LocationFormComponentI) {
+  const [address, setAddress] = useState("");
   useEffect(() => {
     if (_default?.date) {
       toggleAddDateTime(true);
     }
   }, [_default]);
+
   const toggleAddDateTime = (state: boolean) => {
     const elShippingType = document.getElementById(
       `shipping-hours-type form-${title}-${index}`,
@@ -83,8 +86,16 @@ function LocationFormComponent({
                 placeholder={"Origin (Location or City, ST, ZIP)"}
                 required
                 defaultValue={_default?.address}
+                id={"input-address"}
+                autoComplete={"off"}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </div>
+            <PlaceAutocompleteComponent
+              inputText={address}
+              setInputText={setAddress}
+            />
           </div>
 
           <div className={"date-time-details"}>

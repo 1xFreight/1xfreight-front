@@ -1,51 +1,40 @@
 import TagComponent from "@/app/get-quote/pages/partners/components/tag.component";
+import { memo } from "react";
 
-export interface PartnerI {
-  company: string;
-  contact: string;
-  email: string;
-  location: string;
-  tags: string[];
-}
-
-export default function CarriersTableComponent({
-  partners,
-}: {
-  partners: PartnerI[];
-}) {
+function CarriersTableComponent({ partners }: { partners: any[] }) {
   return (
     <div className={"carriers-table"}>
       <table>
         <thead>
-          <tr>
+          <tr className={"fade-in"}>
             <th></th>
-            <th>Company</th>
-            <th>Contact</th>
+            <th>name</th>
             <th>Email</th>
             <th>Location</th>
             <th>Phone</th>
             <th>Tags</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={"fade-in"}>
           {partners &&
             partners.map(
-              ({ company, contact, email, location, tags, phone }, index) => (
-                <tr key={index + company + contact}>
+              ({ name, email, address, tags, phone, city }, index) => (
+                <tr key={index + email}>
                   <td>
                     <div>{index + 1}</div>
                   </td>
                   <td>
-                    <div className={"main-text"}>{company}</div>
-                  </td>
-                  <td>
-                    <div className={"main-text"}>{contact}</div>
+                    <div className={"main-text"}>{name}</div>
                   </td>
                   <td>
                     <div className={"main-text"}>{email}</div>
                   </td>
                   <td>
-                    <div className={"main-text"}>{location}</div>
+                    <div className={"main-text"}>
+                      {address}
+                      {" , "}
+                      {city}
+                    </div>
                   </td>
                   <td>
                     <div className={"main-text"}>{phone}</div>
@@ -67,3 +56,5 @@ export default function CarriersTableComponent({
     </div>
   );
 }
+
+export default memo(CarriersTableComponent);

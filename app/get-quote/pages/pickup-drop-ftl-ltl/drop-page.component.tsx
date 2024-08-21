@@ -7,6 +7,7 @@ import "./styles.css";
 import { formDataToJSON } from "@/common/utils/formData.util";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 export default function DropPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);
@@ -14,7 +15,7 @@ export default function DropPageComponent() {
     useRegisterQuoteContext();
   const _default = useMemo(() => getData("default"), [getData]);
   const _defaultAddresses = useMemo(() => {
-    const addr = _default?.addresses.filter(
+    const addr = _default?.addresses?.filter(
       ({ address_type }) => address_type === "drop",
     );
     setNumberOfLocations(addr?.length >= 1 ? addr?.length : 1);

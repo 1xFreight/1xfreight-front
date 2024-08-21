@@ -14,7 +14,7 @@ export default function PickupPageComponent() {
     useRegisterQuoteContext();
   const _default = useMemo(() => getData("default"), [getData]);
   const _defaultAddresses = useMemo(() => {
-    const addr = _default?.addresses.filter(
+    const addr = _default?.addresses?.filter(
       ({ address_type }) => address_type === "pickup",
     );
     setNumberOfLocations(addr?.length >= 1 ? addr?.length : 1);

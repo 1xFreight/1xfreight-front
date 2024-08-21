@@ -13,7 +13,7 @@ function MembersTableComponent({ members }: { members: MemberI[] }) {
     <div className={"members-table-settings"}>
       <table>
         <thead>
-          <tr>
+          <tr className={"fade-in"}>
             <th></th>
             <th>Name</th>
             <th>Email</th>
@@ -21,7 +21,7 @@ function MembersTableComponent({ members }: { members: MemberI[] }) {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={"fade-in"}>
           {members &&
             members.map(({ name, email, phone, status }, index) => (
               <tr key={index + email + name}>

@@ -15,7 +15,7 @@ enum WeightEnum {
 }
 
 function ShipmentDetailsComponent({ _default }: { _default: any }) {
-  const _defaultDetails = _default?.details[0];
+  const _defaultDetails = _default?.details ? _default?.details[0] : undefined;
 
   useEffect(() => {
     if (_defaultDetails?.hazardous_goods) {

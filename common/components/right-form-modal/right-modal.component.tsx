@@ -21,7 +21,7 @@ function RightModalComponent({
       <div className={"modal-backdrop fade-in"}></div>
 
       <div className={"modal-body fade-in-right2"}>
-        <div>
+        <div className={"modal-content"}>
           <h2>{title}</h2>
 
           <div className={"modal-content-wrapper"}>{children}</div>

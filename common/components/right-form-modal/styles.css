@@ -28,8 +28,13 @@
 
         .modal-content-wrapper {
             margin: 2rem 0;
+        }
+
+        .modal-content {
+            height: 100%;
             overflow-y: scroll;
-            height: 82%;
+            overflow-x: auto;
+            width: 100%;
         }
     }
 

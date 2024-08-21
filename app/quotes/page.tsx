@@ -16,8 +16,10 @@ export default function QuotesPage() {
 
   const getQuotesDebounced = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/quote").then((data) => setQuotes(data));
-    setTimeout(() => setLoading(false), 500);
+    getWithAuth("/quote").then((data) => {
+      setQuotes(data);
+      setLoading(false);
+    });
   }, 1000);
 
   useEffect(() => {
