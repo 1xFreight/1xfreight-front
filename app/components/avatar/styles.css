@@ -1,12 +1,19 @@
 .avatar {
-    width: 3rem;
+    width: 3.5rem;
     height: 3rem;
-    border: 1px solid #A7A7A7;
-    border-radius: 100%;
+    border-right: 1px solid #A7A7A7;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    background: #0020DD;
-    color: white;
+    background: linear-gradient(58deg, rgba(82,82,82,1) 0%, rgba(78,78,78,0.9) 100%);
+    color: #f5f5f5;
+    text-shadow: 0 0 5px #b2b2b2;
+    transition: all 500ms ease-in-out ;
+    overflow: hidden;
+
+    &:hover {
+        background: linear-gradient(58deg,  rgba(78,78,78,1) 0%,rgba(82,82,82,1) 100%);
+    }
 }

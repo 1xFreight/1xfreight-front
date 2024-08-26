@@ -59,6 +59,7 @@ export default function ReferenceItemsComponent({
           onClick={() => (itemsNumb > 1 ? setItemsNumb(itemsNumb - 1) : "")}
           disabled={itemsNumb <= 1}
           className={"delete"}
+          type={"button"}
         >
           Delete
         </button>
@@ -67,6 +68,7 @@ export default function ReferenceItemsComponent({
           onClick={() => (itemsNumb < 5 ? setItemsNumb(itemsNumb + 1) : "")}
           disabled={itemsNumb >= 5}
           className={"add"}
+          type={"button"}
         >
           <PlusCircle />
           Add Reference No.

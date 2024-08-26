@@ -17,7 +17,7 @@ export default function TeamMembersComponent() {
   const { addData, setCanChangePage, canChangePage } =
     useRegisterQuoteContext();
   const [loading, setLoading] = useState(true);
-  const [members, setMembers] = useState(true);
+  const [members, setMembers] = useState([]);
 
   const getMembersDebounced = useDebouncedCallback(() => {
     setLoading(true);
@@ -51,7 +51,7 @@ export default function TeamMembersComponent() {
     const emailList = [];
 
     const checkboxes = document.querySelectorAll(
-      'div.tmn-wrapper input[type="checkbox"]',
+      'div.tm-wrapper input[type="checkbox"]',
     );
 
     checkboxes.forEach((checkbox) => {
@@ -81,9 +81,9 @@ export default function TeamMembersComponent() {
           />
         </div>
 
-        <button>
-          <PlusCircle /> Add member
-        </button>
+        {/*<button>*/}
+        {/*  <PlusCircle /> Add member*/}
+        {/*</button>*/}
       </div>
 
       <div className={"select-all"}>

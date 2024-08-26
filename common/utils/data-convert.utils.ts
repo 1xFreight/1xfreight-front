@@ -88,7 +88,7 @@ export function convertQuoteToApiFormat(quote: any, type: string) {
   return apiObj;
 }
 
-export function formatAddressObj(obj: any, type: string) {
+export function formatAddressObj(obj: any, type: string | undefined) {
   const acc = extractAccessorialsFromObj(obj);
   let formattedAddress = {};
 
@@ -197,4 +197,9 @@ export function toShortId(id: string) {
 
 export function convertStringToBool(text: string) {
   return text === "true";
+}
+
+export function clearText(text: string) {
+  if (!text) return;
+  return text.toLowerCase().replaceAll("_", " ").trim();
 }

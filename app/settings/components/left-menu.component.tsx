@@ -39,7 +39,7 @@ export default function LeftMenuComponent() {
       href: "/settings/carriers",
     },
     {
-      title: "Sport Group Emails",
+      title: "Spot Group Emails",
       icon: <Mail />,
       href: "/settings/group-emails",
     },

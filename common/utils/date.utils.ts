@@ -8,7 +8,11 @@ export function disablePastDates() {
 }
 
 export function formatDate(dateString) {
+  if (!dateString) return;
+
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return;
+
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }

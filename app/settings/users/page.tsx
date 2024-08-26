@@ -12,14 +12,32 @@ import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import { formDataToJSON } from "@/common/utils/formData.util";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import useStore from "@/common/hooks/use-store.context";
 
 export default function UsersSettingsPage() {
+  const { showToast } = useStore();
   const [open, setOpen] = useState<boolean>(false);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const saveDate = useDebouncedCallback(
     (data) => {
-      postWithAuth("/users/create-member", data);
+      postWithAuth("/users/create-member", data).then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          return showToast({
+            type: ToastTypesEnum.ERROR,
+            text: errorData.message || "Something went wrong",
+            duration: 5000,
+          });
+        }
+
+        showToast({
+          type: ToastTypesEnum.SUCCESS,
+          text: "User was added successfully",
+          duration: 5000,
+        });
+      });
     },
     1000,
     { leading: true },

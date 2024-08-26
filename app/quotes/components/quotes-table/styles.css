@@ -5,7 +5,7 @@
     position: relative;
     border-radius: 1.125rem 1.875rem 2rem 2rem;
     box-sizing: border-box;
-    /*to have space for stops window , and dont overflow:hidden it*/
+    /*to have space for stop's window , so it can overflow*/
     padding: 100px 1px 0 1px;
     margin-top: -120px;
 
@@ -24,6 +24,11 @@
     z-index: 1;
 }
 
+
+.quotes-table tr td:nth-child(3),.quotes-table tr td:nth-child(4){
+    max-width: 30rem;
+    padding: 0 1rem;
+}
 .quotes-table table {
     width: 100%;
     border-collapse: separate;
@@ -44,37 +49,45 @@
     width: 100%;
 }
 
-.quotes-table tr>th {
-    text-align: left;
-    padding-left: 1.25rem;
-    background: white;
-    height: 3.75rem;
-    border-top: 1px solid #545454;
-    border-bottom: 1px solid #545454;
-    border-collapse: collapse;
-}
-
 .quotes-table tr th {
-    font-size: 1rem;
-    color: #545454;
-    font-weight: 400;
+    text-align: left;
+    padding-left: 0.65rem;
+    height: 3.75rem;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    color: #626262;
+    font-weight: 700;
 }
 
-.quotes-table tr>th:nth-child(1){
+.quotes-table tr th:nth-child(1){
     border-radius: 1rem 0 0 1rem;
-    border-right: 1px solid #EFEFEF;
-    border-left: 1px solid #545454;
+    border-right: 2px solid #EFEFEF;
 }
 
 .quotes-table tr>th:nth-last-child(1){
     border-radius: 0 1rem 1rem 0;
-    border-right: 1px solid #545454;
 }
 
-.quotes-table tr>td:nth-child(1){
+
+.quotes-table {
+    tr:nth-of-type(even) td:not(:nth-child(1)) {
+        border-right: 1px solid #f3f3f3;
+    }
+
+    tr:nth-of-type(odd) td:not(:nth-child(1)) {
+        border-right: 1px solid #ececec;
+    }
+
+    tr td:nth-child(2),tr td:nth-child(3) {
+        border-right: unset !important;
+    }
+
+}
+
+.quotes-table tr td:nth-child(1){
     border-radius: 1rem 0 0 1rem;
-    width: 9.875rem;
-    border-right: 1px solid #EFEFEF;
+    /*width: 9.875rem;*/
+    border-right: 2px solid #EFEFEF;
 }
 
 .quotes-table tr>td:nth-child(2){
@@ -86,7 +99,8 @@
 }
 
 .quotes-table td {
-    padding-left: 1.25rem;
+    vertical-align: center;
+    padding: 0 0.65rem;
 }
 
 .quotes-table tr:nth-of-type(even){
@@ -100,12 +114,6 @@
 .quotes-table tr>td {
     height: 4.625rem;
     box-sizing: border-box;
-}
-
-.quotes-table tbody tr{
-    &:hover {
-        /*filter: drop-shadow(0px 0px 1px #0020DD);*/
-    }
 }
 
 .quotes-table .active-quote-status.CONFIRMED {
@@ -144,7 +152,8 @@
 .quotes-table .pickup .location, .quotes-table .drop .location {
     display: flex;
     position: relative;
-    width: max-content;
+    /*width: max-content;*/
+    align-items: center;
 }
 
 .quotes-table .pickup .location>svg:nth-child(1), .quotes-table .drop .location>svg:nth-child(1) {
@@ -157,8 +166,12 @@
 }
 
 .quotes-table tr>th:nth-last-child(1){
-    min-width: 24rem;
-    width: 25%;
+    /*min-width: 24rem;*/
+    /*width: 25%;*/
+}
+
+.quotes-table tr>td:nth-last-child(1){
+    padding-right: 1rem;
 }
 
 .quotes-table tr td .price .full-price::after {
@@ -260,6 +273,10 @@
     border: 1px solid transparent;
     transition: all 250ms ease-in-out;
     position: relative;
+
+    & svg {
+        position: unset;
+    }
 
     &:hover {
         border: 1px solid #0020DD;

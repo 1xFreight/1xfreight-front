@@ -22,8 +22,9 @@ export default function ReviewComponent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const emailL = getData("partners");
-    setEmailList(emailL || []);
+    const emailPartners = getData("partners");
+    const emailMembers = getData("members");
+    setEmailList([...emailMembers, ...emailPartners] || []);
     const pickup = getData("pickup");
     const drop = getData("drop");
     const shipment = getData("shipment_details");

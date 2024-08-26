@@ -2,6 +2,7 @@ import { QuoteAddressI } from "@/common/interfaces/quote-preview.interface";
 import Arrow from "@/public/icons/20px/Arrow 2.svg";
 import React from "react";
 import "./styles.css";
+import { formatDate } from "@/common/utils/date.utils";
 
 interface ExtraAWI {
   stops: QuoteAddressI[];
@@ -27,7 +28,7 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
             <div className={"address"}>
               <div className={"main-text"}>{address}</div>
 
-              <div className={"sub-text"}>{date}</div>
+              <div className={"sub-text"}>{formatDate(date)}</div>
             </div>
           </div>
         ))}

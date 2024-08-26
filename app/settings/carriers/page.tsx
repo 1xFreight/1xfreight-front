@@ -3,7 +3,6 @@
 import "./styles.css";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
-import { partnersMock } from "@/app/get-quote/pages/partners/mock-data";
 import CarriersTableComponent from "@/app/settings/components/carriers-table.component";
 import RightModalComponent from "@/common/components/right-form-modal/right-modal.component";
 import { useEffect, useState } from "react";
@@ -11,10 +10,12 @@ import Import from "@/public/icons/24px/import.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import { disablePastDates } from "@/common/utils/date.utils";
 import { formDataToJSON } from "@/common/utils/formData.util";
+import useStore from "@/common/hooks/use-store.context";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
 
 export default function CarriersSettingsPage() {
+  const { showToast } = useStore();
   const [open, setOpen] = useState(false);
   const [importData, setImportData] = useState();
   const [loadingImport, setLoadingImport] = useState(false);
@@ -63,9 +64,23 @@ export default function CarriersSettingsPage() {
       ? { ...importData, ...formDataToJSON(formData) }
       : formData;
 
-    postWithAuth("/carrier/create", newCarrier).then(() =>
-      debouncedGetCarriers(),
-    );
+    postWithAuth("/carrier/create", newCarrier).then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
+          duration: 5000,
+        });
+      }
+
+      showToast({
+        type: ToastTypesEnum.SUCCESS,
+        text: "Carrier was added successfully",
+        duration: 5000,
+      });
+      debouncedGetCarriers();
+    });
     setImportData(null);
     setOpen(false);
   });

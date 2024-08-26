@@ -6,18 +6,31 @@ import LoginFormComponent from "@/common/components/login-form/login-form.compon
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [authStatus, setAuthStatus] = useState<null | boolean>(null);
-  const { session, setSession } = useStore();
+  const { session, setSession, showToast } = useStore();
 
   const checkAuth = useDebouncedCallback(() => {
     getWithAuth("/users/me")
       .then((data) => {
         setAuthStatus(true);
         setSession(data);
+        showToast({
+          type: ToastTypesEnum.SUCCESS,
+          text: "You was logged in",
+          duration: 5000,
+        });
       })
-      .catch(() => setAuthStatus(false));
+      .catch(() => {
+        setAuthStatus(false);
+        showToast({
+          type: ToastTypesEnum.ERROR,
+          text: "Unauthorized",
+          duration: 5000,
+        });
+      });
   }, 500);
 
   useEffect(() => {

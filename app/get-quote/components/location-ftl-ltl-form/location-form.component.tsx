@@ -11,6 +11,8 @@ import AccesorialsComponent from "@/app/get-quote/components/accesorials.compone
 import React, { useEffect, useState } from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
 import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/place-autocomplete.component";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import { log } from "node:util";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -28,12 +30,16 @@ function LocationFormComponent({
   title,
   _default,
 }: LocationFormComponentI) {
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState<string>(_default?.address ?? "");
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [defaultData, setDefaultData] = useState(_default);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if (_default?.date) {
+    if (defaultData?.date || defaultData?.time_start || defaultData?.time_end) {
       toggleAddDateTime(true);
     }
-  }, [_default]);
+  }, [defaultData, loading]);
 
   const toggleAddDateTime = (state: boolean) => {
     const elShippingType = document.getElementById(
@@ -44,7 +50,7 @@ function LocationFormComponent({
     );
 
     function showDetails() {
-      if (!elShippingType || !elDateTimeInputs) return;
+      if (!elShippingType || !elDateTimeInputs) return console.log("sadmalwda");
       elShippingType.style.display = "block";
       elShippingType.setAttribute("required", "true");
       elDateTimeInputs.style.display = "flex";
@@ -62,6 +68,12 @@ function LocationFormComponent({
     state ? showDetails() : hideDetails();
   };
 
+  const updateDefault = (data) => {
+    setLoading(true);
+    setDefaultData(data);
+    setTimeout(() => setLoading(false), 500);
+  };
+
   return (
     <div className={"rq-location-form"}>
       <div className={"location-form"}>
@@ -71,160 +83,209 @@ function LocationFormComponent({
           </h2>
         </div>
 
-        <form
-          className={"shipping-form"}
-          id={`location-form-${title}-${index}`}
-        >
-          <div className={"address-input"}>
-            <h3>Address</h3>
-            <div className={"form-input-wrapper"}>
-              <MapMarker />
-              <input
-                type={"text"}
-                name={"address"}
-                className={"form-input"}
-                placeholder={"Origin (Location or City, ST, ZIP)"}
-                required
-                defaultValue={_default?.address}
-                id={"input-address"}
-                autoComplete={"off"}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <PlaceAutocompleteComponent
-              inputText={address}
-              setInputText={setAddress}
-            />
-          </div>
-
-          <div className={"date-time-details"}>
-            <div className="add-time">
-              <h3>Do you want to add a date and time for this stop?</h3>
-
-              <div className={"radio-btn"}>
-                <div className={"radio-yes"}>
-                  <input
-                    type={"radio"}
-                    name={"addTime"}
-                    id={"add-time-yes"}
-                    value={"yes"}
-                    onClick={() => toggleAddDateTime(true)}
-                    defaultChecked={!!_default?.date}
-                  />
-                  <h5>Yes</h5>
-                </div>
-                <div className={"radio-no"}>
-                  <input
-                    type={"radio"}
-                    name={"addTime"}
-                    id={"add-time-no"}
-                    value={"no"}
-                    defaultChecked={!_default?.date}
-                    onClick={() => toggleAddDateTime(false)}
-                  />
-                  <h5>No</h5>
-                </div>
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <form
+            className={"shipping-form"}
+            id={`location-form-${title}-${index}`}
+          >
+            <div className={"address-input"}>
+              <h3>Address</h3>
+              <div className={"form-input-wrapper"}>
+                <MapMarker />
+                <input
+                  type={"text"}
+                  name={"address"}
+                  className={"form-input"}
+                  placeholder={"Origin (Location or City, ST, ZIP)"}
+                  required
+                  id={"input-address"}
+                  autoComplete={"off"}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  onFocus={() => setShowAutocomplete(true)}
+                  onBlur={() =>
+                    setTimeout(() => setShowAutocomplete(false), 200)
+                  }
+                />
               </div>
+              {showAutocomplete && (
+                <PlaceAutocompleteComponent
+                  inputText={address}
+                  setInputText={setAddress}
+                  setDefault={updateDefault}
+                />
+              )}
             </div>
 
             <div
-              className={"shipping-hours-type"}
-              id={`shipping-hours-type form-${title}-${index}`}
+              className={"date-time-details"}
+              style={{
+                zIndex: 0,
+              }}
             >
-              <h3>Shipping Hours</h3>
-              <TypeSelectorComponent
-                typeEnum={ShippingHoursEnum}
-                inputName={"shippingHoursType"}
-                selectedEl={_default?.shipping_hours}
-              />
-            </div>
-          </div>
+              <div className="add-time">
+                <h3>Do you want to add a date and time for this stop?</h3>
 
-          <div
-            className={"date-time-inputs"}
-            id={`date-time-inputs form-${title}-${index}`}
-          >
-            <div className={"date-input"}>
-              <h3>Date</h3>
-              <div className={"form-input-wrapper"}>
-                <Calendar />
-                <input
-                  type={"date"}
-                  min={disablePastDates()}
-                  defaultValue={_default?.date ?? disablePastDates()}
-                  name={"date"}
+                <div className={"radio-btn"}>
+                  <div className={"radio-yes"}>
+                    <input
+                      type={"radio"}
+                      name={"addTime"}
+                      id={"add-time-yes"}
+                      value={"yes"}
+                      onClick={() => toggleAddDateTime(true)}
+                      defaultChecked={
+                        !!(
+                          defaultData?.date ||
+                          defaultData?.time_start ||
+                          defaultData?.time_end
+                        )
+                      }
+                    />
+                    <h5>Yes</h5>
+                  </div>
+                  <div className={"radio-no"}>
+                    <input
+                      type={"radio"}
+                      name={"addTime"}
+                      id={"add-time-no"}
+                      value={"no"}
+                      defaultChecked={
+                        !(
+                          defaultData?.date ||
+                          defaultData?.time_start ||
+                          defaultData?.time_end
+                        )
+                      }
+                      onClick={() => toggleAddDateTime(false)}
+                    />
+                    <h5>No</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={"shipping-hours-type"}
+                id={`shipping-hours-type form-${title}-${index}`}
+              >
+                <h3>Shipping Hours</h3>
+                <TypeSelectorComponent
+                  typeEnum={ShippingHoursEnum}
+                  inputName={"shippingHoursType"}
+                  selectedEl={defaultData?.shipping_hours}
                 />
               </div>
             </div>
 
-            <div className={"time-inputs"}>
-              <div className={"time-input"}>
-                <h3>Time</h3>
+            <div
+              className={"date-time-inputs"}
+              id={`date-time-inputs form-${title}-${index}`}
+              style={{
+                zIndex: "0",
+              }}
+            >
+              <div className={"date-input"}>
+                <h3>Date</h3>
                 <div className={"form-input-wrapper"}>
-                  <Clock />
-
-                  <select
-                    name="locationTimeStart"
-                    defaultValue={_default?.time_start ?? "any"}
-                  >
-                    <option value="0" disabled>
-                      Pickup hours
-                    </option>
-                    <option value="unknown">Call or email to schedule</option>
-                    <option value="Any time during business hours">
-                      Any time during business hours
-                    </option>
-
-                    {generatePickHours().map((time, index) => (
-                      <option key={time + index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
+                  <Calendar />
+                  <input
+                    type={"date"}
+                    min={disablePastDates()}
+                    defaultValue={defaultData?.date ?? disablePastDates()}
+                    name={"date"}
+                  />
                 </div>
               </div>
 
-              <div className={"time-input-range"}>
-                <div className={"form-input-wrapper"}>
-                  <Clock />
+              <div className={"time-inputs"}>
+                <div className={"time-input"}>
+                  <h3>Time</h3>
+                  <div className={"form-input-wrapper"}>
+                    <Clock />
 
-                  <select
-                    name="locationTimeEnd"
-                    defaultValue={_default?.time_end ?? "0"}
-                  >
-                    <option value="0" disabled>
-                      Time range end
-                    </option>
-                    {generatePickHours().map((time, index) => (
-                      <option key={time + index} value={time}>
-                        {time}
+                    <select
+                      name="locationTimeStart"
+                      defaultValue={
+                        defaultData?.time_start ?? "Call or email to schedule"
+                      }
+                      onChange={(e) => {
+                        const timeEndSelect = document.getElementById(
+                          `locationTimeEnd-${index}`,
+                        ) as HTMLSelectElement;
+                        if (
+                          e.target.value === "Call or email to schedule" ||
+                          e.target.value === "Any time during business hours"
+                        ) {
+                          timeEndSelect.disabled = true;
+                          timeEndSelect.value = "0";
+                        } else {
+                          timeEndSelect.disabled = false;
+                          timeEndSelect.value = e.target.value;
+                        }
+                      }}
+                    >
+                      <option value="Call or email to schedule">
+                        Call or email to schedule
                       </option>
-                    ))}
-                  </select>
+                      <option value="Any time during business hours">
+                        Any time during business hours
+                      </option>
 
-                  <span>*if needed</span>
+                      {generatePickHours().map((time, index) => (
+                        <option key={time + index} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className={"time-input-range"}>
+                  <div className={"form-input-wrapper"}>
+                    <Clock />
+
+                    <select
+                      name="locationTimeEnd"
+                      defaultValue={defaultData?.time_end ?? "0"}
+                      id={`locationTimeEnd-${index}`}
+                      disabled={true}
+                    >
+                      <option value="0" disabled>
+                        Time range end
+                      </option>
+                      {generatePickHours().map((time, index) => (
+                        <option key={time + index} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/*<span>*if needed</span>*/}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <AccesorialsComponent
-            title={`${title} Accesorials`}
-            index={index + title}
-            _default={_default}
-          />
-
-          <div className={"form-notes"}>
-            <h3>Notes</h3>
-            <textarea
-              placeholder={"Type here additional information..."}
-              rows={5}
-              name={"locationNotes"}
-              defaultValue={_default?.notes}
+            <AccesorialsComponent
+              title={`${title} Accesorials`}
+              index={index + title}
+              _default={defaultData}
             />
-          </div>
-        </form>
+
+            <div className={"form-notes"}>
+              <h3>Notes</h3>
+              <textarea
+                placeholder={"Type here additional information..."}
+                rows={5}
+                name={"locationNotes"}
+                defaultValue={defaultData?.notes}
+                maxLength={255}
+              />
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

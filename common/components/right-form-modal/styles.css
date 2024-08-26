@@ -1,6 +1,6 @@
 .right-modal-wrapper {
     position: fixed;
-    z-index: 101;
+    z-index: 301;
     width: 100vw;
     height: 100vh;
     left: 0;

@@ -19,45 +19,81 @@
         width: 100%;
     }
 
-    tr>th {
-        text-align: left;
-        padding-left: 1.25rem;
-        background: white;
-        height: 3.75rem;
-        border-top: 1px solid #545454;
-        border-bottom: 1px solid #545454;
-        border-collapse: collapse;
-    }
-
     tr th {
-        font-size: 1rem;
-        color: #545454;
-        font-weight: 400;
+        text-align: left;
+        padding-left: 0.65rem;
+        height: 3.75rem;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        color: #626262;
+        font-weight: 700;
     }
 
     tr>th:nth-child(1){
         border-radius: 1rem 0 0 1rem;
-        border-right: 1px solid #EFEFEF;
-        border-left: 1px solid #545454;
+        border-right: 2px solid #EFEFEF;
     }
 
     tr>th:nth-last-child(1){
         border-radius: 0 1rem 1rem 0;
-        border-right: 1px solid #545454;
     }
 
     tr>td:nth-child(1){
         border-radius: 1rem 0 0 1rem;
         width: 3rem;
         border-right: 1px solid #EFEFEF;
-        padding-left: 0;
 
         div {
+            font-weight: 600;
+            color: #545454;
             display: flex;
             height: 100%;
             align-items: center;
             justify-content: center;
             width: 100%;
+        }
+    }
+
+    tr:nth-of-type(even) td:not(:nth-child(1)) {
+        border-right: 1px solid #f3f3f3;
+    }
+
+    tr:nth-of-type(odd) td:not(:nth-child(1)) {
+        border-right: 1px solid #ececec;
+    }
+
+    tr td:nth-child(5), tr td:nth-child(2){
+        text-transform: capitalize;
+    }
+
+    tr td:nth-child(3) {
+        width: 5rem;
+
+        .active {
+            color: #82C181;
+
+            select {
+                background: white;
+            }
+        }
+
+        .inactive {
+            color: #ff4e4e;
+
+            select {
+                background: white;
+            }
+
+        }
+
+        select {
+            text-transform: capitalize;
+            background: unset;
+            padding: 0.35rem;
+            cursor: pointer;
+            border: 2px solid #D9D9D9;
+            border-radius: 0.75rem;
+            text-align: center;
         }
     }
 
@@ -87,8 +123,8 @@
     }
 
     td {
-        padding-left: 1.25rem;
         vertical-align: center;
+        padding: 0 0.65rem;
     }
 
     tr:nth-of-type(even){

@@ -1,5 +1,17 @@
 .quotes-page {
     gap: 1rem;
+
+    .location-styling {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        svg {
+            min-width: 1rem;
+            position: absolute;
+            left: -2rem;
+        }
+    }
 }
 
 .quotes-page .page-header h4{

@@ -8,11 +8,29 @@ import PartnersTableComponent from "@/app/get-quote/pages/partners/components/pa
 import { partnersMock } from "@/app/get-quote/pages/partners/mock-data";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import CarriersTableComponent from "@/app/settings/components/carriers-table.component";
 
 export default function PartnersComponent() {
   const [searchText, setSearch] = useState<string>();
+  const [loading, setLoading] = useState(true);
+  const [carriers, setCarriers] = useState();
   const { addData, setCanChangePage, canChangePage } =
     useRegisterQuoteContext();
+
+  const debouncedGetCarriers = useDebouncedCallback(() => {
+    setLoading(true);
+    getWithAuth("/carrier").then((data) => {
+      setCarriers(data);
+      setLoading(false);
+    });
+  }, 1000);
+
+  useEffect(() => {
+    debouncedGetCarriers();
+  }, []);
 
   const selectAll = (value: boolean) => {
     const checkboxes = document.querySelectorAll(
@@ -76,9 +94,9 @@ export default function PartnersComponent() {
           </select>
         </div>
 
-        <button>
-          <PlusCircle /> Add Partner
-        </button>
+        {/*<button>*/}
+        {/*  <PlusCircle /> Add Partner*/}
+        {/*</button>*/}
       </div>
 
       <div className={"select-all"}>
@@ -91,7 +109,11 @@ export default function PartnersComponent() {
       </div>
 
       <div className={"pt-wrapper"}>
-        <PartnersTableComponent partners={partnersMock} />
+        {loading ? (
+          <Loading2Component />
+        ) : (
+          <PartnersTableComponent partners={carriers} />
+        )}
       </div>
     </div>
   );

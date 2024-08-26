@@ -1,6 +1,14 @@
 .default-loading-component {
-    width: 10rem;
-    height: 10rem;
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #EFEFEF;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-sizing: content-box;
 
     svg path{
         fill: #0020DD;

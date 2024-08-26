@@ -113,7 +113,9 @@
     &  .pickup .location, .drop .location {
         display: flex;
         position: relative;
-        width: max-content;
+        /*width: max-content;*/
+        max-width: 20rem;
+        align-items: center;
     }
 
     & .pickup .location>svg:nth-child(1), .drop .location>svg:nth-child(1) {

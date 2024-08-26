@@ -10,9 +10,10 @@ import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
 import SellerMenuComponent from "@/app/components/menu/seller-menu.component";
 import AvatarComponent from "@/app/components/avatar/avatar.component";
 import useStore from "@/common/hooks/use-store.context";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
+import ToasterComponent from "@/common/components/toaster/toaster.component";
 
-export default function MainMenu() {
+function MainMenu() {
   const { session } = useStore();
 
   return (
@@ -34,7 +35,7 @@ export default function MainMenu() {
         </div>
 
         <div className={"user"}>
-          <AvatarComponent username={session.name} />
+          <AvatarComponent username={session.name} logo={session?.logo} />
 
           <div className={"user-name"}>
             <div>{session.name}</div>
@@ -47,3 +48,5 @@ export default function MainMenu() {
     </header>
   );
 }
+
+export default memo(MainMenu);

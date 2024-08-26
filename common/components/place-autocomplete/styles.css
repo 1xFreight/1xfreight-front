@@ -1,0 +1,21 @@
+.location-predictions-wrapper {
+    padding: 2rem 1rem 1rem 1rem;
+    margin-top: -1.5rem;
+    border-radius: 0 0  0.75rem 0.75rem;
+    background: #e7e7e7;
+    transition: all 250ms ease-in-out;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    border: 1px solid #A7A7A7;
+
+    h4 {
+        color: #545454;
+        cursor: pointer;
+        transition: all 250ms ease-in-out;
+
+        &:hover {
+            color: #0020DD;
+        }
+    }
+}

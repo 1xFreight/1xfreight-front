@@ -6,6 +6,8 @@ import TypeSelectorComponent from "@/common/components/type-selector/type-select
 import Logo from "@/public/logo/1xfreight-logo.svg";
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { isValidEmail } from "@/common/utils/email.util";
 
 enum LoginFormTabsEnum {
   EMAIL_PASS = "email & pass",
@@ -14,23 +16,42 @@ enum LoginFormTabsEnum {
 
 export default function LoginFormComponent() {
   const [tab, setTab] = useState("EMAIL_PASS");
-  const { setSession } = useStore();
+  const { showToast } = useStore();
 
   const signIn = () => {
     const form = document.forms["login-form"];
     if (!form[0].reportValidity()) {
       return;
     }
-    const email = document.getElementsByName("email")[0].value.trim();
-    const password = document.getElementsByName("password")[0].value.trim();
 
-    console.log(email, password);
+    const emailInput = document.getElementsByName(
+      "email",
+    )[0] as HTMLInputElement;
+    const passInput = document.getElementsByName(
+      "password",
+    )[0] as HTMLInputElement;
+    const email = emailInput.value?.trim();
+    const password = passInput.value?.trim();
 
     postWithAuth("/auth/login-pass", {
       email,
       password,
-    }).then(() => {
-      window.location.reload();
+    }).then(async (response) => {
+      emailInput.disabled = true;
+      passInput.disabled = true;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        emailInput.disabled = false;
+        passInput.disabled = false;
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
+          duration: 10000,
+        });
+      }
+
+      setTimeout(() => window.location.reload(), 1000);
     });
   };
 
@@ -50,7 +71,7 @@ export default function LoginFormComponent() {
 
       <form name={"login-form"} className={"login-input"}>
         <input
-          type={"text"}
+          type={"email"}
           name={"email"}
           required={true}
           placeholder={"email@example.com"}

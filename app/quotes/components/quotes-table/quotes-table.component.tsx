@@ -10,6 +10,7 @@ import ExtraAddressWindowComponent from "@/common/components/extra-addresses-win
 import Link from "next/link";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import { toShortId } from "@/common/utils/data-convert.utils";
+import { formatDate } from "@/common/utils/date.utils";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
@@ -39,12 +40,9 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 _id,
                 status,
                 addresses,
-                ref,
-                refDetails,
                 equipment,
                 currency,
                 references,
-                price,
                 type,
                 quote_type,
                 details,
@@ -67,45 +65,62 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       <div className={"main-text"}>{type}</div>
                     </td>
                     <td className={"pickup"}>
-                      <div className={"location main-text"}>
+                      <div className={"location-styling"}>
                         <ArrowUp />
-                        {pickupAddress[0].address}
+                        <div>
+                          <div className={"location main-text"}>
+                            {pickupAddress[0].address}
 
-                        {pickupAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{pickupAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={pickupAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {pickupAddress[0].date}
+                            {pickupAddress.length >= 2 && (
+                              <>
+                                <div className={"extra-address"}>
+                                  +{pickupAddress.length - 1}
+                                  <Info />
+                                  <ExtraAddressWindowComponent
+                                    stops={pickupAddress}
+                                  />
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          <div className={"date sub-text"}>
+                            {formatDate(pickupAddress[0].date)}
+                            {!!pickupAddress[0].date && " / "}
+                            {pickupAddress[0].time_start}
+                            {" - "}
+                            {pickupAddress[0].time_end}
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td className={"drop"}>
-                      <div className={"location main-text"}>
+                      <div className={"location-styling"}>
                         <ArrowDown />
-                        {dropAddress[0].address}
 
-                        {dropAddress.length >= 2 && (
-                          <>
-                            <div className={"extra-address"}>
-                              +{dropAddress.length - 1}
-                              <Info />
-                              <ExtraAddressWindowComponent
-                                stops={dropAddress}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <div className={"date sub-text"}>
-                        {dropAddress[0].date}
+                        <div>
+                          <div className={"location main-text"}>
+                            {dropAddress[0].address}
+
+                            {dropAddress.length >= 2 && (
+                              <>
+                                <div className={"extra-address"}>
+                                  +{dropAddress.length - 1}
+                                  <Info />
+                                  <ExtraAddressWindowComponent
+                                    stops={dropAddress}
+                                  />
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          <div className={"date sub-text"}>
+                            {formatDate(dropAddress[0].date)}
+                            {!!dropAddress[0].date && " / "}
+                            {dropAddress[0].time_start}
+                            {!!dropAddress[0].time_end && " - "}
+                            {dropAddress[0].time_end}
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -139,20 +154,9 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       <div className={"main-text"}>{equipment}</div>
                     </td>
                     <td>
-                      <div className={"end"}>
-                        <div></div>
-                        {/*<div className={"price"}>*/}
-                        {/*  <div className={"full-price"}>*/}
-                        {/*    <span>$</span>*/}
-                        {/*    {numberCommaFormat(shipment.goods_value)}*/}
-                        {/*  </div>*/}
-                        {/*  <div className={"currency"}>{currency}</div>*/}
-                        {/*</div>*/}
-
-                        <QuoteActionButtonComponent
-                          status={status.toUpperCase() as QuoteStatusEnum}
-                        />
-                      </div>
+                      <QuoteActionButtonComponent
+                        status={status.toUpperCase() as QuoteStatusEnum}
+                      />
                     </td>
                   </tr>
                 );

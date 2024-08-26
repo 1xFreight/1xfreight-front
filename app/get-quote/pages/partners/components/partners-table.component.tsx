@@ -1,18 +1,10 @@
 import "./styles.css";
 import TagComponent from "@/app/get-quote/pages/partners/components/tag.component";
 
-export interface PartnerI {
-  company: string;
-  contact: string;
-  email: string;
-  location: string;
-  tags: string[];
-}
-
 export default function PartnersTableComponent({
   partners,
 }: {
-  partners: PartnerI[];
+  partners: any[];
 }) {
   return (
     <div className={"partners-table"}>
@@ -20,34 +12,38 @@ export default function PartnersTableComponent({
         <thead>
           <tr>
             <th></th>
-            <th>Company</th>
-            <th>Contact</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Location</th>
+            <th>Phone</th>
             <th>Tags</th>
           </tr>
         </thead>
         <tbody>
           {partners &&
             partners.map(
-              ({ company, contact, email, location, tags }, index) => (
-                <tr key={index + company + contact}>
+              ({ name, email, address, tags, phone, city }, index) => (
+                <tr key={index + email}>
                   <td>
                     <div>
                       <input type={"checkbox"} name={email} />
                     </div>
                   </td>
                   <td>
-                    <div className={"main-text"}>{company}</div>
-                  </td>
-                  <td>
-                    <div className={"main-text"}>{contact}</div>
+                    <div className={"main-text"}>{name}</div>
                   </td>
                   <td>
                     <div className={"main-text"}>{email}</div>
                   </td>
                   <td>
-                    <div className={"main-text"}>{location}</div>
+                    <div className={"main-text"}>
+                      {address}
+                      {" , "}
+                      {city}
+                    </div>
+                  </td>
+                  <td>
+                    <div className={"main-text"}>{phone}</div>
                   </td>
 
                   <td>

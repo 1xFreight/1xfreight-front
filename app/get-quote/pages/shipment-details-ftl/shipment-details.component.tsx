@@ -1,8 +1,11 @@
 import "./styles.css";
 import ReferenceItemsComponent from "@/app/get-quote/pages/shipment-details-ftl/components/reference-items.component";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { event } from "jquery";
+import { EquipmentsEnum } from "@/common/enums/equipments.enum";
+import Cross from "@/public/icons/24px/cross.svg";
+import useStore from "@/common/hooks/use-store.context";
 
 enum PackingMethodEnum {
   PALLETIZED = "Palletized",
@@ -16,19 +19,33 @@ enum WeightEnum {
 
 function ShipmentDetailsComponent({ _default }: { _default: any }) {
   const _defaultDetails = _default?.details ? _default?.details[0] : undefined;
+  const { session } = useStore();
+  const [list, setList] = useState(session?.equipments ?? []);
+  const removeItem = (email: string) => {
+    setList(list.filter((em) => em !== email));
+  };
 
   useEffect(() => {
     if (_defaultDetails?.hazardous_goods) {
       showHazardInputs(true);
     }
   }, [_default]);
-  const showTempInputs = (value: string) => {
+
+  useEffect(() => {
+    showTempInputs();
+  }, [list]);
+  const showTempInputs = () => {
     const el1 = document.getElementById("min-temp-reefer");
     const el2 = document.getElementById("max-temp-reefer");
     const elInput1 = document.getElementsByName("min_temp_reefer")[0];
     const elInput2 = document.getElementsByName("max_temp_reefer")[0];
 
-    if (value === "reefer") {
+    let isReefer = false;
+    list.map((eq) => {
+      if (eq.includes("Refrigerated")) isReefer = true;
+    });
+
+    if (isReefer) {
       el1.style.display = "flex";
       el2.style.display = "flex";
       elInput1.setAttribute("required", "true");
@@ -92,13 +109,28 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
               <select
                 defaultValue={"unknown"}
                 name={"equipment_type"}
-                onChange={(ev) => showTempInputs(ev.target.value)}
+                onChange={(e) => {
+                  setList([...list, e.target.value]);
+                }}
               >
-                <option value={"unknown"}>unknown</option>
-                <option value={"reefer"}>Reefer</option>
-                <option value={"unknown"}>unknown</option>
-                <option value={"unknown"}>unknown</option>
+                {Object.values(EquipmentsEnum).map((eq, index) => (
+                  <option key={eq + index} value={eq}>
+                    {eq}
+                  </option>
+                ))}
               </select>
+
+              <div className={"input-chips-wrapper"}>
+                {list &&
+                  list.map((eq, index) => (
+                    <div key={eq + index} className={"chip-item"}>
+                      {eq}
+                      <div onClick={() => removeItem(eq)}>
+                        <Cross />
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
 
             <div>

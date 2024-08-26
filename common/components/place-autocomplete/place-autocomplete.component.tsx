@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  Dispatch,
-  memo,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, memo, SetStateAction, useEffect, useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { Library } from "@googlemaps/js-api-loader";
+import { useDebouncedCallback } from "use-debounce";
+import "./styles.css";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
 
 const options = {
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
@@ -22,6 +18,7 @@ const options = {
 function PlaceAutocompleteComponent({
   inputText,
   setInputText,
+  setDefault,
 }: {
   inputText: string;
   setInputText: Dispatch<SetStateAction<string>>;
@@ -29,6 +26,7 @@ function PlaceAutocompleteComponent({
   const [service, setService] =
     useState<google.maps.places.AutocompleteService>();
   const [gPrediction, setGPredictions] = useState<any[]>([]);
+  const [lPrediction, setLPredictions] = useState<any[]>([]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: options.apiKey,
@@ -42,40 +40,77 @@ function PlaceAutocompleteComponent({
       const gService = new google.maps.places.AutocompleteService();
 
       setService(gService);
+
+      if (gService && inputText) {
+        getDebouncedPredictions();
+      }
     }
   }, [isLoaded]);
 
-  useEffect(() => {
-    if (service) {
-      // service.getQueryPredictions(
-      //   {
-      //     input: inputText,
-      //   },
-      //   (predictions) => setGPredictions(predictions),
-      // );
+  const getDebouncedPredictions = useDebouncedCallback(() => {
+    service?.getPlacePredictions(
+      {
+        componentRestrictions: options.componentRestrictions,
+        input: inputText,
+      },
+      (predictions) => {
+        setGPredictions(predictions);
+      },
+    );
+  }, 300);
 
-      service.getPlacePredictions(
-        {
-          componentRestrictions: options.componentRestrictions,
-          input: inputText,
-        },
-        (predictions) => {
-          setGPredictions(predictions);
-          console.log(predictions);
-        },
-      );
+  const getDebouncedSavedLocations = useDebouncedCallback(() => {
+    getWithAuth(`/address?searchText=${inputText}&limit=5`).then((data) =>
+      setLPredictions(data),
+    );
+  }, 300);
+
+  useEffect(() => {
+    if (service && inputText) {
+      getDebouncedPredictions();
+      getDebouncedSavedLocations();
     }
   }, [inputText]);
 
   return (
     <div
       style={{
-        minHeight: "5rem",
+        position: "relative",
       }}
     >
-      {gPrediction.map(({ description }, index) => (
-        <h3 key={description + index}>{description}</h3>
-      ))}
+      <div className={"location-predictions-wrapper fade-in"}>
+        {inputText &&
+          gPrediction?.map(({ description }, index) => (
+            <div
+              onClick={() => setInputText(description)}
+              key={description + index}
+            >
+              <h4>{description}</h4>
+            </div>
+          ))}
+        {inputText && !!lPrediction?.length && (
+          <h3
+            style={{
+              marginBottom: "0",
+              marginTop: "0.25rem",
+            }}
+          >
+            Saved locations:
+          </h3>
+        )}
+        {inputText &&
+          lPrediction?.map((location, index) => (
+            <div
+              onClick={() => {
+                setInputText(location?.address);
+                setDefault ? setDefault(location) : "";
+              }}
+              key={location?.address + index}
+            >
+              <h4>{location?.address}</h4>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

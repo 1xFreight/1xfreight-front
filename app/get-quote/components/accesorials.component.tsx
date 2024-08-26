@@ -44,7 +44,7 @@ export default function AccesorialsComponent({
 
       <div className={"acsrls-spoiler"} id={"accesorial-spoiler"}>
         <div className={"location-type"}>
-          <h4>Delivery Location Type</h4>
+          <h4>Location Type</h4>
           <select
             name={"deliveryLocationType"}
             defaultValue={_default?.location_type}
