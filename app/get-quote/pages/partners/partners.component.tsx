@@ -112,7 +112,7 @@ export default function PartnersComponent() {
         {loading ? (
           <Loading2Component />
         ) : (
-          <PartnersTableComponent partners={carriers} />
+          <PartnersTableComponent partners={carriers?.carriers} />
         )}
       </div>
     </div>

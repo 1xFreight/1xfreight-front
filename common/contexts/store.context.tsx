@@ -17,6 +17,8 @@ interface StoreContextI {
   getFromStore: (name: string) => any;
   session: any;
   setSession: Dispatch<SetStateAction<any>>;
+  setFilters: Dispatch<SetStateAction<any>>;
+  filters: any;
   toasts: IToast[];
   showToast: (config: IToast) => any;
   killToast: (id: string) => any;
@@ -26,10 +28,12 @@ const defaultContextValues = {
   addToStore: () => {},
   getFromStore: () => {},
   setSession: () => {},
+  setFilters: () => {},
   showToast: () => {},
   killToast: () => {},
   toasts: [],
   session: {},
+  filters: {},
 };
 
 export const StoreContext = createContext<StoreContextI>(defaultContextValues);
@@ -38,6 +42,7 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
   const [store, setStore] = useState<StoreDataI[]>([]);
   const [session, setSession] = useState();
   const [toasts, setToasts] = useState([]);
+  const [filters, setFilters] = useState({});
 
   const killToast = (toastId: string) => {
     document.getElementById(toastId)?.classList.toggle("slide-out-top");
@@ -97,6 +102,8 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
         showToast,
         toasts,
         killToast,
+        filters,
+        setFilters,
       }}
     >
       {children}

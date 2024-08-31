@@ -114,16 +114,19 @@
         align-items: center;
         justify-content: center;
         background: white;
-        border: 1px solid #0020DD;
         height: 3.5rem;
         border-radius: 1rem;
         color: #545454;
         position: relative;
         margin-right: 1.5rem;
+        font-size: 1.1rem;
 
         svg {
             position: absolute;
             left: 1rem;
+            stroke-width: 1px;
+            stroke: #545454;
+            fill: #545454;
         }
     }
 
@@ -281,7 +284,7 @@
         padding: 1.5rem;
         border-radius: 1rem;
         flex-grow: 1;
-        box-shadow: -1px 1px 5px 0px rgba(0,3,51,0.14);
+        box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
 
 
         button {
@@ -329,26 +332,42 @@
 
     .input-chips-wrapper {
         padding: 1rem;
-        border: 1px solid #A7A7A7;
-        border-radius: 1rem;
+        border: 2px solid #e5e5e5;
+        border-radius: 0.5rem;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         width: 100%;
         gap: 1rem;
         min-height: 4rem;
+        background: rgb(245, 245, 245);
 
         .chip-item {
             padding: 0 1rem;
             height: 2rem;
             background: #D9D9D9;
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             align-items: center;
             display: flex;
             gap: 0.75rem;
+            border: 2px solid #e8e8e8;
+            transition: all 250ms ease-in-out;
+            color: #545454;
+
+            &:hover {
+                border: 2px solid #0020DD;
+                color: black;
+            }
 
             svg {
                 min-width: 1rem;
+                stroke-width: 3px;
+                stroke: #545454;
+                transition: all 250ms ease-in-out;
+
+                &:hover {
+                    scale: 1.1;
+                }
             }
 
             div:hover {

@@ -5,9 +5,11 @@ import StatusFilterDropdownComponent from "@/common/components/status-dropdown/s
 import MoreFiltersComponent from "@/common/components/more-filters/more-filters.component";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import RefreshComponent from "@/app/quotes/components/filters-panel/components/refresh.component";
-import { useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
+import useStore from "@/common/hooks/use-store.context";
+import { useDebouncedCallback } from "use-debounce";
 
 export enum TypeFilterEnum {
   ALL = "ALL",
@@ -17,9 +19,22 @@ export enum TypeFilterEnum {
   AIR = "AIR",
 }
 
-export default function FiltersPanelComponent() {
+function FiltersPanelComponent() {
   const [type, setType] = useState<TypeFilterEnum>(TypeFilterEnum.ALL);
   const [status, setStatus] = useState<Array<QuoteStatusEnum>>([]);
+  const [searchText, setSearch] = useState("");
+  const { setFilters } = useStore();
+
+  useEffect(() => {
+    setFilters({
+      searchText,
+    });
+  }, [searchText]);
+
+  const setSearchDebounced = useDebouncedCallback(
+    (text) => setSearch(text),
+    300,
+  );
 
   return (
     <div className={"quote-filter-panel"}>
@@ -35,10 +50,13 @@ export default function FiltersPanelComponent() {
 
       <SearchInputComponent
         width={"20rem"}
-        placeholder={"Quote#, BOL#, Pickup, Delivery..."}
+        placeholder={"Quote#, Pickup, Delivery, Reference..."}
+        setSearch={setSearchDebounced}
       />
 
       <RefreshComponent />
     </div>
   );
 }
+
+export default memo(FiltersPanelComponent);

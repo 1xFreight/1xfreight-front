@@ -7,6 +7,7 @@ import Cross from "@/public/icons/24px/cross.svg";
 import Loading from "@/public/icons/loading.svg";
 import Link from "next/link";
 import { useDebouncedCallback } from "use-debounce";
+import LoadingComponent from "@/common/components/loading/loading.component";
 
 function SendComponent() {
   const { saveData } = useRegisterQuoteContext();
@@ -34,7 +35,7 @@ function SendComponent() {
     if (status === null) {
       return (
         <div className={"state loading-state"}>
-          <Loading />
+          <LoadingComponent />
         </div>
       );
     }

@@ -20,8 +20,8 @@ export default function PartnersTableComponent({
           </tr>
         </thead>
         <tbody>
-          {partners &&
-            partners.map(
+          {partners?.length &&
+            partners?.map(
               ({ name, email, address, tags, phone, city }, index) => (
                 <tr key={index + email}>
                   <td>

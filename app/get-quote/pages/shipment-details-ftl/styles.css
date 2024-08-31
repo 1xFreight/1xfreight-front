@@ -7,31 +7,51 @@
     flex-direction: column;
     gap: 2rem;
     margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+
 
     .input-chips-wrapper {
         padding: 0.5rem;
-        border: 1px solid #A7A7A7;
-        border-radius: 1rem;
+        border: 2px solid #e5e5e5;
+        border-radius: 0.5rem;
         display: flex;
         flex-direction: row !important;
         flex-wrap: wrap;
         gap: 1rem;
         min-height: 4rem;
         width: 30rem;
+        background: rgb(245, 245, 245);
+        position: relative;
 
         .chip-item {
             padding: 0 1rem;
             height: 2rem;
             background: #D9D9D9;
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             align-items: center;
             display: flex;
-            flex-direction: row;
             gap: 0.75rem;
-            width: fit-content;
+            border: 2px solid #e8e8e8;
+            transition: all 250ms ease-in-out;
+            color: #545454;
+            position: relative;
+            flex-direction: row;
+
+            &:hover {
+                border: 2px solid #0020DD;
+                color: black;
+            }
 
             svg {
                 min-width: 1rem;
+                stroke-width: 3px;
+                stroke: #545454;
+                transition: all 250ms ease-in-out;
+
+                &:hover {
+                    scale: 1.1;
+                }
             }
 
             div:hover {
@@ -40,17 +60,6 @@
                 svg path {
                     stroke: red;
                 }
-            }
-        }
-
-        input {
-            height: 2rem !important;
-            border: unset !important;
-            flex-grow: 1 !important;
-
-            &:hover,&:focus {
-                border: unset !important;
-                outline: unset;
             }
         }
     }
@@ -91,8 +100,14 @@
             width: 15rem;
             justify-content: center;
             gap: 1rem;
-            border-radius: 0.75rem;
+            border-radius: 0.5rem;
             transition: all 250ms ease-in-out;
+            border: unset;
+            font-size: 1rem;
+
+            &:hover {
+                background: #e5e5e5;
+            }
 
             svg path{
                 fill: #0020DD;
@@ -106,7 +121,7 @@
             }
 
             &.delete {
-                background: transparent;
+                /*background: transparent;*/
                 color: rgba(221, 0, 32, 0.5);
             }
 
@@ -168,9 +183,6 @@
     .packing-info .general-type-selector {
         white-space: nowrap;
 
-        .type-selector {
-            padding: 0 0.5rem;
-        }
     }
 
     .packing-info {
@@ -185,19 +197,18 @@
 
         .weight-input {
             display: flex;
+            max-height: 3.5rem;
 
             input {
                 width: 7.5rem;
-                border-radius: 0.75rem 0 0 0.75rem;
-                border-right: unset;
+                border-radius: 0.75rem 0 0 0.75rem !important;
+                border-right: unset ;
+                height: 3.1rem;
             }
 
             .general-type-selector {
                 width: 100%;
-
-                .type-selector:nth-child(1) {
-                    border-radius: unset;
-                }
+                border-radius: 0 0.75rem 0.75rem 0;
             }
 
         }

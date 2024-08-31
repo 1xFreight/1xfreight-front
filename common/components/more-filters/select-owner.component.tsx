@@ -1,28 +1,45 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import Checked from "@/public/icons/24px/checked-tick.svg";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { paginationConfig } from "@/common/config/pagination.config";
 
 function SelectOwnerComponent({ owners, setOwners }: any) {
   const [searchOwner, setSearchOwner] = useState<string>();
-  const [foundOwners, setFoundOwners] = useState([
-    "test@test.com",
-    "sygdaw@dsad.com",
-  ]);
+  const [foundOwners, setFoundOwners] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
 
   const isOwnerSelected = (key) => {
-    return owners.find((st) => st === key);
+    return owners.find(({ name }) => name === key.name);
   };
 
   const toggleOwner = (key) => {
     if (isOwnerSelected(key)) {
-      setOwners(owners.filter((st) => st !== key));
+      setOwners(owners.filter(({ name }) => name !== key.name));
     } else {
       setOwners([...owners, key]);
     }
   };
+
+  const getMembersDebounced = useDebouncedCallback(() => {
+    getWithAuth(`/users/members?limit=5&searchText=${searchOwner ?? ""}`).then(
+      (data) => {
+        setFoundOwners(data?.members);
+      },
+    );
+  }, 700);
+
+  useEffect(() => {
+    getMembersDebounced();
+  }, [searchOwner]);
+
+  const setSearchOwnerDebounced = useDebouncedCallback(
+    (text) => setSearchOwner(text),
+    400,
+  );
 
   return (
     <>
@@ -42,7 +59,7 @@ function SelectOwnerComponent({ owners, setOwners }: any) {
               <div className={"owner-search"}>
                 <SearchInputComponent
                   placeholder={"Search owner"}
-                  setSearch={setSearchOwner}
+                  setSearch={setSearchOwnerDebounced}
                 />
               </div>
 
@@ -54,7 +71,7 @@ function SelectOwnerComponent({ owners, setOwners }: any) {
                       key={index}
                       onClick={() => toggleOwner(owner)}
                     >
-                      {owner}
+                      {owner?.name}
                       <Checked />
                     </div>
                   ))}

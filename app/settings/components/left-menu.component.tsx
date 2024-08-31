@@ -41,7 +41,7 @@ export default function LeftMenuComponent() {
     {
       title: "Spot Group Emails",
       icon: <Mail />,
-      href: "/settings/group-emails",
+      href: "/settings/spot-group",
     },
     {
       title: "Saved Locations",

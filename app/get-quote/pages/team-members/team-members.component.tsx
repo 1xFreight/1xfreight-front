@@ -99,7 +99,7 @@ export default function TeamMembersComponent() {
         {loading ? (
           <Loading2Component />
         ) : (
-          <MembersTableComponent members={members} />
+          <MembersTableComponent members={members?.members} />
         )}
       </div>
     </div>

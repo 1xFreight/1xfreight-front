@@ -14,20 +14,26 @@ import SavedLocationsTable from "@/app/settings/components/saved-locations-table
 import { formatAddressObj } from "@/common/utils/data-convert.utils";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
+import { paginationConfig } from "@/common/config/pagination.config";
+import PaginationComponent from "@/common/components/pagination/pagination.component";
 
 export default function SavedLocationsPage() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState();
   const { showToast } = useStore();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   const debouncedGetLocations = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/address").then((data) => {
+    getWithAuth(
+      `/address?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+    ).then((data) => {
       setLocations(data);
       setLoading(false);
     });
-  }, 1000);
+  }, 500);
 
   const saveDataDebounced = useDebouncedCallback(() => {
     const form = document.forms["location-form-Location-0"];
@@ -64,8 +70,14 @@ export default function SavedLocationsPage() {
   });
 
   useEffect(() => {
+    setLoading(true);
     debouncedGetLocations();
-  }, []);
+  }, [page, search]);
+
+  const setSearchDebounced = useDebouncedCallback(
+    (text) => setSearch(text),
+    300,
+  );
 
   return (
     <div className={"saved-locations-page"}>
@@ -74,7 +86,7 @@ export default function SavedLocationsPage() {
       <div className={"carriers-filters"}>
         <div>
           <SearchInputComponent
-            // setSearch={setSearch}
+            setSearch={setSearchDebounced}
             placeholder={"Search locations..."}
             width={"20rem"}
           />
@@ -89,7 +101,23 @@ export default function SavedLocationsPage() {
         {loading ? (
           <Loading2Component />
         ) : (
-          <SavedLocationsTable address={locations} />
+          <>
+            {" "}
+            <SavedLocationsTable address={locations?.address} />
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "end",
+              }}
+            >
+              <PaginationComponent
+                page={page}
+                setPage={setPage}
+                pages={locations?.totalAddresses}
+              />
+            </div>
+          </>
         )}
       </div>
 

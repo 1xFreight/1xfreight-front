@@ -19,7 +19,7 @@ function BreadcrumbsComponent({ items }: BreadcrumbsI) {
       {breadcrumbs &&
         breadcrumbs.map(({ href, title }, index) => {
           return (
-            <div className={"item fade-in-left"} key={title + index}>
+            <div className={"item fade-in"} key={title + index}>
               {index >= 1 ? <ChevronRight /> : ""}
               <p
                 style={{

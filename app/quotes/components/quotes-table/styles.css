@@ -1,7 +1,7 @@
 .quotes-table {
     width: 100%;
     overflow: scroll;
-    height: calc(100vh - 9.8125rem);
+    height: calc(100vh - 9.8125rem - 2.5rem);
     position: relative;
     border-radius: 1.125rem 1.875rem 2rem 2rem;
     box-sizing: border-box;

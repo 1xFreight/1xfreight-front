@@ -13,6 +13,8 @@ import Loading2Component from "@/common/components/loading/loading-as-page.compo
 import { formDataToJSON } from "@/common/utils/formData.util";
 import useStore from "@/common/hooks/use-store.context";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { paginationConfig } from "@/common/config/pagination.config";
+import PaginationComponent from "@/common/components/pagination/pagination.component";
 
 export default function CarriersSettingsPage() {
   const { showToast } = useStore();
@@ -21,6 +23,13 @@ export default function CarriersSettingsPage() {
   const [loadingImport, setLoadingImport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [carriers, setCarriers] = useState();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const setSearchDebounced = useDebouncedCallback(
+    (text) => setSearch(text),
+    300,
+  );
 
   const debouncedImport = useDebouncedCallback(() => {
     const mc: HTMLInputElement | null = document.getElementById(
@@ -47,11 +56,13 @@ export default function CarriersSettingsPage() {
 
   const debouncedGetCarriers = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/carrier").then((data) => {
+    getWithAuth(
+      `/carrier?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+    ).then((data) => {
       setCarriers(data);
       setLoading(false);
     });
-  }, 1000);
+  }, 500);
 
   const debouncedSave = useDebouncedCallback(() => {
     const form = document.forms["newCarrierForm"];
@@ -86,8 +97,9 @@ export default function CarriersSettingsPage() {
   });
 
   useEffect(() => {
+    setLoading(true);
     debouncedGetCarriers();
-  }, []);
+  }, [page, search]);
 
   return (
     <div className={"carriers-page"}>
@@ -96,7 +108,7 @@ export default function CarriersSettingsPage() {
       <div className={"carriers-filters"}>
         <div>
           <SearchInputComponent
-            // setSearch={setSearch}
+            setSearch={setSearchDebounced}
             placeholder={"Search partners..."}
             width={"20rem"}
           />
@@ -111,7 +123,23 @@ export default function CarriersSettingsPage() {
         {loading ? (
           <Loading2Component />
         ) : (
-          <CarriersTableComponent partners={carriers} />
+          <>
+            {" "}
+            <CarriersTableComponent partners={carriers?.carriers} />
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "end",
+              }}
+            >
+              <PaginationComponent
+                page={page}
+                setPage={setPage}
+                pages={carriers?.totalCarriers}
+              />
+            </div>
+          </>
         )}
       </div>
 

@@ -1,24 +1,41 @@
 .input-chips-wrapper {
     padding: 1rem;
-    border: 1px solid #A7A7A7;
-    border-radius: 1rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
     gap: 1rem;
+    min-height: 4rem;
+    background: rgb(245, 245, 245);
 
     .chip-item {
         padding: 0 1rem;
         height: 2rem;
         background: #D9D9D9;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         align-items: center;
         display: flex;
         gap: 0.75rem;
+        border: 2px solid #e8e8e8;
+        transition: all 250ms ease-in-out;
+        color: #545454;
+
+        &:hover {
+            border: 2px solid #0020DD;
+            color: black;
+        }
 
         svg {
             min-width: 1rem;
+            stroke-width: 3px;
+            stroke: #545454;
+            transition: all 250ms ease-in-out;
+
+            &:hover {
+                scale: 1.1;
+            }
         }
 
         div:hover {

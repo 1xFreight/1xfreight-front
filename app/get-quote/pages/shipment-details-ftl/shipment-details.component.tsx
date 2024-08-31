@@ -134,61 +134,63 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
             </div>
 
             <div>
-              <h5>Commodity</h5>
+              <div>
+                <h5>Commodity</h5>
 
-              <input
-                type={"text"}
-                name={"commodity"}
-                placeholder={"Type here..."}
-                required
-                defaultValue={_defaultDetails?.commodity}
-              />
-            </div>
+                <input
+                  type={"text"}
+                  name={"commodity"}
+                  placeholder={"Type here..."}
+                  required
+                  defaultValue={_defaultDetails?.commodity}
+                />
+              </div>
 
-            <div>
-              <h5>Goods Value $</h5>
+              <div>
+                <h5>Goods Value $</h5>
 
-              <input
-                type={"number"}
-                name={"goods_value"}
-                placeholder={"0"}
-                required
-                min={1}
-                onChange={(ev) => checkPositive(ev)}
-                defaultValue={_defaultDetails?.goods_value}
-              />
-            </div>
+                <input
+                  type={"number"}
+                  name={"goods_value"}
+                  placeholder={"0"}
+                  required
+                  min={1}
+                  onChange={(ev) => checkPositive(ev)}
+                  defaultValue={_defaultDetails?.goods_value}
+                />
+              </div>
 
-            <div
-              id={"max-temp-reefer"}
-              style={{
-                display: "none",
-              }}
-            >
-              <h5>Max Temp (°F)</h5>
+              <div
+                id={"max-temp-reefer"}
+                style={{
+                  display: "none",
+                }}
+              >
+                <h5>Max Temp (°F)</h5>
 
-              <input
-                type={"number"}
-                name={"max_temp_reefer"}
-                placeholder={"0°"}
-                defaultValue={_defaultDetails?.max_temp}
-              />
-            </div>
+                <input
+                  type={"number"}
+                  name={"max_temp_reefer"}
+                  placeholder={"0°"}
+                  defaultValue={_defaultDetails?.max_temp}
+                />
+              </div>
 
-            <div
-              id={"min-temp-reefer"}
-              style={{
-                display: "none",
-              }}
-            >
-              <h5>Min Temp (°F)</h5>
+              <div
+                id={"min-temp-reefer"}
+                style={{
+                  display: "none",
+                }}
+              >
+                <h5>Min Temp (°F)</h5>
 
-              <input
-                type={"number"}
-                name={"min_temp_reefer"}
-                placeholder={"0°"}
-                defaultValue={_defaultDetails?.min_temp}
-              />
+                <input
+                  type={"number"}
+                  name={"min_temp_reefer"}
+                  placeholder={"0°"}
+                  defaultValue={_defaultDetails?.min_temp}
+                />
+              </div>
             </div>
           </div>
 

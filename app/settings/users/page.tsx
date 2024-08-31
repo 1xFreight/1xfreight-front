@@ -14,34 +14,35 @@ import { formDataToJSON } from "@/common/utils/formData.util";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
+import PaginationComponent from "@/common/components/pagination/pagination.component";
+import { paginationConfig } from "@/common/config/pagination.config";
 
 export default function UsersSettingsPage() {
   const { showToast } = useStore();
   const [open, setOpen] = useState<boolean>(false);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const saveDate = useDebouncedCallback(
-    (data) => {
-      postWithAuth("/users/create-member", data).then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          return showToast({
-            type: ToastTypesEnum.ERROR,
-            text: errorData.message || "Something went wrong",
-            duration: 5000,
-          });
-        }
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
-        showToast({
-          type: ToastTypesEnum.SUCCESS,
-          text: "User was added successfully",
+  const saveDate = useDebouncedCallback((data) => {
+    postWithAuth("/users/create-member", data).then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
           duration: 5000,
         });
+      }
+
+      showToast({
+        type: ToastTypesEnum.SUCCESS,
+        text: "User was added successfully",
+        duration: 5000,
       });
-    },
-    1000,
-    { leading: true },
-  );
+    });
+  }, 500);
 
   const validateAndSave = () => {
     const form = document.forms["newUserForm"];
@@ -57,15 +58,23 @@ export default function UsersSettingsPage() {
 
   const getMembersDebounced = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/users/members").then((data) => {
+    getWithAuth(
+      `/users/members?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+    ).then((data) => {
       setMembers(data);
       setLoading(false);
     });
-  }, 1000);
+  }, 500);
+
+  const setSearchDebounced = useDebouncedCallback(
+    (text) => setSearch(text),
+    300,
+  );
 
   useEffect(() => {
+    setLoading(true);
     getMembersDebounced();
-  }, []);
+  }, [page, search]);
 
   return (
     <div className={"users-page"}>
@@ -74,7 +83,7 @@ export default function UsersSettingsPage() {
       <div className={"users-filters"}>
         <div>
           <SearchInputComponent
-            // setSearch={setSearch}
+            setSearch={setSearchDebounced}
             placeholder={"Search members..."}
             width={"20rem"}
           />
@@ -89,7 +98,22 @@ export default function UsersSettingsPage() {
         {loading ? (
           <Loading2Component />
         ) : (
-          <MembersTableComponent members={members} />
+          <>
+            <MembersTableComponent members={members?.members} />
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "end",
+              }}
+            >
+              <PaginationComponent
+                page={page}
+                setPage={setPage}
+                pages={members?.totalMembers}
+              />
+            </div>
+          </>
         )}
       </div>
 

@@ -244,14 +244,16 @@ export default function SettingsPage() {
 
           <div>
             <div className={"logo-wrapper"}>
-              <Image
-                src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${session?.logo}`}
-                alt={"logo"}
-                width={200}
-                height={100}
-                className={"logo-img"}
-                quality={90}
-              />
+              {session?.logo && (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${session?.logo}`}
+                  alt={"logo"}
+                  width={200}
+                  height={100}
+                  className={"logo-img"}
+                  quality={90}
+                />
+              )}
               <input
                 type={"file"}
                 accept={".jpg, .jpeg, .png"}

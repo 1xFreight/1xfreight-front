@@ -17,6 +17,7 @@ import { useDebouncedCallback } from "use-debounce";
 import LoadingComponent from "@/common/components/loading/loading.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
+import { formatDate } from "@/common/utils/date.utils";
 
 export default function RqTemplatesComponent() {
   const { setCanChangePage, canChangePage, addData, validateAndGoForward } =
@@ -74,7 +75,7 @@ export default function RqTemplatesComponent() {
           <table>
             <thead>
               <tr>
-                <th>name</th>
+                <th>Name</th>
                 <th>Pickup</th>
                 <th>Drop</th>
                 <th>Equipment</th>
@@ -101,45 +102,62 @@ export default function RqTemplatesComponent() {
                         <div className={"main-text"}>{name}</div>
                       </td>
                       <td className={"pickup"}>
-                        <div className={"location main-text"}>
+                        <div className={"location-styling"}>
                           <ArrowUp />
-                          {pickupAddress[0].address}
+                          <div>
+                            <div className={"location main-text"}>
+                              {pickupAddress[0].address}
 
-                          {pickupAddress.length >= 2 && (
-                            <>
-                              <div className={"extra-address"}>
-                                +{pickupAddress.length - 1}
-                                <Info />
-                                <ExtraAddressWindowComponent
-                                  stops={pickupAddress}
-                                />
-                              </div>
-                            </>
-                          )}
-                        </div>
-                        <div className={"date sub-text"}>
-                          {pickupAddress[0].date}
+                              {pickupAddress.length >= 2 && (
+                                <>
+                                  <div className={"extra-address"}>
+                                    +{pickupAddress.length - 1}
+                                    <Info />
+                                    <ExtraAddressWindowComponent
+                                      stops={pickupAddress}
+                                    />
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                            <div className={"date sub-text"}>
+                              {formatDate(pickupAddress[0].date)}
+                              {!!pickupAddress[0].date && " / "}
+                              {pickupAddress[0].time_start}
+                              {" - "}
+                              {pickupAddress[0].time_end}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td className={"drop"}>
-                        <div className={"location main-text"}>
+                        <div className={"location-styling"}>
                           <ArrowDown />
-                          {dropAddress[0].address}
 
-                          {dropAddress.length >= 2 && (
-                            <>
-                              <div className={"extra-address"}>
-                                +{dropAddress.length - 1}
-                                <Info />
-                                <ExtraAddressWindowComponent
-                                  stops={dropAddress}
-                                />
-                              </div>
-                            </>
-                          )}
-                        </div>
-                        <div className={"date sub-text"}>
-                          {dropAddress[0].date}
+                          <div>
+                            <div className={"location main-text"}>
+                              {dropAddress[0].address}
+
+                              {dropAddress.length >= 2 && (
+                                <>
+                                  <div className={"extra-address"}>
+                                    +{dropAddress.length - 1}
+                                    <Info />
+                                    <ExtraAddressWindowComponent
+                                      stops={dropAddress}
+                                    />
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                            <div className={"date sub-text"}>
+                              {formatDate(dropAddress[0].date)}
+                              {!!dropAddress[0].date && " / "}
+                              {dropAddress[0].time_start}
+                              {!!dropAddress[0].time_end && " - "}
+                              {dropAddress[0].time_end}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td>

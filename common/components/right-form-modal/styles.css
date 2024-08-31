@@ -22,7 +22,7 @@
         right: 0;
         display: flex;
         flex-direction: column;
-        padding: 2rem;
+        padding: .5rem 2rem;
         border-left: 1px solid #A7A7A7;
         justify-content: space-between;
 
@@ -35,23 +35,58 @@
             overflow-y: scroll;
             overflow-x: auto;
             width: 100%;
+
+            &::-webkit-scrollbar-thumb{
+                background: #0020DD;
+                border-radius: 1rem;
+            }
+
+            &::-webkit-scrollbar{
+                display: none;
+            }
+
+            &::-webkit-scrollbar-track{
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-corner{
+                background: transparent;
+            }
         }
     }
 
     .modal-actions {
         display: flex;
-        gap: 2rem;
+        gap: 1rem;
+        border-top: 2px solid #eaeaea;
+        justify-content: end;
+        align-items: center;
+        padding-top: 0.5rem;
+        width: calc(100% + 4rem);
+        margin-left: -2rem;
+        padding-right: 2rem;
 
         button {
-            width: 100%;
+            /*width: 100%;*/
             max-width: 50%;
-            height: 4rem;
-            border-radius: 1rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            width: 9rem;
+            font-size: 0.85rem;
 
             &.cancel {
                 background: white;
                 color: #545454;
-                border: 1px solid #A7A7A7;
+                border: 2px solid #A7A7A7;
+
+                &:hover {
+                    color: black;
+                    border-color: #545454;
+                }
+            }
+
+            &:hover {
+                font-size: .9rem;
             }
         }
     }

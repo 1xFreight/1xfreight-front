@@ -21,8 +21,8 @@ export default function MembersTableComponent({
           </tr>
         </thead>
         <tbody>
-          {members &&
-            members.map(({ name, email, status }, index) => (
+          {members?.length &&
+            members?.map(({ name, email, status }, index) => (
               <tr key={index + email}>
                 <td>
                   <div>

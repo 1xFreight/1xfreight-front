@@ -88,7 +88,7 @@ export const RegisterQuoteContextProvider = ({
       if (session.auto_commodity) {
         _default["details"] = [
           {
-            commodity: res[0].details[0].commodity,
+            commodity: res[0]?.details[0]?.commodity,
           },
         ];
       }
@@ -107,11 +107,11 @@ export const RegisterQuoteContextProvider = ({
       }
 
       if (session.auto_delivery) {
-        const dropA = res[0].addresses.filter(
+        const dropA = res[0]?.addresses?.filter(
           ({ address_type }) => address_type === "drop",
         );
 
-        dropA.map(({ address_type, address }) => {
+        dropA?.map(({ address_type, address }) => {
           addresses.push({
             address,
             address_type,

@@ -61,7 +61,7 @@ function PlaceAutocompleteComponent({
 
   const getDebouncedSavedLocations = useDebouncedCallback(() => {
     getWithAuth(`/address?searchText=${inputText}&limit=5`).then((data) =>
-      setLPredictions(data),
+      setLPredictions(data?.address),
     );
   }, 300);
 
@@ -99,6 +99,7 @@ function PlaceAutocompleteComponent({
           </h3>
         )}
         {inputText &&
+          !!lPrediction.length &&
           lPrediction?.map((location, index) => (
             <div
               onClick={() => {

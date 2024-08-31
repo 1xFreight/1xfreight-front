@@ -219,11 +219,11 @@ export default function ReviewComponent() {
               style={{
                 display: "none",
                 visibility: "visible",
-                background: "#ED0000",
+                // background: "#ED0000",
               }}
               id={"email-input-tooltip"}
             >
-              Invalid email
+              Invalid email!
             </span>
           </div>
         </div>

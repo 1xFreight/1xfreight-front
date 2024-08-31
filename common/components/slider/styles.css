@@ -1,9 +1,9 @@
 .default-slider-wrapper {
-    width: 4rem;
-    height: 1.7rem;
+    width: 3.5rem;
+    height: 1rem;
     min-height: 1.7rem;
     background: #A7A7A7;
-    border-radius: 1rem;
+    border-radius: 0.75rem;
     border: 1px solid #939393;
     display: flex;
     align-items: center;
@@ -11,22 +11,27 @@
     padding: 0.07rem 0.1rem;
     transition: all 250ms ease-in-out;
     cursor: pointer;
+    outline: 1px solid #545454;
 
     .slider-thumb {
         width: 1.65rem;
         height: 1.65rem;
-        background: white;
-        border-radius: 100%;
+        background: #f6f6f6;
+        border-radius: 0.65rem;
         margin-left: 0;
         transition: all 300ms ease-in-out;
+        box-sizing: border-box;
+        border: 2px solid #ffffff;
     }
-
     &.active {
         background: #0020DD;
-        border-color: #0020DD;
+        /*border-color: #0020DD;*/
 
         .slider-thumb {
-            margin-left: calc(4rem - 1.65rem);
+            margin-left: calc(3.5rem - 1.65rem);
+            /*background: #0020DD;*/
+            /*border-color: #dcdcdc;*/
+            /*outline-color: white;*/
         }
     }
 }

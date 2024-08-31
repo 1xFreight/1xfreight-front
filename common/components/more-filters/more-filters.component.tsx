@@ -5,13 +5,18 @@ import Cross from "@/public/icons/24px/cross.svg";
 import { memo, useState } from "react";
 import SelectOwnerComponent from "@/common/components/more-filters/select-owner.component";
 import "./styles.css";
+import useStore from "@/common/hooks/use-store.context";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { paginationConfig } from "@/common/config/pagination.config";
 
-function MoreFiltersComponent({ setFilters, filters }) {
+function MoreFiltersComponent() {
   const [open, setOpen] = useState<boolean>(false);
   const [owners, setOwners] = useState<Array<any>>([]);
+  const { filters, setFilters } = useStore();
 
   const applyFilters = () => {
-    const filters: any = {};
+    const newFilters: any = {};
     const pickupDate = document.getElementById(
       "filter-pickup-date",
     ) as HTMLInputElement;
@@ -20,23 +25,23 @@ function MoreFiltersComponent({ setFilters, filters }) {
     ) as HTMLInputElement;
 
     if (pickupDate.value) {
-      filters.pickupDate = pickupDate.value;
+      newFilters.pickupDate = pickupDate.value;
     }
 
     if (dropDate.value) {
-      filters.dropDate = dropDate.value;
+      newFilters.dropDate = dropDate.value;
     }
 
     if (owners.length) {
-      filters.owners = owners;
+      newFilters.owners = owners;
     }
 
-    setFilters(filters);
+    setFilters({ ...filters, ...newFilters });
     setOpen(false);
   };
 
   const removeFilters = () => {
-    setFilters(null);
+    setFilters({ ...filters, pickupDate: null, dropDate: null, owners: null });
     setOwners([]);
     setOpen(false);
   };
@@ -80,7 +85,11 @@ function MoreFiltersComponent({ setFilters, filters }) {
                 <h5>Drop Date</h5>
 
                 <div className={"date-input"}>
-                  <input type={"date"} id={"filter-drop-date"} />
+                  <input
+                    type={"date"}
+                    id={"filter-drop-date"}
+                    defaultValue={filters?.dropDate}
+                  />
                 </div>
               </div>
 
