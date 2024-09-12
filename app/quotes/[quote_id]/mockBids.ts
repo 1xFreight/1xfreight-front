@@ -6,7 +6,7 @@ export const mockBids = [
     estimatedPerMile: "6$",
     totalMiles: "1800",
     price: 4200,
-    id: "0015",
+    id: "66d880acb5f5fa70b799515f",
     transitTime: 30,
     email: "info@abclogistics.com",
     notes: "Looking forward to potential collaboration for freight transport.",

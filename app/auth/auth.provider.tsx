@@ -7,10 +7,15 @@ import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { usePathname, useRouter } from "next/navigation";
+import { RolesPagesConfig } from "@/common/config/roles-pages.config";
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [authStatus, setAuthStatus] = useState<null | boolean>(null);
+  const [validPath, setValidPath] = useState<null | boolean>(true);
   const { session, setSession, showToast } = useStore();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const checkAuth = useDebouncedCallback(() => {
     getWithAuth("/users/me")
@@ -45,6 +50,21 @@ function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [session]);
 
+  useEffect(() => {
+    if (pathname && session && RolesPagesConfig[session.role]) {
+      RolesPagesConfig[session.role].includes(pathname) ||
+      RolesPagesConfig[session.role].some((route) => pathname.includes(route))
+        ? setValidPath(true)
+        : setValidPath(false);
+
+      RolesPagesConfig.ALL.map((path) =>
+        path === pathname ? setValidPath(true) : "",
+      );
+    } else {
+      return setValidPath(true);
+    }
+  }, [pathname, session]);
+
   if (authStatus === false)
     return (
       <div
@@ -74,6 +94,23 @@ function AuthProvider({ children }: { children: ReactNode }) {
         <LoadingComponent />
       </div>
     );
+
+  if (!validPath) {
+    setTimeout(() => router.push("/"), 3000);
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h2>Invalid path, redirecting...</h2>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

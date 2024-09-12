@@ -36,7 +36,7 @@ interface RegisterQuoteContextI {
   canChangePage: PageStateEnum;
   validateAndGoForward: () => void;
   addData: (data: any) => void;
-  getData: (formName: string) => any[];
+  getData: (formName: string, apiFormat?: boolean) => any[];
   saveData: () => boolean;
   addBreadcrumb: (title: string) => void;
 }
@@ -68,8 +68,8 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(1);
-  const [type, setType] = useState<QuoteTypeEnum | null>(null);
+  const [stepNumber, setStepNumber] = useState<number>(5);
+  const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.LTL);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
       title: "Request Quote",
@@ -151,8 +151,13 @@ export const RegisterQuoteContextProvider = ({
     setDataCollector((prevState) => [...prevState, data]);
   };
 
-  const getData = (formName: string) => {
+  const getData = (formName: string, apiFormat = false) => {
     const formData = dataCollector.find(({ form }) => formName === form);
+
+    if (apiFormat && dataCollector) {
+      return convertQuoteToApiFormat(dataCollector, type!);
+    }
+
     return formData ? formData.data : null;
   };
 

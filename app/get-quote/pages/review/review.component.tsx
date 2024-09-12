@@ -25,11 +25,10 @@ export default function ReviewComponent() {
     const emailPartners = getData("partners");
     const emailMembers = getData("members");
     setEmailList([...emailMembers, ...emailPartners] || []);
-    const pickup = getData("pickup");
-    const drop = getData("drop");
-    const shipment = getData("shipment_details");
     const _default = getData("default");
-    setQuote({ type, pickup, drop, shipment, default: _default });
+    const apiFormat = getData("", true);
+    setQuote({ ...apiFormat, default: _default });
+    console.log(apiFormat);
     setLoading(false);
   }, [getData]);
 
@@ -65,6 +64,11 @@ export default function ReviewComponent() {
         saveTemplate,
         templateName: saveTemplate ? templateName.value : null,
       },
+    });
+
+    addData({
+      form: "subscribers",
+      data: emailList,
     });
 
     setCanChangePage(PageStateEnum.CAN_CHANGE);

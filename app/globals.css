@@ -132,11 +132,11 @@ button {
     border-color: #0020DD;
     outline-color: white;
     color: #0020DD;
-    font-size: 1.05rem;
+    /*font-size: 1.05rem;*/
 
     svg {
-      stroke-width: 1px;
-      stroke: #0020DD;
+      /*stroke-width: 1px;*/
+      /*stroke: #0020DD;*/
       path {
         fill: #0020DD;
 
@@ -257,6 +257,7 @@ input::-webkit-inner-spin-button {
 input,select {
   max-height: 3.5rem;
   font-weight: 500;
+  position: relative;
 }
 
 input , select, textarea {

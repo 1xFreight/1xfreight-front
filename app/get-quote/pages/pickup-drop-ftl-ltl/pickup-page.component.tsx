@@ -33,8 +33,12 @@ export default function PickupPageComponent() {
       }
 
       const formData = new FormData(form);
+      const jsonData = formDataToJSON(formData);
 
-      data.push(formDataToJSON(formData));
+      data.push({
+        ...jsonData,
+        order: i,
+      });
     }
 
     addBreadcrumb(data[0].address);
@@ -85,11 +89,11 @@ export default function PickupPageComponent() {
         <button
           className={"add-more-form"}
           onClick={() =>
-            numberOfLocations < 5
+            numberOfLocations < 3
               ? setNumberOfLocations(numberOfLocations + 1)
               : ""
           }
-          disabled={numberOfLocations >= 5}
+          disabled={numberOfLocations >= 3}
         >
           <PlusCircle /> Add Pickup
         </button>

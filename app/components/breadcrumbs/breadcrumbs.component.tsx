@@ -1,6 +1,7 @@
 import "./styles.css";
 import ChevronRight from "@/public/icons/16px/chevron-right.svg";
 import React, { useEffect, useMemo } from "react";
+import Link from "next/link";
 
 export interface BreadcrumbsI {
   items: BreadcrumbsItem[];
@@ -21,13 +22,15 @@ function BreadcrumbsComponent({ items }: BreadcrumbsI) {
           return (
             <div className={"item fade-in"} key={title + index}>
               {index >= 1 ? <ChevronRight /> : ""}
-              <p
-                style={{
-                  color: index === items.length - 1 ? "#545454" : "inherit",
-                }}
-              >
-                {title}
-              </p>
+              <Link href={href ?? ""}>
+                <p
+                  style={{
+                    color: index === items.length - 1 ? "#545454" : "inherit",
+                  }}
+                >
+                  {title}
+                </p>
+              </Link>
             </div>
           );
         })}

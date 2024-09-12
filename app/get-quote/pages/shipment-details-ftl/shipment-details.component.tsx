@@ -6,6 +6,8 @@ import { event } from "jquery";
 import { EquipmentsEnum } from "@/common/enums/equipments.enum";
 import Cross from "@/public/icons/24px/cross.svg";
 import useStore from "@/common/hooks/use-store.context";
+import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
+import { PackingTypeEnum } from "@/common/enums/packing-type.enum";
 
 enum PackingMethodEnum {
   PALLETIZED = "Palletized",
@@ -21,9 +23,19 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
   const _defaultDetails = _default?.details ? _default?.details[0] : undefined;
   const { session } = useStore();
   const [list, setList] = useState(session?.equipments ?? []);
+  const { addData } = useRegisterQuoteContext();
   const removeItem = (email: string) => {
     setList(list.filter((em) => em !== email));
   };
+
+  useEffect(() => {
+    return () => {
+      addData({
+        form: "equipments",
+        data: list,
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (_defaultDetails?.hazardous_goods) {
@@ -133,7 +145,25 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
               </div>
             </div>
 
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                flexDirection: "row",
+              }}
+            >
+              <div>
+                <h5>Number of Loads:</h5>
+
+                <input
+                  type={"number"}
+                  name={"load_number"}
+                  placeholder={"0"}
+                  required
+                  defaultValue={_defaultDetails?.load_number}
+                />
+              </div>
+
               <div>
                 <h5>Commodity</h5>
 
@@ -217,10 +247,17 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
                 <div>
                   <h5>Packing Type</h5>
 
-                  <select name={"packing_type"} defaultValue={"0"}>
-                    <option>Unknown</option>
-                    <option>Unknown</option>
-                    <option>Unknown</option>
+                  <select
+                    name={"packing_type"}
+                    defaultValue={
+                      _defaultDetails?.packing_type ?? PackingTypeEnum.OTHER
+                    }
+                  >
+                    {Object.values(PackingTypeEnum).map((type) => (
+                      <option value={type} key={type}>
+                        {type}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

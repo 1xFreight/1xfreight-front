@@ -7,7 +7,6 @@ import "./styles.css";
 import { formDataToJSON } from "@/common/utils/formData.util";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
-import { usePlacesWidget } from "react-google-autocomplete";
 
 export default function DropPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);
@@ -34,8 +33,12 @@ export default function DropPageComponent() {
       }
 
       const formData = new FormData(form);
+      const jsonData = formDataToJSON(formData);
 
-      data.push(formDataToJSON(formData));
+      data.push({
+        ...jsonData,
+        order: i,
+      });
     }
 
     addBreadcrumb(data[0].address);
@@ -86,11 +89,11 @@ export default function DropPageComponent() {
         <button
           className={"add-more-form"}
           onClick={() =>
-            numberOfLocations < 5
+            numberOfLocations < 3
               ? setNumberOfLocations(numberOfLocations + 1)
               : ""
           }
-          disabled={numberOfLocations >= 5}
+          disabled={numberOfLocations >= 3}
         >
           <PlusCircle /> Add Drop
         </button>

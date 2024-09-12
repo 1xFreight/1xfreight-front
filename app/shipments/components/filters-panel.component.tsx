@@ -7,8 +7,11 @@ import StatusFilterDropdownComponent from "@/common/components/status-dropdown/s
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import MoreFiltersComponent from "@/common/components/more-filters/more-filters.component";
+import Excel from "@/public/icons/20px/excel 1.svg";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
 
-function FiltersPanelComponent() {
+function FiltersPanelComponent({ totalQuotes }) {
   const [type, setType] = useState<keyof typeof TypeFilterEnum>(
     TypeFilterEnum.ALL,
   );
@@ -22,21 +25,38 @@ function FiltersPanelComponent() {
 
   return (
     <div className={"shipments-filters-panel"}>
-      <TypeSelectorComponent
-        typeEnum={TypeFilterEnum}
-        type={type}
-        setType={setType}
-      />
+      <div>
+        <TypeSelectorComponent
+          typeEnum={TypeFilterEnum}
+          type={type}
+          setType={setType}
+        />
 
-      <StatusFilterDropdownComponent status={status} setStatus={setStatus} />
+        <StatusFilterDropdownComponent status={status} setStatus={setStatus} />
 
-      <MoreFiltersComponent setFilters={setFilters} filters={filters} />
+        <MoreFiltersComponent setFilters={setFilters} filters={filters} />
 
-      <SearchInputComponent
-        width={"20rem"}
-        placeholder={"Quote#, BOL#, Pickup, Delivery..."}
-        setSearch={setSearchText}
-      />
+        <SearchInputComponent
+          width={"20rem"}
+          placeholder={"Quote#, BOL#, Pickup, Delivery..."}
+          setSearch={setSearchText}
+        />
+      </div>
+
+      <div>
+        <h6>{totalQuotes} Shipments</h6>
+
+        <a
+          href={`${process.env.NEXT_PUBLIC_API_URL}/quote/shipments/export`}
+          style={{
+            height: "100%",
+          }}
+        >
+          <button className={"excel-export"}>
+            <Excel /> Export to Excel
+          </button>
+        </a>
+      </div>
     </div>
   );
 }

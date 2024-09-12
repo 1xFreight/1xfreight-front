@@ -2,10 +2,15 @@
     width: 100%;
     gap: 1rem;
 
-    .general-type-selector {
+    .table-status {
+        background: #e8e8e8;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        height: fit-content;
 
-        .type-selector {
-            width: 3rem;
+        &.booked {
+            background: #82C181;
+            color: white;
         }
     }
 
@@ -23,7 +28,6 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        height: 3rem;
         margin-top: 1rem;
 
         div {
@@ -34,7 +38,6 @@
 
         button {
             display: flex;
-            height: 2.5rem;
             align-items: center;
             padding: 0 1rem;
             background: white;
@@ -67,40 +70,97 @@
         width: 100%;
     }
 
-    tr>th {
-        text-align: left;
-        padding-left: 1.25rem;
-        background: white;
-        height: 3.75rem;
-        border-top: 1px solid #545454;
-        border-bottom: 1px solid #545454;
-        border-collapse: collapse;
+    .location-styling {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+    .arrow-styling {
+        width: 3rem;
+        min-width: 3rem;
+    }
     }
 
     tr th {
-        font-size: 1rem;
-        color: #545454;
-        font-weight: 400;
+        text-align: left;
+        padding-left: 0.65rem;
+        height: 3.75rem;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        color: #626262;
+        font-weight: 700;
     }
 
     tr>th:nth-child(1){
         border-radius: 1rem 0 0 1rem;
-        border-right: 1px solid #EFEFEF;
-        border-left: 1px solid #545454;
+        border-right: 2px solid #EFEFEF;
     }
 
     tr>th:nth-last-child(1){
         border-radius: 0 1rem 1rem 0;
-        border-right: 1px solid #545454;
     }
 
     tr>td:nth-child(1){
         border-radius: 1rem 0 0 1rem;
+        width: 3rem;
         border-right: 1px solid #EFEFEF;
+
+        div {
+            color: #545454;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .id-number {
+            font-size: 0.9rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+    }
+
+    tr:nth-of-type(even) td:not(:nth-child(1)) {
+        border-right: 1px solid #f3f3f3;
+    }
+
+    tr:nth-of-type(odd) td:not(:nth-child(1)) {
+        border-right: 1px solid #ececec;
+    }
+
+    tr td:nth-child(5), tr td:nth-child(2){
+        text-transform: capitalize;
+    }
+
+    tr td:nth-child(1) {
+        border-right: 2px solid #f3f3f3;
+    }
+
+    tr td:nth-child(2),tr td:nth-child(3) {
+       border-right: unset !important;
+    }
+
+     .pickup .location, .drop .location {
+        display: flex;
+        position: relative;
+        /*width: max-content;*/
+        align-items: center;
+        width: 100%;
+        padding-right: 3.5rem;
+
+        .extra-address{
+            position: absolute;
+            right: 0;
+        }
     }
 
     tr>td:nth-last-child(1){
         border-radius: 0 1rem 1rem 0;
+    }
+
+    td {
+        vertical-align: center;
+        padding: 0 0.65rem;
     }
 
     tr:nth-of-type(even){
@@ -111,17 +171,9 @@
         background: #F9F9F9;
     }
 
-    tr th:nth-child(1) {
-        width: 6.25rem;
-    }
-
-    tr td:nth-child(1) {
-        padding-left: 0;
-    }
-
-    tr td {
-        padding-left: 1.25rem;
-        height: 4rem;
+    tr>td {
+        height: 3rem;
+        box-sizing: border-box;
     }
 
     .svg-favorite {
@@ -148,7 +200,7 @@
         display: flex;
         gap: 0.5rem;
         position: relative;
-        z-index: 1;
+        /*z-index: 1;*/
 
         button {
             background: transparent;
@@ -170,9 +222,58 @@
 
 .shipments-filters-panel {
     display: flex;
-    width: 100%;
     gap: 1rem;
-    border-top: 1px solid #A7A7A7;
-    border-bottom: 1px solid #A7A7A7;
-    padding: 1rem 0;
+    justify-content: space-between;
+    width: 100%;
+    /*padding: 1rem 0;*/
+    /*border-bottom: 1px solid #A7A7A7;*/
+    /*border-top: 1px solid #A7A7A7;*/
+    flex-wrap: wrap;
+    z-index: 10;
+    flex-direction: row;
+
+    &>div{
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+     p {
+        font-size: 0.875rem;
+        color: #545454;
+    }
+
+    .refresh {
+        display: flex;
+        gap: 2.25rem;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    .refresh-btn {
+        width: 3rem;
+        height: 3rem;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+    }
+
+    .excel-export {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        border-radius: 0.5rem;
+        background: white;
+        padding:0 1rem;
+        color: #545454;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+
+        svg path{
+            fill: #545454;
+        }
+    }
+
 }

@@ -8,6 +8,9 @@ import {
 } from "react";
 import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
 import { mockBids } from "@/app/quotes/[quote_id]/mockBids";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { toShortId } from "@/common/utils/data-convert.utils";
 
 interface QuoteContextI {
   quote: any;
@@ -15,6 +18,7 @@ interface QuoteContextI {
   getRequest: (request_id: string) => any;
   breadcrumbs: any[];
   refreshBreadcrumbs: () => void;
+  requests: any;
 }
 
 const defaultContextValues: QuoteContextI = {
@@ -23,6 +27,7 @@ const defaultContextValues: QuoteContextI = {
   getRequest: () => {},
   breadcrumbs: [],
   refreshBreadcrumbs: () => {},
+  requests: [],
 };
 
 export const QuoteContext = createContext(defaultContextValues);
@@ -38,20 +43,46 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
     },
   ]);
 
+  const isValid = (validUntil) => {
+    const currentDate = new Date();
+    const validUntilDate = new Date(validUntil);
+
+    return (
+      (currentDate.getFullYear() === validUntilDate.getFullYear() &&
+        currentDate.getMonth() === validUntilDate.getMonth() &&
+        currentDate.getDate() === validUntilDate.getDate()) ||
+      currentDate < validUntilDate
+    );
+  };
+
+  const getQuoteAndReq = useDebouncedCallback(() => {
+    getWithAuth(`/quote?limit=1&id=${quoteId}`).then((data) => {
+      if (!data) return;
+
+      setQuote(data?.quotes[0]);
+      const bids = data?.quotes[0].bids;
+      const hydratedBids = bids.map((bid) => ({
+        ...bid,
+        status: isValid(bid.valid_until) ? "active" : "expired",
+      }));
+
+      setRequests(hydratedBids);
+    });
+  });
+
   useEffect(() => {
     if (!quoteId) return;
-    setQuote(mockData[0]);
-    setRequests(mockBids);
+    getQuoteAndReq();
     setBreadcrumbs([
       ...breadcrumbs,
       {
-        title: `Load #${quoteId}`,
+        title: `Load #${toShortId(quoteId)}`,
       },
     ]);
   }, [quoteId]);
 
   const getRequest = (request_id: string) => {
-    const request = requests.filter(({ id }) => id === request_id)[0];
+    const request = requests.filter(({ _id }) => _id === request_id)[0];
     if (!request) return;
 
     setBreadcrumbs([
@@ -60,10 +91,11 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
         href: "/quotes",
       },
       {
-        title: `Load #${quoteId}`,
+        title: `Load #${toShortId(quoteId)}`,
+        href: `/quotes/${quoteId}`,
       },
       {
-        title: request.company,
+        title: `Request #${toShortId(request._id)}`,
       },
     ]);
 
@@ -79,7 +111,8 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
         href: "/quotes",
       },
       {
-        title: `Load #${quoteId}`,
+        title: `Load #${toShortId(quoteId)}`,
+        href: `/quotes/${quoteId}`,
       },
     ]);
   };
@@ -93,6 +126,7 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
           getRequest,
           breadcrumbs,
           refreshBreadcrumbs,
+          requests,
         } as QuoteContextI
       }
     >

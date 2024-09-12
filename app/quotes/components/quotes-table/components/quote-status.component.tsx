@@ -7,8 +7,8 @@ interface QuoteStatusI {
 
 function QuoteStatusComponent({ status }: QuoteStatusI) {
   return (
-    <div className={`active-quote-status ${status.toUpperCase()}`}>
-      {status.toUpperCase()}
+    <div className={`active-quote-status ${status.toUpperCase()} main-text`}>
+      {status}
     </div>
   );
 }

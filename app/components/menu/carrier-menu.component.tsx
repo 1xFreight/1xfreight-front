@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function CarrierMenuComponent() {
   return (
     <div className={"carrier-menu"}>
-      <Link className={"item"} href={"/"}>
+      <Link className={"item"} href={"/available-quotes"}>
         <Bid />
         Available Quotes
       </Link>

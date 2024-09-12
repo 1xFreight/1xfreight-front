@@ -1,7 +1,8 @@
 .extra-address-window {
     position: absolute;
-    height: 8rem;
+    min-height: 8rem;
     background: white;
+    height: max-content;
     z-index: 10;
     flex-direction: column;
     border-radius: 1rem;
@@ -9,8 +10,9 @@
     border: 1px solid #D9D9D9;
     box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.05);
     display: none;
-    top: -9rem;
     width: max-content;
+    transform: translate(0,calc(-100% - 1rem));
+    top: 0;
 
     & h4 {
         color: #545454;

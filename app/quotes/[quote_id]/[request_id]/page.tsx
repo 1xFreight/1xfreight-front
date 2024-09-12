@@ -7,6 +7,12 @@ import "./styles.css";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import QuoteFtlComponent from "@/app/components/quote-details/quote-ftl.component";
 import ChatComponent from "@/common/components/chat/chat.component";
+import { useDebouncedCallback } from "use-debounce";
+import { postWithAuth } from "@/common/utils/fetchAuth.util";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import useStore from "@/common/hooks/use-store.context";
+import { useRouter } from "next/navigation";
+import { formatDate } from "@/common/utils/date.utils";
 
 export default function RequestIdPage({
   params,
@@ -18,6 +24,8 @@ export default function RequestIdPage({
 }) {
   const { setQuoteId, getRequest, quote } = useQuoteContext();
   const [request, setRequest] = useState();
+  const { showToast } = useStore();
+  const router = useRouter();
 
   useEffect(() => {
     setRequest(getRequest(params.request_id));
@@ -29,9 +37,29 @@ export default function RequestIdPage({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(request);
-  }, [request]);
+  const acceptQuote = useDebouncedCallback(() => {
+    postWithAuth("/quote/accept", {
+      quote_id: params.quote_id,
+      bid_id: params.request_id,
+    }).then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
+          duration: 5000,
+        });
+      }
+
+      showToast({
+        type: ToastTypesEnum.SUCCESS,
+        text: "Quote accepted",
+        duration: 5000,
+      });
+
+      router.push("/quotes");
+    });
+  }, 500);
 
   if (!request) return <LoadingComponent />;
   if (!quote) return <LoadingComponent />;
@@ -46,7 +74,7 @@ export default function RequestIdPage({
                 <div className={"price"}>
                   <div className={"full-price"}>
                     <span>$</span>
-                    {numberCommaFormat(request.price)}
+                    {numberCommaFormat(request.amount)}
                   </div>
                   <div className={"currency"}>USD</div>
                 </div>
@@ -55,7 +83,7 @@ export default function RequestIdPage({
 
               <div className={"valid-until"}>
                 <h6>Valid Until</h6>
-                <h2>{request.date}</h2>
+                <h2>{formatDate(request.valid_until)}</h2>
                 <div
                   className={`sub-text ${request.status}`}
                   style={{
@@ -68,14 +96,14 @@ export default function RequestIdPage({
 
               <div className={"transit-time"}>
                 <h6>Transit Time</h6>
-                <h2>{request.transitTime}</h2>
+                <h2>{request.transit_time}</h2>
                 <div className={`sub-text`}>days</div>
               </div>
 
               <div className={"partner"}>
                 <h6>Partner</h6>
-                <h2>{request.company}</h2>
-                <div className={`sub-text`}>{request.email}</div>
+                <h2>{request.user.email}</h2>
+                {/*<div className={`sub-text`}>{request.email}</div>*/}
               </div>
             </div>
 
@@ -87,131 +115,20 @@ export default function RequestIdPage({
             )}
           </div>
 
-          <QuoteFtlComponent
-            quote={{
-              type: "FTL",
-              shipment: {
-                commodity: "21312sda",
-                emergency_name: "dssdfsdfs",
-                emergency_phone: "12312313232",
-                emergency_phone2: "",
-                goods_value: "233233323",
-                hazardous_goods: "yes",
-                max_temp_reefer: "15",
-                min_temp_reefer: "-15",
-                packing_method: "PALLETIZED",
-                packing_type: "Unknown",
-                quantity: "2323",
-                reference_no0: "34242342",
-                reference_no1: "66456666",
-                reference_no2: "767676767",
-                special_instructions:
-                  "Prioritize safety by adhering to established protocols for FTL travel. Regular maintenance of FTL drives and thorough training " +
-                  "for personnel are essential.Prioritize safety by adhering to established protocols for FTL travel. Regular maintenance of FTL " +
-                  "drives and thorough training for personnel are essential.",
-                un_id_number: "132131313",
-                weight: "231313",
-                weight_type: "LB",
-                equipment_type: "reefer",
-              },
-              pickup: [
-                {
-                  LAF: "on",
-                  LGDR: "on",
-                  addTime: "no",
-                  address: "Miami Beach , MI12323",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "Astarojna cum dai zadnea la intrare",
-                  locationTimeStart: "any",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "yes",
-                  address: "Boulverdul Dacia 112/1 , MD9999",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "",
-                  locationTimeStart: "Any time during business hours",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "yes",
-                  address: "str. Zadnipru 69/69 ",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "Suna din timp",
-                  locationTimeStart: "5:30 AM",
-                  locationTimeEnd: "8:30 AM",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "no",
-                  address: "str. Zadnipru 69/69 ",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "",
-                  locationTimeStart: "5:30 AM",
-                  locationTimeEnd: "8:30 AM",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-              ],
-
-              drop: [
-                {
-                  LAF: "on",
-                  LGDR: "on",
-                  addTime: "no",
-                  address: "Miami Beach , MI12323",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "Astarojna cum dai zadnea la intrare",
-                  locationTimeStart: "any",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "yes",
-                  address: "Boulverdul Dacia 112/1 , MD9999",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "",
-                  locationTimeStart: "Any time during business hours",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "yes",
-                  address: "str. Zadnipru 69/69 ",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "Suna din timp",
-                  locationTimeStart: "5:30 AM",
-                  locationTimeEnd: "8:30 AM",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-                {
-                  addTime: "no",
-                  address: "str. Zadnipru 69/69 ",
-                  date: "2024-08-02",
-                  deliveryLocationType: "Business",
-                  locationNotes: "",
-                  locationTimeStart: "5:30 AM",
-                  locationTimeEnd: "8:30 AM",
-                  shippingHoursType: "BY_APPOINTMENT",
-                },
-              ],
-            }}
-          />
+          <QuoteFtlComponent quote={quote} />
         </div>
 
         <div className={"chat-column"}>
           <div className={"accept-quote"}>
-            <button>Accept Quote</button>
-            <div className={"sub-text"}>
-              Total Amount: ${numberCommaFormat(quote.price)}.00
+            <button onClick={acceptQuote}>Accept Quote</button>
+            <div className={"main-text"}>
+              Total Amount: ${numberCommaFormat(request.amount)}.00(per load) x{" "}
+              {quote?.load_number}(load numbers) ={" $"}
+              {numberCommaFormat(request.amount * quote?.load_number)}.00
             </div>
           </div>
           <div className={"chat-wrapper"}>
-            <ChatComponent />
+            <ChatComponent room={params.quote_id + ":" + params.request_id} />
           </div>
         </div>
       </div>

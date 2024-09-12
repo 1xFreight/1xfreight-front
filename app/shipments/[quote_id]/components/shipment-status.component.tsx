@@ -1,12 +1,12 @@
 import Checkmark from "@/public/icons/24px/checked-tick.svg";
 
 export enum ShipmentStatusEnum {
-  BOOKED = "Booked",
-  DISPATCHED = "Dispatched",
-  PICKUP = "At Pickup",
-  TRANSIT = "In Transit",
-  DESTINATION = "At Destination",
-  DELIVERED = "Delivered",
+  BOOKED = "booked",
+  DISPATCHED = "dispatched",
+  PICKUP = "at pickup",
+  TRANSIT = "in transit",
+  DESTINATION = "at destination",
+  DELIVERED = "delivered",
 }
 
 export default function ShipmentStatusComponent({

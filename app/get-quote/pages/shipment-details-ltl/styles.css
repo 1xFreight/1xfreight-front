@@ -1,0 +1,133 @@
+.shipment-details-ltl {
+    width: 100%;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+
+    select {
+        padding: 0 1rem;
+    }
+
+    .title {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+    }
+
+    .reference-no-wrapper{
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #A7A7A7;
+    }
+
+    .reference-no-actions {
+        width: 100%;
+        display: flex;
+        gap: 2rem;
+        height: 2.25rem;
+
+        button {
+            background: transparent;
+            color: #0020DD;
+            display: flex;
+            align-items: center;
+            width: 15rem;
+            justify-content: center;
+            gap: 1rem;
+            border-radius: 0.5rem;
+            transition: all 250ms ease-in-out;
+            border: unset;
+            font-size: 1rem;
+
+            &:hover {
+                background: #e5e5e5;
+            }
+
+            svg path{
+                fill: #0020DD;
+            }
+
+            &:disabled {
+                color: #A7A7A7 !important;
+                svg path {
+                    fill: #A7A7A7;
+                }
+            }
+
+            &.delete {
+                /*background: transparent;*/
+                color: rgba(221, 0, 32, 0.5);
+            }
+
+        }
+
+    }
+
+    .reference-item {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0.5rem;
+        gap: .25rem;
+
+        div {
+            display: flex;
+            gap: 2rem;
+        }
+    }
+
+    .add-item {
+        width: 20rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        border-radius: 0.75rem;
+        /*margin-bottom: 2rem;*/
+
+        svg {
+            position: absolute;
+            left: 1rem;
+        }
+    }
+
+    .items-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        /*margin-top: 2rem;*/
+    }
+
+    .total-data {
+        background: #D9D9D9;
+        color: #545454;
+        padding: 1.5rem;
+        width: 100%;
+        border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border: 2px solid #A7A7A7;
+
+        div {
+            display: flex;
+            width: 100%;
+
+            h5 {
+                width: 20rem;
+                span {
+                    font-size: 0.6rem;
+                    position: absolute;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

@@ -19,9 +19,15 @@ export enum TypeFilterEnum {
   AIR = "AIR",
 }
 
+export enum StatusFilterEnum {
+  ALL = "ALL",
+  REQUESTED = "REQUESTED",
+  CANCELED = "CANCELED",
+}
+
 function FiltersPanelComponent() {
   const [type, setType] = useState<TypeFilterEnum>(TypeFilterEnum.ALL);
-  const [status, setStatus] = useState<Array<QuoteStatusEnum>>([]);
+  const [status, setStatus] = useState<StatusFilterEnum>(StatusFilterEnum.ALL);
   const [searchText, setSearch] = useState("");
   const { setFilters } = useStore();
 
@@ -44,7 +50,13 @@ function FiltersPanelComponent() {
         typeEnum={TypeFilterEnum}
       />
 
-      <StatusFilterDropdownComponent status={status} setStatus={setStatus} />
+      <TypeSelectorComponent
+        type={status}
+        setType={setStatus}
+        typeEnum={StatusFilterEnum}
+      />
+
+      {/*<StatusFilterDropdownComponent status={status} setStatus={setStatus} />*/}
 
       <MoreFiltersComponent />
 

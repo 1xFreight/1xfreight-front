@@ -16,6 +16,7 @@ import Biohazard from "@/public/icons/30px/hazardous-material.svg";
 import TempUp from "@/public/icons/30px/temperature-arrow-up(1).svg";
 import TempDown from "@/public/icons/30px/temperature-arrow-down(1).svg";
 import {
+  clearText,
   extractAccesorialsShipment,
   extractAccessorialsFromObj,
   extractReferenceNo,
@@ -25,8 +26,14 @@ import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-f
 import React from "react";
 
 function QuoteFtlComponent({ quote }: any) {
-  const reference = extractReferenceNo(quote.shipment);
-  const accShipment = extractAccesorialsShipment(quote.shipment);
+  const reference = quote?.references;
+  const pickup =
+    quote?.addresses?.filter(({ address_type }) => address_type === "pickup") ??
+    quote?.pickup;
+  const drop =
+    quote?.addresses?.filter(({ address_type }) => address_type === "drop") ??
+    quote?.drop;
+  const details = quote?.details ? quote?.details[0] : quote?.shipment_details;
 
   return (
     <div className={"quote-ftl"}>
@@ -43,21 +50,28 @@ function QuoteFtlComponent({ quote }: any) {
         <div>
           <Group />
           <h4>Type: </h4>
-          <h3>{quote.type}</h3>
+          <h3>{quote?.type}</h3>
         </div>
+      </div>
 
-        <div>
+      <div className={"info-2blocks"}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+          }}
+        >
           <EqTruck />
 
           <h4>Equipment: </h4>
-          <h3
-            style={{
-              textTransform: "capitalize",
-            }}
-          >
-            {quote.shipment?.equipment_type?.toLowerCase()}
-          </h3>
         </div>
+        <h3
+          style={{
+            textTransform: "capitalize",
+          }}
+        >
+          {quote?.equipments?.join(",")}
+        </h3>
       </div>
 
       <div className={"locations"}>
@@ -67,12 +81,14 @@ function QuoteFtlComponent({ quote }: any) {
         </div>
 
         <div className={"locations-wrapper"}>
-          {quote.pickup &&
-            quote.pickup.map((location, index) => {
-              const locationAccessorials = extractAccessorialsFromObj(location);
+          {pickup &&
+            pickup.map((location, index) => {
               return (
                 <div className={"location-item"} key={location.address + index}>
-                  <h3>PICKUP {quote.pickup.length > 1 ? index + 1 : ""}</h3>
+                  <h3>
+                    {location?.address_type?.toUpperCase()}{" "}
+                    {pickup.length > 1 ? index + 1 : ""}
+                  </h3>
 
                   <div className={"location-circle"}>
                     <div className={"circle-line"}></div>
@@ -81,45 +97,69 @@ function QuoteFtlComponent({ quote }: any) {
                   <div className={"location-info"}>
                     <h3>{location.address}</h3>
 
-                    {location.addTime === "yes" && (
-                      <div>
+                    {location.date && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Calendar />
                         <h4>Date:</h4>
                         <h3>
                           {formatDate(location.date) +
                             "   ," +
-                            ShippingHoursEnum[location.shippingHoursType]}
+                            ShippingHoursEnum[location.shipping_hours]}
                         </h3>
                       </div>
                     )}
 
-                    {location.addTime === "yes" && (
-                      <div>
+                    {location.time_start && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Clock />
                         <h4>Time:</h4>
                         <h3>
-                          {location.locationTimeStart}
-                          {location.locationTimeEnd
-                            ? " - " + location.locationTimeEnd
-                            : ""}
+                          {location.time_start}
+                          {location.time_end ? " - " + location.time_end : ""}
                         </h3>
                       </div>
                     )}
 
-                    {!!location.locationNotes &&
-                      !!location.locationNotes.length && (
-                        <div>
+                    {!!location.notes && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "start",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <StickyNotes />
                           <h4>Notes:</h4>
-                          <h3>{location.locationNotes}</h3>
                         </div>
-                      )}
+                        <h3>{location.notes}</h3>
+                      </div>
+                    )}
 
-                    {locationAccessorials && (
-                      <div>
+                    {!!location.accessorials?.length && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Cog />
                         <h4>Accessorials:</h4>
-                        <h3>{locationAccessorials.join(", ")}</h3>
+                        <h3>{location.accessorials?.join(", ")}</h3>
                       </div>
                     )}
                   </div>
@@ -127,15 +167,14 @@ function QuoteFtlComponent({ quote }: any) {
               );
             })}
 
-          {quote.drop &&
-            quote.drop.map((location, index) => {
-              const locationAccessorials = extractAccessorialsFromObj(location);
+          {drop &&
+            drop.map((location, index) => {
               return (
-                <div
-                  className={"location-item"}
-                  key={location.address + index + "drop"}
-                >
-                  <h3>DELIVERY {quote.drop.length > 1 ? index + 1 : ""}</h3>
+                <div className={"location-item"} key={location.address + index}>
+                  <h3>
+                    {location?.address_type?.toUpperCase()}{" "}
+                    {drop.length > 1 ? index + 1 : ""}
+                  </h3>
 
                   <div className={"location-circle"}>
                     <div className={"circle-line"}></div>
@@ -144,45 +183,69 @@ function QuoteFtlComponent({ quote }: any) {
                   <div className={"location-info"}>
                     <h3>{location.address}</h3>
 
-                    {location.addTime === "yes" && (
-                      <div>
+                    {location.date && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Calendar />
                         <h4>Date:</h4>
                         <h3>
                           {formatDate(location.date) +
                             "   ," +
-                            ShippingHoursEnum[location.shippingHoursType]}
+                            ShippingHoursEnum[location.shipping_hours]}
                         </h3>
                       </div>
                     )}
 
-                    {location.addTime === "yes" && (
-                      <div>
+                    {location.time_start && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Clock />
                         <h4>Time:</h4>
                         <h3>
-                          {location.locationTimeStart}
-                          {location.locationTimeEnd
-                            ? " - " + location.locationTimeEnd
-                            : ""}
+                          {location.time_start}
+                          {location.time_end ? " - " + location.time_end : ""}
                         </h3>
                       </div>
                     )}
 
-                    {!!location.locationNotes &&
-                      !!location.locationNotes.length && (
-                        <div>
+                    {!!location.notes && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "start",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <StickyNotes />
                           <h4>Notes:</h4>
-                          <h3>{location.locationNotes}</h3>
                         </div>
-                      )}
+                        <h3>{location.notes}</h3>
+                      </div>
+                    )}
 
-                    {locationAccessorials && (
-                      <div>
+                    {!!location.accessorials?.length && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <Cog />
                         <h4>Accessorials:</h4>
-                        <h3>{locationAccessorials.join(", ")}</h3>
+                        <h3>{location.accessorials?.join(", ")}</h3>
                       </div>
                     )}
                   </div>
@@ -191,78 +254,118 @@ function QuoteFtlComponent({ quote }: any) {
             })}
         </div>
 
-        <div className={"info-2blocks"}>
-          <div>
-            <Database />
-            <h4>Packing method: </h4>
-            <h3
-              style={{
-                textTransform: "capitalize",
-              }}
-            >
-              {quote.shipment?.packing_method?.toLowerCase()}
-            </h3>
+        {!!details.items && (
+          <div className={"items-wrapper-quote-preview"}>
+            <div className={"item-style"}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Weight</th>
+                    <th>Dimensions</th>
+                    <th>Handling unit</th>
+                    <th>NMFC</th>
+                    <th>Freight Class</th>
+                    <th>Sub Class</th>
+                    <th>Commodity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {details.items.map((item, index) => (
+                    <tr key={index}>
+                      <td></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
+        )}
 
-          <div>
-            <Archive />
-            <h4>Packing type: </h4>
-            <h3>{quote.shipment?.packing_type}</h3>
-          </div>
+        <div className={"info-2blocks"}>
+          {!!details?.packing_method && (
+            <div>
+              <Database />
+              <h4>Packing method: </h4>
+              <h3
+                style={{
+                  textTransform: "capitalize",
+                }}
+              >
+                {clearText(details?.packing_method)}
+              </h3>
+            </div>
+          )}
+
+          {!!details?.packing_type && (
+            <div>
+              <Archive />
+              <h4>Packing type: </h4>
+              <h3>{details?.packing_type}</h3>
+            </div>
+          )}
         </div>
 
         <div className={"info-2blocks"}>
-          <div>
-            <OpenBox />
-            <h4>Commodity: </h4>
-            <h3>{quote.shipment?.commodity}</h3>
-          </div>
+          {!!details?.commodity && (
+            <div>
+              <OpenBox />
+              <h4>Commodity: </h4>
+              <h3>{details?.commodity}</h3>
+            </div>
+          )}
 
-          <div>
-            <Gym />
-            <h4>Weight: </h4>
-            <h3>
-              {quote.shipment?.weight +
-                " " +
-                quote.shipment?.weight_type?.toLowerCase() +
-                ", " +
-                quote.shipment?.quantity +
-                " units"}
-            </h3>
-          </div>
+          {!!details?.weight &&
+            !!details?.weight_unit &&
+            !!details?.quantity && (
+              <div>
+                <Gym />
+                <h4>Weight: </h4>
+                <h3>
+                  {details?.weight +
+                    " " +
+                    details?.weight_unit +
+                    ", " +
+                    details?.quantity +
+                    " units"}
+                </h3>
+              </div>
+            )}
         </div>
 
         <div className={"info-2blocks"}>
           <div>
             <DollarSign />
             <h4>Goods value: </h4>
-            <h3>${quote.shipment?.goods_value}.00</h3>
+            <h3>${details?.goods_value}.00</h3>
           </div>
 
-          <div>
-            <Cog />
-            <h4>Accessorials: </h4>
-            <h3>{accShipment?.join(", ")}</h3>
-          </div>
+          {!!details?.accessorials && (
+            <div>
+              <Cog />
+              <h4>Accessorials: </h4>
+              <h3>{details?.accessorials?.join(", ")}</h3>
+            </div>
+          )}
         </div>
 
-        {quote.shipment?.equipment_type === "reefer" && (
+        {details?.min_temp && details?.max_temp && (
           <div className={"info-2blocks temp-reefer"}>
             <div>
               <TempUp />
               <h4>Max Temp: </h4>
-              <h3>{quote.shipment?.max_temp_reefer + " "}°F</h3>
+              <h3>{details?.max_temp + " "}°F</h3>
             </div>
 
             <div>
               <TempDown />
               <h4>Min Temp: </h4>
-              <h3>{quote.shipment?.min_temp_reefer + " "}°F</h3>
+              <h3>{details?.min_temp + " "}°F</h3>
             </div>
           </div>
         )}
 
-        {quote.shipment?.hazardous_goods === "yes" && (
+        {details?.hazardous_goods && (
           <div className={"hazard-warning"}>
             <Biohazard />
 
@@ -270,25 +373,30 @@ function QuoteFtlComponent({ quote }: any) {
               <h3>This shipment contains hazardous commodities!</h3>
 
               <div>
-                <h4>UN: {quote.shipment?.un_id_number}</h4>
+                <h4>UN: {quote?.shipment?.un_id_number}</h4>
                 <h4>
-                  Emergency Contact: {quote.shipment?.emergency_name},{" "}
-                  {quote.shipment?.emergency_phone}{" "}
-                  {quote.shipment?.emergency_phone2}
+                  Emergency Contact: {quote?.shipment?.emergency_name},{" "}
+                  {quote?.shipment?.emergency_phone1}{" "}
+                  {quote?.shipment?.emergency_phone2}
                 </h4>
               </div>
             </div>
           </div>
         )}
 
-        {!!quote.shipment?.special_instructions && (
+        {!!details?.notes && (
           <div className={"special-instructions"}>
-            <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <StickyNotes />
               <h4>Special instructions:</h4>
             </div>
 
-            <h3>{quote.shipment?.special_instructions}</h3>
+            <h3>{details.notes}</h3>
           </div>
         )}
       </div>

@@ -15,6 +15,10 @@ import ToasterComponent from "@/common/components/toaster/toaster.component";
 
 function MainMenu() {
   const { session } = useStore();
+  const avatarName =
+    session?.role !== "carrier" && session?.name
+      ? session?.name
+      : session?.email;
 
   return (
     <header className={"main-menu"}>
@@ -24,8 +28,8 @@ function MainMenu() {
         </Link>
 
         {/*<AdminMenuComponent />*/}
-        {/*<CarrierMenuComponent />*/}
-        <SellerMenuComponent />
+        {session?.role === "carrier" && <CarrierMenuComponent />}
+        {session?.role.includes("shipper") && <SellerMenuComponent />}
       </div>
 
       <div className={"user-menu"}>
@@ -35,11 +39,13 @@ function MainMenu() {
         </div>
 
         <div className={"user"}>
-          <AvatarComponent username={session.name} logo={session?.logo} />
+          <AvatarComponent username={avatarName} logo={session?.logo} />
 
           <div className={"user-name"}>
-            <div>{session.name}</div>
-            <div>{session.role}</div>
+            <div>
+              {session?.role === "carrier" ? session.email : session?.name}
+            </div>
+            <div>{session?.role}</div>
           </div>
 
           <div className={"open-extra-menu"}>{/*<Dots />*/}</div>

@@ -14,3 +14,13 @@
         fill: #0020DD;
     }
 }
+
+.loading-circle-general {
+    svg {
+        width: 35%;
+
+        path {
+            fill: #0020DD;
+        }
+    }
+}

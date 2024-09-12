@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "@/common/components/loading/loading.component";
 import "./styles.css";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
@@ -15,6 +15,14 @@ import ShipmentStatusComponent, {
   ShipmentStatusEnum,
 } from "@/app/shipments/[quote_id]/components/shipment-status.component";
 import BottomMenuComponent from "@/app/shipments/[quote_id]/components/bottom-menu.component";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { formatDate } from "@/common/utils/date.utils";
+import {
+  formatShipmentLTL,
+  toShortId,
+} from "@/common/utils/data-convert.utils";
+import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
 
 export default function ShipmentIdPage({
   params,
@@ -23,8 +31,81 @@ export default function ShipmentIdPage({
     quote_id: string;
   };
 }) {
-  const [request, setRequest] = useState(mockBids[0]);
-  const [quote, setQuote] = useState(mockData[0]);
+  const [request, setRequest] = useState<any>();
+  const [quote, setQuote] = useState<any>();
+
+  const x = {
+    items: [
+      {
+        commodity: "123",
+        emergency_phone: "",
+        emergency_phone2: "",
+        freight_class: "50",
+        height: "15",
+        length: "15",
+        nmfc: "123",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "123",
+        handling_unit: "Other",
+        un_number: "",
+        weight: "244",
+        width: "15",
+      },
+      {
+        commodity: "23",
+        emergency_phone: "+1231231313",
+        emergency_phone2: "",
+        freight_class: "50",
+        hazardous_material: "on",
+        height: "1231",
+        length: "123",
+        nmfc: "23",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "23",
+        handling_unit: "Other",
+        un_number: "2342",
+        weight: "123",
+        width: "1231",
+      },
+    ],
+    notes: "1sadadawdawda",
+    reference_no0: "213123",
+    reference_type0: "Unknown",
+    goods_value: "7500",
+    totalSkidSpots: 12,
+    totalVolume: 200,
+    totalWeight: 34343,
+    totalDensity: 1232,
+  };
+
+  const getQuoteAndReq = useDebouncedCallback(() => {
+    getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
+      (data) => {
+        const xx = formatShipmentLTL(x);
+
+        setQuote({ ...data?.quotes[0], details: [xx] });
+        setRequest(data?.quotes[0].bid);
+      },
+    );
+  });
+
+  const isValid = (validUntil) => {
+    const currentDate = new Date();
+    const validUntilDate = new Date(validUntil);
+
+    return (
+      (currentDate.getFullYear() === validUntilDate.getFullYear() &&
+        currentDate.getMonth() === validUntilDate.getMonth() &&
+        currentDate.getDate() === validUntilDate.getDate()) ||
+      currentDate < validUntilDate
+    );
+  };
+
+  useEffect(() => {
+    getQuoteAndReq();
+  }, []);
 
   if (!request) return <LoadingComponent />;
   if (!quote) return <LoadingComponent />;
@@ -32,6 +113,10 @@ export default function ShipmentIdPage({
   return (
     <div className={"shipment-id-page"}>
       <BottomMenuComponent />
+      <ConfirmActionComponent
+        id={"confirm-cancel-load"}
+        title={"Are you sure you want to cancel this load ?"}
+      />
       <div className={"container"}>
         <div className={"page-header"}>
           <div className={"breadcrumbs"}>
@@ -41,23 +126,25 @@ export default function ShipmentIdPage({
                   title: "Shipments",
                 },
                 {
-                  title: `Load #${quote.id}`,
+                  title: `Load #${toShortId(quote._id)}`,
                 },
               ]}
             />
 
             <div>
-              <button className={"edit"}>
-                <Marker />
-                Edit Load
-              </button>
-              <button className={"cancel"}>
+              <button
+                className={"cancel"}
+                onClick={() => {
+                  document.getElementById("confirm-cancel-load").style.display =
+                    "flex";
+                }}
+              >
                 <Delete /> Cancel Load
               </button>
             </div>
           </div>
 
-          <ShipmentStatusComponent status={ShipmentStatusEnum.DESTINATION} />
+          <ShipmentStatusComponent status={quote.status} />
         </div>
 
         <div className={"content-wrapper"}>
@@ -68,7 +155,7 @@ export default function ShipmentIdPage({
                   <div className={"price"}>
                     <div className={"full-price"}>
                       <span>$</span>
-                      {numberCommaFormat(request.price)}
+                      {numberCommaFormat(request.amount)}
                     </div>
                     <div className={"currency"}>USD</div>
                   </div>
@@ -77,27 +164,26 @@ export default function ShipmentIdPage({
 
                 <div className={"valid-until"}>
                   <h6>Valid Until</h6>
-                  <h2>{request.date}</h2>
+                  <h2>{formatDate(request.valid_until)}</h2>
                   <div
-                    className={`sub-text ${request.status}`}
+                    className={`sub-text ${isValid(request.valid_until) ? "active" : "expired"}`}
                     style={{
                       textTransform: "capitalize",
                     }}
                   >
-                    {request.status}
+                    {isValid(request.valid_until) ? "active" : "expired"}
                   </div>
                 </div>
 
                 <div className={"transit-time"}>
                   <h6>Transit Time</h6>
-                  <h2>{request.transitTime}</h2>
+                  <h2>{request.transit_time}</h2>
                   <div className={`sub-text`}>days</div>
                 </div>
 
                 <div className={"partner"}>
                   <h6>Partner</h6>
-                  <h2>{request.company}</h2>
-                  <div className={`sub-text`}>{request.email}</div>
+                  <h2>{quote?.carrier?.email}</h2>
                 </div>
               </div>
 
@@ -109,125 +195,15 @@ export default function ShipmentIdPage({
               )}
             </div>
 
-            <QuoteFtlComponent
-              quote={{
-                type: "FTL",
-                shipment: {
-                  commodity: "21312sda",
-                  emergency_name: "dssdfsdfs",
-                  emergency_phone: "12312313232",
-                  emergency_phone2: "",
-                  goods_value: "233233323",
-                  hazardous_goods: "yes",
-                  max_temp_reefer: "15",
-                  min_temp_reefer: "-15",
-                  packing_method: "PALLETIZED",
-                  packing_type: "Unknown",
-                  quantity: "2323",
-                  reference_no0: "34242342",
-                  reference_no1: "66456666",
-                  reference_no2: "767676767",
-                  special_instructions:
-                    "Prioritize safety by adhering to established protocols for FTL travel. Regular maintenance of FTL drives and thorough training " +
-                    "for personnel are essential.Prioritize safety by adhering to established protocols for FTL travel. Regular maintenance of FTL " +
-                    "drives and thorough training for personnel are essential.",
-                  un_id_number: "132131313",
-                  weight: "231313",
-                  weight_type: "LB",
-                  equipment_type: "reefer",
-                },
-                pickup: [
-                  {
-                    LAF: "on",
-                    LGDR: "on",
-                    addTime: "no",
-                    address: "Miami Beach , MI12323",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "Astarojna cum dai zadnea la intrare",
-                    locationTimeStart: "any",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "yes",
-                    address: "Boulverdul Dacia 112/1 , MD9999",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "",
-                    locationTimeStart: "Any time during business hours",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "yes",
-                    address: "str. Zadnipru 69/69 ",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "Suna din timp",
-                    locationTimeStart: "5:30 AM",
-                    locationTimeEnd: "8:30 AM",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "no",
-                    address: "str. Zadnipru 69/69 ",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "",
-                    locationTimeStart: "5:30 AM",
-                    locationTimeEnd: "8:30 AM",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                ],
-
-                drop: [
-                  {
-                    LAF: "on",
-                    LGDR: "on",
-                    addTime: "no",
-                    address: "Miami Beach , MI12323",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "Astarojna cum dai zadnea la intrare",
-                    locationTimeStart: "any",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "yes",
-                    address: "Boulverdul Dacia 112/1 , MD9999",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "",
-                    locationTimeStart: "Any time during business hours",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "yes",
-                    address: "str. Zadnipru 69/69 ",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "Suna din timp",
-                    locationTimeStart: "5:30 AM",
-                    locationTimeEnd: "8:30 AM",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                  {
-                    addTime: "no",
-                    address: "str. Zadnipru 69/69 ",
-                    date: "2024-08-02",
-                    deliveryLocationType: "Business",
-                    locationNotes: "",
-                    locationTimeStart: "5:30 AM",
-                    locationTimeEnd: "8:30 AM",
-                    shippingHoursType: "BY_APPOINTMENT",
-                  },
-                ],
-              }}
-            />
+            <QuoteFtlComponent quote={quote} />
           </div>
 
           <div className={"chat-column"}>
             <div className={"chat-wrapper"}>
-              <ChatComponent />
+              <ChatComponent
+                room={params.quote_id + ":" + request?._id}
+                title={`with ${quote?.carrier?.email}`}
+              />
             </div>
           </div>
         </div>

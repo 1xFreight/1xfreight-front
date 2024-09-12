@@ -67,6 +67,7 @@ export function extractAccesorialsShipment(obj: any) {
 
 export function convertQuoteToApiFormat(quote: any, type: string) {
   const apiObj = { type };
+  const staticData = ["partners", "members", "subscribers", "equipments"];
 
   quote.map(({ form, data }) => {
     if (form === "pickup" || form === "drop") {
@@ -81,7 +82,7 @@ export function convertQuoteToApiFormat(quote: any, type: string) {
       apiObj[form] = formatReview(data);
     }
 
-    if (form === "partners" || form === "members") {
+    if (staticData.includes(form)) {
       apiObj[form] = data;
     }
   });
@@ -90,7 +91,9 @@ export function convertQuoteToApiFormat(quote: any, type: string) {
 
 export function formatAddressObj(obj: any, type: string | undefined) {
   const acc = extractAccessorialsFromObj(obj);
-  let formattedAddress = {};
+  let formattedAddress = {
+    order: obj.order,
+  };
 
   if (obj.addTime === "yes") {
     formattedAddress["date"] = obj.date;
@@ -116,6 +119,48 @@ export function formatAddressObj(obj: any, type: string | undefined) {
   formattedAddress["address"] = obj.address;
 
   return formattedAddress;
+}
+
+export function formatShipmentLTL(obj: any) {
+  const items = obj.items;
+  const references = [];
+
+  Array(5)
+    .fill(1)
+    .map((x, index) => {
+      const number = Object.keys(obj).find((key) =>
+        key.includes(`reference_no${index}`),
+      );
+      const type = Object.keys(obj).find((key) =>
+        key.includes(`reference_type${index}`),
+      );
+      number && type
+        ? references.push({ number: obj[number], type: obj[type] })
+        : "";
+    });
+
+  const formattedItems = items.map((item: any) => {
+    const isHazard =
+      item.hazardous_material && item.hazardous_material === "on";
+    const isStack = item.stackable && item.stackable === "on";
+    const isMixed = item.mixed_pallet && item.mixed_pallet === "on";
+
+    return {
+      ...item,
+      hazardous_material: isHazard,
+      stackable: isStack,
+      mixed_pallet: isMixed,
+    };
+  });
+
+  return {
+    references,
+    items: formattedItems,
+    notes: obj.notes,
+    goods_value: obj.goods_value,
+    weight: obj.totalWeight,
+    weight_unit: "lb",
+  };
 }
 
 export function formatShipmentObj(obj: any) {
@@ -174,6 +219,8 @@ export function formatShipmentObj(obj: any) {
       ))
     : "";
   formattedShipment["goods_value"] = obj.goods_value;
+  formattedShipment["load_number"] = obj.load_number;
+  formattedShipment["packing_type"] = obj.packing_type;
 
   return formattedShipment;
 }
@@ -192,7 +239,7 @@ export function formatReview(obj: any) {
 }
 
 export function toShortId(id: string) {
-  return id.substring(id.length - 7, id.length);
+  return id.substring(id.length - 7, id.length).toUpperCase();
 }
 
 export function convertStringToBool(text: string) {

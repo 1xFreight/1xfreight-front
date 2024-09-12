@@ -8,6 +8,8 @@ import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import { isValidEmail } from "@/common/utils/email.util";
+import Image from "next/image";
+import LoginGif from "@/public/login-img.jpg";
 
 enum LoginFormTabsEnum {
   EMAIL_PASS = "email & pass",
@@ -57,36 +59,43 @@ export default function LoginFormComponent() {
 
   return (
     <div className={"login-form"}>
-      <div>
-        <Logo />
+      <div className={"login-gif"}>
+        <div>
+          <Image src={LoginGif} alt={"login-img"} />
+        </div>
       </div>
 
-      <div className={"tab-selector"}>
-        <TypeSelectorComponent
-          type={tab}
-          setType={setTab}
-          typeEnum={LoginFormTabsEnum}
-        />
+      <div className={"login-form-wrapper"}>
+        <div className={"logo-logo"}>
+          <Logo />
+        </div>
+        <div className={"tab-selector"}>
+          <TypeSelectorComponent
+            type={tab}
+            setType={setTab}
+            typeEnum={LoginFormTabsEnum}
+          />
+        </div>
+
+        <form name={"login-form"} className={"login-input"}>
+          <input
+            type={"email"}
+            name={"email"}
+            required={true}
+            placeholder={"email@example.com"}
+          />
+          <input
+            type={"password"}
+            name={"password"}
+            placeholder={"password"}
+            required={tab === "EMAIL_PASS"}
+            disabled={tab !== "EMAIL_PASS"}
+            minLength={8}
+          />
+        </form>
+
+        <button onClick={() => signIn()}>sign in</button>
       </div>
-
-      <form name={"login-form"} className={"login-input"}>
-        <input
-          type={"email"}
-          name={"email"}
-          required={true}
-          placeholder={"email@example.com"}
-        />
-        <input
-          type={"password"}
-          name={"password"}
-          placeholder={"password"}
-          required={tab === "EMAIL_PASS"}
-          disabled={tab !== "EMAIL_PASS"}
-          minLength={8}
-        />
-      </form>
-
-      <button onClick={() => signIn()}>sign in</button>
     </div>
   );
 }

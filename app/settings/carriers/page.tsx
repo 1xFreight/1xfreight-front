@@ -66,14 +66,22 @@ export default function CarriersSettingsPage() {
 
   const debouncedSave = useDebouncedCallback(() => {
     const form = document.forms["newCarrierForm"];
-    const valid = form[0].reportValidity();
+    let isValid = true;
 
-    if (!valid) return;
+    for (let i = 0; i < form.elements.length; i++) {
+      const element = form.elements[i];
+      if (!element.reportValidity()) {
+        isValid = false;
+        break;
+      }
+    }
+
+    if (!isValid) return;
 
     const formData = new FormData(form);
     const newCarrier = importData
       ? { ...importData, ...formDataToJSON(formData) }
-      : formData;
+      : formDataToJSON(formData);
 
     postWithAuth("/carrier/create", newCarrier).then(async (response) => {
       if (!response.ok) {
@@ -92,6 +100,7 @@ export default function CarriersSettingsPage() {
       });
       debouncedGetCarriers();
     });
+
     setImportData(null);
     setOpen(false);
   });
@@ -227,11 +236,15 @@ export default function CarriersSettingsPage() {
                     Email<span>*</span>
                   </h3>
                   <input
-                    type={"text"}
+                    type={"email"}
                     placeholder={"Type here..."}
                     defaultValue={importData?.email}
                     name={"email"}
                     required
+                    style={{
+                      height: "3.5rem",
+                      paddingLeft: "1rem",
+                    }}
                   />
                 </div>
               </div>
@@ -245,10 +258,10 @@ export default function CarriersSettingsPage() {
                     type={"text"}
                     placeholder={"Type here..."}
                     defaultValue={importData?.phone}
-                    required
                     name={"phone"}
                     minLength={9}
                     maxLength={12}
+                    required={true}
                   />
                 </div>
               </div>

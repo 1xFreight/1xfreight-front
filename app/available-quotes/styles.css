@@ -1,0 +1,49 @@
+.av-quotes-page {
+    gap: 1rem;
+
+    .page-header {
+        /*height: 3rem;*/
+        z-index: 10;
+    }
+
+    .filters-panel {
+        z-index: 10;
+        display: flex;
+        justify-content: start;
+
+        .search-input-custom {
+            width: 30rem;
+        }
+    }
+
+    .location-styling {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        svg {
+            min-width: 1rem;
+            position: absolute;
+            left: -2rem;
+        }
+    }
+
+    .page-header h4{
+        font-size: 1.25rem;
+        color: #545454;
+    }
+
+    .quotes-table-wrapper {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+    }
+
+    .page-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 3rem;
+        margin-top: 1rem;
+    }
+}

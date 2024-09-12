@@ -21,6 +21,7 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
               display: "flex",
               gap: "1.5rem",
               alignItems: "center",
+              maxWidth: "15rem",
             }}
           >
             {index !== 0 && <Arrow />}

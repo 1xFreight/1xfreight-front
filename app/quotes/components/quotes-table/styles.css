@@ -1,7 +1,7 @@
 .quotes-table {
     width: 100%;
     overflow: scroll;
-    height: calc(100vh - 9.8125rem - 2.5rem);
+    height: calc(100vh - 7rem - 2.5rem);
     position: relative;
     border-radius: 1.125rem 1.875rem 2rem 2rem;
     box-sizing: border-box;
@@ -130,16 +130,11 @@
 }
 
 .quotes-table .active-quote-status {
-    width: 7.45rem;
-    height: 1.45rem;
-    font-size: 0.625rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    border-radius: 0.9375rem;
+    background: #e8e8e8;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
     color: white;
-    box-sizing: border-box;
+    text-transform: capitalize;
 }
 
 .quotes-table .sub-text {
@@ -154,6 +149,13 @@
     position: relative;
     /*width: max-content;*/
     align-items: center;
+    width: 100%;
+    padding-right: 3.5rem;
+
+    .extra-address{
+        position: absolute;
+        right: 0;
+    }
 }
 
 .quotes-table .pickup .location>svg:nth-child(1), .quotes-table .drop .location>svg:nth-child(1) {
@@ -291,52 +293,3 @@
         }
     }
 }
-
-.quotes-table .extra-address-window {
-    position: absolute;
-    height: 8rem;
-    background: white;
-    z-index: 10;
-    flex-direction: column;
-    border-radius: 1rem;
-    padding: 1rem;
-    border: 1px solid #D9D9D9;
-    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.05);
-    display: none;
-    top: -9rem;
-
-    & h4 {
-        color: #545454;
-        font-size: 1.125rem;
-        font-weight: 600;
-        padding-bottom: 0.35rem;
-        border-bottom: 1px solid #D9D9D9;
-        margin-bottom: 0.65rem;
-    }
-
-    & .address-list {
-        display: flex;
-        gap: 1.2rem;
-        align-items: center;
-
-        & .address {
-            position: relative;
-        }
-
-    }
-
-    & .arrow-down {
-        width: 0;
-        height: 0;
-        border-left: 0.5rem solid transparent;
-        border-right: 0.5rem solid transparent;
-        border-top: 0.75rem solid white;
-        position: absolute;
-        bottom: -0.75rem;
-        align-self: center;
-        z-index: -1;
-        filter: drop-shadow(0 1px 0 #D9D9D9);
-    }
-
-}
-

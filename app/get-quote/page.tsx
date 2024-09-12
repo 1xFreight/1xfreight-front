@@ -20,6 +20,12 @@ const ShipmentDetails = dynamic(
       "@/app/get-quote/pages/shipment-details-ftl/components/shipment-page-wrapper.component"
     ),
 );
+const ShipmentDetailsLTL = dynamic(
+  () =>
+    import(
+      "@/app/get-quote/pages/shipment-details-ltl/shipment-details-ltl.component"
+    ),
+);
 const PartnersPage = dynamic(
   () => import("@/app/get-quote/pages/partners/partners.component"),
 );
@@ -44,7 +50,7 @@ export default function GetQuotePage() {
     <TemplatesPage key={"page-2"} />,
     <PickupPage key={"page-3"} />,
     <DropPage key={"page-4"} />,
-    <ShipmentDetails key={"page-5"} />,
+    <ShipmentDetailsLTL key={"page-5"} />,
     <PartnersPage key={"page-6"} />,
     <MembersPage key={"page-7"} />,
     <ReviewPage key={"page-8"} />,

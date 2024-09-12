@@ -7,10 +7,10 @@ import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/com
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
-import Link from "next/link";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import { toShortId } from "@/common/utils/data-convert.utils";
 import { formatDate } from "@/common/utils/date.utils";
+import Link from "next/link";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
@@ -46,7 +46,8 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 type,
                 quote_type,
                 details,
-                goods_value,
+                equipments,
+                bids,
               }) => {
                 const pickupAddress = addresses.filter(
                   ({ address_type }) => address_type === "pickup",
@@ -55,6 +56,12 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                   ({ address_type }) => address_type === "drop",
                 );
                 const shipment = details[0];
+                const bidsNumber = bids?.length;
+                const btnStatus =
+                  bidsNumber && bidsNumber > 0
+                    ? QuoteStatusEnum.BOOKED
+                    : QuoteStatusEnum.REQUESTED;
+
                 return (
                   <tr key={_id}>
                     <td>
@@ -67,7 +74,11 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                     <td className={"pickup"}>
                       <div className={"location-styling"}>
                         <ArrowUp />
-                        <div>
+                        <div
+                          style={{
+                            width: "100%",
+                          }}
+                        >
                           <div className={"location main-text"}>
                             {pickupAddress[0].address}
 
@@ -97,7 +108,11 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       <div className={"location-styling"}>
                         <ArrowDown />
 
-                        <div>
+                        <div
+                          style={{
+                            width: "100%",
+                          }}
+                        >
                           <div className={"location main-text"}>
                             {dropAddress[0].address}
 
@@ -151,12 +166,15 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       </div>
                     </td>
                     <td>
-                      <div className={"main-text"}>{equipment}</div>
+                      <div className={"main-text"}>{equipments?.join(",")}</div>
                     </td>
                     <td>
-                      <QuoteActionButtonComponent
-                        status={status.toUpperCase() as QuoteStatusEnum}
-                      />
+                      <Link href={bidsNumber ? `/quotes/${_id}` : ""}>
+                        <QuoteActionButtonComponent
+                          status={btnStatus}
+                          number={bidsNumber}
+                        />
+                      </Link>
                     </td>
                   </tr>
                 );

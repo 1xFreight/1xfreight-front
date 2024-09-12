@@ -1,3 +1,3 @@
 export const paginationConfig = {
-  pageLimit: 3,
+  pageLimit: 20,
 };

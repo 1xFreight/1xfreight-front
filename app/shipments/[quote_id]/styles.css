@@ -42,13 +42,14 @@
 
     .page-header {
         width: 100%;
+        height: fit-content;
 
         .breadcrumbs {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #A7A7A7;
-            margin-bottom: 1.25rem;
+            /*border-bottom: 1px solid #A7A7A7;*/
+            /*margin-bottom: 1.25rem;*/
 
             div {
                 display: flex;
@@ -73,12 +74,19 @@
                 }
             }
 
-            button.edit {
-                background: white;
-            }
-
             button.cancel {
                 background: rgba(237, 0, 0, 0.24);
+
+                svg path{
+                    fill: rgba(237, 0, 0, 1);
+                }
+
+                color: rgba(237, 0, 0, 1);
+
+                &:hover {
+                    background: white;
+                    border: 2px solid rgba(237, 0, 0, 1);
+                }
             }
         }
     }

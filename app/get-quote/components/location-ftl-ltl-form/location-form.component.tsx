@@ -50,7 +50,7 @@ function LocationFormComponent({
     );
 
     function showDetails() {
-      if (!elShippingType || !elDateTimeInputs) return console.log("sadmalwda");
+      if (!elShippingType || !elDateTimeInputs) return;
       elShippingType.style.display = "block";
       elShippingType.setAttribute("required", "true");
       elDateTimeInputs.style.display = "flex";
