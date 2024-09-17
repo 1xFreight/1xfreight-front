@@ -8,6 +8,61 @@
     flex-direction: column;
     box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
 
+    .items-wrapper-quote-preview {
+        width: calc(100% + 3rem);
+        background: #FAFAFA;
+        margin-left: -1.5rem;
+        padding: 0.75rem;
+
+        table {
+            width: 100%;
+            text-align: left;
+
+            td {
+                padding: 0;
+                margin: 0;
+            }
+
+            tbody tr {
+                border-bottom: 1px dashed #d3d3d3;
+            }
+        }
+
+        .hazard-item {
+            border-bottom: unset;
+        }
+    }
+
+    .hazardous-material-item {
+        /*background: rgba(167, 167, 167, 0.11);*/
+        border-bottom: 1px dashed #d3d3d3;
+
+        td:nth-child(1) {
+            padding-left: 0.05rem;
+        }
+
+        .info {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            h6 {
+                color: crimson;
+            }
+        }
+
+        h6 {
+            color: #545454;
+        }
+
+        svg {
+            width: 0.5rem;
+            height: 1rem;
+            path {
+                fill: crimson;
+            }
+        }
+    }
+
     svg {
         min-width: 1.8rem;
     }

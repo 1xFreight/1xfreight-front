@@ -47,6 +47,15 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
     quantity: number,
     stackable: boolean,
   ) => {
+    const maxDimension = 96;
+    if (
+      width > maxDimension ||
+      length > maxDimension ||
+      height > maxDimension
+    ) {
+      return "N/A";
+    }
+
     const longer = width > length ? width : length;
     const smaller = width < length ? width : length;
     // we rotate the skids considering which of the width and length is greater

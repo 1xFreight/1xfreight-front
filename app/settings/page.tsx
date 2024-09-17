@@ -210,7 +210,7 @@ export default function SettingsPage() {
               <TypeSelectorComponent
                 inputName={"quote_type"}
                 typeEnum={UserTypePrefEnum}
-                selectedEl={session.quote_type.toUpperCase()}
+                selectedEl={session.quote_type?.toUpperCase()}
               />
 
               <div className={"eq-type"}>

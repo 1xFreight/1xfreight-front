@@ -46,8 +46,9 @@ export default function ShipmentIdPage({
         nmfc: "123",
         quantity: "123",
         stackable: "on",
+        mixed_pallet: "on",
         sub_class: "123",
-        handling_unit: "Other",
+        handling_unit: "Pallets",
         un_number: "",
         weight: "244",
         width: "15",
@@ -56,6 +57,7 @@ export default function ShipmentIdPage({
         commodity: "23",
         emergency_phone: "+1231231313",
         emergency_phone2: "",
+        emergency_contact: "Emily",
         freight_class: "50",
         hazardous_material: "on",
         height: "1231",
@@ -68,6 +70,74 @@ export default function ShipmentIdPage({
         un_number: "2342",
         weight: "123",
         width: "1231",
+      },
+      {
+        commodity: "123",
+        emergency_phone: "",
+        emergency_phone2: "",
+        freight_class: "50",
+        height: "15",
+        length: "15",
+        nmfc: "123",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "123",
+        handling_unit: "Rolls",
+        mixed_pallet: "on",
+        un_number: "",
+        weight: "244",
+        width: "15",
+      },
+      {
+        commodity: "123",
+        emergency_phone: "",
+        emergency_phone2: "",
+        freight_class: "50",
+        height: "15",
+        length: "15",
+        nmfc: "123",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "123",
+        handling_unit: "Crates",
+        un_number: "",
+        weight: "244",
+        width: "15",
+      },
+      {
+        commodity: "23",
+        emergency_phone: "+1231231313",
+        emergency_phone2: "+1231231313",
+        emergency_contact: "Emily",
+        freight_class: "50",
+        hazardous_material: "on",
+        height: "1231",
+        length: "123",
+        nmfc: "23",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "23",
+        handling_unit: "Containers",
+        un_number: "21312341",
+        weight: "123",
+        width: "1231",
+      },
+      {
+        commodity: "123",
+        emergency_phone: "",
+        emergency_phone2: "",
+        freight_class: "50",
+        height: "15",
+        length: "15",
+        nmfc: "123",
+        quantity: "123",
+        stackable: "on",
+        sub_class: "123",
+        handling_unit: "Other",
+        un_number: "",
+        weight: "244",
+        width: "15",
+        mixed_pallet: "on",
       },
     ],
     notes: "1sadadawdawda",
@@ -90,18 +160,6 @@ export default function ShipmentIdPage({
       },
     );
   });
-
-  const isValid = (validUntil) => {
-    const currentDate = new Date();
-    const validUntilDate = new Date(validUntil);
-
-    return (
-      (currentDate.getFullYear() === validUntilDate.getFullYear() &&
-        currentDate.getMonth() === validUntilDate.getMonth() &&
-        currentDate.getDate() === validUntilDate.getDate()) ||
-      currentDate < validUntilDate
-    );
-  };
 
   useEffect(() => {
     getQuoteAndReq();
@@ -160,19 +218,6 @@ export default function ShipmentIdPage({
                     <div className={"currency"}>USD</div>
                   </div>
                   <h5>Per Load</h5>
-                </div>
-
-                <div className={"valid-until"}>
-                  <h6>Valid Until</h6>
-                  <h2>{formatDate(request.valid_until)}</h2>
-                  <div
-                    className={`sub-text ${isValid(request.valid_until) ? "active" : "expired"}`}
-                    style={{
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {isValid(request.valid_until) ? "active" : "expired"}
-                  </div>
                 </div>
 
                 <div className={"transit-time"}>

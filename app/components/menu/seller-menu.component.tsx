@@ -33,7 +33,10 @@ export default function SellerMenuComponent() {
         Shipments
       </Link>
 
-      <Link className={"item"} href={"/"}>
+      <Link
+        className={`item ${pathname.includes("analytics") ? "active" : ""}`}
+        href={"/analytics"}
+      >
         <LineChart />
         Analytics
       </Link>

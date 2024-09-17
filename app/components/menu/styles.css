@@ -7,7 +7,7 @@
     justify-content: space-between;
     background: white;
     align-items: center;
-    overflow: hidden;
+    /*overflow: hidden;*/
     position: relative;
     z-index: 300;
     border-bottom: 2px solid #e5e5e5;
@@ -41,9 +41,27 @@
 
 .main-menu .user-menu {
     display: flex;
-    gap: 3rem;
+    gap: 2rem;
     align-items: center;
     height: 3.45rem;
+
+    .sign-out {
+        cursor: pointer;
+
+        &:hover {
+
+            svg path {
+                fill: #0020DD;
+            }
+
+        }
+
+        svg {
+            path {
+                fill: #545454;
+            }
+        }
+    }
 }
 
 .main-menu .user-menu .user-photo {

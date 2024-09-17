@@ -1,14 +1,12 @@
-import Star from "@/public/icons/40px/star.svg";
 import Arrow from "@/public/icons/40px/Arrow 1.svg";
 import Checkmark from "@/public/icons/14px/checkmark-circle.svg";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
-import Marker from "@/public/icons/35px/marker.svg";
 import Doc from "@/public/icons/35px/document.svg";
 import Archive from "@/public/icons/35px/archives 1.svg";
 import Info from "@/public/icons/14px/info-circle.svg";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
-import { formatDate } from "@/common/utils/date.utils";
-import { toShortId } from "@/common/utils/data-convert.utils";
+import { formatDate, formatTime } from "@/common/utils/date.utils";
+import { clearText, toShortId } from "@/common/utils/data-convert.utils";
 import Link from "next/link";
 import Cross from "@/public/icons/24px/cross.svg";
 
@@ -49,6 +47,15 @@ export default function ShipmentsTableComponent({ shipments }) {
               const dropAddress = addresses.filter(
                 ({ address_type }) => address_type === "drop",
               );
+
+              const alreadyArrivedPickupAddresses = pickupAddress.filter(
+                (address) => address.hasOwnProperty("arrival_time"),
+              );
+
+              const alreadyArrivedDropAddresses = dropAddress.filter(
+                (address) => address.hasOwnProperty("arrival_time"),
+              );
+
               const shipment = details[0];
 
               return (
@@ -66,7 +73,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                         textTransform: "capitalize",
                       }}
                     >
-                      {status}
+                      {clearText(status)}
                     </div>
                   </td>
                   <td>
@@ -141,29 +148,216 @@ export default function ShipmentsTableComponent({ shipments }) {
                   </td>
 
                   <td>
-                    <div className={"main-text"}>May 20, 2024</div>
-                    <div
-                      className={"sub-text active"}
-                      style={{
-                        display: "flex",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <Checkmark /> 10:05AM
-                    </div>
+                    {alreadyArrivedPickupAddresses.length === 0 && (
+                      <>
+                        <div className={"main-text"}>Awaiting</div>
+                      </>
+                    )}
+
+                    {alreadyArrivedPickupAddresses.length === 1 &&
+                      pickupAddress.length === 1 && (
+                        <>
+                          <div className={"main-text"}>
+                            {formatDate(
+                              alreadyArrivedPickupAddresses[0].arrival_date,
+                            )}
+                          </div>
+                          <div
+                            className={"sub-text active"}
+                            style={{
+                              display: "flex",
+                              gap: "0.5rem",
+                            }}
+                          >
+                            <Checkmark />{" "}
+                            {formatTime(
+                              alreadyArrivedPickupAddresses[0].arrival_time,
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                    {pickupAddress.length > 1 &&
+                      !!alreadyArrivedPickupAddresses.length && (
+                        <>
+                          <div
+                            className={"main-text tooltip"}
+                            style={{
+                              textTransform: "lowercase",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {`${alreadyArrivedPickupAddresses.length} of ${pickupAddress.length}`}
+
+                            <span
+                              className={"tooltiptext"}
+                              style={{
+                                bottom: "unset",
+                                top: "100%",
+                                padding: "1rem",
+                                width: "30rem",
+                              }}
+                            >
+                              {alreadyArrivedPickupAddresses.map(
+                                (address, index) => (
+                                  <div
+                                    className={"main-text"}
+                                    key={
+                                      address._id + index + address.address_type
+                                    }
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      textAlign: "left",
+                                    }}
+                                  >
+                                    <h5
+                                      style={{
+                                        textTransform: "capitalize",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                    >
+                                      {" "}
+                                      {address.address}{" "}
+                                    </h5>
+
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        gap: "1rem",
+                                      }}
+                                    >
+                                      {formatDate(address.arrival_date)}
+
+                                      <div
+                                        className={"sub-text active"}
+                                        style={{
+                                          display: "flex",
+                                          gap: "0.5rem",
+                                          textTransform: "uppercase",
+                                        }}
+                                      >
+                                        <Checkmark />{" "}
+                                        {formatTime(address.arrival_time)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ),
+                              )}
+                            </span>
+                          </div>
+                        </>
+                      )}
                   </td>
 
                   <td>
-                    <div className={"main-text"}>May 20, 2024</div>
-                    <div
-                      className={"sub-text active"}
-                      style={{
-                        display: "flex",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <Checkmark /> 10:05AM
-                    </div>
+                    {alreadyArrivedDropAddresses.length === 0 && (
+                      <>
+                        <div className={"main-text"}>Awaiting</div>
+                      </>
+                    )}
+
+                    {alreadyArrivedDropAddresses.length === 1 &&
+                      dropAddress.length === 1 && (
+                        <>
+                          <div className={"main-text"}>
+                            {formatDate(
+                              alreadyArrivedDropAddresses[0].arrival_date,
+                            )}
+                          </div>
+                          <div
+                            className={"sub-text active"}
+                            style={{
+                              display: "flex",
+                              gap: "0.5rem",
+                            }}
+                          >
+                            <Checkmark />{" "}
+                            {formatTime(
+                              alreadyArrivedDropAddresses[0].arrival_time,
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                    {dropAddress.length > 1 &&
+                      !!alreadyArrivedDropAddresses.length && (
+                        <>
+                          <div
+                            className={"main-text tooltip"}
+                            style={{
+                              textTransform: "lowercase",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {`${alreadyArrivedDropAddresses.length} of ${dropAddress.length}`}
+
+                            <span
+                              className={"tooltiptext"}
+                              style={{
+                                bottom: "unset",
+                                top: "100%",
+                                padding: "1rem",
+                                width: "30rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "0.5rem",
+                              }}
+                            >
+                              {alreadyArrivedDropAddresses.map(
+                                (address, index) => (
+                                  <div
+                                    className={"main-text"}
+                                    key={
+                                      address._id + index + address.address_type
+                                    }
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      textAlign: "left",
+                                    }}
+                                  >
+                                    <h5
+                                      style={{
+                                        textTransform: "capitalize",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                    >
+                                      {" "}
+                                      {address.address}{" "}
+                                    </h5>
+
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        gap: "1rem",
+                                      }}
+                                    >
+                                      {formatDate(address.arrival_date)}
+
+                                      <div
+                                        className={"sub-text active"}
+                                        style={{
+                                          display: "flex",
+                                          gap: "0.5rem",
+                                          textTransform: "uppercase",
+                                        }}
+                                      >
+                                        <Checkmark />{" "}
+                                        {formatTime(address.arrival_time)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ),
+                              )}
+                            </span>
+                          </div>
+                        </>
+                      )}
                   </td>
 
                   <td>

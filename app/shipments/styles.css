@@ -2,18 +2,6 @@
     width: 100%;
     gap: 1rem;
 
-    .table-status {
-        background: #e8e8e8;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.5rem;
-        height: fit-content;
-
-        &.booked {
-            background: #82C181;
-            color: white;
-        }
-    }
-
     .sub-text {
         align-items: center;
         display: flex;

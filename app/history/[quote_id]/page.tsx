@@ -25,7 +25,6 @@ export default function QuotePreviewCarrier({
   const { showToast } = useStore();
   const router = useRouter();
   const [existingBid, setExistingBid] = useState(null);
-  const [amount, setAmount] = useState(existingBid?.amount ?? 0);
 
   useEffect(() => {
     debouncedGetQuote();
@@ -38,7 +37,6 @@ export default function QuotePreviewCarrier({
 
     getWithAuth(`/bid/qid/${params.quote_id}`).then((data) => {
       setExistingBid(data);
-      setAmount(data.amount);
       setLoading(false);
     });
   }, 500);
@@ -188,19 +186,8 @@ export default function QuotePreviewCarrier({
                     min={1}
                     defaultValue={existingBid?.amount}
                     id={"bid-amount"}
-                    onChange={(e) => setAmount(e.target.value)}
                   />
                   <div className={"currency"}>{quote?.currency}</div>
-
-                  {quote?.load_number > 1 && (
-                    <h5
-                      style={{
-                        marginLeft: "1rem",
-                      }}
-                    >
-                      Total amount: {quote?.load_number * amount}
-                    </h5>
-                  )}
                 </div>
               </div>
 

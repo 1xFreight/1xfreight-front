@@ -20,6 +20,8 @@
         background: #F9F9F9;
         border-radius: 100%;
         border: 2px solid transparent;
+        width: 1.75rem;
+        height: 1.75rem;
     }
 
     &.success {
@@ -29,8 +31,6 @@
             border-color: #82C181;
             path {
                 fill: #82C181;
-                transform-origin: center center;
-                transform: scale(1.35);
             }
         }
     }
@@ -55,23 +55,20 @@
 
             path {
                 fill: #ED0000;
-                transform: scale(1.35);
-                transform-origin: center;
             }
         }
     }
 
     &.warning {
         border-color: #ffea8f;
-        /*border-color: #FFEA6B;*/
 
         svg {
             border-color: #FFEA6B;
+            rotate: 180deg;
 
             path {
-                stroke: #FFEA6B;
-                transform: scale(1.2);
-                transform-origin: center right;
+                /*stroke: #FFEA6B;*/
+                fill: #FFEA6B;
             }
         }
     }

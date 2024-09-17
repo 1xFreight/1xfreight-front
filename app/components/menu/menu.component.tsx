@@ -12,6 +12,9 @@ import AvatarComponent from "@/app/components/avatar/avatar.component";
 import useStore from "@/common/hooks/use-store.context";
 import { memo, useEffect } from "react";
 import ToasterComponent from "@/common/components/toaster/toaster.component";
+import Logout from "@/public/icons/35px/sign-out.svg";
+import { useDebouncedCallback } from "use-debounce";
+import { postWithAuth } from "@/common/utils/fetchAuth.util";
 
 function MainMenu() {
   const { session } = useStore();
@@ -19,6 +22,11 @@ function MainMenu() {
     session?.role !== "carrier" && session?.name
       ? session?.name
       : session?.email;
+
+  const logoutDebounced = useDebouncedCallback(
+    () => postWithAuth("/auth/logout", {}).then(() => window.location.reload()),
+    400,
+  );
 
   return (
     <header className={"main-menu"}>
@@ -29,7 +37,7 @@ function MainMenu() {
 
         {/*<AdminMenuComponent />*/}
         {session?.role === "carrier" && <CarrierMenuComponent />}
-        {session?.role.includes("shipper") && <SellerMenuComponent />}
+        {session?.role?.includes("shipper") && <SellerMenuComponent />}
       </div>
 
       <div className={"user-menu"}>
@@ -48,8 +56,25 @@ function MainMenu() {
             <div>{session?.role}</div>
           </div>
 
-          <div className={"open-extra-menu"}>{/*<Dots />*/}</div>
+          <div className={"open-extra-menu"}></div>
         </div>
+
+        {session?.role === "carrier" && (
+          <div className={"tooltip sign-out"} onClick={logoutDebounced}>
+            <Logout />
+            <span
+              className={"tooltiptext"}
+              style={{
+                bottom: "unset",
+                top: "100%",
+                padding: "0.25rem 0.25rem",
+                width: "fit-content",
+              }}
+            >
+              sign out
+            </span>
+          </div>
+        )}
       </div>
     </header>
   );

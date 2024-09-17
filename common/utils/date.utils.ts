@@ -17,6 +17,16 @@ export function formatDate(dateString) {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
+export function formatTime(timeString) {
+  if (!timeString) return;
+
+  const timeParts = timeString.split(" ");
+  const timeMidday = timeParts[1];
+  const onlyTime = timeParts[0].split(":");
+
+  return `${Number(onlyTime[0]) < 10 ? "0" + onlyTime[0] : onlyTime[0]}:${Number(onlyTime[1]) < 10 ? "0" + onlyTime[1] : onlyTime[1]} ${timeMidday}`;
+}
+
 export function chatDateFormat(dateString) {
   const date = new Date(dateString);
 
@@ -28,4 +38,16 @@ export function chatDateFormat(dateString) {
   const minutes = date.getMinutes().toString().padStart(2, "0");
 
   return `${day}.${month}.${year} - ${hours}:${minutes}`;
+}
+
+export function getYesterday() {
+  const today = new Date();
+  today.setDate(today.getDate() - 1); // Subtract one day from today
+
+  // Return in YYYY-MM-DD format
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }

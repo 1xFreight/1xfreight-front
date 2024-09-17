@@ -24,6 +24,7 @@ import {
 import { formatDate } from "@/common/utils/date.utils";
 import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import React from "react";
+import QuoteItemsTableComponent from "@/app/components/quote-details/quote-items-table.component";
 
 function QuoteFtlComponent({ quote }: any) {
   const reference = quote?.references;
@@ -254,33 +255,7 @@ function QuoteFtlComponent({ quote }: any) {
             })}
         </div>
 
-        {!!details.items && (
-          <div className={"items-wrapper-quote-preview"}>
-            <div className={"item-style"}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Weight</th>
-                    <th>Dimensions</th>
-                    <th>Handling unit</th>
-                    <th>NMFC</th>
-                    <th>Freight Class</th>
-                    <th>Sub Class</th>
-                    <th>Commodity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {details.items.map((item, index) => (
-                    <tr key={index}>
-                      <td></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+        {!!details?.items && <QuoteItemsTableComponent items={details.items} />}
 
         <div className={"info-2blocks"}>
           {!!details?.packing_method && (

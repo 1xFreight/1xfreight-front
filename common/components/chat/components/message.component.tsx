@@ -1,4 +1,7 @@
 import Document from "@/public/icons/24px/document.svg";
+import { formatBytes } from "@/common/utils/number.utils";
+import Image from "next/image";
+import { isImageFile } from "@/common/utils/file.utils";
 
 export default function MessageComponent({
   message,
@@ -16,6 +19,14 @@ export default function MessageComponent({
       </h6>
       <div className={"message-box"}>
         <h4>{message}</h4>
+        {document && isImageFile(documentName ?? ".") && (
+          <Image
+            src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${document}`}
+            alt={"image"}
+            width={500}
+            height={500}
+          />
+        )}
         {document && (
           <a
             href={`${process.env.NEXT_PUBLIC_API_URL}/file-system/document/${document}`}
@@ -24,9 +35,12 @@ export default function MessageComponent({
               alignItems: "end",
               gap: "0.35rem",
             }}
+            className={"message-doc"}
           >
             <Document /> {documentName}{" "}
-            <h6>{(documentSize / 1024).toFixed(2)}kb</h6>
+            <h6 style={{ whiteSpace: "nowrap" }}>
+              {formatBytes(documentSize)}
+            </h6>
           </a>
         )}
       </div>

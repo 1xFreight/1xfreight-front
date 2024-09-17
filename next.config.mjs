@@ -3,7 +3,7 @@ import path from 'node:path';
 
 export default {
     images: {
-        domains: ['localhost'],
+        domains: ['localhost','srv505914.hstgr.cloud'],
     },
     webpack: (config) => {
         config.module.rules.push({
