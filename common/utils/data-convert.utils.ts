@@ -1,3 +1,5 @@
+import { webpack } from "next/dist/compiled/webpack/webpack";
+
 export function accessorialsConvertToText(name: string) {
   switch (name) {
     case "LAF":
@@ -76,6 +78,10 @@ export function convertQuoteToApiFormat(quote: any, type: string) {
 
     if (form === "shipment_details") {
       apiObj[form] = formatShipmentObj(data);
+    }
+
+    if (form === "shipment_details_ltl") {
+      apiObj["shipment_details"] = formatShipmentLTL(data);
     }
 
     if (form === "review") {
@@ -158,8 +164,12 @@ export function formatShipmentLTL(obj: any) {
     items: formattedItems,
     notes: obj.notes,
     goods_value: obj.goods_value,
-    weight: obj.totalWeight,
     weight_unit: "lb",
+    skid_spots: obj.skid_spots,
+    volume: obj.volume,
+    density: obj.density,
+    weight: obj.weight,
+    quantity: obj.quantity,
   };
 }
 

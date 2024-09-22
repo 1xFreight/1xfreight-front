@@ -79,6 +79,10 @@
         font-weight: 700;
     }
 
+    tr td:nth-child(6), tr td:nth-child(7) {
+
+    }
+
     tr>th:nth-child(1){
         border-radius: 1rem 0 0 1rem;
         border-right: 2px solid #EFEFEF;
@@ -182,6 +186,10 @@
                 stroke: #0020DD;
             }
         }
+    }
+
+    .price {
+        font-size: 1.7rem;
     }
 
     .ship-table-actions {

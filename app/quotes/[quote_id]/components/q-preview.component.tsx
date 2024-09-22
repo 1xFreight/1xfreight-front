@@ -95,7 +95,8 @@ export default function QPreviewComponent() {
                     textTransform: "capitalize",
                   }}
                 >
-                  {details.packing_method.replace("_", " ")}/{details.commodity}
+                  {details.packing_method?.replace("_", " ")}/
+                  {details.commodity}
                 </div>
               </td>
               <td>

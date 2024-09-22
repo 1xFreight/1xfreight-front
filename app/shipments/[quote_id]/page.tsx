@@ -34,128 +34,10 @@ export default function ShipmentIdPage({
   const [request, setRequest] = useState<any>();
   const [quote, setQuote] = useState<any>();
 
-  const x = {
-    items: [
-      {
-        commodity: "123",
-        emergency_phone: "",
-        emergency_phone2: "",
-        freight_class: "50",
-        height: "15",
-        length: "15",
-        nmfc: "123",
-        quantity: "123",
-        stackable: "on",
-        mixed_pallet: "on",
-        sub_class: "123",
-        handling_unit: "Pallets",
-        un_number: "",
-        weight: "244",
-        width: "15",
-      },
-      {
-        commodity: "23",
-        emergency_phone: "+1231231313",
-        emergency_phone2: "",
-        emergency_contact: "Emily",
-        freight_class: "50",
-        hazardous_material: "on",
-        height: "1231",
-        length: "123",
-        nmfc: "23",
-        quantity: "123",
-        stackable: "on",
-        sub_class: "23",
-        handling_unit: "Other",
-        un_number: "2342",
-        weight: "123",
-        width: "1231",
-      },
-      {
-        commodity: "123",
-        emergency_phone: "",
-        emergency_phone2: "",
-        freight_class: "50",
-        height: "15",
-        length: "15",
-        nmfc: "123",
-        quantity: "123",
-        stackable: "on",
-        sub_class: "123",
-        handling_unit: "Rolls",
-        mixed_pallet: "on",
-        un_number: "",
-        weight: "244",
-        width: "15",
-      },
-      {
-        commodity: "123",
-        emergency_phone: "",
-        emergency_phone2: "",
-        freight_class: "50",
-        height: "15",
-        length: "15",
-        nmfc: "123",
-        quantity: "123",
-        stackable: "on",
-        sub_class: "123",
-        handling_unit: "Crates",
-        un_number: "",
-        weight: "244",
-        width: "15",
-      },
-      {
-        commodity: "23",
-        emergency_phone: "+1231231313",
-        emergency_phone2: "+1231231313",
-        emergency_contact: "Emily",
-        freight_class: "50",
-        hazardous_material: "on",
-        height: "1231",
-        length: "123",
-        nmfc: "23",
-        quantity: "123",
-        stackable: "on",
-        sub_class: "23",
-        handling_unit: "Containers",
-        un_number: "21312341",
-        weight: "123",
-        width: "1231",
-      },
-      {
-        commodity: "123",
-        emergency_phone: "",
-        emergency_phone2: "",
-        freight_class: "50",
-        height: "15",
-        length: "15",
-        nmfc: "123",
-        quantity: "123",
-        stackable: "on",
-        sub_class: "123",
-        handling_unit: "Other",
-        un_number: "",
-        weight: "244",
-        width: "15",
-        mixed_pallet: "on",
-      },
-    ],
-    notes: "1sadadawdawda",
-    reference_no0: "213123",
-    reference_type0: "Unknown",
-    goods_value: "7500",
-    totalSkidSpots: 12,
-    totalVolume: 200,
-    totalWeight: 34343,
-    totalDensity: 1232,
-  };
-
   const getQuoteAndReq = useDebouncedCallback(() => {
     getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
       (data) => {
-        const xx = formatShipmentLTL(x);
-
-        setQuote({ ...data?.quotes[0], details: [xx] });
+        setQuote({ ...data?.quotes[0] });
         setRequest(data?.quotes[0].bid);
       },
     );
@@ -173,7 +55,7 @@ export default function ShipmentIdPage({
       <BottomMenuComponent />
       <ConfirmActionComponent
         id={"confirm-cancel-load"}
-        title={"Are you sure you want to cancel this load ?"}
+        title={"Cancel this load ?"}
       />
       <div className={"container"}>
         <div className={"page-header"}>
@@ -197,7 +79,7 @@ export default function ShipmentIdPage({
                     "flex";
                 }}
               >
-                <Delete /> Cancel Load
+                <Delete /> Cancel load
               </button>
             </div>
           </div>

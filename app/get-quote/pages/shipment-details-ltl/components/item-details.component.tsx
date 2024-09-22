@@ -1,5 +1,5 @@
 import { PackingTypeEnum } from "@/common/enums/packing-type.enum";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cross from "@/public/icons/24px/cross.svg";
 import { formDataToJSON } from "@/common/utils/formData.util";
 import "./styles.css";
@@ -34,11 +34,24 @@ const skidSpot = {
   height: 96,
 };
 
-export default function ItemDetailsComponent({ index = 1, onRemove }) {
+export default function ItemDetailsComponent({
+  index = 1,
+  onRemove,
+  _default,
+}) {
   const [summary, setSummary] = useState<any>();
   const inch3ToFeet3Coefficient = 0.000578703704;
   const { addData } = useRegisterQuoteContext();
-  const [typeTitle, setTypeTitle] = useState<any>({});
+  const [typeTitle, setTypeTitle] = useState<any>({
+    quantity: _default?.quantity ?? "",
+    type: _default?.handling_unit ?? "",
+  });
+
+  useEffect(() => {
+    if (_default) {
+      calculateItemSummary();
+    }
+  }, []);
 
   const estimateSkidSpots = (
     width: number,
@@ -74,16 +87,6 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
     const itemsInRow = itemsPerRow * stackByHeight;
     const fullFilledRows = Math.floor(quantity / itemsInRow);
     const estimatedSkids = Math.ceil((quantity % itemsInRow) / itemsPerSkid);
-
-    // console.log("skidsPerRow", skidsPerRow);
-    // console.log("itemsPerRow", itemsPerRow);
-    // console.log("stackByHeight", stackByHeight);
-    // console.log("itemsPerSkid", itemsPerSkid);
-    // console.log("itemsInRow", itemsInRow);
-    // console.log("fullFilledRows", fullFilledRows);
-    // console.log("estimatedSkids", estimatedSkids);
-    // console.log("skidSpot.width / smaller", skidSpot.width / smaller);
-    // console.log("-------------------------------");
 
     if (fullFilledRows == "Infinity") {
       return "N/A";
@@ -179,6 +182,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
               e.stopPropagation();
               onRemove();
             }}
+            type={"button"}
           >
             REMOVE
           </button>
@@ -191,7 +195,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
 
               <select
                 name={"handling_unit"}
-                defaultValue={"Other"}
+                defaultValue={_default?.handling_unit ?? "Other"}
                 onChange={(e) =>
                   setTypeTitle({ ...typeTitle, type: e.target.value })
                 }
@@ -218,6 +222,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                   calculateItemSummary();
                   setTypeTitle({ ...typeTitle, quantity: e.target.value });
                 }}
+                defaultValue={_default?.quantity}
               />
             </div>
           </div>
@@ -235,6 +240,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 min={0}
                 required
                 onChange={calculateItemSummary}
+                defaultValue={_default?.length}
               />
             </div>
 
@@ -259,6 +265,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 min={1}
                 required
                 onChange={calculateItemSummary}
+                defaultValue={_default?.width}
               />
             </div>
 
@@ -283,6 +290,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 min={1}
                 required
                 onChange={calculateItemSummary}
+                defaultValue={_default?.height}
               />
             </div>
 
@@ -298,6 +306,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 min={1}
                 required
                 onChange={calculateItemSummary}
+                defaultValue={_default?.weight}
               />
 
               <h6>per unit</h6>
@@ -306,7 +315,10 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
             <div className={"input-wrapper"}>
               <h5>Freight Class</h5>
 
-              <select name={"freight_class"}>
+              <select
+                name={"freight_class"}
+                defaultValue={_default?.freight_class}
+              >
                 {Object.values(FreightClassEnum).map((type) => (
                   <option value={type} key={type}>
                     {type}
@@ -325,6 +337,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 type={"text"}
                 placeholder={"Type here..."}
                 required
+                defaultValue={_default?.nmfc}
               />
             </div>
 
@@ -335,6 +348,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 name={"sub_class"}
                 type={"text"}
                 placeholder={"Type here..."}
+                defaultValue={_default?.sub_class}
               />
             </div>
 
@@ -346,21 +360,26 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 type={"text"}
                 placeholder={"Type here..."}
                 required
+                defaultValue={_default?.commodity}
               />
             </div>
           </div>
 
           <div className={"checkbox-wrapper"}>
             <div className={"mixed"}>
-              <input name={"mixed_pallet"} type={"checkbox"} /> This is a mixed
-              pallet
+              <input
+                name={"mixed_pallet"}
+                type={"checkbox"}
+                defaultChecked={_default?.mixed_pallet}
+              />{" "}
+              This is a mixed pallet
             </div>
 
             <div>
               <input
                 name={"stackable"}
                 type={"checkbox"}
-                defaultChecked
+                defaultChecked={_default?.stackable ?? true}
                 onChange={calculateItemSummary}
               />
               Stackable
@@ -371,6 +390,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 name={"hazardous_material"}
                 type={"checkbox"}
                 onChange={(ev) => showHazardInputs(ev.target.checked)}
+                defaultChecked={_default?.hazardous_material}
               />
               Hazardous Material
             </div>
@@ -384,6 +404,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 name={"un_number"}
                 type={"text"}
                 placeholder={"Type here..."}
+                defaultValue={_default?.un_number}
               />
             </div>
 
@@ -391,9 +412,10 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
               <h5>Emergency Contact Name</h5>
 
               <input
-                name={"un_number"}
+                name={"emergency_contact"}
                 type={"text"}
                 placeholder={"Type here..."}
+                defaultValue={_default?.emergency_contact}
               />
             </div>
 
@@ -408,7 +430,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                 onChange={(ev) =>
                   (ev.target.value = ev.target.value.replace(/\s/g, ""))
                 }
-                // defaultValue={_defaultDetails?.emergency_phone1}
+                defaultValue={_default?.emergency_phone}
               />
             </div>
 
@@ -426,7 +448,7 @@ export default function ItemDetailsComponent({ index = 1, onRemove }) {
                   (ev.target.value = ev.target.value.replace(/\s/g, ""))
                 }
                 required={false}
-                // defaultValue={_defaultDetails?.emergency_phone2}
+                defaultValue={_default?.emergency_phone2}
               />
             </div>
           </div>

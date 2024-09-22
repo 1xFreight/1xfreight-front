@@ -35,50 +35,47 @@ function QuoteFtlComponent({ quote }: any) {
     quote?.addresses?.filter(({ address_type }) => address_type === "drop") ??
     quote?.drop;
   const details = quote?.details ? quote?.details[0] : quote?.shipment_details;
+  const items = quote?.items?.length ? quote.items : details?.items;
 
   return (
     <div className={"quote-ftl"}>
       <div className={"title"}>
         <h2>QUOTE DETAILS</h2>
 
-        <div>
-          <h4>PO / Reference No.</h4>
-          <h3>{reference ? reference.join(",") : "N/A"}</h3>
-        </div>
+        <h3>{}</h3>
       </div>
 
-      <div className={"info-2blocks"}>
+      <div className={"details-wrapper"}>
         <div>
           <Group />
           <h4>Type: </h4>
           <h3>{quote?.type}</h3>
         </div>
-      </div>
 
-      <div className={"info-2blocks"}>
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
-          <EqTruck />
+        {!!quote?.equipments?.length && (
+          <div>
+            <EqTruck />
+            <h4>Equipment: </h4>
+            <h3>{quote?.equipments?.join(",")}</h3>
+          </div>
+        )}
 
-          <h4>Equipment: </h4>
-        </div>
-        <h3
-          style={{
-            textTransform: "capitalize",
-          }}
-        >
-          {quote?.equipments?.join(",")}
-        </h3>
+        {reference &&
+          reference.map((ref, index) => (
+            <div key={ref}>
+              <span>{index + 1}</span>
+              <h4>PO/Reference No: </h4>
+              <h3>{ref}</h3>
+            </div>
+          ))}
       </div>
 
       <div className={"locations"}>
         <div className={"location-title"}>
-          <Routes />
-          <h4>Locations</h4>
+          <div>
+            <Routes />
+            <h4>Locations</h4>
+          </div>
         </div>
 
         <div className={"locations-wrapper"}>
@@ -86,7 +83,12 @@ function QuoteFtlComponent({ quote }: any) {
             pickup.map((location, index) => {
               return (
                 <div className={"location-item"} key={location.address + index}>
-                  <h3>
+                  <h3
+                    style={{
+                      whiteSpace: "nowrap",
+                      width: "7rem",
+                    }}
+                  >
                     {location?.address_type?.toUpperCase()}{" "}
                     {pickup.length > 1 ? index + 1 : ""}
                   </h3>
@@ -172,7 +174,12 @@ function QuoteFtlComponent({ quote }: any) {
             drop.map((location, index) => {
               return (
                 <div className={"location-item"} key={location.address + index}>
-                  <h3>
+                  <h3
+                    style={{
+                      whiteSpace: "nowrap",
+                      width: "7rem",
+                    }}
+                  >
                     {location?.address_type?.toUpperCase()}{" "}
                     {drop.length > 1 ? index + 1 : ""}
                   </h3>
@@ -255,9 +262,9 @@ function QuoteFtlComponent({ quote }: any) {
             })}
         </div>
 
-        {!!details?.items && <QuoteItemsTableComponent items={details.items} />}
+        {!!items && <QuoteItemsTableComponent items={items} />}
 
-        <div className={"info-2blocks"}>
+        <div className={"details-wrapper"}>
           {!!details?.packing_method && (
             <div>
               <Database />
@@ -279,9 +286,7 @@ function QuoteFtlComponent({ quote }: any) {
               <h3>{details?.packing_type}</h3>
             </div>
           )}
-        </div>
 
-        <div className={"info-2blocks"}>
           {!!details?.commodity && (
             <div>
               <OpenBox />
@@ -306,39 +311,45 @@ function QuoteFtlComponent({ quote }: any) {
                 </h3>
               </div>
             )}
-        </div>
 
-        <div className={"info-2blocks"}>
           <div>
             <DollarSign />
             <h4>Goods value: </h4>
             <h3>${details?.goods_value}.00</h3>
           </div>
 
-          {!!details?.accessorials && (
+          {!!details?.accessorials?.length && (
             <div>
               <Cog />
               <h4>Accessorials: </h4>
               <h3>{details?.accessorials?.join(", ")}</h3>
             </div>
           )}
+
+          {details?.min_temp && details?.max_temp && (
+            <>
+              <div className={"temp-reefer"}>
+                <TempUp />
+                <h4>Max Temp: </h4>
+                <h3>{details?.max_temp + " "}°F</h3>
+              </div>
+
+              <div className={"temp-reefer"}>
+                <TempDown />
+                <h4>Min Temp: </h4>
+                <h3>{details?.min_temp + " "}°F</h3>
+              </div>
+            </>
+          )}
+
+          {!!quote?.load_number && (
+            <div>
+              <OpenBox />
+              <h4>Load numbers: </h4>
+              <h3>{quote?.load_number}</h3>
+            </div>
+          )}
         </div>
-
-        {details?.min_temp && details?.max_temp && (
-          <div className={"info-2blocks temp-reefer"}>
-            <div>
-              <TempUp />
-              <h4>Max Temp: </h4>
-              <h3>{details?.max_temp + " "}°F</h3>
-            </div>
-
-            <div>
-              <TempDown />
-              <h4>Min Temp: </h4>
-              <h3>{details?.min_temp + " "}°F</h3>
-            </div>
-          </div>
-        )}
 
         {details?.hazardous_goods && (
           <div className={"hazard-warning"}>

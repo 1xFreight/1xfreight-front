@@ -68,8 +68,8 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(5);
-  const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.LTL);
+  const [stepNumber, setStepNumber] = useState<number>(1);
+  const [type, setType] = useState<QuoteTypeEnum | null>(null);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
       title: "Request Quote",

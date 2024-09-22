@@ -149,8 +149,9 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           textTransform: "capitalize",
                         }}
                       >
-                        {shipment.packing_method.replace("_", " ")}/
-                        {shipment.commodity}
+                        {shipment.packing_method?.replace("_", " ") ??
+                          shipment?.quantity + " items"}
+                        /{shipment.commodity}
                       </div>
                     </td>
                     <td>

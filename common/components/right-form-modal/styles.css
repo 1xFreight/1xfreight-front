@@ -82,11 +82,11 @@
                 &:hover {
                     color: black;
                     border-color: #545454;
+                    background: #dedede;
                 }
             }
 
             &:hover {
-                font-size: .9rem;
             }
         }
     }

@@ -1,4 +1,5 @@
 export default function numberCommaFormat(num: number) {
+  if (!num) return 0;
   if (num < 1000) {
     return num.toString();
   }

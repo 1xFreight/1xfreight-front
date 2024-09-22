@@ -13,7 +13,10 @@ export default function ShipmentDetailsLtlComponent() {
   const { setCanChangePage, canChangePage, getData, addData } =
     useRegisterQuoteContext();
   const _default = useMemo(() => getData("default"), [getData]);
-  const [items, setItems] = useState([generateId()]);
+  const _defaultItems = Array(_default?.items?.length ?? 1)
+    .fill(1)
+    .map(() => generateId());
+  const [items, setItems] = useState(_defaultItems);
   const [itemsSummary, setItemsSummary] = useState<any>({
     totalSkidSpots: 0,
     totalVolume: 0,
@@ -76,13 +79,21 @@ export default function ShipmentDetailsLtlComponent() {
       document.getElementById("special_instructions_ltl") as HTMLTextAreaElement
     ).value;
 
+    let quantity = 0;
+
+    itemsData.map((item) => (quantity += item.quantity));
+
     addData({
       form: "shipment_details_ltl",
       data: {
         items: itemsData,
         notes,
         ...refData,
-        ...itemsSummary,
+        quantity,
+        skid_spots: itemsSummary.totalSkidSpots,
+        volume: itemsSummary.totalVolume,
+        density: itemsSummary.totalDensity,
+        weight: itemsSummary.totalWeight,
       },
     });
 
@@ -172,6 +183,7 @@ export default function ShipmentDetailsLtlComponent() {
             min={1}
             placeholder={"0"}
             required
+            defaultValue={_default.details[0].goods_value}
           />
         </div>
       </form>
@@ -182,6 +194,7 @@ export default function ShipmentDetailsLtlComponent() {
             index={index + 1}
             key={item}
             onRemove={() => removeItem(item)}
+            _default={_default?.items?.length ? _default?.items[index] : null}
           />
         ))}
 

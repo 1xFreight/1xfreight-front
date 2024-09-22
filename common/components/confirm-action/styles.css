@@ -1,5 +1,5 @@
 .ca-wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -11,6 +11,7 @@
 
     .ca-backdrop {
         background: #A7A7A7;
+        /*background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(217,217,217,0) 30%);*/
         opacity: 0.5;
         width: 100%;
         height: 100%;
@@ -23,37 +24,118 @@
         display: flex;
         background: white;
         position: relative;
-        min-width: 25em;
+        min-width: 25rem;
         width: fit-content;
         /*height: 7rem;*/
         box-sizing: border-box;
-        padding: 1rem;
-        border-radius: 1rem;
+        padding: 0.5rem;
+        border-radius: 0.75rem;
         flex-direction: column;
         gap: 0.25rem;
-        border: 1px solid #A7A7A7;
+        border: 2px solid #dedede;
+
+        .icon {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            svg {
+                width: 3rem;
+                opacity: 0.7;
+                stroke-width: 0;
+
+                path {
+                    stroke: #0020DD;
+                }
+
+                circle {
+                    fill: #0020DD;
+                }
+
+                path:nth-child(2) {
+                    animation: rotateIconX 3s ease-in-out infinite;
+                }
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            cursor: pointer;
+
+            &:hover {
+                svg {
+                    scale: 1.2;
+
+                    path {
+                        stroke: rgba(237, 0, 0, 0.8);
+                    }
+                }
+            }
+
+            svg {
+                width: 1.5rem;
+                stroke-width: 2px;
+                transition: all 250ms ease-in-out;
+
+                path {
+                    stroke: rgba(84, 84, 84, 0.5);
+                }
+            }
+        }
 
         .ca-title {
-            color: #545454;
+            color: rgba(237, 0, 0, 0.6);
             font-size: 1.2rem;
+            text-align: center;
+
         }
 
         .ca-actions {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content:center;
+            border-top: 2px solid #dedede;
+            padding-top: 0.5rem;
+            /*margin-top: 0.5rem;*/
         }
 
 
         button {
+            /*width: 100%;*/
+            max-width: 50%;
             height: 3rem;
-            border-radius: 0.75rem;
-            flex-grow: 1;
-        }
+            border-radius: 0.5rem;
+            width: 9rem;
+            font-size: 0.85rem;
 
-        button:nth-child(1) {
-            background: transparent;
-            border: 1px solid #ED0000;
-            color: #ED0000;
+            &.cancel {
+                background: white;
+                color: #545454;
+                border: 2px solid #A7A7A7;
+
+                &:hover {
+                    color: black;
+                    border-color: #545454;
+                    background: #dedede;
+                }
+            }
+
+            &:hover {
+            }
         }
+    }
+}
+
+@keyframes rotateIconX {
+    from {
+        transform: rotate(0deg);
+        transform-origin: center center;
+    }
+    to {
+        transform: rotate(360deg);
+        transform-origin: center center;
     }
 }

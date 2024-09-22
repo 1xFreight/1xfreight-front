@@ -37,11 +37,11 @@
                 &:hover {
                     color: black;
                     border-color: #545454;
+                    background: #dedede;
                 }
             }
 
             &:hover {
-                font-size: .9rem;
             }
         }
 
@@ -273,81 +273,3 @@
         }
     }
 }
-
-.shipment-status {
-    display: flex;
-    width: 100%;
-    margin-bottom: 1.25rem;
-
-    .status-item {
-        display: flex;
-        width: calc(100% / 6);
-        border: 1px solid #A7A7A7;
-        height: 3rem;
-        align-items: center;
-        justify-content: center;
-        border-collapse: unset;
-        border-right: 0;
-        gap: 1rem;
-        background: white;
-
-        .checkmark-box {
-            width: 1.3rem;
-            height: 1.3rem;
-            border-radius: 100%;
-            background: #5BAE59;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            svg {
-                margin-left: -0.195rem;
-            }
-        }
-
-        h4 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: #A7A7A7;
-        }
-
-        &.finished {
-            background: #F8FFF8;
-            border-color: #5BAE59;
-
-            h4 {
-                color: #5BAE59;
-            }
-
-            svg path {
-                fill: white;
-            }
-        }
-
-        &.current {
-            background: #5BAE59;
-            border-color: #5BAE59;
-
-            h4 {
-                color: white;
-            }
-        }
-
-        &:nth-child(1){
-            border-radius: 1rem 0 0 1rem;
-        }
-
-        &:nth-last-of-type(1){
-            border-radius: 0 1rem 1rem 0;
-            border-right: 1px solid #A7A7A7;
-
-        }
-
-        &:nth-last-of-type(1).current{
-            border-right: 1px solid #5BAE59;
-        }
-    }
-
-}
-

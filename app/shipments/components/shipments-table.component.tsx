@@ -185,6 +185,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                             style={{
                               textTransform: "lowercase",
                               cursor: "pointer",
+                              color: "rgba(0, 32, 221, 0.7)",
                             }}
                           >
                             {`${alreadyArrivedPickupAddresses.length} of ${pickupAddress.length}`}
@@ -290,6 +291,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                             style={{
                               textTransform: "lowercase",
                               cursor: "pointer",
+                              color: "rgba(0, 32, 221, 0.7)",
                             }}
                           >
                             {`${alreadyArrivedDropAddresses.length} of ${dropAddress.length}`}

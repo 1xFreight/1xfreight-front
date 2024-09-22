@@ -176,8 +176,7 @@ export default function QuotePreviewCarrier({
 
               <div>
                 <div>
-                  <h3>Quote Amount*</h3>
-                  <h6>{"  "}(per load)</h6>
+                  <h3>Quote Amount(per load)*</h3>
                 </div>
                 <div className={"amount-wrapper"}>
                   <input

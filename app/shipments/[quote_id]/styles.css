@@ -65,8 +65,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 0 1rem;
+                /*padding: 0 1rem;*/
                 box-sizing: content-box;
+                padding-left: 1.5rem;
 
                 svg {
                     position: absolute;
@@ -75,17 +76,27 @@
             }
 
             button.cancel {
-                background: rgba(237, 0, 0, 0.24);
+                /*background: rgba(237, 0, 0, 0.24);*/
+                /*text-transform: capitalize;*/
+                background: transparent;
+                width: 7rem;
 
                 svg path{
-                    fill: rgba(237, 0, 0, 1);
+                    fill: #545454;
                 }
 
-                color: rgba(237, 0, 0, 1);
+                /*color: rgba(237, 0, 0, 1);*/
+
+                color: #545454;
 
                 &:hover {
-                    background: white;
+                    /*background: white;*/
                     border: 2px solid rgba(237, 0, 0, 1);
+                    color: #ED0000FF;
+
+                    svg path{
+                        fill: #ED0000FF;
+                    }
                 }
             }
         }
@@ -183,80 +194,4 @@
     }
 }
 
-.shipment-status {
-    display: flex;
-    width: 100%;
-    margin-bottom: 1.25rem;
-
-    .status-item {
-        display: flex;
-        width: calc(100% / 6);
-        border: 1px solid #A7A7A7;
-        height: 3rem;
-        align-items: center;
-        justify-content: center;
-        border-collapse: unset;
-        border-right: 0;
-        gap: 1rem;
-        background: white;
-
-        .checkmark-box {
-            width: 1.3rem;
-            height: 1.3rem;
-            border-radius: 100%;
-            background: #5BAE59;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            svg {
-                margin-left: -0.195rem;
-            }
-        }
-
-        h4 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: #A7A7A7;
-        }
-
-        &.finished {
-            background: #F8FFF8;
-            border-color: #5BAE59;
-
-            h4 {
-                color: #5BAE59;
-            }
-
-            svg path {
-                fill: white;
-            }
-        }
-
-        &.current {
-            background: #5BAE59;
-            border-color: #5BAE59;
-
-            h4 {
-                color: white;
-            }
-        }
-
-        &:nth-child(1){
-            border-radius: 1rem 0 0 1rem;
-        }
-
-        &:nth-last-of-type(1){
-            border-radius: 0 1rem 1rem 0;
-            border-right: 1px solid #A7A7A7;
-
-        }
-
-        &:nth-last-of-type(1).current{
-            border-right: 1px solid #5BAE59;
-        }
-    }
-
-}
 
