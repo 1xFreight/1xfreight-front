@@ -123,11 +123,11 @@ export default function ChatComponent({ room, title }) {
             // console.log(session?._id, session?.email);
             return (
               <MessageComponent
-                key={mess.createdAt.toString()}
-                time={chatDateFormat(mess.createdAt.toString())}
-                isCurrentUser={mess.user_id.email !== session?.email}
-                message={mess.message}
-                user={mess.user_id}
+                key={mess?.createdAt?.toString()}
+                time={chatDateFormat(mess?.createdAt?.toString())}
+                isCurrentUser={mess?.user_id?.email !== session?.email}
+                message={mess?.message}
+                user={mess?.user_id}
                 document={mess?.document}
                 documentName={mess?.documentName}
                 documentSize={mess?.documentSize}

@@ -16,6 +16,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-freeze": "^1.0.4",
+    "sharp": "^0.33.5",
     "socket.io-client": "^4.7.5",
     "use-debounce": "^10.0.3"
   },

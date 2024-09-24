@@ -22,6 +22,8 @@ interface StoreContextI {
   toasts: IToast[];
   showToast: (config: IToast) => any;
   killToast: (id: string) => any;
+  triggerUpdate: any;
+  setTriggerUpdate: Dispatch<SetStateAction<any>>;
 }
 
 const defaultContextValues = {
@@ -34,6 +36,8 @@ const defaultContextValues = {
   toasts: [],
   session: {},
   filters: {},
+  triggerUpdate: null,
+  setTriggerUpdate: () => {},
 };
 
 export const StoreContext = createContext<StoreContextI>(defaultContextValues);
@@ -43,6 +47,7 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState();
   const [toasts, setToasts] = useState([]);
   const [filters, setFilters] = useState({});
+  const [triggerUpdate, setTriggerUpdate] = useState<any>(null);
 
   const killToast = (toastId: string) => {
     document.getElementById(toastId)?.classList.toggle("slide-out-top");
@@ -104,6 +109,8 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
         killToast,
         filters,
         setFilters,
+        triggerUpdate,
+        setTriggerUpdate,
       }}
     >
       {children}

@@ -87,7 +87,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                         }}
                       >
                         <div className={"location main-text"}>
-                          {pickupAddress[0].address}
+                          {pickupAddress[0]?.address}
 
                           {pickupAddress.length >= 2 && (
                             <>
@@ -102,11 +102,11 @@ export default function ShipmentsTableComponent({ shipments }) {
                           )}
                         </div>
                         <div className={"date sub-text"}>
-                          {formatDate(pickupAddress[0].date)}
-                          {!!pickupAddress[0].date && " / "}
-                          {pickupAddress[0].time_start}
+                          {formatDate(pickupAddress[0]?.date)}
+                          {!!pickupAddress[0]?.date && " / "}
+                          {pickupAddress[0]?.time_start}
                           {" - "}
-                          {pickupAddress[0].time_end}
+                          {pickupAddress[0]?.time_end}
                         </div>
                       </div>
                       <div className={"arrow-styling"}>
@@ -122,7 +122,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                         }}
                       >
                         <div className={"location main-text"}>
-                          {dropAddress[0].address}
+                          {dropAddress[0]?.address}
 
                           {dropAddress.length >= 2 && (
                             <>
@@ -137,11 +137,11 @@ export default function ShipmentsTableComponent({ shipments }) {
                           )}
                         </div>
                         <div className={"date sub-text"}>
-                          {formatDate(dropAddress[0].date)}
-                          {!!dropAddress[0].date && " / "}
-                          {dropAddress[0].time_start}
-                          {!!dropAddress[0].time_end && " - "}
-                          {dropAddress[0].time_end}
+                          {formatDate(dropAddress[0]?.date)}
+                          {!!dropAddress[0]?.date && " / "}
+                          {dropAddress[0]?.time_start}
+                          {!!dropAddress[0]?.time_end && " - "}
+                          {dropAddress[0]?.time_end}
                         </div>
                       </div>
                     </div>
@@ -369,7 +369,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                     <div className={"price"}>
                       <div className={"full-price"}>
                         <span>$</span>
-                        {numberCommaFormat(load_number * bid.amount)}
+                        {numberCommaFormat(load_number * bid?.amount)}
                       </div>
                       <div className={"currency"}>{currency}</div>
                     </div>

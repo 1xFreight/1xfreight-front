@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    position: relative;
+    z-index: 0;
 
     .filters-panel {
         width: 100%;
@@ -17,6 +19,18 @@
         /*.general-type-selector:nth-child(1) {*/
         /*    width: 12rem;*/
         /*}*/
+    }
+
+    .extra-address-window {
+        top: 0;
+        transform: translateY(2rem);
+        z-index: 3;
+
+        .arrow-down {
+            top: -0.75rem;
+            bottom: unset;
+            rotate: 180deg;
+        }
     }
 
     .page-breadcrumb {

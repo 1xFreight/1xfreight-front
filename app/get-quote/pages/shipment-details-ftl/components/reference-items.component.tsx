@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
+import "../styles.css";
 
 export default function ReferenceItemsComponent({
   _default,

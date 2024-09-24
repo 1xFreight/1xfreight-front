@@ -6,14 +6,10 @@ import "./styles.css";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import QuoteFtlComponent from "@/app/components/quote-details/quote-ftl.component";
 import ChatComponent from "@/common/components/chat/chat.component";
-import { mockBids } from "@/app/quotes/[quote_id]/mockBids";
-import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
 import BreadcrumbsComponent from "@/app/components/breadcrumbs/breadcrumbs.component";
 import Marker from "@/public/icons/24px/marker.svg";
 import Delete from "@/public/icons/24px/delete 1.svg";
-import ShipmentStatusComponent, {
-  ShipmentStatusEnum,
-} from "@/app/shipments/[quote_id]/components/shipment-status.component";
+import ShipmentStatusComponent from "@/app/shipments/[quote_id]/components/shipment-status.component";
 import BottomMenuComponent from "@/app/shipments/[quote_id]/components/bottom-menu.component";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
@@ -23,6 +19,9 @@ import {
   toShortId,
 } from "@/common/utils/data-convert.utils";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
+import ModalComponent from "@/common/components/modal/modal.component";
+import useStore from "@/common/hooks/use-store.context";
+import Loading2Component from "@/common/components/loading/loading-as-page.component";
 
 export default function ShipmentIdPage({
   params,
@@ -33,26 +32,32 @@ export default function ShipmentIdPage({
 }) {
   const [request, setRequest] = useState<any>();
   const [quote, setQuote] = useState<any>();
+  const { triggerUpdate, addToStore } = useStore();
+  const [loading, setLoading] = useState(true);
 
   const getQuoteAndReq = useDebouncedCallback(() => {
     getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
       (data) => {
         setQuote({ ...data?.quotes[0] });
         setRequest(data?.quotes[0].bid);
+        addToStore({ name: "shipment_quote", data: data?.quotes[0] });
+        setLoading(false);
       },
     );
   });
 
   useEffect(() => {
+    setLoading(true);
     getQuoteAndReq();
-  }, []);
+  }, [triggerUpdate]);
 
-  if (!request) return <LoadingComponent />;
-  if (!quote) return <LoadingComponent />;
+  if (loading || !request || !quote) {
+    return <Loading2Component />;
+  }
 
   return (
     <div className={"shipment-id-page"}>
-      <BottomMenuComponent />
+      <BottomMenuComponent quoteId={params.quote_id} />
       <ConfirmActionComponent
         id={"confirm-cancel-load"}
         title={"Cancel this load ?"}
@@ -95,7 +100,7 @@ export default function ShipmentIdPage({
                   <div className={"price"}>
                     <div className={"full-price"}>
                       <span>$</span>
-                      {numberCommaFormat(request.amount)}
+                      {numberCommaFormat(request?.amount)}
                     </div>
                     <div className={"currency"}>USD</div>
                   </div>
@@ -104,7 +109,7 @@ export default function ShipmentIdPage({
 
                 <div className={"transit-time"}>
                   <h6>Transit Time</h6>
-                  <h2>{request.transit_time}</h2>
+                  <h2>{request?.transit_time}</h2>
                   <div className={`sub-text`}>days</div>
                 </div>
 

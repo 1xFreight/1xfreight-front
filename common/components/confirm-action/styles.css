@@ -33,6 +33,7 @@
         flex-direction: column;
         gap: 0.25rem;
         border: 2px solid #dedede;
+        max-width: 50rem;
 
         .icon {
             width: 100%;
