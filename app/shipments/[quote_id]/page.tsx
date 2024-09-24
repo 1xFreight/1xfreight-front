@@ -129,7 +129,7 @@ export default function ShipmentIdPage({
             <div className={"chat-wrapper"}>
               <ChatComponent
                 room={params.quote_id + ":" + request?._id}
-                title={`with ${quote?.carrier?.email}`}
+                title={`${quote?.local_carrier?.name ?? quote?.carrier?.email}`}
               />
             </div>
           </div>

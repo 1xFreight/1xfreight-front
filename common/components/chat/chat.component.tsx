@@ -102,8 +102,11 @@ export default function ChatComponent({ room, title }) {
       <div className={"chat-title"}>
         <div>
           <Chat />
-          <h5>Chat {title}</h5>
+          <div className={"chat-text"}>
+            <h5>Chat</h5>
+          </div>
         </div>
+        <div className={"username"}>{title}</div>
       </div>
 
       <div
@@ -124,10 +127,11 @@ export default function ChatComponent({ room, title }) {
                 time={chatDateFormat(mess.createdAt.toString())}
                 isCurrentUser={mess.user_id.email !== session?.email}
                 message={mess.message}
-                user={mess.user_id.name ?? mess.user_id.email}
+                user={mess.user_id}
                 document={mess?.document}
                 documentName={mess?.documentName}
                 documentSize={mess?.documentSize}
+                localCarrier={mess?.local_carrier}
               />
             );
           })}
@@ -150,7 +154,7 @@ export default function ChatComponent({ room, title }) {
           document.getElementById("logo-file-input").click();
         }}
       >
-        <AddFile /> Attach document
+        <AddFile /> <span>add document</span>
       </div>
 
       <input

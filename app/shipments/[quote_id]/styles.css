@@ -79,7 +79,8 @@
                 /*background: rgba(237, 0, 0, 0.24);*/
                 /*text-transform: capitalize;*/
                 background: transparent;
-                width: 7rem;
+                width: 10rem;
+                transition: border 250ms ease-in-out !important;
 
                 svg path{
                     fill: #545454;

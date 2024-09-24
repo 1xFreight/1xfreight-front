@@ -236,7 +236,7 @@ export default function ShipmentIdPage({
             <div className={"chat-wrapper"}>
               <ChatComponent
                 room={params.quote_id + ":" + request?._id}
-                title={`with ${quote?.user[0].name}`}
+                title={`${quote?.user[0].name}`}
               />
             </div>
           </div>
