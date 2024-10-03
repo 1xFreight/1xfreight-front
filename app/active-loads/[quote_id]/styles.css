@@ -2,6 +2,8 @@
     width: 100%;
     padding-bottom: 7rem;
     position: relative;
+    display: flex;
+    justify-content: center;
 
     .arrival-time-modal {
         position: fixed;
@@ -175,6 +177,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            width: 100%;
 
             div {
                 display: flex;
@@ -183,6 +186,8 @@
                 button {
                     background: white;
                     color: #545454;
+                    max-width: 50%;
+                    width: 100%;
 
                     &:hover {
                         color: #0020DD;

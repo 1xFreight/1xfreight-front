@@ -16,6 +16,7 @@ export default function ShipmentsTableComponent({ shipments }) {
       <thead>
         <tr>
           <th>Load ID</th>
+          <th>Status</th>
           <th>Mode</th>
           <th>Origin</th>
           <th>Destination</th>
@@ -40,6 +41,7 @@ export default function ShipmentsTableComponent({ shipments }) {
               load_number,
               bid,
               currency,
+              local_carrier,
             }) => {
               const pickupAddress = addresses.filter(
                 ({ address_type }) => address_type === "pickup",
@@ -67,10 +69,13 @@ export default function ShipmentsTableComponent({ shipments }) {
                   {/*</td>*/}
                   <td>
                     <div className={"id-number"}>{toShortId(_id)}</div>
+                  </td>
+                  <td>
                     <div
                       className={`main-text table-status ${status}`}
                       style={{
                         textTransform: "capitalize",
+                        textAlign: "center",
                       }}
                     >
                       {clearText(status)}
@@ -101,13 +106,13 @@ export default function ShipmentsTableComponent({ shipments }) {
                             </>
                           )}
                         </div>
-                        <div className={"date sub-text"}>
-                          {formatDate(pickupAddress[0]?.date)}
-                          {!!pickupAddress[0]?.date && " / "}
-                          {pickupAddress[0]?.time_start}
-                          {" - "}
-                          {pickupAddress[0]?.time_end}
-                        </div>
+                        {/*<div className={"date sub-text"}>*/}
+                        {/*  {formatDate(pickupAddress[0]?.date)}*/}
+                        {/*  {!!pickupAddress[0]?.date && " / "}*/}
+                        {/*  {pickupAddress[0]?.time_start}*/}
+                        {/*  {" - "}*/}
+                        {/*  {pickupAddress[0]?.time_end}*/}
+                        {/*</div>*/}
                       </div>
                       <div className={"arrow-styling"}>
                         <Arrow />
@@ -136,13 +141,13 @@ export default function ShipmentsTableComponent({ shipments }) {
                             </>
                           )}
                         </div>
-                        <div className={"date sub-text"}>
-                          {formatDate(dropAddress[0]?.date)}
-                          {!!dropAddress[0]?.date && " / "}
-                          {dropAddress[0]?.time_start}
-                          {!!dropAddress[0]?.time_end && " - "}
-                          {dropAddress[0]?.time_end}
-                        </div>
+                        {/*<div className={"date sub-text"}>*/}
+                        {/*  {formatDate(dropAddress[0]?.date)}*/}
+                        {/*  {!!dropAddress[0]?.date && " / "}*/}
+                        {/*  {dropAddress[0]?.time_start}*/}
+                        {/*  {!!dropAddress[0]?.time_end && " - "}*/}
+                        {/*  {dropAddress[0]?.time_end}*/}
+                        {/*</div>*/}
                       </div>
                     </div>
                   </td>
@@ -363,7 +368,8 @@ export default function ShipmentsTableComponent({ shipments }) {
                   </td>
 
                   <td>
-                    <div className={"main-text"}>{carrier?.email}</div>
+                    <div className={"main-text"}>{local_carrier?.name}</div>
+                    <div className={"sub-text"}>{carrier?.email}</div>
                   </td>
                   <td>
                     <div className={"price"}>

@@ -152,7 +152,7 @@
         .location-title {
             display: flex;
             width: 100%;
-            justify-content: center;
+            justify-content: start;
 
             div {
                 background: rgba(0, 0, 0, 0.05);

@@ -41,7 +41,7 @@ export default function QuotePreviewCarrier({
       setAmount(data.amount);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const updateBidPrice = useDebouncedCallback(() => {
     const newAmount = Number(
@@ -103,7 +103,7 @@ export default function QuotePreviewCarrier({
         router.push("/available-quotes");
       },
     );
-  }, 500);
+  }, 350);
 
   const placeBid = useDebouncedCallback(() => {
     const data = getBidData();
@@ -128,7 +128,7 @@ export default function QuotePreviewCarrier({
     });
     setLoading(true);
     debouncedGetQuote();
-  }, 500);
+  }, 350);
 
   if (loading) {
     return <Loading2Component />;
@@ -163,11 +163,23 @@ export default function QuotePreviewCarrier({
                 <h2>SUBMIT QUOTE</h2>
 
                 <div className={"validity"}>
-                  <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
                     <Stopwatch />
                     Submit your quote before:
                   </div>
-                  <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
                     {formatDate(quote?.deadline_date)}{" "}
                     {" " + quote?.deadline_time}
                   </div>
@@ -189,7 +201,15 @@ export default function QuotePreviewCarrier({
                     id={"bid-amount"}
                     onChange={(e) => setAmount(e.target.value)}
                   />
-                  <div className={"currency"}>{quote?.currency}</div>
+                  <div
+                    className={"currency"}
+                    style={{
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    {quote?.currency}
+                  </div>
 
                   {quote?.load_number > 1 && (
                     <h5

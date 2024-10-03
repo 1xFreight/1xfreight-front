@@ -138,8 +138,7 @@ export default function ShipmentIdPage({
     getQuoteAndReq();
   }, [openArrivalModal]);
 
-  if (!request) return <Loading2Component />;
-  if (!quote) return <Loading2Component />;
+  if (!request || !quote) return <Loading2Component />;
 
   return (
     <div className={"shipment-id-page"}>
@@ -223,13 +222,38 @@ export default function ShipmentIdPage({
           <div className={"chat-column"}>
             <div className={"change-status"}>
               {getNextStatus() !== QuoteStatusEnum.CANCELED && (
-                <button onClick={updateStatus}>
+                <button
+                  onClick={updateStatus}
+                  style={{
+                    width: "100%",
+                  }}
+                >
                   <span>{clearText(getNextStatus())}</span>
                 </button>
               )}
-              <div>
-                <button>View BOL</button>
-                <button>DOCS</button>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  marginTop: "0.5rem",
+                }}
+              >
+                <button
+                  style={{
+                    maxWidth: "50%",
+                    width: "100%",
+                  }}
+                >
+                  View BOL
+                </button>
+                <button
+                  style={{
+                    maxWidth: "50%",
+                    width: "100%",
+                  }}
+                >
+                  DOCS
+                </button>
               </div>
             </div>
 

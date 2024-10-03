@@ -24,7 +24,7 @@ export default function ShipmentsPage() {
       setShipments(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   useEffect(() => {
     setLoading(true);

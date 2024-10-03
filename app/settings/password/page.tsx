@@ -44,7 +44,7 @@ export default function ChangePasswordPage() {
         pass.value = "";
       },
     );
-  }, 500);
+  }, 350);
 
   const toggleInputType = (elId: string) => {
     const passwordInput = document.getElementById(elId) as HTMLInputElement;

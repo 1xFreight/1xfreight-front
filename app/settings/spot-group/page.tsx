@@ -80,7 +80,7 @@ export default function SpotSettingsPage() {
       setCarriers(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const getSpotGroupsDebounced = useDebouncedCallback(() => {
     setLoading(true);
@@ -90,7 +90,7 @@ export default function SpotSettingsPage() {
       setSpotGroups(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   useEffect(() => {
     getMembersDebounced();

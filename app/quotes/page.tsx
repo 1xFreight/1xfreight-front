@@ -21,12 +21,12 @@ export default function QuotesPage() {
 
   const getQuotesDebounced = useDebouncedCallback(() => {
     getWithAuth(
-      `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}`,
+      `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}`,
     ).then((data) => {
       setQuotes(data);
       setLoading(false);
     });
-  }, 700);
+  }, 300);
 
   useEffect(() => {
     setLoading(true);

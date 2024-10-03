@@ -7,7 +7,7 @@ interface QuoteActionButtonI {
 
 function QuoteActionButtonComponent({ status, number }: QuoteActionButtonI) {
   const textMapping = {
-    [QuoteStatusEnum.CONFIRMED]: "View Request",
+    // [QuoteStatusEnum.CONFIRMED]: "View Request",
     [QuoteStatusEnum.REQUESTED]: "Awaiting Quotes",
     [QuoteStatusEnum.BOOKED]: `View ${number ?? ""} Quotes`,
   };

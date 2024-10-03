@@ -26,7 +26,7 @@ export default function PickupPageComponent() {
 
     for (let i = 1; i <= numberOfLocations; i++) {
       const form = document.forms[`location-form-Pickup-${i}`];
-      const valid = form[0].reportValidity();
+      const valid = form.reportValidity();
 
       if (!valid) {
         return setCanChangePage(PageStateEnum.INVALID);

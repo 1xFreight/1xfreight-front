@@ -20,9 +20,9 @@ export default function QPreviewComponent() {
   const details = quote?.details[0];
 
   return (
-    <>
+    <div className={"table-quote-preview-wrapper slide-in-top"}>
       {quote && (
-        <table className={"table-quote-preview slide-in-top"}>
+        <table className={"table-quote-preview"}>
           <thead>
             <tr>
               <th></th>
@@ -123,6 +123,6 @@ export default function QPreviewComponent() {
           </tbody>
         </table>
       )}
-    </>
+    </div>
   );
 }

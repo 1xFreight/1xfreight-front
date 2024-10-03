@@ -52,7 +52,7 @@ export default function CarriersSettingsPage() {
       setImportData(data);
       setLoadingImport(false);
     });
-  }, 500);
+  }, 350);
 
   const debouncedGetCarriers = useDebouncedCallback(() => {
     setLoading(true);
@@ -62,7 +62,7 @@ export default function CarriersSettingsPage() {
       setCarriers(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const debouncedSave = useDebouncedCallback(() => {
     const form = document.forms["newCarrierForm"];

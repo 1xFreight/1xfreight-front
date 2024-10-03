@@ -99,7 +99,7 @@ body {
 
 .container {
   padding: 0 2.5rem;
-  max-width: 2560px;
+  max-width: 1760px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -157,11 +157,41 @@ button:disabled {
   border-radius: 0.5rem;
   height: fit-content;
   text-transform: lowercase;
+  font-weight: 500 !important;
+  /*border: 2px solid transparent;*/
+  white-space: nowrap;
 
-  &.booked {
-    background: #82C181;
-    color: white !important;
+  /*&.booked {*/
+  /*  background: #c3dbfd;*/
+  /*  color: white;*/
+  /*}*/
+
+  /*&.dispatched {*/
+  /*  background: #81b1fb;*/
+  /*  color: white;*/
+  /*}*/
+
+  &.delivered {
+    background: #90be6d;
+    color: white;
   }
+
+  /*&.at_pickup {*/
+  /*  background: #5a77d8;*/
+  /*  color: white;*/
+  /*}*/
+
+  /*&.at_destination {*/
+  /*  background: #535878;*/
+  /*  color: white;*/
+  /*}*/
+
+  /*&.in_transit {*/
+  /*  background: #9db0ce;*/
+  /*  color: white;*/
+  /*}*/
+
+
 }
 
 .fade-in-top {

@@ -59,7 +59,7 @@ export default function RequestIdPage({
 
       router.push("/quotes");
     });
-  }, 500);
+  }, 350);
 
   if (!request) return <LoadingComponent />;
   if (!quote) return <LoadingComponent />;
@@ -74,10 +74,11 @@ export default function RequestIdPage({
                 <div className={"price"}>
                   <div className={"full-price"}>
                     <span>$</span>
-                    {numberCommaFormat(request.amount)}
+                    {numberCommaFormat(request?.amount)}
                   </div>
-                  <div className={"currency"}>USD</div>
+                  <div className={"currency"}>{quote.currency}</div>
                 </div>
+
                 <h5>Per Load</h5>
               </div>
 
@@ -102,8 +103,8 @@ export default function RequestIdPage({
 
               <div className={"partner"}>
                 <h6>Partner</h6>
-                <h2>{request.user.email}</h2>
-                {/*<div className={`sub-text`}>{request.email}</div>*/}
+                <h2>{request?.local_carrier?.name}</h2>
+                <h6>{request?.user?.email}</h6>
               </div>
             </div>
 
@@ -128,7 +129,10 @@ export default function RequestIdPage({
             </div>
           </div>
           <div className={"chat-wrapper"}>
-            <ChatComponent room={params.quote_id + ":" + params.request_id} />
+            <ChatComponent
+              room={params.quote_id + ":" + params.request_id}
+              title={request?.local_carrier?.name}
+            />
           </div>
         </div>
       </div>

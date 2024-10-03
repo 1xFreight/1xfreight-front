@@ -42,7 +42,7 @@ function QuoteFtlComponent({ quote }: any) {
       <div className={"title"}>
         <h2>QUOTE DETAILS</h2>
 
-        <h3>{}</h3>
+        {/*<h3>{}</h3>*/}
       </div>
 
       <div className={"details-wrapper"}>

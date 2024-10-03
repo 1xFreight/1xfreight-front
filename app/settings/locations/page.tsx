@@ -33,7 +33,7 @@ export default function SavedLocationsPage() {
       setLocations(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const saveDataDebounced = useDebouncedCallback(() => {
     const form = document.forms["location-form-Location-0"];

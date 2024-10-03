@@ -4,7 +4,7 @@ import "./styles.css";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import InputChipsComponent from "@/common/components/input-chips/input-chips.component";
 import { CurrencyEnum } from "@/common/enums/currency.enum";
-import SliderComponent from "@/common/components/slider/slider.component";
+import SwitchComponent from "@/common/components/slider/switch.component";
 import useStore from "@/common/hooks/use-store.context";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { formDataToJSON } from "@/common/utils/formData.util";
@@ -161,7 +161,7 @@ export default function SettingsPage() {
       getWithAuth("/users/me").then((data) => setSession(data));
       document.getElementById("logo-file-btn").removeAttribute("disabled");
     });
-  }, 500);
+  }, 350);
 
   return (
     <div className={"settings-page"}>
@@ -295,21 +295,21 @@ export default function SettingsPage() {
             <div className={"auto-fill"}>
               <div>
                 <h5>Auto-Fill Pickup Location from Last Shipment:</h5>
-                <SliderComponent
+                <SwitchComponent
                   inputName={"auto_pickup"}
                   defaultState={session.auto_pickup}
                 />
               </div>
               <div>
                 <h5>Auto-Fill Delivery Location from Last Shipment:</h5>
-                <SliderComponent
+                <SwitchComponent
                   inputName={"auto_delivery"}
                   defaultState={session.auto_delivery}
                 />
               </div>
               <div>
                 <h5>Auto-Fill Commodity from Last Shipment:</h5>
-                <SliderComponent
+                <SwitchComponent
                   inputName={"auto_commodity"}
                   defaultState={session.auto_commodity}
                 />

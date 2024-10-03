@@ -38,6 +38,8 @@
         background: white;
         border-bottom: 2px solid #e8e8e8;
         z-index: 1;
+        display: flex;
+        justify-content: center;
     }
 
     .q-table-wrapper table{
@@ -50,6 +52,16 @@
         position: relative;
     }
 
+    .table-quote-preview-wrapper {
+        background: #F9F9F9;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        margin-top: -1.5rem;
+
+    }
+
     .table-quote-preview {
         width: 100%;
         border-collapse: separate;
@@ -58,8 +70,8 @@
         min-width: 60rem;
         box-sizing: border-box;
         position: relative;
-        margin-top: -1.5rem;
         z-index: 1;
+        max-width: 1760px;
 
         tr td .price .full-price::after {
             content: "00";

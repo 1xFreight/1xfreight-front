@@ -13,6 +13,7 @@ import { getOrdinalSuffix } from "@/common/utils/number.utils";
 import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/place-autocomplete.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { log } from "node:util";
+import SwitchComponent from "@/common/components/slider/switch.component";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -119,6 +120,128 @@ function LocationFormComponent({
               )}
             </div>
 
+            <div className={"location-details"}>
+              <h3>Location Details:</h3>
+              <div>
+                <div>
+                  <h5>Ready by: </h5>
+                  <select name={"ready_by"}>
+                    {generatePickHours().map((time, index) => (
+                      <option key={time + index} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>{" "}
+                </div>
+
+                <div>
+                  <h5>Closes at: </h5>
+                  <select name={"closes_at"}>
+                    {generatePickHours().map((time, index) => (
+                      <option key={time + index} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>{" "}
+                </div>
+              </div>
+
+              <div>
+                <div className={"open-days"}>
+                  <div>
+                    <input
+                      type={"checkbox"}
+                      className={"rounded-checkbox"}
+                      defaultChecked
+                    />
+                    <h5>Mon</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} defaultChecked />
+                    <h5>Tue</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} defaultChecked />
+                    <h5>Wed</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} defaultChecked />
+                    <h5>Thu</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} defaultChecked />
+                    <h5>Fri</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} />
+                    <h5>Sat</h5>
+                  </div>
+
+                  <div>
+                    <input type={"checkbox"} />
+                    <h5>Sun</h5>
+                  </div>
+                </div>
+
+                <div>
+                  <h5>Open 24/7</h5>
+                  <SwitchComponent inputName={"open_nonstop"} />
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <h5>Company name:</h5>
+                  <input
+                    type={"text"}
+                    placeholder={"Type here..."}
+                    required
+                    name={"company_name"}
+                    defaultValue={defaultData?.company_name}
+                  />
+                </div>
+
+                <div>
+                  <h5>Contact name:</h5>
+                  <input
+                    type={"text"}
+                    placeholder={"Type here..."}
+                    required
+                    name={"contact_name"}
+                    defaultValue={defaultData?.contact_name}
+                  />
+                </div>
+
+                <div>
+                  <h5>Contact phone:</h5>
+                  <input
+                    type={"text"}
+                    placeholder={"Type here..."}
+                    required
+                    name={"contact_phone"}
+                    defaultValue={defaultData?.contact_phone}
+                  />
+                </div>
+
+                <div>
+                  <h5>
+                    Contact email: <span>(optional)</span>
+                  </h5>
+                  <input
+                    type={"text"}
+                    placeholder={"Type here..."}
+                    name={"contact_email"}
+                    defaultValue={defaultData?.contact_email}
+                  />
+                </div>
+              </div>
+            </div>
+
             <div
               className={"date-time-details"}
               style={{
@@ -210,21 +333,6 @@ function LocationFormComponent({
                       defaultValue={
                         defaultData?.time_start ?? "Call or email to schedule"
                       }
-                      onChange={(e) => {
-                        const timeEndSelect = document.getElementById(
-                          `locationTimeEnd-${index}`,
-                        ) as HTMLSelectElement;
-                        if (
-                          e.target.value === "Call or email to schedule" ||
-                          e.target.value === "Any time during business hours"
-                        ) {
-                          timeEndSelect.disabled = true;
-                          timeEndSelect.value = "0";
-                        } else {
-                          timeEndSelect.disabled = false;
-                          timeEndSelect.value = e.target.value;
-                        }
-                      }}
                     >
                       <option value="Call or email to schedule">
                         Call or email to schedule
@@ -250,7 +358,6 @@ function LocationFormComponent({
                       name="locationTimeEnd"
                       defaultValue={defaultData?.time_end ?? "0"}
                       id={`locationTimeEnd-${index}`}
-                      disabled={true}
                     >
                       <option value="0" disabled>
                         Time range end
@@ -262,7 +369,7 @@ function LocationFormComponent({
                       ))}
                     </select>
 
-                    {/*<span>*if needed</span>*/}
+                    <span>*if needed</span>
                   </div>
                 </div>
               </div>

@@ -131,7 +131,7 @@ export const RegisterQuoteContextProvider = ({
         data: _default,
       });
     });
-  }, 500);
+  }, 350);
   const validateAndGoForward = () => {
     if (canChangePage === PageStateEnum.NO_VALIDITY)
       return setCanChangePage(PageStateEnum.CAN_CHANGE);

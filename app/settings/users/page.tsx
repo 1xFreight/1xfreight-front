@@ -42,7 +42,7 @@ export default function UsersSettingsPage() {
         duration: 5000,
       });
     });
-  }, 500);
+  }, 350);
 
   const validateAndSave = () => {
     const form = document.forms["newUserForm"];
@@ -64,7 +64,7 @@ export default function UsersSettingsPage() {
       setMembers(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),

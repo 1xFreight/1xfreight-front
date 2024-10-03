@@ -13,6 +13,8 @@ export function AddPO() {
       className={"shipment-details-page bottom-menu-action"}
       style={{
         boxShadow: "unset",
+        borderBottom: "unset",
+        padding: 0,
       }}
     >
       <form name={"add_po_form"}>

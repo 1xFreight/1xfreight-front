@@ -109,7 +109,17 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
           </div>
 
           <div className={"reference-no"}>
-            <h3>Reference No.</h3>
+            <h3>
+              Reference No.{" "}
+              <span
+                style={{
+                  opacity: 0.5,
+                  fontSize: "0.8rem",
+                }}
+              >
+                (optional)
+              </span>
+            </h3>
 
             <ReferenceItemsComponent _default={_default} />
           </div>

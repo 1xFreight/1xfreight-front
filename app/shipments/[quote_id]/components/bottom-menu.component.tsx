@@ -179,7 +179,7 @@ export default function BottomMenuComponent({ quoteId }) {
       <ConfirmActionComponent
         id={"change-carrier-confirm"}
         title={
-          "The quote will be moved to Quotes page and you will be able to select again from all precedent bids."
+          "This shipment will be moved to Quotes page and you will be able to select again from all precedent quotes."
         }
         action={changeCarrier}
       />

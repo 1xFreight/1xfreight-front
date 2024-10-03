@@ -1,0 +1,47 @@
+.decline-quote-page {
+    padding: 1.5rem;
+
+    .decline-quote-wrapper {
+        width: 30rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+    }
+
+    .error-svg {
+        svg {
+            path {
+                stroke: #ED0000;
+            }
+        }
+    }
+
+    .declined {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+        text-align: center;
+
+        svg {
+            stroke-width: 1px;
+            scale: 3;
+            stroke: #82C181;
+            background: #dedede;
+            border-radius: 100%;
+            margin-bottom: 1rem;
+            width: 24px;
+
+            path {
+                fill: #82C181;
+            }
+        }
+
+        span {
+            color: #0020DD;
+        }
+    }
+}

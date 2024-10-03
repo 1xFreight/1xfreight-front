@@ -39,7 +39,7 @@ export default function QuotePreviewCarrier({
       setExistingBid(data);
       setLoading(false);
     });
-  }, 500);
+  }, 350);
 
   const updateBidPrice = useDebouncedCallback(() => {
     const newAmount = Number(
@@ -101,7 +101,7 @@ export default function QuotePreviewCarrier({
         router.push("/available-quotes");
       },
     );
-  }, 500);
+  }, 350);
 
   const placeBid = useDebouncedCallback(() => {
     const data = getBidData();
@@ -126,7 +126,7 @@ export default function QuotePreviewCarrier({
     });
     setLoading(true);
     debouncedGetQuote();
-  }, 500);
+  }, 350);
 
   if (loading) {
     return <Loading2Component />;

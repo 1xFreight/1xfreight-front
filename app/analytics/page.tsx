@@ -13,7 +13,7 @@ export default function AnalyticsPage() {
 
   const getAnalyticsDebounced = useDebouncedCallback(() => {
     getWithAuth("/analytics").then((data) => setUserAnalytics(data));
-  }, 500);
+  }, 350);
 
   useEffect(() => {
     getAnalyticsDebounced();

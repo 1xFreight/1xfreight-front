@@ -96,15 +96,36 @@ export default function ShipmentIdPage({
           <div className={"shipment-column"}>
             <div className={"shipment-wrapper"}>
               <div>
-                <div className={"price-wrapper"}>
-                  <div className={"price"}>
-                    <div className={"full-price"}>
-                      <span>$</span>
-                      {numberCommaFormat(request?.amount)}
+                {quote?.load_number > 1 && (
+                  <div className={"price-wrapper"}>
+                    <div>
+                      <div className={"price"}>
+                        <div className={"full-price"}>
+                          <span>$</span>
+                          {numberCommaFormat(
+                            request?.amount * quote.load_number,
+                          )}
+                        </div>
+                        <div className={"currency"}>{quote.currency}</div>
+                      </div>
+
+                      <h5>Total cost</h5>
                     </div>
-                    <div className={"currency"}>USD</div>
                   </div>
-                  <h5>Per Load</h5>
+                )}
+
+                <div className={"price-wrapper"}>
+                  <div>
+                    <div className={"price"}>
+                      <div className={"full-price"}>
+                        <span>$</span>
+                        {numberCommaFormat(request?.amount)}
+                      </div>
+                      <div className={"currency"}>{quote.currency}</div>
+                    </div>
+
+                    <h5>Per Load</h5>
+                  </div>
                 </div>
 
                 <div className={"transit-time"}>
@@ -115,7 +136,8 @@ export default function ShipmentIdPage({
 
                 <div className={"partner"}>
                   <h6>Partner</h6>
-                  <h2>{quote?.carrier?.email}</h2>
+                  <h2>{quote?.local_carrier?.name}</h2>
+                  <h6>{quote?.carrier?.email}</h6>
                 </div>
               </div>
 

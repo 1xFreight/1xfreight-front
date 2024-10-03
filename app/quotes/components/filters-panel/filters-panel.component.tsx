@@ -32,10 +32,15 @@ function FiltersPanelComponent() {
   const { setFilters } = useStore();
 
   useEffect(() => {
+    const formattedType = type === TypeFilterEnum.ALL ? "" : type;
+    const formattedStatus = status === StatusFilterEnum.ALL ? "" : status;
+
     setFilters({
       searchText,
+      type: formattedType,
+      status: formattedStatus,
     });
-  }, [searchText]);
+  }, [searchText, type, status]);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),

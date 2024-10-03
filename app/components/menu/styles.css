@@ -2,15 +2,20 @@
     height: 4.6875rem;
     width: 100%;
     box-sizing: border-box;
-    padding: 0.45rem 2.5rem 0.45rem 2.5rem;
-    display: flex;
-    justify-content: space-between;
     background: white;
     align-items: center;
     /*overflow: hidden;*/
     position: relative;
     z-index: 300;
     border-bottom: 2px solid #e5e5e5;
+    display: flex;
+    justify-content: center;
+
+    &>div {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+    }
 }
 
 .main-menu .logo {

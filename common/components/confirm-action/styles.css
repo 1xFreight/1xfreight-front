@@ -24,7 +24,7 @@
         display: flex;
         background: white;
         position: relative;
-        min-width: 25rem;
+        min-width: 30rem;
         width: fit-content;
         /*height: 7rem;*/
         box-sizing: border-box;
@@ -33,7 +33,7 @@
         flex-direction: column;
         gap: 0.25rem;
         border: 2px solid #dedede;
-        max-width: 50rem;
+        max-width: 35rem;
 
         .icon {
             width: 100%;
@@ -87,10 +87,12 @@
         }
 
         .ca-title {
-            color: rgba(237, 0, 0, 0.6);
-            font-size: 1.2rem;
+            color: #545454;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.1;
             text-align: center;
-
+            padding: 0.5rem 1rem;
         }
 
         .ca-actions {

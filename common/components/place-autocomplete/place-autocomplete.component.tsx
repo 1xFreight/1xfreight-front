@@ -72,6 +72,31 @@ function PlaceAutocompleteComponent({
     }
   }, [inputText]);
 
+  const getPlaceDetailsByAddress = (address: string) => {
+    const placesService = new google.maps.places.PlacesService(
+      document.createElement("div"), // dummy element
+    );
+
+    placesService.findPlaceFromQuery(
+      {
+        query: address, // Use the address as the query
+        fields: ["name", "formatted_address"], // Specify the fields you need
+      },
+      (results, status) => {
+        if (
+          status === google.maps.places.PlacesServiceStatus.OK &&
+          results &&
+          results.length > 0
+        ) {
+          const place = results[0]; // Get the first matching place
+
+          // setInputText(place.formatted_address);
+          console.log(place.name);
+        }
+      },
+    );
+  };
+
   return (
     <div
       style={{
@@ -82,7 +107,10 @@ function PlaceAutocompleteComponent({
         {inputText &&
           gPrediction?.map(({ description }, index) => (
             <div
-              onClick={() => setInputText(description)}
+              onClick={() => {
+                setInputText(description);
+                getPlaceDetailsByAddress(description);
+              }}
               key={description + index}
             >
               <h4>{description}</h4>

@@ -8,7 +8,7 @@ interface SliderComponentI {
   inputName: string;
 }
 
-export default function SliderComponent({
+export default function SwitchComponent({
   defaultState,
   inputName,
 }: SliderComponentI) {

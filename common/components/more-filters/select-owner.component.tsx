@@ -30,7 +30,7 @@ function SelectOwnerComponent({ owners, setOwners }: any) {
         setFoundOwners(data?.members);
       },
     );
-  }, 700);
+  }, 300);
 
   useEffect(() => {
     getMembersDebounced();

@@ -35,7 +35,7 @@ export default function RqTemplatesComponent() {
 
   const deleteTemplateDebounced = useDebouncedCallback((id) => {
     postWithAuth("/quote/delete-template", { template_id: id });
-  }, 500);
+  }, 350);
 
   useEffect(() => {
     getTemplatesDebounced();

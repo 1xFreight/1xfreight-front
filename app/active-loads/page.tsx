@@ -23,7 +23,7 @@ export default function AvailableQuotes() {
       setQuotes(data);
       setLoading(false);
     });
-  }, 700);
+  }, 300);
 
   useEffect(() => {
     setLoading(true);

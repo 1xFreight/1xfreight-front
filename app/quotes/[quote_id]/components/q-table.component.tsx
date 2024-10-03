@@ -40,7 +40,7 @@ export default function QTableComponent({
 
       router.push("/quotes");
     });
-  }, 500);
+  }, 350);
 
   return (
     <div className={"q-table-wrapper"}>
@@ -65,7 +65,8 @@ export default function QTableComponent({
                   <div className={"number"}>{index + 1}</div>
                 </td>
                 <td>
-                  <div className={"main-text"}>{quote.user.email}</div>
+                  <div className={"main-text"}>{quote.local_carrier?.name}</div>
+                  <div className={"sub-text"}>{quote.user.email}</div>
                 </td>
                 <td>
                   <div>

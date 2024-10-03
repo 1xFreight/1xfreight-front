@@ -34,7 +34,7 @@ export default function ChatComponent({ room, title }) {
       .then(() =>
         chatService.socket.on(ChatEventsEnum.NEW_MESSAGE, handleNewMessage),
       );
-  }, 500);
+  }, 350);
 
   useEffect(() => {
     initializeChat();
@@ -56,7 +56,7 @@ export default function ChatComponent({ room, title }) {
     }
 
     messageInput.value = "";
-  }, 500);
+  }, 350);
 
   const handleFileChange = useDebouncedCallback((event) => {
     const file = event.target.files[0];
@@ -95,7 +95,7 @@ export default function ChatComponent({ room, title }) {
 
       // document.getElementById("logo-file-btn").removeAttribute("disabled");
     });
-  }, 500);
+  }, 350);
 
   return (
     <div className={"default-chat-wrapper"}>

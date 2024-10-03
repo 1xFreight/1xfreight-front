@@ -18,7 +18,12 @@ export default function ModeOfTransportationComponent() {
   };
 
   return (
-    <div className={"container select-trans-mode"}>
+    <div
+      className={"container select-trans-mode"}
+      style={{
+        marginLeft: "-11rem",
+      }}
+    >
       <h2>Mode of transportation</h2>
       <h4>Select the appropriate mode of transportation</h4>
       <div className={"mode-of-transportations"}>

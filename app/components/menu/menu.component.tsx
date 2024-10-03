@@ -30,51 +30,53 @@ function MainMenu() {
 
   return (
     <header className={"main-menu"}>
-      <div className={"navigation"}>
-        <Link href={"/"} className={"logo"}>
-          <Logo />
-        </Link>
+      <div className={"container"}>
+        <div className={"navigation"}>
+          <Link href={"/"} className={"logo"}>
+            <Logo />
+          </Link>
 
-        {/*<AdminMenuComponent />*/}
-        {session?.role === "carrier" && <CarrierMenuComponent />}
-        {session?.role?.includes("shipper") && <SellerMenuComponent />}
-      </div>
-
-      <div className={"user-menu"}>
-        <div className={"notifications"}>
-          <Bell />
-          <div className={"number"}>99</div>
+          {/*<AdminMenuComponent />*/}
+          {session?.role === "carrier" && <CarrierMenuComponent />}
+          {session?.role?.includes("shipper") && <SellerMenuComponent />}
         </div>
 
-        <div className={"user"}>
-          <AvatarComponent username={avatarName} logo={session?.logo} />
+        <div className={"user-menu"}>
+          <div className={"notifications"}>
+            <Bell />
+            <div className={"number"}>99</div>
+          </div>
 
-          <div className={"user-name"}>
-            <div>
-              {session?.role === "carrier" ? session.email : session?.name}
+          <div className={"user"}>
+            <AvatarComponent username={avatarName} logo={session?.logo} />
+
+            <div className={"user-name"}>
+              <div>
+                {session?.role === "carrier" ? session.email : session?.name}
+              </div>
+              <div>{session?.role}</div>
             </div>
-            <div>{session?.role}</div>
+
+            <div className={"open-extra-menu"}></div>
           </div>
 
-          <div className={"open-extra-menu"}></div>
+          {session?.role === "carrier" && (
+            <div className={"tooltip sign-out"} onClick={logoutDebounced}>
+              <Logout />
+              <span
+                className={"tooltiptext"}
+                style={{
+                  bottom: "unset",
+                  top: "100%",
+                  padding: "0.25rem 0.25rem",
+                  width: "fit-content",
+                }}
+              >
+                sign out
+              </span>
+            </div>
+          )}
         </div>
-
-        {session?.role === "carrier" && (
-          <div className={"tooltip sign-out"} onClick={logoutDebounced}>
-            <Logout />
-            <span
-              className={"tooltiptext"}
-              style={{
-                bottom: "unset",
-                top: "100%",
-                padding: "0.25rem 0.25rem",
-                width: "fit-content",
-              }}
-            >
-              sign out
-            </span>
-          </div>
-        )}
       </div>
     </header>
   );

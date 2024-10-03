@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
 import "../styles.css";
+import { EquipmentsEnum } from "@/common/enums/equipments.enum";
+import { ReferencesEnum } from "@/common/enums/references-number.enum";
 
 export default function ReferenceItemsComponent({
   _default,
@@ -28,20 +30,21 @@ export default function ReferenceItemsComponent({
 
           return (
             <div className={"reference-item"} key={`ref-item-${index}`}>
-              <h5>
-                PO/Reference No. <span>(optional)</span>
-              </h5>
+              <h5>PO/Reference No.</h5>
 
               <div>
                 <select
                   name={`reference_type${index}`}
-                  defaultValue={defType ?? "0"}
+                  defaultValue={defType ?? "Unknown"}
                 >
-                  <option value={"0"} disabled>
+                  <option value={"Unknown"} disabled>
                     Choose an option
                   </option>
-                  <option value={"Unknown"}>Unknown</option>
-                  <option>Unknown</option>
+                  {Object.values(ReferencesEnum).map((ref, index) => (
+                    <option key={ref + index} value={ref}>
+                      {ref}
+                    </option>
+                  ))}
                 </select>
 
                 <input
