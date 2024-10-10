@@ -1,6 +1,5 @@
 .quotes-table {
     width: 100%;
-    overflow: scroll;
     height: calc(100vh - 7rem - 2.5rem);
     position: relative;
     border-radius: 1.125rem 1.875rem 2rem 2rem;
@@ -8,6 +7,7 @@
     /*to have space for stop's window , so it can overflow*/
     padding: 100px 1px 0 1px;
     margin-top: -120px;
+    overflow: scroll;
 
     .id-number {
         font-size: 0.9rem;
@@ -120,6 +120,11 @@
     background: #04C900;
 }
 
+.quotes-table .active-quote-status.CANCELED {
+    background: rgba(237, 0, 0, 0.5);
+    color: white;
+}
+
 .quotes-table .active-quote-status.REQUESTED {
     background: #A1AFFF;
 }
@@ -218,8 +223,8 @@
     height: 3.45rem;
     width: 12rem;
     border-radius: .9rem;
-    background: #0020DD;
-    color: white;
+    /*background: #0020DD;*/
+    /*color: white;*/
     font-size: 1rem;
     transition: all 250ms ease-in-out;
     box-sizing: border-box;

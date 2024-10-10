@@ -13,12 +13,12 @@ export default function SellerMenuComponent() {
 
   return (
     <div className={"seller-menu"}>
-      <Link className={`get-quote`} href={"/get-quote"}>
+      <Link className={`get-quote menu-item-addnote`} href={"/get-quote"}>
         <AddNote />
         Get Quote
       </Link>
       <Link
-        className={`item ${pathname.includes("quotes") ? "active" : ""}`}
+        className={`item ${pathname.includes("quotes") ? "active" : ""} menu-item-document`}
         href={"/quotes"}
       >
         <Document />
@@ -26,7 +26,7 @@ export default function SellerMenuComponent() {
       </Link>
 
       <Link
-        className={`item ${pathname.includes("shipments") ? "active" : ""}`}
+        className={`item ${pathname.includes("shipments") ? "active" : ""} menu-item-flag`}
         href={"/shipments"}
       >
         <Flag />
@@ -34,7 +34,7 @@ export default function SellerMenuComponent() {
       </Link>
 
       <Link
-        className={`item ${pathname.includes("analytics") ? "active" : ""}`}
+        className={`item ${pathname.includes("analytics") ? "active" : ""} menu-item-analytics`}
         href={"/analytics"}
       >
         <LineChart />
@@ -42,7 +42,7 @@ export default function SellerMenuComponent() {
       </Link>
 
       <Link
-        className={`item ${pathname.includes("settings") ? "active" : ""}`}
+        className={`item ${pathname.includes("settings") ? "active" : ""} menu-item-settings`}
         href={"/settings"}
       >
         <Settings />

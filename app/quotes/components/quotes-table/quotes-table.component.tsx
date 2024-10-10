@@ -34,7 +34,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
               <th></th>
             </tr>
           </thead>
-          <tbody className={"fade-in"}>
+          <tbody className={"fade-in"} style={{}}>
             {rows?.map(
               ({
                 _id,
@@ -58,9 +58,25 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 const shipment = details[0];
                 const bidsNumber = bids?.length;
                 const btnStatus =
-                  bidsNumber && bidsNumber > 0
-                    ? QuoteStatusEnum.BOOKED
-                    : QuoteStatusEnum.REQUESTED;
+                  status == QuoteStatusEnum.CANCELED
+                    ? QuoteStatusEnum.CANCELED
+                    : bidsNumber && bidsNumber > 0
+                      ? QuoteStatusEnum.BOOKED
+                      : QuoteStatusEnum.REQUESTED;
+
+                let viewLink;
+
+                switch (btnStatus) {
+                  case "booked":
+                    viewLink = `/quotes/${_id}`;
+                    break;
+                  case "canceled":
+                    viewLink = `/quotes/view/${_id}`;
+                    break;
+                  case "requested":
+                    viewLink = `/quotes/view/${_id}`;
+                    break;
+                }
 
                 return (
                   <tr key={_id}>
@@ -170,7 +186,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       <div className={"main-text"}>{equipments?.join(",")}</div>
                     </td>
                     <td>
-                      <Link href={bidsNumber ? `/quotes/${_id}` : ""}>
+                      <Link href={viewLink ? viewLink : ""}>
                         <QuoteActionButtonComponent
                           status={btnStatus}
                           number={bidsNumber}

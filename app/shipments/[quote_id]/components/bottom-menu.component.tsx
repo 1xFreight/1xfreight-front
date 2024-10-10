@@ -128,9 +128,6 @@ export default function BottomMenuComponent({ quoteId }) {
       quote_id: quoteId,
     };
 
-    console.log(duplicateLoadData);
-    console.log(addressesUpdateData);
-
     postWithAuth(`/quote/duplicate-load`, duplicateLoadData).then(
       async (response) => {
         if (!response.ok) {
@@ -148,7 +145,7 @@ export default function BottomMenuComponent({ quoteId }) {
           duration: 5000,
         });
 
-        // router.push(`/quotes/${quoteId}`);
+        setOpen(false);
       },
     );
   }, 300);

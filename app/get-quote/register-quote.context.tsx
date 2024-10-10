@@ -94,11 +94,11 @@ export const RegisterQuoteContextProvider = ({
       }
 
       if (session.auto_pickup) {
-        const pickupA = res[0].addresses.filter(
+        const pickupA = res[0]?.addresses?.filter(
           ({ address_type }) => address_type === "pickup",
         );
 
-        pickupA.map(({ address_type, address }) => {
+        pickupA?.map(({ address_type, address }) => {
           addresses.push({
             address,
             address_type,

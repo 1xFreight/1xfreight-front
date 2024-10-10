@@ -54,7 +54,7 @@
             }
 
             .open-days {
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 gap: 0.25rem;
                 border: 2px solid #dedede;
@@ -63,17 +63,19 @@
 
                 h5 {
                     margin-bottom: -0.25rem;
+                    text-align: center;
                 }
 
                 input {
                     width: 3.5rem;
                 }
 
-                &>div {
+                .open-days-item {
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
+                    /*align-items: center;*/
                     width: fit-content;
+                    justify-content: center;
                 }
             }
         }

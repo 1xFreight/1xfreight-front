@@ -44,19 +44,19 @@ export default function ModeOfTransportationComponent() {
         </div>
 
         <div
-          className={"item-mode"}
-          onClick={() => selectType(QuoteTypeEnum.FCL)}
+          className={"item-mode FCL"}
+          // onClick={() => selectType(QuoteTypeEnum.FCL)}
         >
           <Image src={Ocean} alt={"FCL image"} width={160} />
-          <h2>Ocean - FCL</h2>
+          <h2>COMING SOON</h2>
         </div>
 
         <div
-          className={"item-mode"}
-          onClick={() => selectType(QuoteTypeEnum.AIR)}
+          className={"item-mode AIR"}
+          // onClick={() => selectType(QuoteTypeEnum.AIR)}
         >
           <Image src={Air} alt={"Air image"} width={197} />
-          <h2>Air</h2>
+          <h2>COMING SOON</h2>
         </div>
       </div>
     </div>

@@ -113,6 +113,7 @@
     position: relative;
     width: fit-content;
     height: fit-content;
+    overflow: visible;
 }
 
 .main-menu .user-menu .notifications .number {
@@ -240,3 +241,101 @@
     }
 }
 
+.main-menu {
+
+    .menu-item-settings:hover svg {
+        rotate: 120deg;
+        transition: rotate 350ms ease-in-out;
+    }
+
+    /*.menu-item-analytics:hover svg {*/
+    /*    path:nth-child(1) {*/
+    /*        stroke: #0020DD; !* Make sure the stroke color is applied *!*/
+    /*        fill: none; !* Remove fill to only see the stroke *!*/
+    /*        stroke-width: 1; !* Define the stroke width *!*/
+    /*        animation: AnalyticsIconAnim 3.5s ease-in-out forwards;*/
+    /*        stroke-dasharray: 1000;*/
+    /*        stroke-dashoffset: 1000;*/
+    /*    }*/
+    /*}*/
+
+    /*.menu-item-flag:hover svg {*/
+    /*    path {*/
+    /*        !*animation: FlagIconAnim 1s ease-in-out;*!*/
+    /*        transform: scale(1.1) translate(-1px ,-1px);*/
+    /*        transition: 250ms ease-in-out;*/
+    /*    }*/
+    /*}*/
+
+    /*.menu-item-document:hover svg {*/
+    /*    #document path {*/
+    /*        stroke-width: 1;*/
+    /*        stroke: none; !* Dacă vrei ca documentul să aibă o margine *!*/
+    /*    }*/
+
+    /*    path:nth-child(2) {*/
+    /*        stroke: #0020DD; !* Culoarea stroke-ului pentru linii *!*/
+    /*        fill: none;*/
+    /*        stroke-width: 1;*/
+    /*        stroke-dasharray: 1000;*/
+    /*        stroke-dashoffset: 1000;*/
+    /*        animation: drawLine 3s cubic-bezier(0.65, 0, 0.35, 1) forwards;*/
+    /*    }*/
+    /*}*/
+
+    .menu-item-addnote:hover svg {
+
+        path:nth-child(2){
+            scale: 1.275;
+            transform: translate(-2.5px,-2.5px);
+            transition: 250ms ease-in-out;
+        }
+    }
+
+    .seller-menu .item:hover {
+        svg path{
+            transform: scale(1.1) translate(-1px ,-1px);
+        }
+    }
+}
+
+@keyframes FlagIconAnim {
+    0% {
+        transform: translate(0,0);
+    }
+
+    20% {
+        transform: translate(-1px,-1px);
+    }
+
+    60% {
+        transform: translate(1px,1px);
+    }
+
+    100% {
+        transform: translate(0,0);
+    }
+}
+
+
+@keyframes AnalyticsIconAnim {
+    0% {
+        stroke-dashoffset: 1000;
+        stroke: #0020DD;
+        fill: transparent;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        stroke: #0020DD;
+        fill: #0020DD; /* Optional: keep fill transparent if you want to see only the line */
+    }
+}
+
+@keyframes drawLine {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}

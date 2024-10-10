@@ -15,13 +15,14 @@ import Routes from "@/public/icons/30px/routes.svg";
 import Biohazard from "@/public/icons/30px/hazardous-material.svg";
 import TempUp from "@/public/icons/30px/temperature-arrow-up(1).svg";
 import TempDown from "@/public/icons/30px/temperature-arrow-down(1).svg";
+import Checked from "@/public/icons/24px/checked-tick.svg";
 import {
   clearText,
   extractAccesorialsShipment,
   extractAccessorialsFromObj,
   extractReferenceNo,
 } from "@/common/utils/data-convert.utils";
-import { formatDate } from "@/common/utils/date.utils";
+import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import React from "react";
 import QuoteItemsTableComponent from "@/app/components/quote-details/quote-items-table.component";
@@ -36,6 +37,7 @@ function QuoteFtlComponent({ quote }: any) {
     quote?.drop;
   const details = quote?.details ? quote?.details[0] : quote?.shipment_details;
   const items = quote?.items?.length ? quote.items : details?.items;
+  console.log(pickup);
 
   return (
     <div className={"quote-ftl"}>
@@ -78,11 +80,14 @@ function QuoteFtlComponent({ quote }: any) {
           </div>
         </div>
 
-        <div className={"locations-wrapper"}>
+        <div className={`locations-wrapper`}>
           {pickup &&
             pickup.map((location, index) => {
               return (
-                <div className={"location-item"} key={location.address + index}>
+                <div
+                  className={`location-item  ${location.arrival_date ? "carrierArrived" : ""}`}
+                  key={location.address + index}
+                >
                   <h3
                     style={{
                       whiteSpace: "nowrap",
@@ -93,14 +98,17 @@ function QuoteFtlComponent({ quote }: any) {
                     {pickup.length > 1 ? index + 1 : ""}
                   </h3>
 
-                  <div className={"location-circle"}>
+                  <div
+                    className={`location-circle ${location.arrival_date ? "green-circle" : ""}`}
+                  >
+                    {location.arrival_date ? <Checked /> : ""}
                     <div className={"circle-line"}></div>
                   </div>
 
                   <div className={"location-info"}>
                     <h3>{location.address}</h3>
 
-                    {location.date && (
+                    {(location.date || location.arrival_date) && (
                       <div
                         style={{
                           display: "flex",
@@ -109,15 +117,29 @@ function QuoteFtlComponent({ quote }: any) {
                       >
                         <Calendar />
                         <h4>Date:</h4>
-                        <h3>
-                          {formatDate(location.date) +
-                            "   ," +
-                            ShippingHoursEnum[location.shipping_hours]}
+                        <h3
+                          style={{
+                            borderLeft: "0.1rem solid #ECECECFF",
+                            paddingLeft: "0.5rem",
+                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
+                          }}
+                        >
+                          {formatDate(location.date)}
+                          {ShippingHoursEnum[location.shipping_hours]
+                            ? "   ," +
+                              ShippingHoursEnum[location.shipping_hours]
+                            : ""}
+
+                          <span
+                            className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
+                          >
+                            {formatDate(location.arrival_date)}
+                          </span>
                         </h3>
                       </div>
                     )}
 
-                    {location.time_start && (
+                    {(location.time_start || location.arrival_time) && (
                       <div
                         style={{
                           display: "flex",
@@ -126,9 +148,20 @@ function QuoteFtlComponent({ quote }: any) {
                       >
                         <Clock />
                         <h4>Time:</h4>
-                        <h3>
+                        <h3
+                          style={{
+                            borderLeft: "0.1rem solid #ECECECFF",
+                            paddingLeft: "0.5rem",
+                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
+                            // whiteSpace: "nowrap",
+                          }}
+                        >
                           {location.time_start}
                           {location.time_end ? " - " + location.time_end : ""}
+
+                          <span className={"arrival-text-span"}>
+                            {formatTime(location.arrival_time)}
+                          </span>
                         </h3>
                       </div>
                     )}
@@ -173,7 +206,10 @@ function QuoteFtlComponent({ quote }: any) {
           {drop &&
             drop.map((location, index) => {
               return (
-                <div className={"location-item"} key={location.address + index}>
+                <div
+                  className={`location-item  ${location.arrival_date ? "carrierArrived" : ""}`}
+                  key={location.address + index}
+                >
                   <h3
                     style={{
                       whiteSpace: "nowrap",
@@ -184,14 +220,17 @@ function QuoteFtlComponent({ quote }: any) {
                     {drop.length > 1 ? index + 1 : ""}
                   </h3>
 
-                  <div className={"location-circle"}>
+                  <div
+                    className={`location-circle ${location.arrival_date ? "green-circle" : ""}`}
+                  >
+                    {location.arrival_date ? <Checked /> : ""}
                     <div className={"circle-line"}></div>
                   </div>
 
                   <div className={"location-info"}>
                     <h3>{location.address}</h3>
 
-                    {location.date && (
+                    {(location.date || location.arrival_date) && (
                       <div
                         style={{
                           display: "flex",
@@ -200,15 +239,29 @@ function QuoteFtlComponent({ quote }: any) {
                       >
                         <Calendar />
                         <h4>Date:</h4>
-                        <h3>
-                          {formatDate(location.date) +
-                            "   ," +
-                            ShippingHoursEnum[location.shipping_hours]}
+                        <h3
+                          style={{
+                            borderLeft: "0.1rem solid #ECECECFF",
+                            paddingLeft: "0.5rem",
+                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
+                          }}
+                        >
+                          {formatDate(location.date)}
+                          {ShippingHoursEnum[location.shipping_hours]
+                            ? "   ," +
+                              ShippingHoursEnum[location.shipping_hours]
+                            : ""}
+
+                          <span
+                            className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
+                          >
+                            {formatDate(location.arrival_date)}
+                          </span>
                         </h3>
                       </div>
                     )}
 
-                    {location.time_start && (
+                    {(location.time_start || location.arrival_time) && (
                       <div
                         style={{
                           display: "flex",
@@ -217,9 +270,19 @@ function QuoteFtlComponent({ quote }: any) {
                       >
                         <Clock />
                         <h4>Time:</h4>
-                        <h3>
+                        <h3
+                          style={{
+                            borderLeft: "0.1rem solid #ECECECFF",
+                            paddingLeft: "0.5rem",
+                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
+                          }}
+                        >
                           {location.time_start}
                           {location.time_end ? " - " + location.time_end : ""}
+
+                          <span className={"arrival-text-span"}>
+                            {formatTime(location.arrival_time)}
+                          </span>
                         </h3>
                       </div>
                     )}

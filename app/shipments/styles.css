@@ -10,6 +10,7 @@
     .page-header h4{
         font-size: 1.25rem;
         color: #545454;
+        z-index: 5;
     }
 
     .page-header {
@@ -37,14 +38,63 @@
         }
     }
 
-    .shipments-table {
+    .shipments-table-wrapper {
         width: 100%;
+        overflow: scroll;
+        /*overflow-x: hidden;*/
+        height: calc(100vh - 7rem - 2.5rem);
+        position: relative;
+        border-radius: 1.125rem 1.875rem 2rem 2rem;
+        box-sizing: border-box;
+        /*to have space for stop's window , so it can overflow*/
+        padding: 100px 1px 0 1px;
+        margin-top: -120px;
+
+        .id-number {
+            font-size: 0.9rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        &::-webkit-scrollbar-thumb{
+            background: #0020DD;
+            border-radius: 1rem;
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar{
+            width: 0.6rem;
+            height: 0.7rem;
+        }
+
+        &::-webkit-scrollbar-track{
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-corner{
+            background: transparent;
+        }
+    }
+
+    .quotes-table-placeholder {
+        height: 120px;
+        margin-top: -100px;
+        width: 100%;
+        background: #EFEFEF;
+        z-index: 1;
+    }
+
+    .shipments-table {
+        /*width: 100%;*/
     }
 
     table {
+        width: 100%;
         border-collapse: separate;
         border-spacing: 0 0.25rem;
-        width: 100%;
+        border: unset;
+        min-width: 100rem;
+        box-sizing: border-box;
     }
 
     thead {
@@ -188,9 +238,7 @@
         }
     }
 
-    .price {
-        font-size: 1.7rem;
-    }
+
 
     .ship-table-actions {
         display: flex;

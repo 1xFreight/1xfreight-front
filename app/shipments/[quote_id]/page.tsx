@@ -12,7 +12,7 @@ import Delete from "@/public/icons/24px/delete 1.svg";
 import ShipmentStatusComponent from "@/app/shipments/[quote_id]/components/shipment-status.component";
 import BottomMenuComponent from "@/app/shipments/[quote_id]/components/bottom-menu.component";
 import { useDebouncedCallback } from "use-debounce";
-import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import { formatDate } from "@/common/utils/date.utils";
 import {
   formatShipmentLTL,
@@ -22,6 +22,8 @@ import ConfirmActionComponent from "@/common/components/confirm-action/confirm-a
 import ModalComponent from "@/common/components/modal/modal.component";
 import useStore from "@/common/hooks/use-store.context";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { useRouter } from "next/navigation";
 
 export default function ShipmentIdPage({
   params,
@@ -34,6 +36,8 @@ export default function ShipmentIdPage({
   const [quote, setQuote] = useState<any>();
   const { triggerUpdate, addToStore } = useStore();
   const [loading, setLoading] = useState(true);
+  const { showToast } = useStore();
+  const router = useRouter();
 
   const getQuoteAndReq = useDebouncedCallback(() => {
     getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
@@ -51,6 +55,29 @@ export default function ShipmentIdPage({
     getQuoteAndReq();
   }, [triggerUpdate]);
 
+  const cancelLoad = useDebouncedCallback(() => {
+    postWithAuth(`/quote/cancel/${params.quote_id}`, {}).then(
+      async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          return showToast({
+            type: ToastTypesEnum.ERROR,
+            text: errorData.message || "Something went wrong",
+            duration: 5000,
+          });
+        }
+
+        showToast({
+          type: ToastTypesEnum.SUCCESS,
+          text: "Quote was canceled",
+          duration: 5000,
+        });
+
+        router.push(`/shipments`);
+      },
+    );
+  }, 300);
+
   if (loading || !request || !quote) {
     return <Loading2Component />;
   }
@@ -61,6 +88,7 @@ export default function ShipmentIdPage({
       <ConfirmActionComponent
         id={"confirm-cancel-load"}
         title={"Cancel this load ?"}
+        action={cancelLoad}
       />
       <div className={"container"}>
         <div className={"page-header"}>

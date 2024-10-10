@@ -21,6 +21,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+
+  const goToHome = useDebouncedCallback(() => router.push("/"), 5000, {
+    leading: true,
+  });
+
   const authWithLinkToken = useDebouncedCallback(() => {
     postWithAuth("/auth/use-token", {
       accessToken: token,
@@ -124,7 +129,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     );
 
   if (!validPath) {
-    setTimeout(() => router.push("/"), 3000);
+    setTimeout(goToHome, 3000);
     return (
       <div
         style={{

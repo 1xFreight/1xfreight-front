@@ -179,6 +179,13 @@
                 display: flex;
                 gap: 1rem;
                 position: relative;
+
+                &.carrierArrived {
+
+                    svg path {
+                        /*stroke: #82C181;*/
+                    }
+                }
             }
 
             .location-item h3:nth-child(1) {
@@ -192,6 +199,36 @@
                 min-height: 1.75rem;
                 border-radius: 100%;
                 background: #0020DD;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &.green-circle {
+                    background: #82C181;
+
+                    .circle-line {
+                        background: #82C181;
+                    }
+
+                    svg {
+                        /*position: absolute;*/
+                        z-index: 1;
+                        /*stroke-width: 1px;*/
+                        /*stroke: white;*/
+                        opacity: 1;
+                        /*margin: 0 !important;*/
+                        /*padding: 0 !important;*/
+                        transform: translateX(0.15rem);
+                        width: 20px;
+                        padding: 0;
+                        margin: 0;
+                        filter: drop-shadow(0 0 4px #f1fff0);
+
+                        path {
+                            stroke: white;
+                        }
+                    }
+                }
             }
 
             .circle-line {
@@ -199,7 +236,8 @@
                 height: calc(100% + 2.5rem);
                 width: 1px;
                 background: #0020DD;
-                margin-left: 0.875rem;
+                /*margin-left: 0.875rem;*/
+                top: 0;
             }
 
             .location-info {
@@ -210,6 +248,24 @@
 
                 h3 {
                     font-weight: 500;
+                    width: 100%;
+
+                }
+
+                .arrival-text-span {
+                    color: #82C181;
+                    /*padding-left: 30%;*/
+                    /*opacity: 0.5;*/
+                    float: right;
+                    width: 12.5rem;
+                    border-left: 0.1rem solid #ececec;
+                    border-right: 0.1rem solid #ececec;
+                    padding-left: 0.5rem;
+                    margin-left: 1rem;
+
+                    &.late {
+                        /*color: #fcebaa;*/
+                    }
                 }
 
                 h4 {
@@ -289,5 +345,17 @@
     .details-wrapper svg {
         /*transform: scale(0.45) !important;*/
         width: fit-content !important;
+    }
+}
+
+@media (min-width: 1640px) {
+    .location-info .arrival-text-span {
+        margin-right: 0%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .location-info .arrival-text-span {
+        margin-right: 50%;
     }
 }

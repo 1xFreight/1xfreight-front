@@ -41,7 +41,7 @@ export default function ShipmentsPage() {
         <FiltersPanelComponent totalQuotes={shipments?.totalQuotes} />
       </div>
 
-      <div className={"shipments-table container"}>
+      <div className={"container"}>
         {loading ? (
           <Loading2Component />
         ) : (

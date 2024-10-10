@@ -26,7 +26,7 @@ export default function Home() {
         router.push("/available-quotes");
       }
     },
-    300,
+    700,
     {
       leading: true,
     },

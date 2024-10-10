@@ -160,6 +160,7 @@ button:disabled {
   font-weight: 500 !important;
   /*border: 2px solid transparent;*/
   white-space: nowrap;
+  font-size: 0.8rem !important;
 
   /*&.booked {*/
   /*  background: #c3dbfd;*/
@@ -501,11 +502,11 @@ h6 {
 
 .price {
   color: #0020DD;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
   display: flex;
   gap: 1.5rem;
-  min-width: 10.5rem;
+  min-width: 8.5rem;
   justify-content: space-between;
 }
 
@@ -514,7 +515,7 @@ h6 {
 }
 
 .price .currency {
-  font-size: 2rem;
+  font-size: 1.25rem;
 }
 
 .price .full-price {

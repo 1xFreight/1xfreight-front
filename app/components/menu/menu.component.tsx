@@ -10,14 +10,16 @@ import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
 import SellerMenuComponent from "@/app/components/menu/seller-menu.component";
 import AvatarComponent from "@/app/components/avatar/avatar.component";
 import useStore from "@/common/hooks/use-store.context";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import ToasterComponent from "@/common/components/toaster/toaster.component";
 import Logout from "@/public/icons/35px/sign-out.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { postWithAuth } from "@/common/utils/fetchAuth.util";
+import NotificationsComponent from "@/app/components/notification/notifications.component";
 
 function MainMenu() {
   const { session } = useStore();
+  const [openNotifications, setOpenNotifications] = useState(false);
   const avatarName =
     session?.role !== "carrier" && session?.name
       ? session?.name
@@ -42,10 +44,7 @@ function MainMenu() {
         </div>
 
         <div className={"user-menu"}>
-          <div className={"notifications"}>
-            <Bell />
-            <div className={"number"}>99</div>
-          </div>
+          <NotificationsComponent />
 
           <div className={"user"}>
             <AvatarComponent username={avatarName} logo={session?.logo} />

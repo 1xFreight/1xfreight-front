@@ -122,7 +122,11 @@ function LocationFormComponent({
 
             <div className={"location-details"}>
               <h3>Location Details:</h3>
-              <div>
+              <div
+                style={{
+                  display: "inline-flex",
+                }}
+              >
                 <div>
                   <h5>Ready by: </h5>
                   <select name={"ready_by"}>
@@ -146,9 +150,13 @@ function LocationFormComponent({
                 </div>
               </div>
 
-              <div>
+              <div
+                style={{
+                  display: "inline-flex",
+                }}
+              >
                 <div className={"open-days"}>
-                  <div>
+                  <div className={"open-day-item"}>
                     <input
                       type={"checkbox"}
                       className={"rounded-checkbox"}
@@ -157,32 +165,32 @@ function LocationFormComponent({
                     <h5>Mon</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} defaultChecked />
                     <h5>Tue</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} defaultChecked />
                     <h5>Wed</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} defaultChecked />
                     <h5>Thu</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} defaultChecked />
                     <h5>Fri</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} />
                     <h5>Sat</h5>
                   </div>
 
-                  <div>
+                  <div className={"open-day-item"}>
                     <input type={"checkbox"} />
                     <h5>Sun</h5>
                   </div>
@@ -194,7 +202,11 @@ function LocationFormComponent({
                 </div>
               </div>
 
-              <div>
+              <div
+                style={{
+                  display: "inline-flex",
+                }}
+              >
                 <div>
                   <h5>Company name:</h5>
                   <input

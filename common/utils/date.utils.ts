@@ -8,7 +8,7 @@ export function disablePastDates() {
 }
 
 export function formatDate(dateString) {
-  if (!dateString) return;
+  if (!dateString) return "";
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return;
@@ -24,7 +24,34 @@ export function formatTime(timeString) {
   const timeMidday = timeParts[1];
   const onlyTime = timeParts[0].split(":");
 
-  return `${Number(onlyTime[0]) < 10 ? "0" + onlyTime[0] : onlyTime[0]}:${Number(onlyTime[1]) < 10 ? "0" + onlyTime[1] : onlyTime[1]} ${timeMidday}`;
+  if (!onlyTime[1]) {
+    return timeString;
+  }
+
+  // Properly format hours and minutes
+  const formattedHours =
+    Number(onlyTime[0]) < 10 ? "0" + Number(onlyTime[0]) : onlyTime[0];
+  const formattedMinutes =
+    Number(onlyTime[1]) < 10 ? "0" + Number(onlyTime[1]) : onlyTime[1];
+
+  return `${formattedHours}:${formattedMinutes} ${timeMidday}`;
+}
+
+export function formatDateTime(dateString) {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  const options = {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+
+  return date.toLocaleString("en-US", options);
 }
 
 export function chatDateFormat(dateString) {
