@@ -12,8 +12,8 @@ import React, { useEffect, useState } from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
 import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/place-autocomplete.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import { log } from "node:util";
 import SwitchComponent from "@/common/components/slider/switch.component";
+import Eye from "@/public/icons/20px/hidden.svg";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -35,12 +35,49 @@ function LocationFormComponent({
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [defaultData, setDefaultData] = useState(_default);
   const [loading, setLoading] = useState(false);
+  const [addressDetails, setAddressDetails] = useState();
 
   useEffect(() => {
     if (defaultData?.date || defaultData?.time_start || defaultData?.time_end) {
       toggleAddDateTime(true);
     }
   }, [defaultData, loading]);
+
+  useEffect(() => {
+    if (!addressDetails) return;
+
+    const inputs = document.querySelectorAll("#address-details input");
+    const companyNameInput = document.getElementById("company_name");
+
+    if (companyNameInput && companyNameInput.value === "") {
+      // companyNameInput.value = addressDetails?.placeName ?? "";
+    }
+
+    // Update the value for each input based on its id or a custom logic
+    inputs.forEach((input) => {
+      switch (input.id) {
+        case "address_street":
+          input.value =
+            `${addressDetails?.placeName && addressDetails?.street ? addressDetails?.placeName + ", " : ""}` +
+            (addressDetails?.street ?? "");
+          break;
+        case "address_city":
+          input.value = addressDetails?.city ?? "";
+          break;
+        case "address_state":
+          input.value = addressDetails?.state ?? "";
+          break;
+        case "address_zipcode":
+          input.value = addressDetails?.zipCode ?? "";
+          break;
+        case "address_country":
+          input.value = addressDetails?.country ?? "";
+          break;
+        default:
+          input.value = "";
+      }
+    });
+  }, [addressDetails]);
 
   const toggleAddDateTime = (state: boolean) => {
     const elShippingType = document.getElementById(
@@ -91,33 +128,92 @@ function LocationFormComponent({
             className={"shipping-form"}
             id={`location-form-${title}-${index}`}
           >
+            <div className={"address-how-it-works"}>
+              <div className={"hidden-data-svg"}>
+                <Eye />
+              </div>
+
+              <h5>
+                The carrier will only have access to the full address and
+                additional details once the quote is accepted.
+              </h5>
+            </div>
+
             <div className={"address-input"}>
               <h3>Address</h3>
-              <div className={"form-input-wrapper"}>
-                <MapMarker />
+
+              <h5>Search Address</h5>
+              <div>
+                <div className={"form-input-wrapper"}>
+                  <MapMarker />
+                  <input
+                    type={"text"}
+                    // name={"address"}
+                    className={"form-input"}
+                    placeholder={"Origin (Location or City, ST, ZIP)"}
+                    id={"input-address"}
+                    autoComplete={"off"}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    onFocus={() => setShowAutocomplete(true)}
+                    onBlur={() =>
+                      setTimeout(() => setShowAutocomplete(false), 200)
+                    }
+                  />
+                </div>
+
+                {showAutocomplete && (
+                  <PlaceAutocompleteComponent
+                    inputText={address}
+                    setInputText={setAddress}
+                    setDefault={updateDefault}
+                    setDetails={setAddressDetails}
+                  />
+                )}
+              </div>
+
+              <h5>Manual Address Entry</h5>
+
+              <div className={"address-details"} id={"address-details"}>
                 <input
                   type={"text"}
-                  name={"address"}
-                  className={"form-input"}
-                  placeholder={"Origin (Location or City, ST, ZIP)"}
+                  name={"street"}
+                  placeholder={"Address"}
+                  id={"address_street"}
+                  defaultValue={defaultData?.street}
+                />
+                <input
+                  type={"text"}
+                  name={"city"}
+                  placeholder={"City*"}
+                  id={"address_city"}
                   required
-                  id={"input-address"}
-                  autoComplete={"off"}
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  onFocus={() => setShowAutocomplete(true)}
-                  onBlur={() =>
-                    setTimeout(() => setShowAutocomplete(false), 200)
-                  }
+                  defaultValue={defaultData?.city}
+                />
+                <input
+                  type={"text"}
+                  name={"state"}
+                  placeholder={"State*"}
+                  id={"address_state"}
+                  required
+                  defaultValue={defaultData?.state}
+                />
+                <input
+                  type={"text"}
+                  name={"zipcode"}
+                  placeholder={"Zipcode"}
+                  id={"address_zipcode"}
+                  defaultValue={defaultData?.zipcode}
+                />
+                <input
+                  type={"text"}
+                  name={"country"}
+                  placeholder={"Country*"}
+                  id={"address_country"}
+                  required
+                  defaultValue={defaultData?.country}
                 />
               </div>
-              {showAutocomplete && (
-                <PlaceAutocompleteComponent
-                  inputText={address}
-                  setInputText={setAddress}
-                  setDefault={updateDefault}
-                />
-              )}
             </div>
 
             <div className={"location-details"}>
@@ -214,6 +310,7 @@ function LocationFormComponent({
                     placeholder={"Type here..."}
                     required
                     name={"company_name"}
+                    id={"company_name"}
                     defaultValue={defaultData?.company_name}
                   />
                 </div>

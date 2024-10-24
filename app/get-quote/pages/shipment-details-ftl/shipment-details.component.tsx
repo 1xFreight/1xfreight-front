@@ -29,13 +29,11 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
   };
 
   useEffect(() => {
-    return () => {
-      addData({
-        form: "equipments",
-        data: list,
-      });
-    };
-  }, []);
+    addData({
+      form: "equipments",
+      data: list,
+    });
+  }, [list]);
 
   useEffect(() => {
     if (_defaultDetails?.hazardous_goods) {
@@ -87,7 +85,10 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
     if (inputs && show) {
       inputs.forEach((input) => input.setAttribute("required", "true"));
     } else {
-      inputs.forEach((input) => input.removeAttribute("required"));
+      inputs.forEach((input) => {
+        input.removeAttribute("required");
+        input.value = "";
+      });
     }
   };
 

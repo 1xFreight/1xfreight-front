@@ -1,0 +1,101 @@
+.table-sort-button {
+    .sort-column {
+        width: 10rem;
+        padding-left: 30px;
+        height: 100%;
+        transition: all 250ms ease-in-out;
+        color: #939393;
+        cursor: pointer;
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        font-weight: 500;
+
+        &:focus-visible {
+            /*border: 2px solid #e8e8e8 !important;*/
+            outline: unset;
+        }
+    }
+
+    .sort-column-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 3rem;
+
+        .delete-sortby {
+            cursor: pointer;
+
+            svg {
+                path {
+                    stroke-width: 2px;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        stroke: #ED0000;
+                        transform: scale(1.15);
+                        transform-origin: center center;
+                        transition: all 250ms ease-in-out;
+                    }
+                }
+            }
+        }
+
+        .sort-direction {
+            position: absolute;
+
+            right: calc(1.5rem + 0.5rem);
+
+            select {
+                width: 3.5rem;
+                text-align: center;
+                font-size: 0.8rem;
+                color: #0020DD;
+                cursor: pointer;
+
+                &:focus-visible {
+                    /*border: 2px solid #e8e8e8 !important;*/
+                    outline: unset;
+                }
+            }
+        }
+
+
+        &:hover {
+            .sort-column{
+                border: 2px solid rgba(0, 32, 221, 1) !important;
+                /*color: #0020DD;*/
+                transition: all 250ms ease-in-out;
+            }
+
+           /*.sort-svg {*/
+           /*    svg path {*/
+           /*        stroke: rgba(0, 32, 221, 1);*/
+           /*    }*/
+           /*}*/
+
+        }
+
+        .sort-svg {
+            position: absolute;
+            left: 5px;
+            z-index: 1;
+
+            svg {
+                transition: all 250ms ease-in-out;
+
+
+                path {
+                    stroke: rgba(84, 84, 84, 0.5);
+                    stroke-width: 1px;
+                    transition: all 250ms ease-in-out;
+
+                }
+            }
+        }
+
+
+    }
+}

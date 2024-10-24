@@ -12,11 +12,9 @@ function QuoteActionButtonComponent({ status, number }: QuoteActionButtonI) {
     [QuoteStatusEnum.BOOKED]: `View ${number ?? ""} Quotes`,
   };
 
-  console.log(status);
-
   return (
     <button
-      className={`quote-action-button`}
+      className={`quote-action-button ${status == QuoteStatusEnum.BOOKED ? "variant2" : ""} ${status == QuoteStatusEnum.CANCELED ? "red-variant" : ""}`}
       // disabled={status === QuoteStatusEnum.REQUESTED}
     >
       {textMapping[status]}

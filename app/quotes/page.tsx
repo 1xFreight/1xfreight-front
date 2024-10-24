@@ -2,11 +2,9 @@
 
 import "./styles.css";
 import QuotesTableComponent from "@/app/quotes/components/quotes-table/quotes-table.component";
-import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
 import FiltersPanelComponent from "@/app/quotes/components/filters-panel/filters-panel.component";
 import { useEffect, useMemo, useState } from "react";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
-import LoadingComponent from "@/common/components/loading/loading.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { useDebouncedCallback } from "use-debounce";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
@@ -15,23 +13,35 @@ import useStore from "@/common/hooks/use-store.context";
 
 export default function QuotesPage() {
   const [quotes, setQuotes] = useState();
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const { filters } = useStore();
+  const { filters, setFilters } = useStore();
+  const [loading, setLoading] = useState(true);
 
   const getQuotesDebounced = useDebouncedCallback(() => {
+    const ignoreCache = filters?.ignoreCache ?? false;
+
     getWithAuth(
-      `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}`,
+      `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setQuotes(data);
       setLoading(false);
+      if (ignoreCache) {
+        setFilters((prevState) => {
+          return { ...prevState, ignoreCache: false };
+        });
+      }
     });
   }, 300);
 
   useEffect(() => {
-    setLoading(true);
     getQuotesDebounced();
-  }, [page, filters]);
+  }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+    getQuotesDebounced();
+  }, [filters]);
 
   return (
     <div className={"quotes-page page"}>

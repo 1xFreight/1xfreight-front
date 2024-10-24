@@ -2,7 +2,7 @@
 
 import FilterAlt from "@/public/icons/24px/filter-alt.svg";
 import Cross from "@/public/icons/24px/cross.svg";
-import { memo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import SelectOwnerComponent from "@/common/components/more-filters/select-owner.component";
 import "./styles.css";
 import useStore from "@/common/hooks/use-store.context";
@@ -14,6 +14,10 @@ function MoreFiltersComponent() {
   const [open, setOpen] = useState<boolean>(false);
   const [owners, setOwners] = useState<Array<any>>([]);
   const { filters, setFilters } = useStore();
+  const isAnyFiltersSelected = useMemo(
+    () => !!(filters.pickupDate || filters?.dropDate || filters?.owners),
+    [filters],
+  );
 
   const applyFilters = () => {
     const newFilters: any = {};
@@ -48,12 +52,15 @@ function MoreFiltersComponent() {
 
   return (
     <div>
-      <div className={"more-filters"} onClick={() => setOpen(true)}>
+      <button
+        className={`more-filters ${isAnyFiltersSelected ? "selected" : ""}`}
+        onClick={() => setOpen(true)}
+      >
         Filters
         <div>
           <FilterAlt />
         </div>
-      </div>
+      </button>
 
       {open && (
         <div className={"more-filters-modal"}>
@@ -104,7 +111,10 @@ function MoreFiltersComponent() {
               <button className={"remove"} onClick={() => removeFilters()}>
                 remove filters
               </button>
-              <button className={"apply"} onClick={() => applyFilters()}>
+              <button
+                className={"apply variant2"}
+                onClick={() => applyFilters()}
+              >
                 apply filters
               </button>
             </div>

@@ -123,6 +123,20 @@ export function formatAddressObj(obj: any, type: string | undefined) {
 
   formattedAddress["address_type"] = type;
   formattedAddress["address"] = obj.address;
+  formattedAddress["city"] = obj.city;
+  formattedAddress["state"] = obj.state;
+  formattedAddress["country"] = obj.country;
+
+  obj.street ? (formattedAddress["street"] = obj.street) : "";
+  obj.zipcode ? (formattedAddress["zipcode"] = obj.zipcode) : "";
+  obj.contact_name ? (formattedAddress["contact_name"] = obj.contact_name) : "";
+  obj.company_name ? (formattedAddress["company_name"] = obj.company_name) : "";
+  obj.contact_phone
+    ? (formattedAddress["contact_phone"] = obj.contact_phone)
+    : "";
+  obj.contact_email
+    ? (formattedAddress["contact_email"] = obj.contact_email)
+    : "";
 
   return formattedAddress;
 }

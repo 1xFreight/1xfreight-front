@@ -182,10 +182,10 @@ export default function BottomMenuComponent({ quoteId }) {
       />
       <div className={"bottom-menu fade-in-bottom"}>
         <div className={"container"}>
-          <div>
-            <div className={"main-text"}>Carrier Quote #: 567422</div>
-            <div className={"main-text"}>BOL #: 567422</div>
-          </div>
+          {/*<div>*/}
+          {/*  <div className={"main-text"}>Carrier Quote #: 567422</div>*/}
+          {/*  <div className={"main-text"}>BOL #: 567422</div>*/}
+          {/*</div>*/}
 
           <button>
             <Document /> View BOL

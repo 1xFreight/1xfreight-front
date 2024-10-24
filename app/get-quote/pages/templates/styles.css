@@ -49,7 +49,7 @@
 
      tr th:nth-child(1){
         border-radius: 1rem 0 0 1rem;
-        border-right: 2px solid #EFEFEF;
+        border-right: 1px solid #EFEFEF;
     }
 
      tr>th:nth-last-child(1){
@@ -73,7 +73,7 @@
      tr td:nth-child(1){
         border-radius: 1rem 0 0 1rem;
         /*width: 9.875rem;*/
-        border-right: 2px solid #EFEFEF;
+        border-right: 1px solid #EFEFEF;
          width: 8rem;
     }
 
@@ -225,6 +225,9 @@
 
             & .extra-address-window {
                 display: flex;
+                .location svg {
+                    scale: 0.7;
+                }
             }
         }
     }

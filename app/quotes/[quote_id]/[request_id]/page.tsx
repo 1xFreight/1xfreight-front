@@ -57,7 +57,7 @@ export default function RequestIdPage({
         duration: 5000,
       });
 
-      router.push("/quotes");
+      router.push(`/goto/${params.quote_id}`);
     });
   }, 350);
 
@@ -121,8 +121,14 @@ export default function RequestIdPage({
 
         <div className={"chat-column"}>
           <div className={"accept-quote"}>
-            <button onClick={acceptQuote}>Accept Quote</button>
-            <div className={"main-text"}>
+            <button
+              onClick={acceptQuote}
+              className={"accept-quote-btn variant2"}
+              style={{ width: "100%" }}
+            >
+              Accept Quote
+            </button>
+            <div className={"main-text-5"}>
               Total Amount: ${numberCommaFormat(request.amount)}.00(per load) x{" "}
               {quote?.load_number}(load numbers) ={" $"}
               {numberCommaFormat(request.amount * quote?.load_number)}.00

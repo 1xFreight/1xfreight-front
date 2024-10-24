@@ -19,6 +19,7 @@ function PlaceAutocompleteComponent({
   inputText,
   setInputText,
   setDefault,
+  setDetails,
 }: {
   inputText: string;
   setInputText: Dispatch<SetStateAction<string>>;
@@ -80,7 +81,7 @@ function PlaceAutocompleteComponent({
     placesService.findPlaceFromQuery(
       {
         query: address, // Use the address as the query
-        fields: ["name", "formatted_address"], // Specify the fields you need
+        fields: ["name", "place_id", "formatted_address"], // Specify the fields you need
       },
       (results, status) => {
         if (
@@ -90,8 +91,58 @@ function PlaceAutocompleteComponent({
         ) {
           const place = results[0]; // Get the first matching place
 
-          // setInputText(place.formatted_address);
+          let fullAddress = {
+            fullAddress: address,
+            placeName: place.name,
+          };
+
           console.log(place.name);
+
+          // Now use the place_id to fetch detailed information with getDetails
+          //@ts-ignore
+          placesService.getDetails(
+            {
+              placeId: place.place_id,
+              fields: ["address_components", "formatted_address", "name"], // Now you can request address_components
+            },
+            (placeDetails, detailsStatus) => {
+              if (
+                detailsStatus === google.maps.places.PlacesServiceStatus.OK &&
+                placeDetails
+              ) {
+                // Access address components
+                const addressComponents = placeDetails.address_components;
+                fullAddress.placeName = placeDetails.name;
+
+                // Loop through address components to get city, zip, and country
+                addressComponents.forEach((component) => {
+                  const types = component.types;
+
+                  if (types.includes("locality")) {
+                    fullAddress.city = component.long_name; // City
+                  }
+
+                  if (types.includes("postal_code")) {
+                    fullAddress.zipCode = component.long_name; // ZIP Code
+                  }
+
+                  if (types.includes("country")) {
+                    fullAddress.country = component.short_name; // Country
+                  }
+
+                  if (types.includes("route")) {
+                    fullAddress.street = component.long_name; // Street
+                  }
+
+                  if (types.includes("administrative_area_level_1")) {
+                    fullAddress.state = component.long_name; // State
+                  }
+
+                  setDetails(fullAddress);
+                });
+              }
+            },
+          );
         }
       },
     );

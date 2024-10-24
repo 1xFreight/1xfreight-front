@@ -75,6 +75,7 @@ body {
   background: #EFEFEF;
   font-family: "SF Pro Display", sans-serif;
   letter-spacing: 0.0625rem;
+  scroll-behavior: smooth;
 
   ::-webkit-calendar-picker-indicator {
     background: transparent;
@@ -117,29 +118,48 @@ body {
 
 button {
   position: relative;
-  background-color: #0020DD;
-  color: #fff;
+  background-color: #f1f1f1;
+  color: black;
   overflow: hidden;
-  border: 2px solid #D9D9D9;
-  transition: all 250ms ease-in-out;
+  border: 1px solid #d9d9d9;
+  transition: all 50ms ease-out;
   text-transform: unset;
-  font-weight: 600;
-  outline: 1px solid transparent;
+  font-weight: 500;
+  box-shadow: 1px 2px 2px #d9d9d9;
+
+  &.variant2 {
+    background-color: rgba(199, 207, 255, 0.8);
+    color: #363636;
+    box-shadow: 1px 2px 2px #d9d9d9;
+    border-color: #bbc5fd;
+
+    svg {
+      path {
+        fill: #363636;
+        transition: all 50ms ease-out;
+      }
+    }
+  }
+
+  svg {
+    path {
+      fill: black;
+      transition: all 50ms ease-out;
+    }
+  }
 
 
   &:hover {
     background: #C7CFFF;
-    border-color: #0020DD;
+    border-color: transparent;
     outline-color: white;
     color: #0020DD;
-    /*font-size: 1.05rem;*/
+
 
     svg {
-      /*stroke-width: 1px;*/
-      /*stroke: #0020DD;*/
       path {
         fill: #0020DD;
-
+        transition: all 50ms ease-out;
       }
     }
   }
@@ -162,37 +182,37 @@ button:disabled {
   white-space: nowrap;
   font-size: 0.8rem !important;
 
-  /*&.booked {*/
-  /*  background: #c3dbfd;*/
-  /*  color: white;*/
-  /*}*/
 
-  /*&.dispatched {*/
-  /*  background: #81b1fb;*/
-  /*  color: white;*/
-  /*}*/
-
-  &.delivered {
-    background: #90be6d;
+  &.booked {
     color: white;
+    background: #8093FF;
   }
 
-  /*&.at_pickup {*/
-  /*  background: #5a77d8;*/
-  /*  color: white;*/
-  /*}*/
+  &.dispatched {
+    color: white;
+    background: #99AFFF;
+  }
 
-  /*&.at_destination {*/
-  /*  background: #535878;*/
-  /*  color: white;*/
-  /*}*/
+  &.at_pickup {
+    color: white;
+    background: #BCC9FF;
+  }
 
-  /*&.in_transit {*/
-  /*  background: #9db0ce;*/
-  /*  color: white;*/
-  /*}*/
+  &.in_transit {
+    color: white;
+    background: #7A9FFF;
+  }
 
+  &.at_destination {
+    color: white;
+    background: #C8D4FF;
+  }
 
+  &.delivered {
+    /*background: #90be6d;*/
+    background: rgba(23, 54, 243, 0.8);
+    color: white;
+  }
 }
 
 .fade-in-top {
@@ -382,11 +402,39 @@ input[type=number] {
   }
 }
 
+@-webkit-keyframes fade-in-table-cache {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fade-out-fast {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 
 .fade-in {
   -webkit-animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
   animation: fade-in 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.fade-in-fast {
+  animation: fade-in-table-cache 700ms ease-in-out;
+}
+
+.fade-out-fast {
+  animation: fade-in-table-cache 700ms ease-in-out;
 }
 
 @-webkit-keyframes slide-in-right {
@@ -622,4 +670,16 @@ h6 {
 .slide-out-top {
   -webkit-animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
   animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+@keyframes rotate-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }

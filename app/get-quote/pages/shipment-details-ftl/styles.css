@@ -90,11 +90,11 @@
         width: 100%;
         display: flex;
         gap: 2rem;
-        height: 2.25rem;
+        height: 2.5rem;
 
         button {
-            background: transparent;
-            color: #0020DD;
+            /*background: transparent;*/
+            /*color: #0020DD;*/
             display: flex;
             align-items: center;
             width: 15rem;
@@ -103,15 +103,15 @@
             border-radius: 0.5rem;
             transition: all 250ms ease-in-out;
             border: unset;
-            font-size: 1rem;
+            font-size: 0.85rem;
 
             &:hover {
-                background: #e5e5e5;
+                /*background: #e5e5e5;*/
             }
 
-            svg path{
-                fill: #0020DD;
-            }
+            /*svg path{*/
+            /*    fill: #0020DD;*/
+            /*}*/
 
             &:disabled {
                 color: #A7A7A7 !important;
@@ -123,6 +123,10 @@
             &.delete {
                 /*background: transparent;*/
                 color: rgba(221, 0, 32, 0.5);
+
+                &:hover {
+                    background: rgba(237, 0, 0, 0.2);
+                }
             }
 
         }

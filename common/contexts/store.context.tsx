@@ -3,9 +3,11 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import IToast from "@/common/interfaces/toast.interface";
+import { usePathname } from "next/navigation";
 
 interface StoreDataI {
   name: string;

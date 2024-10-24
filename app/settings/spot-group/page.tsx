@@ -119,7 +119,7 @@ export default function SpotSettingsPage() {
           />
         </div>
 
-        <button onClick={() => setOpen(true)}>
+        <button onClick={() => setOpen(true)} className={"variant2"}>
           <PlusCircle /> Add group
         </button>
       </div>

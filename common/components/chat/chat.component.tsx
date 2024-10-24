@@ -12,11 +12,25 @@ import { chatDateFormat } from "@/common/utils/date.utils";
 import { ChatEventsEnum } from "@/common/enums/socket-events.enum";
 import LoadingCircle from "@/common/components/loading/loading-circle.component";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { useRouter } from "next/navigation";
 
 export default function ChatComponent({ room, title }) {
   const [messages, setMessages] = useState<any[]>(null);
   const { connect, disconnect, sendMessage, joinRoom, chatService } = useChat();
   const { session, showToast } = useStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#chat") {
+      const chatElement = document.getElementById("chat");
+      if (chatElement) {
+        chatElement.classList.add("glow");
+        setTimeout(() => {
+          chatElement.scrollIntoView({ behavior: "smooth", inline: "start" });
+        }, 700); // Delay the scroll to ensure element is rendered
+      }
+    }
+  }, []);
 
   const handleNewMessage = (message) => {
     setMessages((prev) => [...prev, message]);
@@ -98,7 +112,7 @@ export default function ChatComponent({ room, title }) {
   }, 350);
 
   return (
-    <div className={"default-chat-wrapper"}>
+    <div className={"default-chat-wrapper"} id={"chat"}>
       <div className={"chat-title"}>
         <div>
           <Chat />

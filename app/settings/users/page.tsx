@@ -89,7 +89,7 @@ export default function UsersSettingsPage() {
           />
         </div>
 
-        <button onClick={() => setOpen(true)}>
+        <button onClick={() => setOpen(true)} className={"variant2"}>
           <PlusCircle /> Add member
         </button>
       </div>

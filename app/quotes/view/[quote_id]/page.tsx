@@ -27,14 +27,17 @@ export default function ViewQuotePage({
   if (!quote) return <Loading2Component />;
 
   return (
-    <div className={"container"}>
-      <div
-        style={{
-          maxWidth: "60rem",
-          margin: "1.5rem",
-        }}
-      >
-        <QuoteFtlComponent quote={quote} />
+    <div className={"page"}>
+      <div className={"container"}>
+        <div
+          style={{
+            maxWidth: "70rem",
+            margin: "1.5rem",
+            width: "100%",
+          }}
+        >
+          <QuoteFtlComponent quote={quote} />
+        </div>
       </div>
     </div>
   );

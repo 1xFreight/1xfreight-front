@@ -6,7 +6,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { formatDate } from "@/common/utils/date.utils";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
-import { postWithAuth } from "@/common/utils/fetchAuth.util";
+import {
+  deleteCache,
+  deleteCacheById,
+  postWithAuth,
+} from "@/common/utils/fetchAuth.util";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
 
@@ -38,7 +42,9 @@ export default function QTableComponent({
         duration: 5000,
       });
 
-      router.push("/quotes");
+      deleteCache();
+
+      router.push(`/goto/${quote_id}`);
     });
   }, 350);
 
@@ -110,10 +116,10 @@ export default function QTableComponent({
                 <td>
                   <div className={"end"}>
                     <Link href={`${quote.quote_id}/${quote._id}`}>
-                      <button className={"view"}>View Quote</button>
+                      <button className={"accept"}>View Details</button>
                     </Link>
                     <button
-                      className={"accept"}
+                      className={"accept  variant2"}
                       onClick={() => {
                         document.getElementById(quote._id).style.display =
                           "flex";

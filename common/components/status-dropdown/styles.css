@@ -1,14 +1,29 @@
 .status-dropdown-menu {
     color: #939393;
     font-size: 0.75rem;
-    background: white;
+    background: #f1f1f1;
     padding: 1.4rem 0.5rem 0.5rem 0.5rem;
     margin-top: -1rem;
     border-radius: 0 0 1rem 1rem;
     position: absolute;
     z-index: 9;
     width: 10rem;
-    border: 1px solid #939393;
+    border: 1px solid #d5d5d5;
+    font-weight: 500;
+    animation: anim-dropdown 90ms ease-out;
+    overflow: hidden;
+}
+
+@keyframes anim-dropdown {
+    from {
+        height: 0;
+        opacity: 0.25;
+    }
+
+    to {
+        height: 15rem;
+        opacity: 1;
+    }
 }
 
 .status-dropdown-menu .item {
@@ -49,35 +64,50 @@
     top: 0;
     left: 0;
     z-index: 8;
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .status-filter-dropdown {
     display: flex;
     align-items: center;
-    height: 3rem;
+    height: calc(3rem - 2px);
     width: 10rem;
     justify-content: space-between;
-    background: white;
-    border-radius: 1rem;
+    border-radius: 0.55rem;
     box-sizing: border-box;
     padding: 0 .15rem 0 0.75rem;
     font-size: 0.75rem;
-    color: #939393;
-    border: 1px solid transparent;
-    transition: all 250ms ease-in-out;
+    font-weight: 500;
+    transition: all 90ms ease-in-out;
     cursor: pointer;
     z-index: 10;
     position: relative;
+
+
+}
+
+.status-filter-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 2rem);
 }
 
 .status-filter-dropdown:hover,.status-filter-dropdown.active {
-    border: 1px solid #0020DD;
     color: #0020DD;
-
-    & svg {
-    }
-
-    & svg path {
+    svg path {
         fill: #0020DD;
     }
+
+    svg {
+        transform: rotate(180deg);
+        transition: all 80ms ease-in-out;
+        transform-origin: center center;
+    }
+}
+
+.status-filter-dropdown.active {
+    border: 1px solid #6B81FF;
 }

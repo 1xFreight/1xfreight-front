@@ -1,15 +1,14 @@
 "use client";
 
 import "./styles.css";
-import StatusFilterDropdownComponent from "@/common/components/status-dropdown/status-filter-dropdown.component";
 import MoreFiltersComponent from "@/common/components/more-filters/more-filters.component";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import RefreshComponent from "@/app/quotes/components/filters-panel/components/refresh.component";
 import { memo, useEffect, useState } from "react";
-import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
+import TableSortButtonComponent from "@/common/components/table-sort-button/table-sort-button.component";
 
 export enum TypeFilterEnum {
   ALL = "ALL",
@@ -29,18 +28,32 @@ function FiltersPanelComponent() {
   const [type, setType] = useState<TypeFilterEnum>(TypeFilterEnum.ALL);
   const [status, setStatus] = useState<StatusFilterEnum>(StatusFilterEnum.ALL);
   const [searchText, setSearch] = useState("");
-  const { setFilters } = useStore();
+  const { setFilters, filters } = useStore();
 
   useEffect(() => {
     const formattedType = type === TypeFilterEnum.ALL ? "" : type;
     const formattedStatus = status === StatusFilterEnum.ALL ? "" : status;
 
     setFilters({
+      ...filters,
       searchText,
       type: formattedType,
       status: formattedStatus,
     });
   }, [searchText, type, status]);
+
+  useEffect(() => {
+    const formattedType = type === TypeFilterEnum.ALL ? "" : type;
+    const formattedStatus = status === StatusFilterEnum.ALL ? "" : status;
+
+    setFilters({
+      ...filters,
+      sort: "{}",
+      searchText,
+      type: formattedType,
+      status: formattedStatus,
+    });
+  }, []);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),
@@ -61,8 +74,6 @@ function FiltersPanelComponent() {
         typeEnum={StatusFilterEnum}
       />
 
-      {/*<StatusFilterDropdownComponent status={status} setStatus={setStatus} />*/}
-
       <MoreFiltersComponent />
 
       <SearchInputComponent
@@ -70,6 +81,16 @@ function FiltersPanelComponent() {
         placeholder={"Quote#, Pickup, Delivery, Reference..."}
         setSearch={setSearchDebounced}
       />
+
+      <button
+        className={"remove-filters"}
+        onClick={() => setFilters({ ...filters, sort: "{}" })}
+        style={{
+          display: filters?.sort && filters?.sort != "{}" ? "block" : "none",
+        }}
+      >
+        Remove Sort
+      </button>
 
       <RefreshComponent />
     </div>

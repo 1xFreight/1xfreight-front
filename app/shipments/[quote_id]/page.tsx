@@ -97,6 +97,7 @@ export default function ShipmentIdPage({
               items={[
                 {
                   title: "Shipments",
+                  href: "/shipments",
                 },
                 {
                   title: `Load #${toShortId(quote._id)}`,
@@ -123,50 +124,46 @@ export default function ShipmentIdPage({
         <div className={"content-wrapper"}>
           <div className={"shipment-column"}>
             <div className={"shipment-wrapper"}>
-              <div>
-                {quote?.load_number > 1 && (
-                  <div className={"price-wrapper"}>
-                    <div>
-                      <div className={"price"}>
-                        <div className={"full-price"}>
-                          <span>$</span>
-                          {numberCommaFormat(
-                            request?.amount * quote.load_number,
-                          )}
-                        </div>
-                        <div className={"currency"}>{quote.currency}</div>
-                      </div>
-
-                      <h5>Total cost</h5>
-                    </div>
-                  </div>
-                )}
-
+              {quote?.load_number > 1 && (
                 <div className={"price-wrapper"}>
                   <div>
                     <div className={"price"}>
                       <div className={"full-price"}>
                         <span>$</span>
-                        {numberCommaFormat(request?.amount)}
+                        {numberCommaFormat(request?.amount * quote.load_number)}
                       </div>
                       <div className={"currency"}>{quote.currency}</div>
                     </div>
 
-                    <h5>Per Load</h5>
+                    <h5>Total cost</h5>
                   </div>
                 </div>
+              )}
 
-                <div className={"transit-time"}>
-                  <h6>Transit Time</h6>
-                  <h2>{request?.transit_time}</h2>
-                  <div className={`sub-text`}>days</div>
-                </div>
+              <div className={"price-wrapper"}>
+                <div>
+                  <div className={"price"}>
+                    <div className={"full-price"}>
+                      <span>$</span>
+                      {numberCommaFormat(request?.amount)}
+                    </div>
+                    <div className={"currency"}>{quote.currency}</div>
+                  </div>
 
-                <div className={"partner"}>
-                  <h6>Partner</h6>
-                  <h2>{quote?.local_carrier?.name}</h2>
-                  <h6>{quote?.carrier?.email}</h6>
+                  <h5>Per Load</h5>
                 </div>
+              </div>
+
+              <div className={"transit-time"}>
+                <h6>Transit Time</h6>
+                <h2>{request?.transit_time}</h2>
+                <div className={`sub-text`}>days</div>
+              </div>
+
+              <div className={"partner"}>
+                <h6>Partner</h6>
+                <h2>{quote?.local_carrier?.name}</h2>
+                <h6>{quote?.carrier?.email}</h6>
               </div>
 
               {request?.notes && (

@@ -123,7 +123,7 @@ export default function CarriersSettingsPage() {
           />
         </div>
 
-        <button onClick={() => setOpen(true)}>
+        <button onClick={() => setOpen(true)} className={"variant2"}>
           <PlusCircle /> Add Partner
         </button>
       </div>

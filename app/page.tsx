@@ -36,7 +36,7 @@ export default function Home() {
     if (!session) return;
 
     goToHomePageByRole(session?.role);
-  }, []);
+  }, [session]);
 
   return (
     <div>

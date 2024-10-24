@@ -1,5 +1,6 @@
+"use client";
+
 import Arrow from "@/public/icons/40px/Arrow 1.svg";
-import Checkmark from "@/public/icons/14px/checkmark-circle.svg";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import Doc from "@/public/icons/35px/document.svg";
 import Archive from "@/public/icons/35px/archives 1.svg";
@@ -9,6 +10,79 @@ import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { clearText, toShortId } from "@/common/utils/data-convert.utils";
 import Link from "next/link";
 import Cross from "@/public/icons/24px/cross.svg";
+import Calendar from "@/public/icons/24px/calendar.svg";
+import Point from "@/public/icons/35px/map-marker.svg";
+import ShipmentsTableHeader from "@/app/shipments/components/table-header.component";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  deleteCache,
+  deleteCacheById,
+  postWithAuth,
+} from "@/common/utils/fetchAuth.util";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { usePathname, useRouter } from "next/navigation";
+import useStore from "@/common/hooks/use-store.context";
+import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
+
+export function CancelLoadShipTable({ quote_id }) {
+  const { showToast } = useStore();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const cancelLoad = useDebouncedCallback(() => {
+    postWithAuth(`/quote/cancel/${quote_id}`, {}).then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
+          duration: 5000,
+        });
+      }
+
+      showToast({
+        type: ToastTypesEnum.SUCCESS,
+        text: "Quote was canceled",
+        duration: 5000,
+      });
+
+      deleteCache();
+      router.refresh();
+    });
+  }, 300);
+
+  return (
+    <>
+      <div className={"tooltip"}>
+        <button
+          className={"cancel"}
+          onClick={() => {
+            const confirmAction = document.getElementById(
+              `ship-table-cancel-load-${quote_id}`,
+            );
+            confirmAction.style.display = "flex";
+          }}
+        >
+          <Cross />
+        </button>
+        <span
+          className={"tooltiptext"}
+          style={{
+            right: 0,
+            left: "unset",
+          }}
+        >
+          Cancel
+        </span>
+      </div>
+      <ConfirmActionComponent
+        title={`Cancel load [${toShortId(quote_id)}] ?`}
+        id={`ship-table-cancel-load-${quote_id}`}
+        action={cancelLoad}
+      />
+    </>
+  );
+}
 
 export default function ShipmentsTableComponent({ shipments }) {
   return (
@@ -17,18 +91,7 @@ export default function ShipmentsTableComponent({ shipments }) {
       <div className={"shipments-table-wrapper"}>
         <table>
           <thead>
-            <tr>
-              <th>Load ID</th>
-              <th>Status</th>
-              <th>Mode</th>
-              <th>Origin</th>
-              <th>Destination</th>
-              <th>Pickup</th>
-              <th>Delivery</th>
-              <th>Carrier</th>
-              <th>Cost</th>
-              <th>Actions</th>
-            </tr>
+            <ShipmentsTableHeader />
           </thead>
 
           <tbody>
@@ -65,11 +128,6 @@ export default function ShipmentsTableComponent({ shipments }) {
 
                   return (
                     <tr key={_id}>
-                      {/*<td>*/}
-                      {/*  <div className={"svg-favorite"}>*/}
-                      {/*    <Star />*/}
-                      {/*  </div>*/}
-                      {/*</td>*/}
                       <td>
                         <div className={"id-number"}>{toShortId(_id)}</div>
                       </td>
@@ -109,13 +167,6 @@ export default function ShipmentsTableComponent({ shipments }) {
                                 </>
                               )}
                             </div>
-                            {/*<div className={"date sub-text"}>*/}
-                            {/*  {formatDate(pickupAddress[0]?.date)}*/}
-                            {/*  {!!pickupAddress[0]?.date && " / "}*/}
-                            {/*  {pickupAddress[0]?.time_start}*/}
-                            {/*  {" - "}*/}
-                            {/*  {pickupAddress[0]?.time_end}*/}
-                            {/*</div>*/}
                           </div>
                           <div className={"arrow-styling"}>
                             <Arrow />
@@ -172,8 +223,8 @@ export default function ShipmentsTableComponent({ shipments }) {
                                   display: "flex",
                                   gap: "0.5rem",
                                   textTransform: "uppercase",
-                                  color: "#0020DD",
-                                  fontWeight: 600,
+                                  color: "#545454",
+                                  fontWeight: 500,
                                   opacity: 0.5,
                                 }}
                               >
@@ -185,23 +236,13 @@ export default function ShipmentsTableComponent({ shipments }) {
                               </div>
 
                               <span
-                                className={"tooltiptext"}
-                                style={{
-                                  // bottom: "unset",
-                                  // top: "100%",
-                                  padding: "1rem",
-                                  width: "30rem",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  gap: "0.5rem",
-                                  zIndex: "100",
-                                  background: "white",
-                                  borderRadius: "0.75rem",
-                                }}
+                                className={"tooltiptext tooltip-datetime-box"}
                               >
                                 {pickupWithDate.map((address, index) => (
                                   <div
-                                    className={"main-text"}
+                                    className={
+                                      "main-text tooltip-datetime-item"
+                                    }
                                     key={
                                       address._id + index + address.address_type
                                     }
@@ -211,17 +252,21 @@ export default function ShipmentsTableComponent({ shipments }) {
                                       textAlign: "left",
                                     }}
                                   >
-                                    <h5
-                                      style={{
-                                        textTransform: "capitalize",
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                      }}
-                                    >
-                                      {" "}
-                                      {address.address}{" "}
-                                    </h5>
+                                    <div className={"point-on-map-svg"}>
+                                      <Point />
+
+                                      <h5
+                                        style={{
+                                          textTransform: "capitalize",
+                                          overflow: "hidden",
+                                          whiteSpace: "nowrap",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                      >
+                                        {" "}
+                                        {address.address}{" "}
+                                      </h5>
+                                    </div>
 
                                     <div
                                       style={{
@@ -229,18 +274,14 @@ export default function ShipmentsTableComponent({ shipments }) {
                                         gap: "1rem",
                                       }}
                                     >
-                                      {formatDate(address.date)}
+                                      <div className={"calendar-svg"}>
+                                        <Calendar />
+
+                                        {formatDate(address.date)}
+                                      </div>
 
                                       <div
-                                        className={"sub-text"}
-                                        style={{
-                                          display: "flex",
-                                          gap: "0.5rem",
-                                          textTransform: "uppercase",
-                                          color: "#0020DD",
-                                          fontWeight: 600,
-                                          opacity: 0.5,
-                                        }}
+                                        className={"sub-text tooltip-datetime"}
                                       >
                                         {formatTime(address.time_start)}
                                         {address.time_end
@@ -286,8 +327,8 @@ export default function ShipmentsTableComponent({ shipments }) {
                                   display: "flex",
                                   gap: "0.5rem",
                                   textTransform: "uppercase",
-                                  color: "#0020DD",
-                                  fontWeight: 600,
+                                  color: "#545454",
+                                  fontWeight: 500,
                                   opacity: 0.5,
                                 }}
                               >
@@ -298,24 +339,13 @@ export default function ShipmentsTableComponent({ shipments }) {
                               </div>
 
                               <span
-                                className={"tooltiptext"}
-                                style={{
-                                  // bottom: "unset",
-                                  // top: "100%",
-                                  padding: "1rem",
-                                  width: "30rem",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  gap: "0.5rem",
-                                  zIndex: "100",
-                                  // left: "0%",
-                                  background: "white",
-                                  borderRadius: "0.75rem",
-                                }}
+                                className={"tooltiptext tooltip-datetime-box"}
                               >
                                 {dropWithDate.map((address, index) => (
                                   <div
-                                    className={"main-text"}
+                                    className={
+                                      "main-text tooltip-datetime-item"
+                                    }
                                     key={
                                       address._id + index + address.address_type
                                     }
@@ -325,17 +355,21 @@ export default function ShipmentsTableComponent({ shipments }) {
                                       textAlign: "left",
                                     }}
                                   >
-                                    <h5
-                                      style={{
-                                        textTransform: "capitalize",
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                      }}
-                                    >
-                                      {" "}
-                                      {address.address}{" "}
-                                    </h5>
+                                    <div className={"point-on-map-svg"}>
+                                      <Point />
+
+                                      <h5
+                                        style={{
+                                          textTransform: "capitalize",
+                                          overflow: "hidden",
+                                          whiteSpace: "nowrap",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                      >
+                                        {" "}
+                                        {address.address}{" "}
+                                      </h5>
+                                    </div>
 
                                     <div
                                       style={{
@@ -343,18 +377,14 @@ export default function ShipmentsTableComponent({ shipments }) {
                                         gap: "1rem",
                                       }}
                                     >
-                                      {formatDate(address.date)}
+                                      <div className={"calendar-svg"}>
+                                        <Calendar />
+
+                                        {formatDate(address.date)}
+                                      </div>
 
                                       <div
-                                        className={"sub-text"}
-                                        style={{
-                                          display: "flex",
-                                          gap: "0.5rem",
-                                          textTransform: "uppercase",
-                                          color: "#0020DD",
-                                          fontWeight: 600,
-                                          opacity: 0.5,
-                                        }}
+                                        className={"sub-text tooltip-datetime"}
                                       >
                                         {formatTime(address.time_start)}
                                         {address.time_end
@@ -390,7 +420,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                             <button>
                               <Archive />
                             </button>
-                            <span className={"tooltiptext"}>Action</span>
+                            <span className={"tooltiptext"}>Duplicate</span>
                           </div>
 
                           <div className={"tooltip"}>
@@ -399,27 +429,10 @@ export default function ShipmentsTableComponent({ shipments }) {
                                 <Doc />
                               </button>
                             </Link>
-                            <span className={"tooltiptext"}>View quote</span>
+                            <span className={"tooltiptext"}>View</span>
                           </div>
 
-                          <div className={"tooltip"}>
-                            <button
-                              style={{
-                                width: "2.5rem",
-                              }}
-                            >
-                              <Cross />
-                            </button>
-                            <span
-                              className={"tooltiptext"}
-                              style={{
-                                right: 0,
-                                left: "unset",
-                              }}
-                            >
-                              Cancel load
-                            </span>
-                          </div>
+                          <CancelLoadShipTable quote_id={_id} />
                         </div>
                       </td>
                     </tr>

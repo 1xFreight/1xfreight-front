@@ -8,7 +8,11 @@ import ChatComponent from "@/common/components/chat/chat.component";
 import BreadcrumbsComponent from "@/app/components/breadcrumbs/breadcrumbs.component";
 import ShipmentStatusComponent from "@/app/shipments/[quote_id]/components/shipment-status.component";
 import { useDebouncedCallback } from "use-debounce";
-import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
+import {
+  deleteCacheById,
+  getWithAuth,
+  postWithAuth,
+} from "@/common/utils/fetchAuth.util";
 import { clearText, toShortId } from "@/common/utils/data-convert.utils";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
@@ -28,13 +32,14 @@ export default function ShipmentIdPage({
   const [openArrivalModal, setOpenArrivalModal] = useState(false);
   const { showToast } = useStore();
 
-  const getQuoteAndReq = useDebouncedCallback(() => {
-    getWithAuth(`/quote/active-loads?limit=1&id=${params.quote_id}`).then(
-      (data) => {
-        setQuote({ ...data?.quotes[0] });
-        setRequest(data?.quotes[0]?.carrier_bid);
-      },
-    );
+  const getQuoteAndReq = useDebouncedCallback((ignoreCache = false) => {
+    getWithAuth(
+      `/quote/active-loads?limit=1&id=${params.quote_id}`,
+      ignoreCache,
+    ).then((data) => {
+      setQuote({ ...data?.quotes[0] });
+      setRequest(data?.quotes[0]?.carrier_bid);
+    });
   });
 
   const getNextStatus = () => {
@@ -129,13 +134,15 @@ export default function ShipmentIdPage({
           duration: 5000,
         });
 
-        getQuoteAndReq();
+        const ignoreCache = true;
+        getQuoteAndReq(ignoreCache);
       },
     );
   }, 300);
 
   useEffect(() => {
-    getQuoteAndReq();
+    const ignoreCache = true;
+    getQuoteAndReq(ignoreCache);
   }, [openArrivalModal]);
 
   if (!request || !quote) return <Loading2Component />;
@@ -150,13 +157,7 @@ export default function ShipmentIdPage({
       />
       <div className={"container"}>
         <div className={"page-header"}>
-          <div
-            className={"breadcrumbs"}
-            onClick={() => {
-              console.log(getNextStatus());
-              console.log("WDd");
-            }}
-          >
+          <div className={"breadcrumbs"}>
             <BreadcrumbsComponent
               items={[
                 {

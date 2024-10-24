@@ -8,6 +8,14 @@
     /*border-top: 1px solid #A7A7A7;*/
     flex-wrap: wrap;
     z-index: 10;
+
+    .remove-filters {
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        padding: 0 0.5rem;
+        border-radius: 0.65rem;
+        height: calc(3rem - 2px);
+    }
 }
 
 .quote-type-filter-selector {

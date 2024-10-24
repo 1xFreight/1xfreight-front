@@ -9,9 +9,11 @@ import Loading2Component from "@/common/components/loading/loading-as-page.compo
 import PaginationComponent from "@/common/components/pagination/pagination.component";
 import { paginationConfig } from "@/common/config/pagination.config";
 import { useDebouncedCallback } from "use-debounce";
-import { postWithAuth } from "@/common/utils/fetchAuth.util";
+import { isFetchCached, postWithAuth } from "@/common/utils/fetchAuth.util";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
+import path from "node:path";
+import { usePathname } from "next/navigation";
 
 enum StatusEnum {
   ALL = "All",

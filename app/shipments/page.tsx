@@ -2,34 +2,47 @@
 
 import "./styles.css";
 import FiltersPanelComponent from "@/app/shipments/components/filters-panel.component";
-import Excel from "@/public/icons/20px/excel 1.svg";
 import ShipmentsTableComponent from "@/app/shipments/components/shipments-table.component";
 import { useDebouncedCallback } from "use-debounce";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import QuotesTableComponent from "@/app/quotes/components/quotes-table/quotes-table.component";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
 import { paginationConfig } from "@/common/config/pagination.config";
+import useStore from "@/common/hooks/use-store.context";
 
 export default function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const { filters, setFilters } = useStore();
 
   const getShipmentsDebounced = useDebouncedCallback(() => {
+    const ignoreCache = filters?.ignoreCache ?? false;
+
     getWithAuth(
-      `/quote/shipments?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}`,
+      `/quote/shipments?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setShipments(data);
       setLoading(false);
+      if (ignoreCache) {
+        setFilters((prevState) => {
+          return { ...prevState, ignoreCache: false };
+        });
+      }
     });
-  }, 350);
+  }, 300);
 
   useEffect(() => {
     setLoading(true);
     getShipmentsDebounced();
   }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+    getShipmentsDebounced();
+  }, [filters]);
 
   return (
     <div className={"shipments-page page"}>

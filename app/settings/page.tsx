@@ -89,7 +89,8 @@ export default function SettingsPage() {
           duration: 5000,
         });
 
-        getWithAuth("/users/me").then((data) => setSession(data));
+        const ignoreCache = true;
+        getWithAuth("/users/me", ignoreCache).then((data) => setSession(data));
       });
     }
   };

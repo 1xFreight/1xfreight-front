@@ -26,6 +26,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
     leading: true,
   });
 
+  useEffect(() => {
+    if (validPath) return;
+    goToHome();
+  }, [validPath]);
+
   const authWithLinkToken = useDebouncedCallback(() => {
     postWithAuth("/auth/use-token", {
       accessToken: token,
@@ -38,13 +43,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
           duration: 5000,
         });
       }
+
+      setAuthStatus(true);
     });
 
     router.push(pathname);
   }, 300);
 
   const checkAuth = useDebouncedCallback(() => {
-    getWithAuth("/users/me")
+    const ignoreCache = true;
+
+    getWithAuth("/users/me", ignoreCache)
       .then((data) => {
         setAuthStatus(true);
         setSession(data);
@@ -129,7 +138,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
     );
 
   if (!validPath) {
-    setTimeout(goToHome, 3000);
     return (
       <div
         style={{

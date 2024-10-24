@@ -1,25 +1,24 @@
 .more-filters {
     font-size: 0.75rem;
-    color: #0020DD;
     display: flex;
     width: 10rem;
-    height: 3rem;
+    height: calc(3rem - 1px);
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0 0.75rem;
-    border: 1px solid #0020DD;
     border-radius: 0.5rem;
-    transition: all 250ms ease-in-out;
+    transition: all 90ms ease-in-out;
     cursor: pointer;
+    font-weight: 500;
 
-    &:hover {
-        background: #0020DD;
-        color: white;
-    }
 
-    &:hover svg path {
-        fill: white;
+    &.selected {
+        border: 1px solid #6B81FF;
+        color: #0020DD;
+        svg path {
+            fill: #0020DD;
+        }
     }
 }
 
@@ -113,17 +112,14 @@
             justify-content: space-between;
 
             & .remove {
-                background: transparent;
-                color: #ED0000;
-                border-color: #ED0000;
 
                 &:hover {
-
+                    background: rgba(237, 0, 0, 0.3);
+                    color: #ED0000;
                 }
             }
 
             & .apply {
-                border-color:#0020DD;
             }
         }
     }

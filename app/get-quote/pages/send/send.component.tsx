@@ -20,7 +20,7 @@ function SendComponent() {
     } catch (error) {
       setStatus(false);
     }
-  }, 2000); // 500ms debounce delay (adjust as needed)
+  }, 2000);
 
   useEffect(() => {
     debouncedSaveData(); // Call the debounced function instead of saveData directly
@@ -60,7 +60,9 @@ function SendComponent() {
           </div>
 
           <h4>A system error occurred, please try again later.</h4>
-          <button onClick={() => retrySaveData()}>retry</button>
+          <button onClick={() => retrySaveData()} className={"variant2"}>
+            retry
+          </button>
         </div>
       );
     }

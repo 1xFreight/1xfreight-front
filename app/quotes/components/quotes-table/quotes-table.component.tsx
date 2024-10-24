@@ -1,3 +1,5 @@
+"use client";
+
 import "./styles.css";
 import QuoteStatusComponent from "@/app/quotes/components/quotes-table/components/quote-status.component";
 import ArrowUp from "@/public/icons/24px/arrow-up.svg";
@@ -9,8 +11,14 @@ import numberCommaFormat from "@/common/utils/number-comma.utils";
 import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import { toShortId } from "@/common/utils/data-convert.utils";
-import { formatDate } from "@/common/utils/date.utils";
+import { formatDate, formatTime } from "@/common/utils/date.utils";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Point from "@/public/icons/35px/map-marker.svg";
+import Calendar from "@/public/icons/24px/calendar.svg";
+import { filters } from "css-select";
+import useStore from "@/common/hooks/use-store.context";
+import QuoteTableHeader from "@/app/quotes/components/quotes-table/components/table-header.component";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
@@ -23,24 +31,14 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
       <div className={"quotes-table"}>
         <table>
           <thead>
-            <tr className={"fade-in"}>
-              <th>Quote#</th>
-              <th>Type</th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Details</th>
-              <th>Ref#</th>
-              <th>Equipment</th>
-              <th></th>
-            </tr>
+            <QuoteTableHeader />
           </thead>
-          <tbody className={"fade-in"} style={{}}>
+          <tbody id={"quotes-tbody fast-in-fast"}>
             {rows?.map(
               ({
                 _id,
                 status,
                 addresses,
-                equipment,
                 currency,
                 references,
                 type,
@@ -55,6 +53,15 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 const dropAddress = addresses.filter(
                   ({ address_type }) => address_type === "drop",
                 );
+
+                const pickupWithDate = pickupAddress.filter((address) =>
+                  address.hasOwnProperty("date"),
+                );
+
+                const dropWithDate = dropAddress.filter((address) =>
+                  address.hasOwnProperty("date"),
+                );
+
                 const shipment = details[0];
                 const bidsNumber = bids?.length;
                 const btnStatus =
@@ -96,7 +103,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           }}
                         >
                           <div className={"location main-text"}>
-                            {pickupAddress[0].address}
+                            {pickupAddress[0]?.address}
 
                             {pickupAddress.length >= 2 && (
                               <>
@@ -110,13 +117,13 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               </>
                             )}
                           </div>
-                          <div className={"date sub-text"}>
-                            {formatDate(pickupAddress[0].date)}
-                            {!!pickupAddress[0].date && " / "}
-                            {pickupAddress[0].time_start}
-                            {" - "}
-                            {pickupAddress[0].time_end}
-                          </div>
+                          {/*<div className={"date sub-text"}>*/}
+                          {/*  {formatDate(pickupAddress[0]?.date)}*/}
+                          {/*  {!!pickupAddress[0]?.date && " / "}*/}
+                          {/*  {pickupAddress[0]?.time_start}*/}
+                          {/*  {!!pickupAddress[0]?.time_end && " - "}*/}
+                          {/*  {pickupAddress[0]?.time_end}*/}
+                          {/*</div>*/}
                         </div>
                       </div>
                     </td>
@@ -130,7 +137,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           }}
                         >
                           <div className={"location main-text"}>
-                            {dropAddress[0].address}
+                            {dropAddress[0]?.address}
 
                             {dropAddress.length >= 2 && (
                               <>
@@ -144,46 +151,259 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               </>
                             )}
                           </div>
-                          <div className={"date sub-text"}>
-                            {formatDate(dropAddress[0].date)}
-                            {!!dropAddress[0].date && " / "}
-                            {dropAddress[0].time_start}
-                            {!!dropAddress[0].time_end && " - "}
-                            {dropAddress[0].time_end}
-                          </div>
+                          {/*<div className={"date sub-text"}>*/}
+                          {/*  {formatDate(dropAddress[0]?.date)}*/}
+                          {/*  {!!dropAddress[0]?.date && " / "}*/}
+                          {/*  {dropAddress[0]?.time_start}*/}
+                          {/*  {!!dropAddress[0]?.time_end && " - "}*/}
+                          {/*  {dropAddress[0]?.time_end}*/}
+                          {/*</div>*/}
                         </div>
                       </div>
                     </td>
                     <td>
+                      {pickupWithDate.length >= 1 && (
+                        <>
+                          <div
+                            className={"main-text tooltip"}
+                            style={{
+                              cursor: "pointer",
+                              minWidth: "6rem",
+                            }}
+                          >
+                            <div
+                              className={"main-text"}
+                              style={{
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {formatDate(pickupWithDate[0].date)}
+                            </div>
+                            <div
+                              className={"sub-text"}
+                              style={{
+                                display: "flex",
+                                gap: "0.5rem",
+                                textTransform: "uppercase",
+                                color: "#545454",
+                                fontWeight: 500,
+                                opacity: 0.5,
+                              }}
+                            >
+                              {formatTime(pickupWithDate[0].time_start)}
+                              {pickupWithDate[0].time_end
+                                ? " - " + formatTime(pickupWithDate[0].time_end)
+                                : ""}
+                            </div>
+
+                            <span
+                              className={"tooltiptext tooltip-datetime-box"}
+                            >
+                              {pickupWithDate.map((address, index) => (
+                                <div
+                                  className={"main-text tooltip-datetime-item"}
+                                  key={
+                                    address._id + index + address.address_type
+                                  }
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  <div className={"point-on-map-svg"}>
+                                    <Point />
+
+                                    <h5
+                                      style={{
+                                        textTransform: "capitalize",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                    >
+                                      {" "}
+                                      {address.address}{" "}
+                                    </h5>
+                                  </div>
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      gap: "1rem",
+                                    }}
+                                  >
+                                    <div className={"calendar-svg"}>
+                                      <Calendar />
+
+                                      {formatDate(address.date)}
+                                    </div>
+
+                                    <div
+                                      className={"sub-text tooltip-datetime"}
+                                    >
+                                      {formatTime(address.time_start)}
+                                      {address.time_end
+                                        ? " - " + formatTime(address.time_end)
+                                        : ""}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </td>
+
+                    <td>
+                      {dropWithDate.length >= 1 && (
+                        <>
+                          <div
+                            className={"main-text tooltip"}
+                            style={{
+                              cursor: "pointer",
+                              minWidth: "6rem",
+                            }}
+                          >
+                            <div
+                              className={"main-text"}
+                              style={{
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {formatDate(dropWithDate[0].date)}
+                            </div>
+                            <div
+                              className={"sub-text"}
+                              style={{
+                                display: "flex",
+                                gap: "0.5rem",
+                                textTransform: "uppercase",
+                                color: "#545454",
+                                fontWeight: 500,
+                                opacity: 0.5,
+                              }}
+                            >
+                              {formatTime(dropWithDate[0].time_start)}
+                              {dropWithDate[0].time_end
+                                ? " - " + formatTime(dropWithDate[0].time_end)
+                                : ""}
+                            </div>
+
+                            <span
+                              className={"tooltiptext tooltip-datetime-box"}
+                            >
+                              {dropWithDate.map((address, index) => (
+                                <div
+                                  className={"main-text tooltip-datetime-item"}
+                                  key={
+                                    address._id + index + address.address_type
+                                  }
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  <div className={"point-on-map-svg"}>
+                                    <Point />
+
+                                    <h5
+                                      style={{
+                                        textTransform: "capitalize",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                    >
+                                      {" "}
+                                      {address.address}{" "}
+                                    </h5>
+                                  </div>
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      gap: "1rem",
+                                    }}
+                                  >
+                                    <div className={"calendar-svg"}>
+                                      <Calendar />
+
+                                      {formatDate(address.date)}
+                                    </div>
+
+                                    <div
+                                      className={"sub-text tooltip-datetime"}
+                                    >
+                                      {formatTime(address.time_start)}
+                                      {address.time_end
+                                        ? " - " + formatTime(address.time_end)
+                                        : ""}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </td>
+                    <td>
                       <div className={"main-text"}>
-                        {numberCommaFormat(shipment.weight)}{" "}
-                        {shipment.weight_unit}
+                        {numberCommaFormat(shipment?.weight)}{" "}
+                        {shipment?.weight_unit}
                       </div>
                       <div
                         className={"sub-text"}
                         style={{
                           textTransform: "capitalize",
+                          whiteSpace: "nowrap",
                         }}
                       >
-                        {shipment.packing_method?.replace("_", " ") ??
+                        {shipment?.packing_method?.replace("_", " ") ??
                           shipment?.quantity + " items"}
-                        /{shipment.commodity}
+                      </div>
+
+                      <div
+                        className={"sub-text"}
+                        style={{
+                          textTransform: "capitalize",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {shipment?.commodity}
                       </div>
                     </td>
                     <td>
                       <div className={"main-text"}>
                         {references?.length ? references[0] : "#0000000000"}
                       </div>
-                      <div className={"sub-text"}>
+                      <div
+                        className={"sub-text"}
+                        style={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
                         Value:
                         {" " +
-                          numberCommaFormat(shipment.goods_value) +
-                          ` ${currency} /`}
+                          numberCommaFormat(shipment?.goods_value) +
+                          ` ${currency}`}
+                      </div>
+                      <div
+                        className={"sub-text"}
+                        style={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
                         {" " + quote_type.replace("_", " ")}
                       </div>
                     </td>
                     <td>
-                      <div className={"main-text"}>{equipments?.join(",")}</div>
+                      <div className={"main-text equipments-table-box"}>
+                        {equipments?.join(",")}
+                      </div>
                     </td>
                     <td>
                       <Link href={viewLink ? viewLink : ""}>

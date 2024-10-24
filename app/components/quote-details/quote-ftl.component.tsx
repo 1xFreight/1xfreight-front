@@ -37,7 +37,6 @@ function QuoteFtlComponent({ quote }: any) {
     quote?.drop;
   const details = quote?.details ? quote?.details[0] : quote?.shipment_details;
   const items = quote?.items?.length ? quote.items : details?.items;
-  console.log(pickup);
 
   return (
     <div className={"quote-ftl"}>

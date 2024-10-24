@@ -92,7 +92,7 @@ export default function SavedLocationsPage() {
           />
         </div>
 
-        <button onClick={() => setOpen(true)}>
+        <button onClick={() => setOpen(true)} className={"variant2"}>
           <PlusCircle /> Add Location
         </button>
       </div>

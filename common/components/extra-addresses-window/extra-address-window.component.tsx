@@ -29,7 +29,7 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
             <div className={"address"}>
               <div className={"main-text"}>{address}</div>
 
-              <div className={"sub-text"}>{formatDate(date)}</div>
+              {/*<div className={"sub-text"}>{formatDate(date)}</div>*/}
             </div>
           </div>
         ))}

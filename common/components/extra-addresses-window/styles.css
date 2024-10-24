@@ -32,6 +32,10 @@
             position: relative;
         }
 
+        .location svg {
+            width: 50px;
+        }
+
     }
 
     & .arrow-down {

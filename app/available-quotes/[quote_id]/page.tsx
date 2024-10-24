@@ -31,12 +31,12 @@ export default function QuotePreviewCarrier({
     debouncedGetQuote();
   }, []);
 
-  const debouncedGetQuote = useDebouncedCallback(() => {
-    getWithAuth(`/quote/id/${params.quote_id}`).then((data) => {
+  const debouncedGetQuote = useDebouncedCallback((ignoreCache = false) => {
+    getWithAuth(`/quote/id/${params.quote_id}`, ignoreCache).then((data) => {
       setQuote(data);
     });
 
-    getWithAuth(`/bid/qid/${params.quote_id}`).then((data) => {
+    getWithAuth(`/bid/qid/${params.quote_id}`, ignoreCache).then((data) => {
       setExistingBid(data);
       setAmount(data.amount);
       setLoading(false);
@@ -126,8 +126,10 @@ export default function QuotePreviewCarrier({
         duration: 5000,
       });
     });
+
+    const ignoreCache = true;
     setLoading(true);
-    debouncedGetQuote();
+    debouncedGetQuote(ignoreCache);
   }, 350);
 
   if (loading) {
@@ -163,23 +165,13 @@ export default function QuotePreviewCarrier({
                 <h2>SUBMIT QUOTE</h2>
 
                 <div className={"validity"}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                  >
+                  <div className={"svg-watch"}>
                     <Stopwatch />
+                  </div>
+                  <div className={"validity-title"}>
                     Submit your quote before:
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                  >
+                  <div>
                     {formatDate(quote?.deadline_date)}{" "}
                     {" " + quote?.deadline_time}
                   </div>

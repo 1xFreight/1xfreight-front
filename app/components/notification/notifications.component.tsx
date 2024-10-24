@@ -8,8 +8,9 @@ import { useNotifications } from "@/common/hooks/use-notifications.hook";
 import { useDebouncedCallback } from "use-debounce";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import RefreshDouble from "@/public/icons/24px/refresh-double.svg";
-import { formatDate, formatDateTime } from "@/common/utils/date.utils";
+import { formatDateTime } from "@/common/utils/date.utils";
 import Cross from "@/public/icons/24px/cross.svg";
+import Link from "next/link";
 
 export default function NotificationsComponent() {
   const [open, setOpen] = useState(false);
@@ -18,13 +19,28 @@ export default function NotificationsComponent() {
     useNotifications();
   const { session, showToast } = useStore();
 
-  const handleNewMessage = (message) => {
-    setNotifications((prev) => [...prev, message]);
-    showToast({
-      type: ToastTypesEnum.INFO,
-      text: "You got a notification",
-    });
+  const close = () => {
+    const notificationCenterDiv = document.getElementById(
+      "notification-center",
+    );
+
+    if (!notificationCenterDiv) return;
+    notificationCenterDiv.style.animation =
+      "anim2 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) reverse both";
+    setTimeout(() => setOpen(false), 200);
   };
+
+  const handleNewMessage = useDebouncedCallback(
+    (message) => {
+      setNotifications((prev) => [message, ...prev]);
+      showToast({
+        type: ToastTypesEnum.INFO,
+        text: "You got a notification",
+      });
+    },
+    1000,
+    { leading: true },
+  );
 
   const initializeNotifications = useDebouncedCallback(() => {
     connect()
@@ -35,7 +51,12 @@ export default function NotificationsComponent() {
   }, 350);
 
   useEffect(() => {
+    document.addEventListener("scroll", close);
     initializeNotifications();
+
+    return () => {
+      document.removeEventListener("scroll", close);
+    };
   }, []);
 
   const clearAllNotifications = useDebouncedCallback(() => {
@@ -57,10 +78,10 @@ export default function NotificationsComponent() {
         style={{
           display: open ? "block" : "none",
         }}
-        onClick={() => setOpen(false)}
+        onClick={() => close()}
       ></div>
       <div
-        onClick={() => setOpen((open) => !open)}
+        onClick={() => (open ? close() : setOpen(true))}
         className={"notif-menu-btn"}
       >
         <Bell />
@@ -69,8 +90,10 @@ export default function NotificationsComponent() {
           <div className={"number"}>{notifications?.length}</div>
         ) : !notifications ? (
           <div className={"number"}>
-            <div className="notif-number-update">
-              <RefreshDouble />
+            <div className={"notif-number-update-wrapper"}>
+              <div className="notif-number-update">
+                <RefreshDouble width={24} height={24} />
+              </div>
             </div>
           </div>
         ) : (
@@ -79,7 +102,10 @@ export default function NotificationsComponent() {
       </div>
 
       {open && (
-        <div className={"notification-center slide-in-tr"}>
+        <div
+          className={"notification-center slide-in-tr"}
+          id={"notification-center"}
+        >
           <div className={"notif-header"}>
             <div className={"notif-title"}>
               <Bell />
@@ -102,7 +128,14 @@ export default function NotificationsComponent() {
 
                   <div className={"notif-meta"}>
                     <h5>{formatDateTime(notif.createdAt)}</h5>
-                    {notif.button_name && <button>{notif.button_name}</button>}
+                    {notif.button_name && (
+                      <Link
+                        href={notif.button_link}
+                        onClick={() => setOpen(false)}
+                      >
+                        <button>{notif.button_name}</button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               ))}

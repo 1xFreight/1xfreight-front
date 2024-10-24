@@ -30,7 +30,7 @@ export default function RefreshComponent() {
 
       <button
         className={"refresh-btn"}
-        onClick={() => setFilters({ ...filters })}
+        onClick={() => setFilters({ ...filters, ignoreCache: true })}
       >
         <Refresh />
       </button>

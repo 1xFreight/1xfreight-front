@@ -9,6 +9,7 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/goto",
   ],
   [UserRolesEnum.SHIPPER_DEMO]: [
     "/quotes",
@@ -17,6 +18,7 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/goto",
   ],
   [UserRolesEnum.SHIPPER_MEMBER]: [
     "/quotes",
@@ -25,11 +27,13 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/goto",
   ],
   [UserRolesEnum.CARRIER]: [
     "/available-quotes",
     "/active-loads",
     "/history",
     "/docs/bol",
+    "/goto",
   ],
 };

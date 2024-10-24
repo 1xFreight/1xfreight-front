@@ -283,14 +283,14 @@
     /*    }*/
     /*}*/
 
-    .menu-item-addnote:hover svg {
+    /*.menu-item-addnote:hover svg {*/
 
-        path:nth-child(2){
-            scale: 1.275;
-            transform: translate(-2.5px,-2.5px);
-            transition: 250ms ease-in-out;
-        }
-    }
+    /*    path:nth-child(2){*/
+    /*        scale: 1.275;*/
+    /*        transform: translate(-2.5px,-2.5px);*/
+    /*        transition: 250ms ease-in-out;*/
+    /*    }*/
+    /*}*/
 
     .seller-menu .item:hover {
         svg path{
