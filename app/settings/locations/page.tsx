@@ -25,10 +25,11 @@ export default function SavedLocationsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  const debouncedGetLocations = useDebouncedCallback(() => {
+  const debouncedGetLocations = useDebouncedCallback((ignoreCache = false) => {
     setLoading(true);
     getWithAuth(
       `/address?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setLocations(data);
       setLoading(false);
@@ -64,7 +65,7 @@ export default function SavedLocationsPage() {
         text: "Address was added successfully",
         duration: 5000,
       });
-      debouncedGetLocations();
+      debouncedGetLocations(true);
     });
     setOpen(false);
   });
@@ -127,7 +128,9 @@ export default function SavedLocationsPage() {
         title={"Add Location"}
         action={saveDataDebounced}
       >
-        <LocationFormComponent title={"Location"} index={0} />
+        <div className={"settings-add-location-wrapper"}>
+          <LocationFormComponent title={"Location"} index={0} />
+        </div>
       </RightModalComponent>
     </div>
   );

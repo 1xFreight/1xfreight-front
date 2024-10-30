@@ -32,28 +32,26 @@ export default function SpotSettingsPage() {
     setSelectedCarriers(selectedCarriers.filter(({ _id }) => _id !== id));
   };
 
-  const saveDate = useDebouncedCallback(
-    (data) => {
-      postWithAuth("/carrier/spot-create", data).then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          return showToast({
-            type: ToastTypesEnum.ERROR,
-            text: errorData.message || "Something went wrong",
-            duration: 5000,
-          });
-        }
-
-        showToast({
-          type: ToastTypesEnum.SUCCESS,
-          text: "Spot Group was added successfully",
+  const saveDate = useDebouncedCallback((data) => {
+    postWithAuth("/carrier/spot-create", data).then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        return showToast({
+          type: ToastTypesEnum.ERROR,
+          text: errorData.message || "Something went wrong",
           duration: 5000,
         });
+      }
+
+      showToast({
+        type: ToastTypesEnum.SUCCESS,
+        text: "Spot Group was added successfully",
+        duration: 5000,
       });
-    },
-    1000,
-    { leading: true },
-  );
+
+      getSpotGroupsDebounced(true);
+    });
+  }, 500);
 
   const validateAndSave = () => {
     const form = document.forms["newGroupForm"];
@@ -65,27 +63,22 @@ export default function SpotSettingsPage() {
       obj["carriers"] = selectedCarriers.map(({ _id }) => _id);
       saveDate(obj);
       setOpen(false);
-      getMembersDebounced();
     }
   };
 
-  const getMembersDebounced = useDebouncedCallback(() => {
-    setLoading(true);
-    getWithAuth(
-      `/carrier/spot?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}`,
-    ).then((data) => {
-      setSpotGroups(data);
-    });
-    getWithAuth("/carrier").then((data) => {
-      setCarriers(data);
-      setLoading(false);
-    });
+  const getCarriersDebounced = useDebouncedCallback((searchText = null) => {
+    getWithAuth(`/carrier?searchText=${searchText ?? ""}&limit=5`).then(
+      (data) => {
+        setCarriers(data.carriers);
+        setLoading(false);
+      },
+    );
   }, 350);
 
-  const getSpotGroupsDebounced = useDebouncedCallback(() => {
-    setLoading(true);
+  const getSpotGroupsDebounced = useDebouncedCallback((ignoreCache = false) => {
     getWithAuth(
       `/carrier/spot?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setSpotGroups(data);
       setLoading(false);
@@ -93,13 +86,14 @@ export default function SpotSettingsPage() {
   }, 350);
 
   useEffect(() => {
-    getMembersDebounced();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
     getSpotGroupsDebounced();
   }, [page, search]);
+
+  useEffect(() => {
+    if (open && !carriers.length) {
+      getCarriersDebounced();
+    }
+  }, [open]);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),
@@ -171,28 +165,30 @@ export default function SpotSettingsPage() {
 
           <div>
             <div>
-              <h3>
-                Select Carriers <span>*</span>
-              </h3>
-              <select
-                onChange={(e) => {
-                  setSelectedCarriers([
-                    ...selectedCarriers,
-                    carriers[e.target.value],
-                  ]);
-                }}
-                defaultValue={"-1"}
-              >
-                <option value={"-1"} disabled>
-                  Choose carrier
-                </option>
-                {!!carriers.length &&
-                  carriers.map((carrier, index) => (
-                    <option key={carrier._id} value={index}>
-                      {carrier.name} | {carrier.email}
-                    </option>
-                  ))}
-              </select>
+              <h3>Search Carriers</h3>
+
+              <input
+                type={"text"}
+                placeholder={"Type here..."}
+                onChange={(ev) => getCarriersDebounced(ev.target.value)}
+              />
+
+              <div className={"carrier-search-wrapper"}>
+                {carriers.map((carrier) => (
+                  <div
+                    className={"carrier-search-item"}
+                    key={carrier.name}
+                    onClick={() =>
+                      setSelectedCarriers((prevState) => [
+                        ...prevState,
+                        carrier,
+                      ])
+                    }
+                  >
+                    {carrier.name.toLowerCase()}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

@@ -8,7 +8,6 @@ import { memo, useEffect, useState } from "react";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
-import TableSortButtonComponent from "@/common/components/table-sort-button/table-sort-button.component";
 
 export enum TypeFilterEnum {
   ALL = "ALL",
@@ -47,7 +46,6 @@ function FiltersPanelComponent() {
     const formattedStatus = status === StatusFilterEnum.ALL ? "" : status;
 
     setFilters({
-      ...filters,
       sort: "{}",
       searchText,
       type: formattedType,

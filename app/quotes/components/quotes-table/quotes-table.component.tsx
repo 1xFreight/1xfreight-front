@@ -19,6 +19,7 @@ import Calendar from "@/public/icons/24px/calendar.svg";
 import { filters } from "css-select";
 import useStore from "@/common/hooks/use-store.context";
 import QuoteTableHeader from "@/app/quotes/components/quotes-table/components/table-header.component";
+import Arrow from "@/public/icons/40px/Arrow 1.svg";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
@@ -96,14 +97,14 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                     </td>
                     <td className={"pickup"}>
                       <div className={"location-styling"}>
-                        <ArrowUp />
                         <div
                           style={{
                             width: "100%",
                           }}
                         >
                           <div className={"location main-text"}>
-                            {pickupAddress[0]?.address}
+                            {pickupAddress[0]?.partial_address ??
+                              pickupAddress[0]?.address}
 
                             {pickupAddress.length >= 2 && (
                               <>
@@ -117,27 +118,25 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               </>
                             )}
                           </div>
-                          {/*<div className={"date sub-text"}>*/}
-                          {/*  {formatDate(pickupAddress[0]?.date)}*/}
-                          {/*  {!!pickupAddress[0]?.date && " / "}*/}
-                          {/*  {pickupAddress[0]?.time_start}*/}
-                          {/*  {!!pickupAddress[0]?.time_end && " - "}*/}
-                          {/*  {pickupAddress[0]?.time_end}*/}
-                          {/*</div>*/}
                         </div>
+                        <div className={"arrow-styling"}>
+                          <Arrow />
+                        </div>
+                      </div>
+                      <div className={"sub-text"}>
+                        {pickupAddress[0]?.company_name}
                       </div>
                     </td>
                     <td className={"drop"}>
                       <div className={"location-styling"}>
-                        <ArrowDown />
-
                         <div
                           style={{
                             width: "100%",
                           }}
                         >
                           <div className={"location main-text"}>
-                            {dropAddress[0]?.address}
+                            {dropAddress[0]?.partial_address ??
+                              dropAddress[0]?.address}
 
                             {dropAddress.length >= 2 && (
                               <>
@@ -151,14 +150,10 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               </>
                             )}
                           </div>
-                          {/*<div className={"date sub-text"}>*/}
-                          {/*  {formatDate(dropAddress[0]?.date)}*/}
-                          {/*  {!!dropAddress[0]?.date && " / "}*/}
-                          {/*  {dropAddress[0]?.time_start}*/}
-                          {/*  {!!dropAddress[0]?.time_end && " - "}*/}
-                          {/*  {dropAddress[0]?.time_end}*/}
-                          {/*</div>*/}
                         </div>
+                      </div>
+                      <div className={"sub-text"}>
+                        {dropAddress[0]?.company_name}
                       </div>
                     </td>
                     <td>

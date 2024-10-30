@@ -5,6 +5,7 @@ import ChevronDown from "@/public/icons/24px/chevron-down.svg";
 import Checked from "@/public/icons/24px/checked-tick.svg";
 import "./styles.css";
 import { clearText } from "@/common/utils/data-convert.utils";
+import Cross from "@/public/icons/24px/cross.svg";
 
 enum QuoteStatusEnum {
   BOOKED = "booked",
@@ -37,9 +38,26 @@ function StatusFilterDropdownComponent({ status, setStatus }: any) {
         onClick={() => setOpen((prevState) => !prevState)}
       >
         <span className="status-filter-text">
-          {status.length ? status.join(",") : "Filter by Status"}
+          {status.length
+            ? status.map((status) => clearText(status)).join(",")
+            : "Filter by Status"}
         </span>
-        <ChevronDown />
+        {status.length ? (
+          <div
+            className={"status-svg cross"}
+            onClick={(e) => {
+              e.stopPropagation();
+              setStatus([]);
+              setOpen(false);
+            }}
+          >
+            <Cross width={16} height={16} />
+          </div>
+        ) : (
+          <div className={"status-svg"}>
+            <ChevronDown />
+          </div>
+        )}
       </button>
 
       {open && (

@@ -12,12 +12,44 @@
     cursor: pointer;
     font-weight: 500;
 
+    &:has(.cross:hover) {
+        background: rgba(237, 0, 0, 0.1);
+        color: #ED0000;
+        backdrop-filter: blur(3px);
+        border-color: #ED0000;
+    }
+
 
     &.selected {
         border: 1px solid #6B81FF;
         color: #0020DD;
         svg path {
             fill: #0020DD;
+        }
+    }
+
+    .more-filters-svg {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.cross {
+            svg {
+                stroke-width: 0.15rem;
+            }
+
+            &:hover {
+
+                svg path {
+                    stroke: #ED0000;
+                    scale: 1.025;
+                }
+
+            }
         }
     }
 }

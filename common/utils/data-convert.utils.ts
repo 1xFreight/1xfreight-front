@@ -1,5 +1,3 @@
-import { webpack } from "next/dist/compiled/webpack/webpack";
-
 export function accessorialsConvertToText(name: string) {
   switch (name) {
     case "LAF":
@@ -136,6 +134,9 @@ export function formatAddressObj(obj: any, type: string | undefined) {
     : "";
   obj.contact_email
     ? (formattedAddress["contact_email"] = obj.contact_email)
+    : "";
+  obj.open_hours && obj.open_hours !== "Mon - Sun: 1:00 AM - 1:00 AM"
+    ? (formattedAddress["open_hours"] = obj.open_hours)
     : "";
 
   return formattedAddress;

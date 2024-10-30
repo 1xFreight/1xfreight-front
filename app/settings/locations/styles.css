@@ -132,6 +132,12 @@
     gap: 1rem;
     width: 100%;
 
+    .settings-add-location-wrapper {
+        .location-form {
+            box-shadow: unset;
+        }
+    }
+
     .carriers-filters {
         display: flex;
         width: 100%;

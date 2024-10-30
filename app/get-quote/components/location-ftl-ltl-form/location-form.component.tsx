@@ -14,6 +14,7 @@ import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/p
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import SwitchComponent from "@/common/components/slider/switch.component";
 import Eye from "@/public/icons/20px/hidden.svg";
+import LocationOpenHoursComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-open-hours.component";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -47,11 +48,6 @@ function LocationFormComponent({
     if (!addressDetails) return;
 
     const inputs = document.querySelectorAll("#address-details input");
-    const companyNameInput = document.getElementById("company_name");
-
-    if (companyNameInput && companyNameInput.value === "") {
-      // companyNameInput.value = addressDetails?.placeName ?? "";
-    }
 
     // Update the value for each input based on its id or a custom logic
     inputs.forEach((input) => {
@@ -216,140 +212,10 @@ function LocationFormComponent({
               </div>
             </div>
 
-            <div className={"location-details"}>
-              <h3>Location Details:</h3>
-              <div
-                style={{
-                  display: "inline-flex",
-                }}
-              >
-                <div>
-                  <h5>Ready by: </h5>
-                  <select name={"ready_by"}>
-                    {generatePickHours().map((time, index) => (
-                      <option key={time + index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>{" "}
-                </div>
-
-                <div>
-                  <h5>Closes at: </h5>
-                  <select name={"closes_at"}>
-                    {generatePickHours().map((time, index) => (
-                      <option key={time + index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>{" "}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "inline-flex",
-                }}
-              >
-                <div className={"open-days"}>
-                  <div className={"open-day-item"}>
-                    <input
-                      type={"checkbox"}
-                      className={"rounded-checkbox"}
-                      defaultChecked
-                    />
-                    <h5>Mon</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} defaultChecked />
-                    <h5>Tue</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} defaultChecked />
-                    <h5>Wed</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} defaultChecked />
-                    <h5>Thu</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} defaultChecked />
-                    <h5>Fri</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} />
-                    <h5>Sat</h5>
-                  </div>
-
-                  <div className={"open-day-item"}>
-                    <input type={"checkbox"} />
-                    <h5>Sun</h5>
-                  </div>
-                </div>
-
-                <div>
-                  <h5>Open 24/7</h5>
-                  <SwitchComponent inputName={"open_nonstop"} />
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "inline-flex",
-                }}
-              >
-                <div>
-                  <h5>Company name:</h5>
-                  <input
-                    type={"text"}
-                    placeholder={"Type here..."}
-                    required
-                    name={"company_name"}
-                    id={"company_name"}
-                    defaultValue={defaultData?.company_name}
-                  />
-                </div>
-
-                <div>
-                  <h5>Contact name:</h5>
-                  <input
-                    type={"text"}
-                    placeholder={"Type here..."}
-                    required
-                    name={"contact_name"}
-                    defaultValue={defaultData?.contact_name}
-                  />
-                </div>
-
-                <div>
-                  <h5>Contact phone:</h5>
-                  <input
-                    type={"text"}
-                    placeholder={"Type here..."}
-                    required
-                    name={"contact_phone"}
-                    defaultValue={defaultData?.contact_phone}
-                  />
-                </div>
-
-                <div>
-                  <h5>
-                    Contact email: <span>(optional)</span>
-                  </h5>
-                  <input
-                    type={"text"}
-                    placeholder={"Type here..."}
-                    name={"contact_email"}
-                    defaultValue={defaultData?.contact_email}
-                  />
-                </div>
-              </div>
-            </div>
+            <LocationOpenHoursComponent
+              defaultData={defaultData}
+              index={index + title}
+            />
 
             <div
               className={"date-time-details"}

@@ -3,6 +3,7 @@ import Hazard from "@/public/icons/30px/hazardous-material.svg";
 
 export default function QuoteItemsTableComponent({
   items,
+  summary,
 }: {
   items: Array<any>;
 }) {
@@ -84,13 +85,22 @@ export default function QuoteItemsTableComponent({
                 )}
               </Fragment>
             ))}
-
-            <tr className={"items-total"}>
-              <td></td>
-              <td></td>
-            </tr>
           </tbody>
         </table>
+        <div className={"items-total-details"}>
+          <h3>
+            Est. skid spots: <span>{summary.estimatedSkidSpots}</span>
+          </h3>
+          <h3>
+            Total volume: <span>{summary.totalVolume.toFixed(2)}</span>
+          </h3>
+          <h3>
+            Total weight: <span>{summary.totalWeight}</span>
+          </h3>
+          <h3>
+            Total density: <span>{summary.totalDensity.toFixed(2)}</span>
+          </h3>
+        </div>
       </div>
     </div>
   );

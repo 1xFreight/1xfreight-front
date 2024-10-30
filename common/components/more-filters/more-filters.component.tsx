@@ -2,7 +2,7 @@
 
 import FilterAlt from "@/public/icons/24px/filter-alt.svg";
 import Cross from "@/public/icons/24px/cross.svg";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import SelectOwnerComponent from "@/common/components/more-filters/select-owner.component";
 import "./styles.css";
 import useStore from "@/common/hooks/use-store.context";
@@ -28,17 +28,9 @@ function MoreFiltersComponent() {
       "filter-drop-date",
     ) as HTMLInputElement;
 
-    if (pickupDate.value) {
-      newFilters.pickupDate = pickupDate.value;
-    }
-
-    if (dropDate.value) {
-      newFilters.dropDate = dropDate.value;
-    }
-
-    if (owners.length) {
-      newFilters.owners = owners;
-    }
+    newFilters.pickupDate = pickupDate.value ?? null;
+    newFilters.dropDate = dropDate.value ?? null;
+    newFilters.owners = owners.length ? owners : null;
 
     setFilters({ ...filters, ...newFilters });
     setOpen(false);
@@ -57,9 +49,22 @@ function MoreFiltersComponent() {
         onClick={() => setOpen(true)}
       >
         Filters
-        <div>
-          <FilterAlt />
-        </div>
+        {isAnyFiltersSelected ? (
+          <div
+            className={"more-filters-svg cross"}
+            onClick={(e) => {
+              e.stopPropagation();
+              removeFilters();
+              setOpen(false);
+            }}
+          >
+            <Cross width={16} height={16} />
+          </div>
+        ) : (
+          <div className={"more-filters-svg"}>
+            <FilterAlt />{" "}
+          </div>
+        )}
       </button>
 
       {open && (

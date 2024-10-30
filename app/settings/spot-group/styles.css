@@ -177,6 +177,32 @@
         flex-direction: column;
         gap: 2rem;
 
+        .carrier-search-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: -1.25rem;
+            border: 1px solid #e8e8e8;
+            padding: 1.5rem 0.5rem 0.5rem;
+            border-radius: 0.5rem;
+            background: #f6f6f6;
+
+            .carrier-search-item {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                border-radius: .35rem;
+                padding: 0.35rem;
+                text-transform: capitalize;
+                cursor: pointer;
+                color: #545454;
+
+                &:hover {
+                    background: rgba(0, 32, 221, 0.15);
+                }
+            }
+        }
+
         &>div {
             display: flex;
             width: 100%;

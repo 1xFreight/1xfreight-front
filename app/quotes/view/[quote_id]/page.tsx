@@ -27,7 +27,13 @@ export default function ViewQuotePage({
   if (!quote) return <Loading2Component />;
 
   return (
-    <div className={"page"}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
+      }}
+    >
       <div className={"container"}>
         <div
           style={{

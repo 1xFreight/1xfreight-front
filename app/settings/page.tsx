@@ -71,6 +71,11 @@ export default function SettingsPage() {
 
   const saveData = () => {
     const dataToSave = getFormData();
+    const form = document.forms["settings-form"];
+
+    if (!form.reportValidity()) {
+      return;
+    }
 
     if (canSave && dataToSave) {
       postWithAuth("/users/update", dataToSave).then(async (response) => {
@@ -159,7 +164,8 @@ export default function SettingsPage() {
         duration: 5000,
       });
 
-      getWithAuth("/users/me").then((data) => setSession(data));
+      const ignoreCache = true;
+      getWithAuth("/users/me", ignoreCache).then((data) => setSession(data));
       document.getElementById("logo-file-btn").removeAttribute("disabled");
     });
   }, 350);
@@ -178,6 +184,7 @@ export default function SettingsPage() {
                   type={"text"}
                   name={"name"}
                   defaultValue={session.name}
+                  minLength={3}
                 />
               </div>
 
@@ -220,6 +227,9 @@ export default function SettingsPage() {
                 <select
                   name={"equipments"}
                   onChange={(e) => setList([...list, e.target.value])}
+                  style={{
+                    paddingLeft: "1rem",
+                  }}
                 >
                   {Object.values(EquipmentsEnum).map((eq, index) => (
                     <option key={eq + index} value={eq}>

@@ -135,7 +135,7 @@ function PlaceAutocompleteComponent({
                   }
 
                   if (types.includes("administrative_area_level_1")) {
-                    fullAddress.state = component.long_name; // State
+                    fullAddress.state = component.short_name; // State
                   }
 
                   setDetails(fullAddress);

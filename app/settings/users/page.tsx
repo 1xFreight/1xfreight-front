@@ -2,7 +2,6 @@
 
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
-import { partnersMock } from "@/app/get-quote/pages/partners/mock-data";
 import "@/app/get-quote/pages/team-members/styles.css";
 import MembersTableComponent from "@/app/settings/components/members-table.component";
 import "./styles.css";
@@ -41,6 +40,8 @@ export default function UsersSettingsPage() {
         text: "User was added successfully",
         duration: 5000,
       });
+
+      getMembersDebounced(true);
     });
   }, 350);
 
@@ -52,14 +53,13 @@ export default function UsersSettingsPage() {
       const formData = new FormData(form);
       saveDate(formDataToJSON(formData));
       setOpen(false);
-      getMembersDebounced();
     }
   };
 
-  const getMembersDebounced = useDebouncedCallback(() => {
-    setLoading(true);
+  const getMembersDebounced = useDebouncedCallback((ignoreCache = false) => {
     getWithAuth(
       `/users/members?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setMembers(data);
       setLoading(false);

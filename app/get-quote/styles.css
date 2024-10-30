@@ -15,6 +15,13 @@
     }
 }
 
+.select-trans-mode {
+    position: fixed;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .mode-of-transportations {
     width: 100%;
     display: flex;

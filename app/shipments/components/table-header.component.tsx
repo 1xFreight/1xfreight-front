@@ -90,7 +90,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.loadId, -1, true)}
           >
             Load#
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -111,7 +110,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.origin, -1, true)}
           >
             Origin
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -130,7 +128,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.destination, -1, true)}
           >
             Destination
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -151,7 +148,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.pickup, -1, true)}
           >
             Pickup
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -170,7 +166,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.drop, -1, true)}
           >
             Delivery
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -189,7 +184,6 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.carrier, -1, true)}
           >
             Carrier
-            <span>sort by</span>
           </div>
           <select
             id={"sortby-direction-quote"}
@@ -208,7 +202,7 @@ export default function ShipmentsTableHeader() {
             onClick={() => addSort(keys.cost, -1, true)}
           >
             Cost
-            <span>sort by</span>
+            {/*<span>sort by</span>*/}
           </div>
           <select
             id={"sortby-direction-quote"}

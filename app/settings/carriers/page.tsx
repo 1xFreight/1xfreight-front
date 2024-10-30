@@ -54,10 +54,10 @@ export default function CarriersSettingsPage() {
     });
   }, 350);
 
-  const debouncedGetCarriers = useDebouncedCallback(() => {
-    setLoading(true);
+  const debouncedGetCarriers = useDebouncedCallback((ignoreCache = false) => {
     getWithAuth(
       `/carrier?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      ignoreCache,
     ).then((data) => {
       setCarriers(data);
       setLoading(false);
@@ -98,7 +98,7 @@ export default function CarriersSettingsPage() {
         text: "Carrier was added successfully",
         duration: 5000,
       });
-      debouncedGetCarriers();
+      debouncedGetCarriers(true);
     });
 
     setImportData(null);
@@ -106,7 +106,6 @@ export default function CarriersSettingsPage() {
   });
 
   useEffect(() => {
-    setLoading(true);
     debouncedGetCarriers();
   }, [page, search]);
 
@@ -128,7 +127,7 @@ export default function CarriersSettingsPage() {
         </button>
       </div>
 
-      <div className={"pt-wrapper"}>
+      <div className={""}>
         {loading ? (
           <Loading2Component />
         ) : (
@@ -162,26 +161,24 @@ export default function CarriersSettingsPage() {
           <Loading2Component />
         ) : (
           <form name={"newCarrierForm"} className={"new-carrier-form fade-in"}>
-            <div className={"column1"}>
-              <div className={"row1"}>
-                <div>
-                  <h3>
-                    Carrier Name<span>*</span>
-                  </h3>
-                  <input
-                    type={"text"}
-                    placeholder={"Type here..."}
-                    defaultValue={importData?.name}
-                    minLength={5}
-                    maxLength={45}
-                    name={"name"}
-                    required
-                  />
-                </div>
+            <div className={"form-column"}>
+              <div className={"row-item"}>
+                <h3>
+                  Carrier Name<span>*</span>
+                </h3>
+                <input
+                  type={"text"}
+                  placeholder={"Type here..."}
+                  defaultValue={importData?.name}
+                  minLength={5}
+                  maxLength={45}
+                  name={"name"}
+                  required
+                />
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item half"}>
                   <h3>MC#</h3>
                   <input
                     type={"text"}
@@ -192,7 +189,7 @@ export default function CarriersSettingsPage() {
                   />
                 </div>
 
-                <div>
+                <div className={"row-item half"}>
                   <h3>DOT#</h3>
                   <input
                     type={"text"}
@@ -204,12 +201,13 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
+              <div className={"row-item"}>
                 <button
                   type={"button"}
                   onClick={() => {
                     debouncedImport();
                   }}
+                  id={"fcmsa-import"}
                 >
                   <Import /> FMCSA Import
                 </button>
@@ -230,8 +228,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"input-row-wrapper"}>
+                <div className={"row-item"}>
                   <h3>
                     Email<span>*</span>
                   </h3>
@@ -241,70 +239,62 @@ export default function CarriersSettingsPage() {
                     defaultValue={importData?.email}
                     name={"email"}
                     required
-                    style={{
-                      height: "3.5rem",
-                      paddingLeft: "1rem",
-                    }}
                   />
                 </div>
               </div>
 
+              <div className={"input-row-wrapper"}>
+                <h3>
+                  Phone<span>*</span>
+                </h3>
+                <input
+                  type={"text"}
+                  placeholder={"Type here..."}
+                  defaultValue={importData?.phone}
+                  name={"phone"}
+                  minLength={9}
+                  maxLength={12}
+                  required={true}
+                />
+              </div>
+
               <div className={"row1"}>
-                <div>
-                  <h3>
-                    Phone<span>*</span>
-                  </h3>
+                <h3>Insurance</h3>
+                <div className={"text-inside-input"}>
+                  <h6>General</h6>
                   <input
                     type={"text"}
-                    placeholder={"Type here..."}
-                    defaultValue={importData?.phone}
-                    name={"phone"}
-                    minLength={9}
-                    maxLength={12}
-                    required={true}
+                    placeholder={"$ Insurance amount..."}
+                    defaultValue={importData?.insurance_general}
+                    readOnly
                   />
                 </div>
-              </div>
 
-              <div className={"row1"}>
-                <div>
-                  <h3>Insurance</h3>
-                  <div className={"text-inside-input"}>
-                    <h6>General</h6>
-                    <input
-                      type={"text"}
-                      placeholder={"$ Insurance amount..."}
-                      defaultValue={importData?.insurance_general}
-                      readOnly
-                    />
-                  </div>
+                <div className={"text-inside-input"}>
+                  <h6>Cargo</h6>
+                  <input
+                    type={"text"}
+                    placeholder={"$ Insurance amount..."}
+                    defaultValue={importData?.insurance_cargo}
+                    readOnly
+                  />
+                </div>
 
-                  <div className={"text-inside-input"}>
-                    <h6>Cargo</h6>
-                    <input
-                      type={"text"}
-                      placeholder={"$ Insurance amount..."}
-                      defaultValue={importData?.insurance_cargo}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className={"text-inside-input"}>
-                    <h6>Auto</h6>
-                    <input
-                      type={"text"}
-                      placeholder={"$ Insurance amount..."}
-                      defaultValue={importData?.insurance_auto}
-                      readOnly
-                    />
-                  </div>
+                <div className={"text-inside-input"}>
+                  <h6>Auto</h6>
+                  <input
+                    type={"text"}
+                    placeholder={"$ Insurance amount..."}
+                    defaultValue={importData?.insurance_auto}
+                    readOnly
+                  />
                 </div>
               </div>
             </div>
 
-            <div className={"column1"}>
-              <div className={"row1"}>
-                <div>
+            <div className={"form-column"}>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>
                     Address<span>*</span>
                   </h3>
@@ -318,8 +308,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item half"}>
                   <input
                     type={"text"}
                     placeholder={"City"}
@@ -329,7 +319,7 @@ export default function CarriersSettingsPage() {
                   />
                 </div>
 
-                <div>
+                <div className={"row-item half"}>
                   <input
                     type={"text"}
                     placeholder={"State"}
@@ -340,8 +330,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item half"}>
                   <input
                     type={"text"}
                     placeholder={"Zip"}
@@ -350,11 +340,11 @@ export default function CarriersSettingsPage() {
                   />
                 </div>
 
-                <div></div>
+                <div className={"row-item half"}></div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>Authority Granted On</h3>
                   <input
                     type={"text"}
@@ -365,8 +355,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>Total US Inspections</h3>
                   <input
                     type={"text"}
@@ -377,8 +367,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>Total Canadian Inspections</h3>
                   <input
                     type={"text"}
@@ -389,8 +379,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>Fleet Size</h3>
                   <input
                     type={"text"}
@@ -401,8 +391,8 @@ export default function CarriersSettingsPage() {
                 </div>
               </div>
 
-              <div className={"row1"}>
-                <div>
+              <div className={"row-input-wrapper"}>
+                <div className={"row-item"}>
                   <h3>Safety Rating</h3>
                   <input
                     type={"text"}

@@ -153,7 +153,8 @@ export default function ShipmentsTableComponent({ shipments }) {
                             }}
                           >
                             <div className={"location main-text"}>
-                              {pickupAddress[0]?.address}
+                              {pickupAddress[0]?.partial_address ??
+                                pickupAddress[0]?.address}
 
                               {pickupAddress.length >= 2 && (
                                 <>
@@ -172,6 +173,9 @@ export default function ShipmentsTableComponent({ shipments }) {
                             <Arrow />
                           </div>
                         </div>
+                        <div className={"sub-text"}>
+                          {pickupAddress[0]?.company_name}
+                        </div>
                       </td>
                       <td className={"drop"}>
                         <div className={"location-styling"}>
@@ -181,7 +185,8 @@ export default function ShipmentsTableComponent({ shipments }) {
                             }}
                           >
                             <div className={"location main-text"}>
-                              {dropAddress[0]?.address}
+                              {dropAddress[0]?.partial_address ??
+                                dropAddress[0]?.address}
 
                               {dropAddress.length >= 2 && (
                                 <>
@@ -196,6 +201,9 @@ export default function ShipmentsTableComponent({ shipments }) {
                               )}
                             </div>
                           </div>
+                        </div>
+                        <div className={"sub-text"}>
+                          {dropAddress[0]?.company_name}
                         </div>
                       </td>
 

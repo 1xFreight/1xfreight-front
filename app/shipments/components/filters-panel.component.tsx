@@ -39,7 +39,6 @@ function FiltersPanelComponent({ totalQuotes }) {
     const formattedType = type === TypeFilterEnum.ALL ? "" : type;
 
     setFilters({
-      ...filters,
       sort: "{}",
       searchText,
       type: formattedType,

@@ -39,16 +39,23 @@
     align-items: center;
 
     &:hover {
-        border: 1px solid #0020DD;
+        background: rgba(0, 32, 221, 0.05);
         color: #0020DD;
     }
 
-    & svg path {
-        fill: #939393;
+    & svg {
+        stroke-width: 0.05rem;
+        stroke: #939393;
+        path {
+            fill: #939393;
+        }
     }
 
-    &.active svg path {
-        fill: #0020DD;
+    &.active svg {
+        stroke: #0020DD;
+        path {
+            fill: #0020DD;
+        }
     }
 
     &.active {
@@ -85,6 +92,38 @@
     z-index: 10;
     position: relative;
 
+    &:has(.cross:hover) {
+        background: rgba(237, 0, 0, 0.1);
+        color: #ED0000;
+        backdrop-filter: blur(3px);
+        border-color: #ED0000;
+    }
+
+    .status-svg {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0.5rem;
+
+        &.cross {
+            svg {
+                stroke-width: 0.15rem;
+            }
+
+            &:hover {
+
+                svg path {
+                    stroke: #ED0000;
+                    scale: 1.025;
+                }
+
+            }
+        }
+    }
 
 }
 
@@ -93,6 +132,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: calc(100% - 2rem);
+    text-transform: capitalize;
+
+
 }
 
 .status-filter-dropdown:hover,.status-filter-dropdown.active {
@@ -102,9 +144,14 @@
     }
 
     svg {
+
+    }
+
+    .status-svg {
         transform: rotate(180deg);
         transition: all 80ms ease-in-out;
         transform-origin: center center;
+        /*rotate: 180deg;*/
     }
 }
 

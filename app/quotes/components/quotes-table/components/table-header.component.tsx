@@ -78,7 +78,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.loadId, -1, true)}
           >
             Load#
-            <span>sort by id</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -97,7 +96,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.origin, -1, true)}
           >
             Origin
-            <span>sort by</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -115,7 +113,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.destination, -1, true)}
           >
             Destination
-            <span>sort by</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -135,7 +132,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.pickup, -1, true)}
           >
             Pickup
-            <span>sort by</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -153,7 +149,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.drop, -1, true)}
           >
             Delivery
-            <span>sort by</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -171,7 +166,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.weight, -1, true)}
           >
             Details
-            <span>sort by weight</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -189,7 +183,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.value, -1, true)}
           >
             Ref#
-            <span>sort by value</span>
           </div>
           <select
             defaultValue={"-1"}
@@ -208,7 +201,6 @@ export default function QuoteTableHeader() {
             onClick={() => addSort(keys.bids, -1, true)}
           >
             Quotes
-            <span>sort by</span>
           </div>
           <select
             defaultValue={"-1"}

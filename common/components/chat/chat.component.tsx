@@ -132,9 +132,6 @@ export default function ChatComponent({ room, title }) {
       >
         {!!messages?.length &&
           messages.map((mess) => {
-            // console.log(mess.user_id._id == session?._id);
-            // console.log(mess.user_id._id, mess.user_id.email);
-            // console.log(session?._id, session?.email);
             return (
               <MessageComponent
                 key={mess?.createdAt?.toString()}

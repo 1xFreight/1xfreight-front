@@ -14,7 +14,7 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
       <h4>Stops</h4>
 
       <div className={"address-list location"}>
-        {stops.map(({ address, date }, index) => (
+        {stops.map(({ address, date, partial_address }, index) => (
           <div
             key={address + index}
             style={{
@@ -27,7 +27,7 @@ function ExtraAddressWindowComponent({ stops }: ExtraAWI) {
             {index !== 0 && <Arrow />}
 
             <div className={"address"}>
-              <div className={"main-text"}>{address}</div>
+              <div className={"main-text"}>{partial_address ?? address}</div>
 
               {/*<div className={"sub-text"}>{formatDate(date)}</div>*/}
             </div>

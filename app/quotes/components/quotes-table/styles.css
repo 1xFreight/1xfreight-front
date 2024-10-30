@@ -7,8 +7,110 @@
     /*to have space for stop's window , so it can overflow*/
     padding: 100px 1px 0 1px;
     margin-top: -120px;
-    overflow: scroll;
+    overflow: auto;
     transition: all 250ms ease-in-out;
+
+    .equipments-table-box {
+        display: -webkit-box;           /* Use a flexible box layout */
+        -webkit-box-orient: vertical;    /* Specify vertical box orientation */
+        -webkit-line-clamp: 3;           /* Limit text to 3 lines */
+        overflow: hidden;                /* Hide overflow text */
+        text-overflow: ellipsis;         /* Show ellipsis (...) at the end */
+    }
+
+    .location-styling {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .arrow-styling {
+            width: 3rem;
+            min-width: 3rem;
+
+            svg path {
+                fill: rgba(0, 32, 221, 0.5);
+            }
+        }
+    }
+
+    .pickup .location, .drop .location {
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: 100%;
+
+        .location svg {
+            width: 50px;
+        }
+
+        &:has(.extra-address) {
+            padding-right: 3.5rem;
+        }
+
+        .extra-address{
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    table {
+        table-layout: fixed;
+
+       tr th:nth-child(1) {
+            width: 7rem;
+        }
+
+        tr th:nth-child(3){
+            width: calc(15rem + 30px);
+        }
+        tr th:nth-child(4){
+            width: calc(15rem - 30px);
+        }
+
+        tr th:nth-child(2) {
+            width: 3.5rem;
+        }
+
+        tr th:nth-child(5),tr th:nth-child(6) {
+            width: 10rem;
+        }
+
+        tr th:nth-child(7) {
+            width: 7.5rem;
+        }
+
+        tr td:nth-child(7) {
+
+            .sub-text {
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        tr th:nth-child(10) {
+            width: 10.5rem;
+        }
+
+        tr th:nth-child(9) {
+            width: 10rem;
+        }
+
+        tr th:nth-child(8) {
+            width: 10.5rem;
+        }
+
+        tr td:nth-child(8) {
+            .sub-text {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .company-name {
+
+    }
 
     .sort-table-header {
         border: 1px solid transparent;
@@ -139,10 +241,6 @@
         }
 
     }
-
-    .equipments-table-box {
-        max-width: 12rem;
-    }
 }
 
 .quotes-table-placeholder {
@@ -153,11 +251,6 @@
     z-index: 1;
 }
 
-
-.quotes-table tr td:nth-child(3),.quotes-table tr td:nth-child(4){
-    max-width: 30rem;
-    padding: 0 1rem;
-}
 .quotes-table table {
     width: 100%;
     border-collapse: separate;
@@ -278,22 +371,6 @@
     color: #939393;
 }
 
-.quotes-table .pickup .location, .quotes-table .drop .location {
-    display: flex;
-    position: relative;
-    /*width: max-content;*/
-    align-items: center;
-    width: 100%;
-
-    &:has(.extra-address) {
-        padding-right: 3.5rem;
-    }
-
-    .extra-address{
-        position: absolute;
-        right: 0;
-    }
-}
 
 .quotes-table .pickup .location>svg:nth-child(1), .quotes-table .drop .location>svg:nth-child(1) {
     position: absolute;

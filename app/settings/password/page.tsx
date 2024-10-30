@@ -58,39 +58,39 @@ export default function ChangePasswordPage() {
 
   return (
     <div className={"change-password-page"}>
-      <div className={"pass-input-wrapper"}>
-        <h3>New password</h3>
-        <div>
-          <input
-            type={"password"}
-            placeholder={"Type here..."}
-            autoComplete={"off"}
-            minLength={8}
-            id={"password"}
-          />
-          <div onClick={() => toggleInputType("password")}>
-            <Eye />
+      <div className={"change-password-wrapper"}>
+        <div className={"pass-input-wrapper"}>
+          <h3>New password</h3>
+          <div>
+            <input
+              type={"password"}
+              placeholder={"Type here..."}
+              autoComplete={"off"}
+              minLength={8}
+              id={"password"}
+            />
+            <div onClick={() => toggleInputType("password")}>
+              <Eye />
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className={"pass-input-wrapper"}>
-        <h3>Confirm password</h3>
-        <div>
-          <input
-            type={"password"}
-            placeholder={"Type here..."}
-            autoComplete={"off"}
-            title={"Password does not match"}
-            id={"password-confirm"}
-          />
-          <div onClick={() => toggleInputType("password-confirm")}>
-            <Eye />
+        <div className={"pass-input-wrapper"}>
+          <h3>Confirm password</h3>
+          <div>
+            <input
+              type={"password"}
+              placeholder={"Type here..."}
+              autoComplete={"off"}
+              title={"Password does not match"}
+              id={"password-confirm"}
+            />
+            <div onClick={() => toggleInputType("password-confirm")}>
+              <Eye />
+            </div>
           </div>
         </div>
+        <button onClick={savePasswordDebounced}>Confirm</button>
       </div>
-
-      <button onClick={savePasswordDebounced}>Confirm</button>
     </div>
   );
 }

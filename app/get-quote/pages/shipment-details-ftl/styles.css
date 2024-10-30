@@ -150,6 +150,10 @@
         flex-wrap: wrap;
         gap: 1rem 2rem;
 
+        .input-chips-wrapper {
+            width: 49rem;
+        }
+
         div {
             display: flex;
             flex-direction: column;

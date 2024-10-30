@@ -28,6 +28,7 @@
 
         .modal-content-wrapper {
             margin: 2rem 0;
+            width: 100%;
         }
 
         .modal-content {

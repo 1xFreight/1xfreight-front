@@ -30,6 +30,7 @@ export default function SwitchComponent({
         value={active.toString()}
         name={inputName}
         readOnly
+        id={inputName}
       />
     </>
   );

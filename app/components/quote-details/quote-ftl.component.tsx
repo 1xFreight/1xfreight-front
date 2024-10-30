@@ -1,5 +1,4 @@
 import "./styles.css";
-
 import Calendar from "@/public/icons/30px/calendar.svg";
 import Clock from "@/public/icons/30px/clock.svg";
 import Cog from "@/public/icons/30px/cog.svg";
@@ -16,12 +15,7 @@ import Biohazard from "@/public/icons/30px/hazardous-material.svg";
 import TempUp from "@/public/icons/30px/temperature-arrow-up(1).svg";
 import TempDown from "@/public/icons/30px/temperature-arrow-down(1).svg";
 import Checked from "@/public/icons/24px/checked-tick.svg";
-import {
-  clearText,
-  extractAccesorialsShipment,
-  extractAccessorialsFromObj,
-  extractReferenceNo,
-} from "@/common/utils/data-convert.utils";
+import { clearText } from "@/common/utils/data-convert.utils";
 import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import React from "react";
@@ -82,6 +76,10 @@ function QuoteFtlComponent({ quote }: any) {
         <div className={`locations-wrapper`}>
           {pickup &&
             pickup.map((location, index) => {
+              if (!location.address) {
+                location.address = `${location.street ? location.street + ", " : ""}${location.zipcode ? location.zipcode + ", " : ""}${location.city ? location.city + ", " : ""}${location.state ? location.state + ", " : ""}${location.country}`;
+              }
+
               return (
                 <div
                   className={`location-item  ${location.arrival_date ? "carrierArrived" : ""}`}
@@ -197,6 +195,43 @@ function QuoteFtlComponent({ quote }: any) {
                         <h3>{location.accessorials?.join(", ")}</h3>
                       </div>
                     )}
+
+                    {!!location.company_name && (
+                      <div className={"location-company-details"}>
+                        <div className={"company-details-item"}>
+                          {location.company_name}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_name}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_phone}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_email}
+                        </div>
+                      </div>
+                    )}
+
+                    {!!location.open_hours && (
+                      <div className={"formatted-open-hours-wrapper"}>
+                        {/*<Shift />*/}
+                        {/*<h4>Open Hours:</h4>*/}
+                        {location.open_hours.split(",").map((openHoursLine) => (
+                          <>
+                            <div
+                              key={openHoursLine}
+                              className={"formatted-open-hours"}
+                            >
+                              {openHoursLine}
+                            </div>
+                          </>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -204,6 +239,9 @@ function QuoteFtlComponent({ quote }: any) {
 
           {drop &&
             drop.map((location, index) => {
+              if (!location.address) {
+                location.address = `${location.street ? location.street + ", " : ""}${location.zipcode ? location.zipcode + ", " : ""}${location.city ? location.city + ", " : ""}${location.state ? location.state + ", " : ""}${location.country}`;
+              }
               return (
                 <div
                   className={`location-item  ${location.arrival_date ? "carrierArrived" : ""}`}
@@ -240,8 +278,6 @@ function QuoteFtlComponent({ quote }: any) {
                         <h4>Date:</h4>
                         <h3
                           style={{
-                            borderLeft: "0.1rem solid #ECECECFF",
-                            paddingLeft: "0.5rem",
                             opacity: `${location.arrival_date ? "0.7" : "1"}`,
                           }}
                         >
@@ -271,8 +307,6 @@ function QuoteFtlComponent({ quote }: any) {
                         <h4>Time:</h4>
                         <h3
                           style={{
-                            borderLeft: "0.1rem solid #ECECECFF",
-                            paddingLeft: "0.5rem",
                             opacity: `${location.arrival_date ? "0.7" : "1"}`,
                           }}
                         >
@@ -318,13 +352,60 @@ function QuoteFtlComponent({ quote }: any) {
                         <h3>{location.accessorials?.join(", ")}</h3>
                       </div>
                     )}
+
+                    {!!location.company_name && (
+                      <div className={"location-company-details"}>
+                        <div className={"company-details-item"}>
+                          {location.company_name}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_name}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_phone}
+                        </div>
+
+                        <div className={"company-details-item"}>
+                          {location.contact_email}
+                        </div>
+                      </div>
+                    )}
+
+                    {!!location.open_hours && (
+                      <div className={"formatted-open-hours-wrapper"}>
+                        {location.open_hours.split(",").map((openHoursLine) => (
+                          <>
+                            <div
+                              key={openHoursLine}
+                              className={"formatted-open-hours"}
+                            >
+                              {openHoursLine}
+                            </div>
+                          </>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
             })}
         </div>
 
-        {!!items && <QuoteItemsTableComponent items={items} />}
+        {!!items && (
+          <QuoteItemsTableComponent
+            items={items}
+            summary={{
+              estimatedSkidSpots: details.skid_spots,
+              totalVolume: details.volume,
+              totalWeight: details.weight + " " + details.weight_unit,
+              quantity: details.quantity,
+              totalDensity: details.density,
+              weight_unit: details.weight_unit,
+            }}
+          />
+        )}
 
         <div className={"details-wrapper"}>
           {!!details?.packing_method && (
