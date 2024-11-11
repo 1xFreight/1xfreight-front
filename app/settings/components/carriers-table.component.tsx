@@ -6,35 +6,7 @@ import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
 
 function CarriersTableComponent({ partners }: { partners: any[] }) {
-  const { showToast } = useStore();
-
-  const debounceUpdateStatus = useDebouncedCallback(
-    async (value: string, index: number) => {
-      const { name, _id } = partners[index];
-
-      postWithAuth("/carrier/update", { status: value, _id }).then(
-        async (response) => {
-          if (!response.ok) {
-            const errorData = await response.json();
-            return showToast({
-              type: ToastTypesEnum.ERROR,
-              text: errorData.message || "Something went wrong",
-              duration: 5000,
-            });
-          }
-
-          showToast({
-            type: ToastTypesEnum.SUCCESS,
-            text: `${name} status was changed to ${value}`,
-            duration: 5000,
-          });
-
-          partners[index].status = value;
-        },
-      );
-    },
-    500,
-  );
+  const { addToStore } = useStore();
 
   return (
     <div className={"carriers-table"}>
@@ -57,7 +29,16 @@ function CarriersTableComponent({ partners }: { partners: any[] }) {
                 { name, email, address, tags, phone, city, status, _id },
                 index,
               ) => (
-                <tr key={index + email}>
+                <tr
+                  key={index + email}
+                  onClick={() =>
+                    addToStore({
+                      name: "edit-carrier-data",
+                      data: partners[index],
+                    })
+                  }
+                  className={"tr-edit-table-hover-effect"}
+                >
                   <td>
                     <div>{index + 1}</div>
                   </td>
@@ -65,19 +46,7 @@ function CarriersTableComponent({ partners }: { partners: any[] }) {
                     <div className={"main-text"}>{name?.toLowerCase()}</div>
                   </td>
                   <td>
-                    <div className={`main-text ${status}`}>
-                      <select
-                        defaultValue={status}
-                        onChange={(e) => {
-                          if (e.target.value !== status) {
-                            debounceUpdateStatus(e.target.value, index);
-                          }
-                        }}
-                      >
-                        <option value={"active"}>active</option>
-                        <option value={"inactive"}>inactive</option>
-                      </select>
-                    </div>
+                    <div className={`main-text ${status}`}>{status}</div>
                   </td>
                   <td>
                     <div className={"main-text"}>{email?.toLowerCase()}</div>

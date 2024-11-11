@@ -6,48 +6,78 @@ import LineChart from "@/public/icons/24px/line-chart.svg";
 import Settings from "@/public/icons/24px/settings.svg";
 import Flag from "@/public/icons/24px/flag.svg";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
 
 export default function SellerMenuComponent() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const sellerMenuItems = [
+    {
+      classNames: "get-quote menu-item-addnote",
+      title: "Get Quote",
+      href: "/get-quote",
+      icon: <AddNote />,
+    },
+    {
+      classNames: `item ${pathname.includes("quotes") ? "active" : ""}`,
+      title: "Quotes",
+      href: "/quotes",
+      icon: <Document />,
+      prefetchEndpoint:
+        "/quote?skip=0&limit=20&searchText=&pickupDate=&dropDate=&owner=&status=&type=&sort={}",
+    },
+    {
+      classNames: `item ${pathname.includes("shipments") ? "active" : ""}`,
+      title: "Shipments",
+      href: "/shipments",
+      icon: <Flag />,
+      prefetchEndpoint:
+        "/quote/shipments?skip=0&limit=20&searchText=&pickupDate=&dropDate=&owner=&status=[]&type=&sort={}",
+    },
+    {
+      classNames: `item ${pathname.includes("analytics") ? "active" : ""}`,
+      title: "Analytics",
+      href: "/analytics",
+      icon: <LineChart />,
+    },
+    {
+      classNames: `item ${pathname.includes("settings") ? "active" : ""} menu-item-settings`,
+      title: "Settings",
+      href: "/settings",
+      icon: <Settings />,
+    },
+  ];
+
+  const prefetchURL = useDebouncedCallback(
+    (viewLink: string, prefetchEndpoint: string | null) => {
+      router.prefetch(viewLink);
+      if (prefetchEndpoint) {
+        getWithAuth(`${prefetchEndpoint}`).then((data) => {});
+      }
+    },
+    50,
+  );
 
   return (
     <div className={"seller-menu"}>
-      <Link className={`get-quote menu-item-addnote`} href={"/get-quote"}>
-        <AddNote />
-        Get Quote
-      </Link>
-      <Link
-        className={`item ${pathname.includes("quotes") ? "active" : ""} menu-item-document`}
-        href={"/quotes"}
-      >
-        <Document />
-        Quotes
-      </Link>
-
-      <Link
-        className={`item ${pathname.includes("shipments") ? "active" : ""} menu-item-flag`}
-        href={"/shipments"}
-      >
-        <Flag />
-        Shipments
-      </Link>
-
-      <Link
-        className={`item ${pathname.includes("analytics") ? "active" : ""} menu-item-analytics`}
-        href={"/analytics"}
-      >
-        <LineChart />
-        Analytics
-      </Link>
-
-      <Link
-        className={`item ${pathname.includes("settings") ? "active" : ""} menu-item-settings`}
-        href={"/settings"}
-      >
-        <Settings />
-        Settings
-      </Link>
+      {sellerMenuItems.map(
+        ({ classNames, title, href, icon, prefetchEndpoint }) => (
+          <Link
+            className={classNames}
+            href={href}
+            key={href}
+            onMouseEnter={() => {
+              prefetchURL(href, prefetchEndpoint);
+            }}
+          >
+            <div>{icon}</div>
+            <div>{title}</div>
+          </Link>
+        ),
+      )}
     </div>
   );
 }

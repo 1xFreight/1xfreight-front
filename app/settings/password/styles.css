@@ -29,7 +29,7 @@
             cursor: pointer;
 
             &:hover path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
     }

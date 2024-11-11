@@ -1,4 +1,4 @@
-.quotes-table {
+.av-quotes-table {
     width: 100%;
     overflow: scroll;
     height: calc(100vh - 7rem - 2.5rem);
@@ -9,21 +9,29 @@
     padding: 100px 1px 0 1px;
     margin-top: -120px;
 
-    .quote-shipper-logo {
-        padding: 0.25rem;
-        min-width: 5rem;
-
-        img {
-            border-radius: 0.5rem;
-            width: 5rem;
-            height: auto;
-        }
+    &::-webkit-scrollbar-thumb{
+        background: rgba(210, 210, 210, 0.7);
+        border-radius: 1rem;
     }
 
-    button {
-        width: 10rem;
-        height: 3rem;
-        border-radius: 0.5rem;
+    &::-webkit-scrollbar{
+        width: 0.6rem;
+        height: 0.7rem;
+    }
+
+    &::-webkit-scrollbar-track{
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-corner{
+        background: transparent;
+    }
+
+    .quote-shipper-logo {
+        img {
+            border-radius: 0.5rem;
+            height: auto;
+        }
     }
 }
 
@@ -36,31 +44,81 @@
 }
 
 
-.quotes-table tr td:nth-child(3),.quotes-table tr td:nth-child(4){
-    max-width: 30rem;
-    padding: 0 1rem;
-}
-.quotes-table table {
+.av-quotes-table table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 0.25rem;
     border: unset;
     min-width: 100rem;
     box-sizing: border-box;
+    table-layout: fixed;
+
+    .equipments-table-box {
+        display: -webkit-box;           /* Use a flexible box layout */
+        -webkit-box-orient: vertical;    /* Specify vertical box orientation */
+        -webkit-line-clamp: 3;           /* Limit text to 3 lines */
+        overflow: hidden;                /* Hide overflow text */
+        text-overflow: ellipsis;         /* Show ellipsis (...) at the end */
+    }
+
+    .av-actions {
+        display: inline-flex;
+        gap: 0.5rem;
+        width: 100%;
+
+        button {
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            width: 7rem;
+        }
+    }
+
+    tr th:nth-child(1) {
+        width: 4.5rem;
+    }
+
+    tr th:nth-child(2) {
+        width: 3.5rem;
+    }
+
+    tr th:nth-child(3){
+        width: calc(18rem + 30px);
+    }
+
+    tr th:nth-child(4){
+        width: calc(18rem - 30px);
+    }
+
+    tr th:nth-child(5),tr th:nth-child(6) {
+        width: 9rem;
+    }
+
+    tr th:nth-child(7) {
+        width: 10rem;
+    }
+
+    tr th:nth-child(8) {
+        width: 13.25rem;
+    }
+
+    tr th:nth-child(9) {
+        width: 15rem;
+    }
+
 }
 
-.quotes-table thead {
+.av-quotes-table thead {
     position: sticky;
     width: 100%;
     top: 0;
     z-index: 2;
 }
 
-.quotes-table thead tr {
+.av-quotes-table thead tr {
     width: 100%;
 }
 
-.quotes-table tr th {
+.av-quotes-table tr th {
     text-align: left;
     padding-left: 0.65rem;
     height: 3.75rem;
@@ -70,17 +128,17 @@
     font-weight: 700;
 }
 
-.quotes-table tr th:nth-child(1){
+.av-quotes-table tr th:nth-child(1){
     border-radius: 1rem 0 0 1rem;
     border-right: 1px solid #EFEFEF;
 }
 
-.quotes-table tr>th:nth-last-child(1){
+.av-quotes-table tr>th:nth-last-child(1){
     border-radius: 0 1rem 1rem 0;
 }
 
 
-.quotes-table {
+.av-quotes-table {
     tr:nth-of-type(even) td:not(:nth-child(1)) {
         border-right: 1px solid #f3f3f3;
     }
@@ -95,52 +153,52 @@
 
 }
 
-.quotes-table tr td:nth-child(1){
+.av-quotes-table tr td:nth-child(1){
     border-radius: 1rem 0 0 1rem;
     /*width: 9.875rem;*/
     border-right: 1px solid #EFEFEF;
 }
 
-.quotes-table tr>td:nth-child(2){
+.av-quotes-table tr>td:nth-child(2){
    width: 5rem;
 }
 
-.quotes-table tr>td:nth-last-child(1){
+.av-quotes-table tr>td:nth-last-child(1){
     border-radius: 0 1rem 1rem 0;
 }
 
-.quotes-table td {
+.av-quotes-table td {
     vertical-align: center;
     padding: 0 0.65rem;
 }
 
-.quotes-table tr:nth-of-type(even){
+.av-quotes-table tr:nth-of-type(even){
     background: white;
 }
 
-.quotes-table tr:nth-of-type(odd){
+.av-quotes-table tr:nth-of-type(odd){
     background: #F9F9F9;
 }
 
-.quotes-table tr>td {
+.av-quotes-table tr>td {
     height: 4.625rem;
     box-sizing: border-box;
 }
 
-.quotes-table .active-quote-status.CONFIRMED {
+.av-quotes-table .active-quote-status.CONFIRMED {
     background: #04C900;
 }
 
-.quotes-table .active-quote-status.REQUESTED {
+.av-quotes-table .active-quote-status.REQUESTED {
     background: #A1AFFF;
 }
 
-.quotes-table .active-quote-status.BOOKED {
+.av-quotes-table .active-quote-status.BOOKED {
     border: 1px solid #04C900;
     color: #04C900;
 }
 
-.quotes-table .active-quote-status {
+.av-quotes-table .active-quote-status {
     width: 7.45rem;
     height: 1.45rem;
     font-size: 0.625rem;
@@ -153,48 +211,48 @@
     box-sizing: border-box;
 }
 
-.quotes-table .sub-text {
+.av-quotes-table .sub-text {
     padding-top: 0.25rem;
     font-weight: 400;
     font-size: 0.75rem;
     color: #939393;
 }
 
-.quotes-table .pickup .location, .quotes-table .drop .location {
+.av-quotes-table .pickup .location, .av-quotes-table .drop .location {
     display: flex;
     position: relative;
     /*width: max-content;*/
     align-items: center;
 }
 
-.quotes-table .pickup .location>svg:nth-child(1), .quotes-table .drop .location>svg:nth-child(1) {
+.av-quotes-table .pickup .location>svg:nth-child(1), .av-quotes-table .drop .location>svg:nth-child(1) {
     position: absolute;
     left: calc(-24px - 0.25rem);
 }
 
-.quotes-table tr>th:nth-child(3){
+.av-quotes-table tr>th:nth-child(3){
     padding-left: calc(24px + 0.25rem);
 }
 
-.quotes-table tr>th:nth-last-child(1){
+.av-quotes-table tr>th:nth-last-child(1){
     /*min-width: 24rem;*/
     /*width: 25%;*/
 }
 
-.quotes-table tr>td:nth-last-child(1){
+.av-quotes-table tr>td:nth-last-child(1){
     padding-right: 1rem;
 }
 
-.quotes-table tr td .price .full-price::after {
+.av-quotes-table tr td .price .full-price::after {
     content: "00";
-    color: #545454;
+    color: #1e1e1e;
     font-size: 0.875rem;
     position: absolute;
     top: -0.2rem
 }
 
-.quotes-table .price {
-    color: #0020DD;
+.av-quotes-table .price {
+    color: #3A56EA;
     font-size: 1.5rem;
     font-weight: 600;
     display: flex;
@@ -203,19 +261,19 @@
     justify-content: space-between;
 }
 
-.quotes-table .price span,.quotes-table .price .currency {
-    color: #545454;
+.av-quotes-table .price span,.av-quotes-table .price .currency {
+    color: #1e1e1e;
 }
 
-.quotes-table .price .currency {
+.av-quotes-table .price .currency {
     font-size: 1.25rem;
 }
 
-.quotes-table .price .full-price {
+.av-quotes-table .price .full-price {
     position: relative;
 }
 
-.quotes-table .end {
+.av-quotes-table .end {
     display: flex;
     justify-content: space-between;
     padding-right: 1rem;
@@ -223,57 +281,39 @@
     gap: 1rem
 }
 
-.quotes-table .quote-action-button {
-    height: 3.45rem;
-    width: 12rem;
-    border-radius: .9rem;
-    background: #0020DD;
-    color: white;
-    font-size: 1rem;
-    transition: all 250ms ease-in-out;
-    box-sizing: border-box;
-}
+/*.av-quotes-table .quote-action-button {*/
+/*    height: 3.45rem;*/
+/*    !*width: 12rem;*!*/
+/*    border-radius: .9rem;*/
+/*    background: #3A56EA;*/
+/*    color: white;*/
+/*    font-size: 1rem;*/
+/*    transition: all 250ms ease-in-out;*/
+/*    box-sizing: border-box;*/
+/*}*/
 
-.quotes-table .quote-action-button:disabled {
+.av-quotes-table .quote-action-button:disabled {
     background: transparent;
     color: #A1AFFF;
     border: 1px solid #A1AFFF;
 }
 
-.quotes-table .no-data {
+.av-quotes-table .no-data {
     width: 100%;
     display: flex;
     justify-content: center;
     padding-top: 2rem;
     font-size: 2rem;
-    color: #0020DD;
+    color: #3A56EA;
 }
 
-.quotes-table::-webkit-scrollbar-thumb{
-    background: #0020DD;
-    border-radius: 1rem;
-}
-
-.quotes-table::-webkit-scrollbar{
-    width: 0.6rem;
-    height: 0.7rem;
-}
-
-.quotes-table::-webkit-scrollbar-track{
-    background: transparent;
-}
-
-.quotes-table::-webkit-scrollbar-corner{
-    background: transparent;
-}
-
-.quotes-table .extra-address {
+.av-quotes-table .extra-address {
     display: flex;
     align-items: center;
     width: 3rem;
     justify-content: center;
     font-size: 0.75rem;
-    color: #545454;
+    color: #1e1e1e;
     background: #D9D9D9;
     border-radius: 0.35rem;
     font-weight: 400;
@@ -290,11 +330,11 @@
     }
 
     &:hover {
-        border: 1px solid #0020DD;
-        color: #0020DD;
+        border: 1px solid #3A56EA;
+        color: #3A56EA;
 
         & svg path{
-            fill: #0020DD;
+            fill: #3A56EA;
         }
 
         & .extra-address-window {

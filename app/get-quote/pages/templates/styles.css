@@ -161,7 +161,7 @@
     & tr:hover td {
         & .template-actions .chevron-svg {
             & svg path{
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
 
@@ -170,7 +170,7 @@
 
     & .edit-template-btn {
         background: transparent;
-        color: #545454;
+        color: #1e1e1e;
         display: flex;
         gap: 2rem;
         /*border: 1px solid #A7A7A7;*/
@@ -184,11 +184,11 @@
         font-size: 1rem;
 
         &:hover {
-            border-color: #0020DD;
-            color: #0020DD;
+            border-color: #3A56EA;
+            color: #3A56EA;
 
             & svg path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
     }
@@ -199,7 +199,7 @@
         width: 3rem;
         justify-content: center;
         font-size: 0.75rem;
-        color: #545454;
+        color: #1e1e1e;
         background: #D9D9D9;
         border-radius: 0.35rem;
         font-weight: 400;
@@ -216,11 +216,11 @@
         }
 
         &:hover {
-            border: 1px solid #0020DD;
-            color: #0020DD;
+            border: 1px solid #3A56EA;
+            color: #3A56EA;
 
             & svg path{
-                fill: #0020DD;
+                fill: #3A56EA;
             }
 
             & .extra-address-window {

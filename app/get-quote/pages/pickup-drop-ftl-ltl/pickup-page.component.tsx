@@ -41,7 +41,7 @@ export default function PickupPageComponent() {
       });
     }
 
-    addBreadcrumb(data[0].address);
+    addBreadcrumb(data[0].city + ", " + data[0].state + ", " + data[0].country);
     addData({ form: "pickup", data });
     setCanChangePage(PageStateEnum.CAN_CHANGE);
   };

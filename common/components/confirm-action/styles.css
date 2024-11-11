@@ -46,11 +46,11 @@
                 stroke-width: 0;
 
                 path {
-                    stroke: #0020DD;
+                    stroke: #3A56EA;
                 }
 
                 circle {
-                    fill: #0020DD;
+                    fill: #3A56EA;
                 }
 
                 path:nth-child(2) {
@@ -87,7 +87,7 @@
         }
 
         .ca-title {
-            color: #545454;
+            color: #1e1e1e;
             font-size: 1.1rem;
             font-weight: 600;
             line-height: 1.1;
@@ -116,12 +116,12 @@
 
             &.cancel {
                 background: white;
-                color: #545454;
+                color: #1e1e1e;
                 border: 2px solid #A7A7A7;
 
                 &:hover {
                     color: black;
-                    border-color: #545454;
+                    border-color: #1e1e1e;
                     background: #dedede;
                 }
             }

@@ -157,6 +157,7 @@ export default function ChatComponent({ room, title }) {
           </div>
         )}
         {!messages && <LoadingCircle />}
+        {/*<LoadingCircle />*/}
       </div>
 
       <div

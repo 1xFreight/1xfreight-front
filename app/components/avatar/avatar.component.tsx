@@ -11,7 +11,7 @@ export default function AvatarComponent({
   const formatUsername = () => {
     return username
       ?.split(" ")
-      .map((name) => name[0])
+      .map((name) => name[0].toUpperCase())
       .slice(0, 3);
   };
 

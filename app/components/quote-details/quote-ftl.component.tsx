@@ -3,6 +3,7 @@ import Calendar from "@/public/icons/30px/calendar.svg";
 import Clock from "@/public/icons/30px/clock.svg";
 import Cog from "@/public/icons/30px/cog.svg";
 import Archive from "@/public/icons/30px/archive.svg";
+import ExpandAlt from "@/public/icons/30px/expand-alt.svg";
 import DollarSign from "@/public/icons/30px/dollar-sign.svg";
 import Gym from "@/public/icons/30px/gym.svg";
 import Database from "@/public/icons/30px/database.svg";
@@ -10,7 +11,6 @@ import EqTruck from "@/public/icons/30px/eq-truck.svg";
 import Group from "@/public/icons/30px/group.svg";
 import StickyNotes from "@/public/icons/30px/sticky-notes-2.svg";
 import OpenBox from "@/public/icons/30px/open-box.svg";
-import Routes from "@/public/icons/30px/routes.svg";
 import Biohazard from "@/public/icons/30px/hazardous-material.svg";
 import TempUp from "@/public/icons/30px/temperature-arrow-up(1).svg";
 import TempDown from "@/public/icons/30px/temperature-arrow-down(1).svg";
@@ -20,6 +20,19 @@ import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { ShippingHoursEnum } from "@/app/get-quote/components/location-ftl-ltl-form/location-form.component";
 import React from "react";
 import QuoteItemsTableComponent from "@/app/components/quote-details/quote-items-table.component";
+import Image from "next/image";
+import FTL from "@/public/png/full-truck.png";
+import LTL from "@/public/png/half-truck.png";
+import Ocean from "@/public/png/ocean-transportation.png";
+import Air from "@/public/png/air-transportation.png";
+import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
+
+const typeImageMapping = {
+  [QuoteTypeEnum.FTL]: FTL,
+  [QuoteTypeEnum.LTL]: LTL,
+  [QuoteTypeEnum.FCL]: Ocean,
+  [QuoteTypeEnum.AIR]: Air,
+};
 
 function QuoteFtlComponent({ quote }: any) {
   const reference = quote?.references;
@@ -35,17 +48,41 @@ function QuoteFtlComponent({ quote }: any) {
   return (
     <div className={"quote-ftl"}>
       <div className={"title"}>
-        <h2>QUOTE DETAILS</h2>
-
-        {/*<h3>{}</h3>*/}
+        <div className={"quote-author"}>
+          {!!quote?.author?.logo && (
+            <Image
+              src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${quote?.author?.logo}`}
+              alt={"logo"}
+              width={40}
+              height={40}
+              className={"quote-author-logo-img"}
+              quality={80}
+            />
+          )}
+          <h2>{quote?.author?.name}</h2>
+          <div className={"quote-details-title"}>quote details:</div>
+        </div>
+        <div className={""}>
+          <div className={"quote-short-id"}>
+            #{quote?.quote_id_short?.toUpperCase()}
+          </div>
+          <div className={"quote-type"}>
+            <Image
+              src={typeImageMapping[quote?.type]}
+              alt={"LTL image"}
+              width={55}
+            />
+            {quote?.type}
+          </div>
+        </div>
       </div>
 
       <div className={"details-wrapper"}>
-        <div>
-          <Group />
-          <h4>Type: </h4>
-          <h3>{quote?.type}</h3>
-        </div>
+        {/*<div>*/}
+        {/*  <Group />*/}
+        {/*  <h4>Type: </h4>*/}
+        {/*  <h3>{quote?.type}</h3>*/}
+        {/*</div>*/}
 
         {!!quote?.equipments?.length && (
           <div>
@@ -66,12 +103,12 @@ function QuoteFtlComponent({ quote }: any) {
       </div>
 
       <div className={"locations"}>
-        <div className={"location-title"}>
-          <div>
-            <Routes />
-            <h4>Locations</h4>
-          </div>
-        </div>
+        {/*<div className={"location-title"}>*/}
+        {/*  <div>*/}
+        {/*    <h4>Locations</h4>*/}
+        {/*    <Routes />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
         <div className={`locations-wrapper`}>
           {pickup &&
@@ -103,135 +140,123 @@ function QuoteFtlComponent({ quote }: any) {
                   </div>
 
                   <div className={"location-info"}>
-                    <h3>{location.address}</h3>
+                    <div className={"company-details-name"}>
+                      {location.company_name}
+                    </div>
+                    <h3 className={"address-h3"}>{location.address}</h3>
 
-                    {(location.date || location.arrival_date) && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Calendar />
-                        <h4>Date:</h4>
-                        <h3
-                          style={{
-                            borderLeft: "0.1rem solid #ECECECFF",
-                            paddingLeft: "0.5rem",
-                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
-                          }}
-                        >
-                          {formatDate(location.date)}
-                          {ShippingHoursEnum[location.shipping_hours]
-                            ? "   ," +
-                              ShippingHoursEnum[location.shipping_hours]
-                            : ""}
-
-                          <span
-                            className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
-                          >
-                            {formatDate(location.arrival_date)}
-                          </span>
-                        </h3>
-                      </div>
-                    )}
-
-                    {(location.time_start || location.arrival_time) && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Clock />
-                        <h4>Time:</h4>
-                        <h3
-                          style={{
-                            borderLeft: "0.1rem solid #ECECECFF",
-                            paddingLeft: "0.5rem",
-                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
-                            // whiteSpace: "nowrap",
-                          }}
-                        >
-                          {location.time_start}
-                          {location.time_end ? " - " + location.time_end : ""}
-
-                          <span className={"arrival-text-span"}>
-                            {formatTime(location.arrival_time)}
-                          </span>
-                        </h3>
-                      </div>
-                    )}
-
-                    {!!location.notes && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "start",
-                        }}
-                      >
+                    <div className={"location-details-wrapper"}>
+                      {(location.date || location.arrival_date) && (
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
                           }}
                         >
-                          <StickyNotes />
-                          <h4>Notes:</h4>
-                        </div>
-                        <h3>{location.notes}</h3>
-                      </div>
-                    )}
+                          <Calendar />
+                          <h4>Date:</h4>
+                          <h3>
+                            {formatDate(location.date)}
+                            {ShippingHoursEnum[location.shipping_hours]
+                              ? "   ," +
+                                ShippingHoursEnum[location.shipping_hours]
+                              : ""}
 
-                    {!!location.accessorials?.length && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Cog />
-                        <h4>Accessorials:</h4>
-                        <h3>{location.accessorials?.join(", ")}</h3>
-                      </div>
-                    )}
-
-                    {!!location.company_name && (
-                      <div className={"location-company-details"}>
-                        <div className={"company-details-item"}>
-                          {location.company_name}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_name}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_phone}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_email}
-                        </div>
-                      </div>
-                    )}
-
-                    {!!location.open_hours && (
-                      <div className={"formatted-open-hours-wrapper"}>
-                        {/*<Shift />*/}
-                        {/*<h4>Open Hours:</h4>*/}
-                        {location.open_hours.split(",").map((openHoursLine) => (
-                          <>
-                            <div
-                              key={openHoursLine}
-                              className={"formatted-open-hours"}
+                            <span
+                              className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
                             >
-                              {openHoursLine}
-                            </div>
-                          </>
-                        ))}
-                      </div>
-                    )}
+                              {formatDate(location.arrival_date)}
+                            </span>
+                          </h3>
+                        </div>
+                      )}
+
+                      {(location.time_start || location.arrival_time) && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Clock />
+                          <h4>Time:</h4>
+                          <h3>
+                            {location.time_start}
+                            {location.time_end ? " - " + location.time_end : ""}
+
+                            <span className={"arrival-text-span"}>
+                              {formatTime(location.arrival_time)}
+                            </span>
+                          </h3>
+                        </div>
+                      )}
+
+                      {!!location.notes && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "start",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <StickyNotes />
+                            <h4>Notes:</h4>
+                          </div>
+                          <h3>{location.notes}</h3>
+                        </div>
+                      )}
+
+                      {!!location.accessorials?.length && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Cog />
+                          <h4>Accessorials:</h4>
+                          <h3>{location.accessorials?.join(", ")}</h3>
+                        </div>
+                      )}
+
+                      {!!location.company_name && (
+                        <div className={"location-company-details"}>
+                          <div className={"company-details-item"}>
+                            {location.contact_name}
+                          </div>
+
+                          <div className={"company-details-item"}>
+                            {location.contact_phone}
+                          </div>
+
+                          <div className={"company-details-item"}>
+                            {location.contact_email}
+                          </div>
+                        </div>
+                      )}
+
+                      {!!location.open_hours && (
+                        <div className={"formatted-open-hours-wrapper"}>
+                          {/*<Shift />*/}
+                          {/*<h4>Open Hours:</h4>*/}
+                          {location.open_hours
+                            .split(",")
+                            .map((openHoursLine) => (
+                              <div
+                                key={openHoursLine}
+                                className={"formatted-open-hours"}
+                              >
+                                {openHoursLine}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
@@ -265,147 +290,128 @@ function QuoteFtlComponent({ quote }: any) {
                   </div>
 
                   <div className={"location-info"}>
-                    <h3>{location.address}</h3>
+                    <div className={"company-details-name"}>
+                      {location.company_name}
+                    </div>
+                    <h3 className={"address-h3"}>{location.address}</h3>
 
-                    {(location.date || location.arrival_date) && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Calendar />
-                        <h4>Date:</h4>
-                        <h3
-                          style={{
-                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
-                          }}
-                        >
-                          {formatDate(location.date)}
-                          {ShippingHoursEnum[location.shipping_hours]
-                            ? "   ," +
-                              ShippingHoursEnum[location.shipping_hours]
-                            : ""}
-
-                          <span
-                            className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
-                          >
-                            {formatDate(location.arrival_date)}
-                          </span>
-                        </h3>
-                      </div>
-                    )}
-
-                    {(location.time_start || location.arrival_time) && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Clock />
-                        <h4>Time:</h4>
-                        <h3
-                          style={{
-                            opacity: `${location.arrival_date ? "0.7" : "1"}`,
-                          }}
-                        >
-                          {location.time_start}
-                          {location.time_end ? " - " + location.time_end : ""}
-
-                          <span className={"arrival-text-span"}>
-                            {formatTime(location.arrival_time)}
-                          </span>
-                        </h3>
-                      </div>
-                    )}
-
-                    {!!location.notes && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "start",
-                        }}
-                      >
+                    <div className={"location-details-wrapper"}>
+                      {(location.date || location.arrival_date) && (
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
                           }}
                         >
-                          <StickyNotes />
-                          <h4>Notes:</h4>
-                        </div>
-                        <h3>{location.notes}</h3>
-                      </div>
-                    )}
+                          <Calendar />
+                          <h4>Date:</h4>
+                          <h3>
+                            {formatDate(location.date)}
+                            {ShippingHoursEnum[location.shipping_hours]
+                              ? "   ," +
+                                ShippingHoursEnum[location.shipping_hours]
+                              : ""}
 
-                    {!!location.accessorials?.length && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Cog />
-                        <h4>Accessorials:</h4>
-                        <h3>{location.accessorials?.join(", ")}</h3>
-                      </div>
-                    )}
-
-                    {!!location.company_name && (
-                      <div className={"location-company-details"}>
-                        <div className={"company-details-item"}>
-                          {location.company_name}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_name}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_phone}
-                        </div>
-
-                        <div className={"company-details-item"}>
-                          {location.contact_email}
-                        </div>
-                      </div>
-                    )}
-
-                    {!!location.open_hours && (
-                      <div className={"formatted-open-hours-wrapper"}>
-                        {location.open_hours.split(",").map((openHoursLine) => (
-                          <>
-                            <div
-                              key={openHoursLine}
-                              className={"formatted-open-hours"}
+                            <span
+                              className={`arrival-text-span ${location?.arrival_status === "late" ? "late" : ""}`}
                             >
-                              {openHoursLine}
-                            </div>
-                          </>
-                        ))}
-                      </div>
-                    )}
+                              {formatDate(location.arrival_date)}
+                            </span>
+                          </h3>
+                        </div>
+                      )}
+
+                      {(location.time_start || location.arrival_time) && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Clock />
+                          <h4>Time:</h4>
+                          <h3>
+                            {location.time_start}
+                            {location.time_end ? " - " + location.time_end : ""}
+
+                            <span className={"arrival-text-span"}>
+                              {formatTime(location.arrival_time)}
+                            </span>
+                          </h3>
+                        </div>
+                      )}
+
+                      {!!location.notes && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "start",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <StickyNotes />
+                            <h4>Notes:</h4>
+                          </div>
+                          <h3>{location.notes}</h3>
+                        </div>
+                      )}
+
+                      {!!location.accessorials?.length && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Cog />
+                          <h4>Accessorials:</h4>
+                          <h3>{location.accessorials?.join(", ")}</h3>
+                        </div>
+                      )}
+
+                      {!!location.company_name && (
+                        <div className={"location-company-details"}>
+                          <div className={"company-details-item"}>
+                            {location.contact_name}
+                          </div>
+
+                          <div className={"company-details-item"}>
+                            {location.contact_phone}
+                          </div>
+
+                          <div className={"company-details-item"}>
+                            {location.contact_email}
+                          </div>
+                        </div>
+                      )}
+
+                      {!!location.open_hours && (
+                        <div className={"formatted-open-hours-wrapper"}>
+                          {location.open_hours
+                            .split(",")
+                            .map((openHoursLine) => (
+                              <div
+                                key={openHoursLine}
+                                className={"formatted-open-hours"}
+                              >
+                                {openHoursLine}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
             })}
         </div>
 
-        {!!items && (
-          <QuoteItemsTableComponent
-            items={items}
-            summary={{
-              estimatedSkidSpots: details.skid_spots,
-              totalVolume: details.volume,
-              totalWeight: details.weight + " " + details.weight_unit,
-              quantity: details.quantity,
-              totalDensity: details.density,
-              weight_unit: details.weight_unit,
-            }}
-          />
-        )}
+        {!!items && <QuoteItemsTableComponent items={items} />}
 
         <div className={"details-wrapper"}>
           {!!details?.packing_method && (
@@ -418,6 +424,38 @@ function QuoteFtlComponent({ quote }: any) {
                 }}
               >
                 {clearText(details?.packing_method)}
+              </h3>
+            </div>
+          )}
+
+          {!!details?.skid_spots && (
+            <div>
+              <ExpandAlt />
+              <h4>Est. skid spots: </h4>
+              <h3
+                style={{
+                  textTransform: "capitalize",
+                }}
+              >
+                {details?.skid_spots}
+              </h3>
+            </div>
+          )}
+
+          {!!details?.volume && (
+            <div>
+              <Database />
+              <h4>volume: </h4>
+              <h3>{details?.volume.toFixed(2)} ft3</h3>
+            </div>
+          )}
+
+          {!!details?.density && (
+            <div>
+              <Archive />
+              <h4>density: </h4>
+              <h3>
+                {details?.density.toFixed(2)} {details.weight_unit}/ft3
               </h3>
             </div>
           )}

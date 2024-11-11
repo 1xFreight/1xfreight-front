@@ -4,7 +4,9 @@ import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
 import { useEffect, useState } from "react";
 import LoadingComponent from "@/common/components/loading/loading.component";
 import "./styles.css";
-import numberCommaFormat from "@/common/utils/number-comma.utils";
+import numberCommaFormat, {
+  formatCurrency,
+} from "@/common/utils/number-comma.utils";
 import QuoteFtlComponent from "@/app/components/quote-details/quote-ftl.component";
 import ChatComponent from "@/common/components/chat/chat.component";
 import { useDebouncedCallback } from "use-debounce";
@@ -13,6 +15,9 @@ import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/common/utils/date.utils";
+import Insurance from "@/public/icons/20px/insurance.svg";
+import Checked from "@/public/icons/24px/checked-tick.svg";
+import Cross from "@/public/icons/24px/cross.svg";
 
 export default function RequestIdPage({
   params,
@@ -22,9 +27,9 @@ export default function RequestIdPage({
     request_id: string;
   };
 }) {
-  const { setQuoteId, getRequest, quote } = useQuoteContext();
+  const { setQuoteId, getRequest, quote, setIsMissingData } = useQuoteContext();
   const [request, setRequest] = useState();
-  const { showToast } = useStore();
+  const { showToast, addToStore } = useStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +49,11 @@ export default function RequestIdPage({
     }).then(async (response) => {
       if (!response.ok) {
         const errorData = await response.json();
+
+        if (errorData?.message === "Missing data") {
+          return setIsMissingData(params.request_id);
+        }
+
         return showToast({
           type: ToastTypesEnum.ERROR,
           text: errorData.message || "Something went wrong",
@@ -60,6 +70,14 @@ export default function RequestIdPage({
       router.push(`/goto/${params.quote_id}`);
     });
   }, 350);
+
+  const redirectToEditCarrier = (carrier: any) => {
+    addToStore({
+      name: "edit-carrier-data",
+      data: carrier,
+    });
+    router.push("/settings/carriers");
+  };
 
   if (!request) return <LoadingComponent />;
   if (!quote) return <LoadingComponent />;
@@ -79,7 +97,7 @@ export default function RequestIdPage({
                   <div className={"currency"}>{quote.currency}</div>
                 </div>
 
-                <h5>Per Load</h5>
+                <h5>per load</h5>
               </div>
 
               <div className={"valid-until"}>
@@ -98,7 +116,7 @@ export default function RequestIdPage({
               <div className={"transit-time"}>
                 <h6>Transit Time</h6>
                 <h2>{request.transit_time}</h2>
-                <div className={`sub-text`}>days</div>
+                <h6>days</h6>
               </div>
 
               <div className={"partner"}>
@@ -112,6 +130,119 @@ export default function RequestIdPage({
               <div className={"notes"}>
                 <h5>Additional notes:</h5>
                 <span>{request.notes}</span>
+              </div>
+            )}
+
+            {(request?.local_carrier?.mc || request?.local_carrier?.dot) &&
+              request?.local_carrier?.safety_rating && (
+                <div className={"extra-details"}>
+                  <div className={"insurance-wrapper"}>
+                    <div className={"details-title"}>
+                      <Insurance />
+                      <h4>Insurance:</h4>
+                    </div>
+
+                    <div className={`insurance-details`}>
+                      <div>
+                        <h4> Cargo:</h4>
+                        {request?.local_carrier?.insurance_cargo ? (
+                          <div className={"icon-checked"}>
+                            <Checked />
+                          </div>
+                        ) : (
+                          <div className={"icon-cross"}>
+                            <Cross />
+                          </div>
+                        )}
+                      </div>
+                      <h3>
+                        {request?.local_carrier?.insurance_cargo
+                          ? formatCurrency(
+                              request?.local_carrier?.insurance_cargo,
+                            )
+                          : "$0000.00"}
+                      </h3>
+                    </div>
+
+                    <div className={`insurance-details`}>
+                      <div>
+                        <h4> General:</h4>
+                        {request?.local_carrier?.insurance_general ? (
+                          <div className={"icon-checked"}>
+                            <Checked />
+                          </div>
+                        ) : (
+                          <div className={"icon-cross"}>
+                            <Cross />
+                          </div>
+                        )}
+                      </div>
+                      <h3>
+                        {request?.local_carrier?.insurance_general
+                          ? formatCurrency(
+                              request?.local_carrier?.insurance_general,
+                            )
+                          : "$0000.00"}
+                      </h3>
+                    </div>
+
+                    <div className={`insurance-details`}>
+                      <div>
+                        <h4> Auto:</h4>
+                        {request?.local_carrier?.insurance_auto ? (
+                          <div className={"icon-checked"}>
+                            <Checked />
+                          </div>
+                        ) : (
+                          <div className={"icon-cross"}>
+                            <Cross />
+                          </div>
+                        )}
+                      </div>
+                      <h3>
+                        {request?.local_carrier?.insurance_auto
+                          ? formatCurrency(
+                              request?.local_carrier?.insurance_auto,
+                            )
+                          : "$0000.00"}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className={"carrier-details"}>
+                    <div>
+                      <span>{request?.local_carrier?.fleet_size}</span>
+
+                      <h4>Fleet Size </h4>
+                    </div>
+
+                    <div>
+                      <span>{request?.local_carrier?.total_us_inspect}</span>
+
+                      <h4>Total US Inspections </h4>
+                    </div>
+
+                    <div>
+                      <span>{request?.local_carrier?.total_can_inspect}</span>
+                      <h4>Total Canadian Inspections </h4>
+                    </div>
+
+                    <div className={"rating"}>
+                      <span>{request?.local_carrier?.safety_rating}</span>
+                      <h4>Safety rating</h4>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            {!(request?.local_carrier?.mc || request?.local_carrier?.dot) && (
+              <div className={"edit-user-box"}>
+                To view more details about carrier provide mc or dot.
+                <button
+                  onClick={() => redirectToEditCarrier(request?.local_carrier)}
+                >
+                  Edit carrier
+                </button>
               </div>
             )}
           </div>

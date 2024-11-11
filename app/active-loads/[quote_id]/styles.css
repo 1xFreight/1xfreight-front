@@ -33,12 +33,12 @@
 
             &.cancel {
                 background: white;
-                color: #545454;
+                color: #1e1e1e;
                 border: 2px solid #A7A7A7;
 
                 &:hover {
                     color: black;
-                    border-color: #545454;
+                    border-color: #1e1e1e;
                     background: #dedede;
                 }
             }
@@ -73,7 +73,7 @@
             input,select {
                 height: 3.5rem;
                 padding: 0 0.5rem;
-                color: #545454;
+                color: #1e1e1e;
             }
 
             &>div {
@@ -116,7 +116,7 @@
             button {
                 height: 3rem;
                 width: 10rem;
-                color: #545454;
+                color: #1e1e1e;
                 border-radius: 0.75rem;
                 position: relative;
                 display: flex;
@@ -160,6 +160,7 @@
         gap: 2rem;
         display: flex;
         flex-direction: column;
+
     }
 
     .chat-column {
@@ -185,12 +186,12 @@
 
                 button {
                     background: white;
-                    color: #545454;
+                    color: #1e1e1e;
                     max-width: 50%;
                     width: 100%;
 
                     &:hover {
-                        color: #0020DD;
+                        color: #3A56EA;
                     }
                 }
             }
@@ -232,9 +233,9 @@
         }
     }
 
-    .shipment-wrapper {
+    .request-wrapper {
         width: 100%;
-        border: 1px solid #0020DD;
+        border: 1px solid #3A56EA;
         min-height: 5rem;
         box-sizing: border-box;
         padding: 1rem;
@@ -243,6 +244,38 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .price {
+            font-size: 2.75rem;
+        }
+
+        .price-wrapper {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            h5 {
+                margin-top: -0.75rem;
+            }
+        }
+
+        .valid-until {
+            .sub-text {
+                width: fit-content;
+                padding: 0 1rem;
+                border-radius: 0.35rem;
+
+                &.expired {
+                    background: #FEDCCB;
+                }
+
+                &.active {
+                    background: #F1FBEB;
+                }
+            }
+        }
 
         &>div {
             display: flex;
@@ -259,7 +292,7 @@
 
         span {
             font-size: 0.75rem;
-            color: #545454;
+            color: #1e1e1e;
             font-weight: 300;
         }
     }

@@ -7,6 +7,7 @@ import ArrowDown from "@/public/icons/24px/arrow-down.svg";
 import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
 import { formatDate } from "@/common/utils/date.utils";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
+import RightModalComponent from "@/common/components/right-form-modal/right-modal.component";
 
 export default function QPreviewComponent() {
   const { quote } = useQuoteContext();
@@ -20,7 +21,7 @@ export default function QPreviewComponent() {
   const details = quote?.details[0];
 
   return (
-    <div className={"table-quote-preview-wrapper slide-in-top"}>
+    <div className={"table-quote-preview-wrapper"}>
       {quote && (
         <table className={"table-quote-preview"}>
           <thead>
@@ -41,7 +42,7 @@ export default function QPreviewComponent() {
               </td>
               <td className={"pickup"}>
                 <div className={"location main-text"}>
-                  <ArrowUp />
+                  {/*<ArrowUp />*/}
                   {pickupAddress[0].address}
 
                   {pickupAddress.length >= 2 && (
@@ -64,7 +65,7 @@ export default function QPreviewComponent() {
               </td>
               <td className={"drop"}>
                 <div className={"location main-text"}>
-                  <ArrowDown />
+                  {/*<ArrowDown />*/}
                   {dropAddress[0].address}
 
                   {dropAddress.length >= 2 && (
@@ -87,30 +88,51 @@ export default function QPreviewComponent() {
               </td>
               <td>
                 <div className={"main-text"}>
-                  {numberCommaFormat(details.weight)} {details.weight_unit}
+                  {numberCommaFormat(details?.weight)} {details?.weight_unit}
                 </div>
                 <div
                   className={"sub-text"}
                   style={{
                     textTransform: "capitalize",
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  {details.packing_method?.replace("_", " ")}/
-                  {details.commodity}
+                  {details?.packing_method?.replace("_", " ") ??
+                    details?.quantity + " items"}
+                </div>
+
+                <div
+                  className={"sub-text"}
+                  style={{
+                    textTransform: "capitalize",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {details?.commodity}
                 </div>
               </td>
               <td>
                 <div className={"main-text"}>
-                  {quote?.references?.length
-                    ? quote?.references[0]
-                    : "#0000000000"}
+                  {details.references?.length ? details.references[0] : "N/A"}
                 </div>
-                <div className={"sub-text"}>
+                <div
+                  className={"sub-text"}
+                  style={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   Value:
                   {" " +
-                    numberCommaFormat(details.goods_value) +
-                    ` ${quote?.currency} /`}
-                  {" " + quote?.quote_type.replace("_", " ")}
+                    numberCommaFormat(details?.goods_value) +
+                    ` ${quote.currency}`}
+                </div>
+                <div
+                  className={"sub-text"}
+                  style={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {" " + quote.quote_type.replace("_", " ")}
                 </div>
               </td>
               <td>

@@ -24,26 +24,26 @@
         padding-left: 1.25rem;
         background: white;
         height: 3.75rem;
-        border-top: 1px solid #545454;
-        border-bottom: 1px solid #545454;
+        border-top: 1px solid #1e1e1e;
+        border-bottom: 1px solid #1e1e1e;
         border-collapse: collapse;
     }
 
     tr th {
         font-size: 1rem;
-        color: #545454;
+        color: #1e1e1e;
         font-weight: 400;
     }
 
     tr>th:nth-child(1){
         border-radius: 1rem 0 0 1rem;
         border-right: 1px solid #EFEFEF;
-        border-left: 1px solid #545454;
+        border-left: 1px solid #1e1e1e;
     }
 
     tr>th:nth-last-child(1){
         border-radius: 0 1rem 1rem 0;
-        border-right: 1px solid #545454;
+        border-right: 1px solid #1e1e1e;
     }
 
     tr>td:nth-child(1){
@@ -68,7 +68,7 @@
         overflow-x: scroll;
 
         &::-webkit-scrollbar-thumb{
-            background: #0020DD;
+            background: #3A56EA;
             border-radius: 1rem;
         }
 

@@ -15,19 +15,23 @@ import { toShortId } from "@/common/utils/data-convert.utils";
 interface QuoteContextI {
   quote: any;
   setQuoteId: Dispatch<SetStateAction<string>>;
+  setIsMissingData: Dispatch<SetStateAction<string>>;
   getRequest: (request_id: string) => any;
   breadcrumbs: any[];
   refreshBreadcrumbs: () => void;
   requests: any;
+  isMissingData: string;
 }
 
 const defaultContextValues: QuoteContextI = {
   quote: {},
   setQuoteId: () => {},
   getRequest: () => {},
+  setIsMissingData: () => {},
   breadcrumbs: [],
   refreshBreadcrumbs: () => {},
   requests: [],
+  isMissingData: "",
 };
 
 export const QuoteContext = createContext(defaultContextValues);
@@ -36,6 +40,7 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
   const [quote, setQuote] = useState<any>(null);
   const [requests, setRequests] = useState([]);
   const [quoteId, setQuoteId] = useState();
+  const [isMissingData, setIsMissingData] = useState("");
   const [breadcrumbs, setBreadcrumbs] = useState<any>([
     {
       title: "Quotes",
@@ -127,6 +132,8 @@ export const QuoteContextProvider = ({ children }: { children: ReactNode }) => {
           breadcrumbs,
           refreshBreadcrumbs,
           requests,
+          isMissingData,
+          setIsMissingData,
         } as QuoteContextI
       }
     >

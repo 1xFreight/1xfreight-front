@@ -14,7 +14,7 @@
         margin-bottom: 8rem;
 
         &::-webkit-scrollbar-thumb{
-            background: #0020DD;
+            background: #3A56EA;
             border-radius: 1rem;
         }
 
@@ -55,7 +55,7 @@
             position: absolute;
             width: 2px;
             height: 100%;
-            background: #0020DD;
+            background: #3A56EA;
             top: 0;
             left: 1.5rem;
         }
@@ -70,12 +70,12 @@
             width: 3rem;
             height: 3rem;
             aspect-ratio: 1/1;
-            border: 2px solid #0020DD;
+            border: 2px solid #3A56EA;
             border-radius: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #0020DD;
+            color: #3A56EA;
             font-size: 1.5rem;
             position: relative;
             background: white;
@@ -90,15 +90,15 @@
             }
 
             &.current {
-                background: #0020DD;
+                background: #3A56EA;
                 color: white;
-                border-color: #0020DD;
+                border-color: #3A56EA;
             }
 
             &.checked {
-                background: #0020DD;
-                border-color: #0020DD;
-                color: #0020DD;
+                background: #3A56EA;
+                border-color: #3A56EA;
+                color: #3A56EA;
 
                 & svg {
                     display: flex;
@@ -107,7 +107,7 @@
         }
 
         & .step-title {
-            color: #545454;
+            color: #1e1e1e;
             font-size: 1rem;
             font-weight: 500;
         }

@@ -1,9 +1,14 @@
 import { generatePickHours } from "@/common/utils/time.utils";
 import SwitchComponent from "@/common/components/slider/switch.component";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
 
 const defaultLocationShift = "1:00 AM - 1:00 AM";
-export default function LocationOpenHoursComponent({ defaultData, index }) {
+export default function LocationOpenHoursComponent({
+  defaultData,
+  index,
+  disableExistingData = false,
+}) {
   const [locationOpenHours, setLocationOpenHours] = useState({
     monday: defaultLocationShift,
     tuesday: defaultLocationShift,
@@ -105,16 +110,91 @@ export default function LocationOpenHoursComponent({ defaultData, index }) {
   };
 
   const [formattedOpenHoursString, setFormattedOpenHoursString] = useState(
-    formatLocationOpenHours(),
+    defaultData?.open_hours ?? formatLocationOpenHours(),
   );
 
   useEffect(() => {
-    setFormattedOpenHoursString(formatLocationOpenHours());
+    setFormattedOpenHoursString(
+      defaultData?.open_hours ?? formatLocationOpenHours(),
+    );
   }, [locationOpenHours]);
 
   return (
     <div className={"location-details"}>
       <h3>Location Details:</h3>
+
+      <div
+        style={{
+          display: "inline-flex",
+        }}
+      >
+        <div>
+          <h5>Company name:</h5>
+          <input
+            type={"text"}
+            placeholder={"Type here..."}
+            name={"company_name"}
+            defaultValue={defaultData?.company_name}
+            disabled={!!defaultData?.company_name && disableExistingData}
+          />
+        </div>
+
+        <div>
+          <h5>Contact name:</h5>
+          <input
+            type={"text"}
+            placeholder={"Type here..."}
+            name={"contact_name"}
+            defaultValue={defaultData?.contact_name}
+            disabled={!!defaultData?.contact_name && disableExistingData}
+          />
+        </div>
+
+        <div>
+          <h5>Contact phone:</h5>
+
+          <InputMask
+            mask="(999) 999-9999"
+            placeholder="(123) 456-7890"
+            className="phone-input"
+            defaultValue={defaultData?.contact_phone}
+            disabled={!!defaultData?.contact_phone && disableExistingData}
+            required
+          >
+            {(inputProps) => (
+              <input
+                {...inputProps}
+                type={"text"}
+                name={"contact_phone"}
+                disabled={!!defaultData?.contact_phone && disableExistingData}
+              />
+            )}
+          </InputMask>
+        </div>
+
+        <div>
+          <h5>
+            Contact email: <span>(optional)</span>
+          </h5>
+          <input
+            type={"text"}
+            placeholder={"Type here..."}
+            name={"contact_email"}
+            defaultValue={defaultData?.contact_email}
+            disabled={!!defaultData?.contact_email && disableExistingData}
+          />
+        </div>
+
+        <input
+          type={"text"}
+          name={"open_hours"}
+          style={{
+            display: "none",
+          }}
+          value={formattedOpenHoursString}
+          readOnly
+        />
+      </div>
 
       <div className={"formatted-open-hours-wrapper"}>
         {formattedOpenHoursString.split(",").map((openHoursLine) => (
@@ -124,7 +204,13 @@ export default function LocationOpenHoursComponent({ defaultData, index }) {
         ))}
       </div>
 
-      <div className={"open-hours-wrapper"}>
+      <div
+        className={"open-hours-wrapper"}
+        style={{
+          display:
+            disableExistingData && defaultData?.open_hours ? "none" : "flex",
+        }}
+      >
         <div className={"open-hours-time"}>
           <div>
             <h5>Ready by: </h5>
@@ -229,67 +315,6 @@ export default function LocationOpenHoursComponent({ defaultData, index }) {
         >
           save
         </button>
-      </div>
-
-      <div
-        style={{
-          display: "inline-flex",
-        }}
-      >
-        <div>
-          <h5>Company name:</h5>
-          <input
-            type={"text"}
-            placeholder={"Type here..."}
-            required
-            name={"company_name"}
-            defaultValue={defaultData?.company_name}
-          />
-        </div>
-
-        <div>
-          <h5>Contact name:</h5>
-          <input
-            type={"text"}
-            placeholder={"Type here..."}
-            required
-            name={"contact_name"}
-            defaultValue={defaultData?.contact_name}
-          />
-        </div>
-
-        <div>
-          <h5>Contact phone:</h5>
-          <input
-            type={"text"}
-            placeholder={"Type here..."}
-            required
-            name={"contact_phone"}
-            defaultValue={defaultData?.contact_phone}
-          />
-        </div>
-
-        <div>
-          <h5>
-            Contact email: <span>(optional)</span>
-          </h5>
-          <input
-            type={"text"}
-            placeholder={"Type here..."}
-            name={"contact_email"}
-            defaultValue={defaultData?.contact_email}
-          />
-        </div>
-
-        <input
-          type={"text"}
-          name={"open_hours"}
-          style={{
-            display: "none",
-          }}
-          value={formattedOpenHoursString}
-          readOnly
-        />
       </div>
     </div>
   );

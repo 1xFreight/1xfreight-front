@@ -79,10 +79,14 @@ export const RegisterQuoteContextProvider = ({
     PageStateEnum.INVALID,
   );
   const [dataCollector, setDataCollector] = useState<Array<any>>([]);
-  const { session } = useStore();
+  const { session, getFromStore } = useStore();
 
   const getLastDataDebounced = useDebouncedCallback(() => {
-    getWithAuth("/quote?limit=1").then((res) => {
+    getWithAuth(
+      `/quote?limit=1&sort=${JSON.stringify({
+        createdAt: -1,
+      })}`,
+    ).then((res) => {
       let _default = {};
       let addresses = [];
       if (session.auto_commodity) {
@@ -184,7 +188,22 @@ export const RegisterQuoteContextProvider = ({
   }, [canChangePage]);
 
   useEffect(() => {
+    const getQuoteSettings = getFromStore("get-quote-settings");
+
+    console.log("SETTINGS");
+    console.log(getQuoteSettings);
+
+    if (getQuoteSettings) {
+      addData({
+        form: "default",
+        data: getQuoteSettings.data,
+      });
+      setType(getQuoteSettings.data.type);
+      setStepNumber(3);
+    }
+
     if (
+      !getQuoteSettings &&
       session &&
       (session.auto_commodity ||
         session.auto_delivery ||

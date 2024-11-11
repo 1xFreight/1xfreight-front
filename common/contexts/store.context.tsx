@@ -17,6 +17,7 @@ interface StoreDataI {
 interface StoreContextI {
   addToStore: (newData: StoreDataI) => any;
   getFromStore: (name: string) => any;
+  deleteFromStore: (name: string) => any;
   session: any;
   setSession: Dispatch<SetStateAction<any>>;
   setFilters: Dispatch<SetStateAction<any>>;
@@ -31,6 +32,7 @@ interface StoreContextI {
 const defaultContextValues = {
   addToStore: () => {},
   getFromStore: () => {},
+  deleteFromStore: () => {},
   setSession: () => {},
   setFilters: () => {},
   showToast: () => {},
@@ -94,6 +96,12 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
     setStore((prevState) => [...prevState, newData]);
   };
 
+  const deleteFromStore = (name: string) => {
+    setStore((prevState) => {
+      return prevState.filter((store) => store.name !== name);
+    });
+  };
+
   const getFromStore = (dataName: string) => {
     const _store = store.find(({ name }) => name === dataName);
     return _store ? _store : null;
@@ -113,6 +121,7 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
         setFilters,
         triggerUpdate,
         setTriggerUpdate,
+        deleteFromStore,
       }}
     >
       {children}

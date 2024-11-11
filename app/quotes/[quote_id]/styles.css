@@ -1,3 +1,125 @@
+.missing-data-address-block {
+    margin-bottom: 2rem;
+    border: 1px solid #e8e8e8;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+
+    h3 {
+        margin-bottom: 1rem;
+    }
+
+    input,select {
+        height: 3rem;
+        padding-left: 1rem;
+    }
+
+    input[type=checkbox] {
+        height: 1.5rem;
+    }
+
+    .address-details {
+        display: flex;
+        flex-wrap: wrap;
+        /*flex-direction: column;*/
+        gap: 1rem;
+        width: calc(30rem + 1rem);
+
+        input {
+            max-width: 15rem;
+            width: 100%;
+
+            &:nth-child(1) {
+                max-width: calc(30rem + 1rem);
+            }
+        }
+    }
+
+    .location-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1rem;
+
+        .formatted-open-hours {
+            display: inline-flex;
+        }
+
+        h3 {
+            display: none;
+        }
+
+        .formatted-open-hours {
+            background: rgba(84, 84, 84, 0.1);
+            height: 2rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 1rem;
+            width: fit-content;
+            border-radius: 0.5rem;
+            color: black;
+
+        }
+
+        .open-hours-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .add-open-hours {
+            height: 3.5rem;
+            width: 31rem;
+            border-radius: 0.75rem;
+        }
+
+        .open-hours-days-checkboxes {
+            display: inline-flex;
+            gap: 1rem;
+        }
+
+        .open-hours-time {
+            display: inline-flex;
+            gap: 1rem;
+        }
+
+        input,select {
+            width: 15rem;
+            padding-left: 1rem;
+        }
+
+        &>div {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .open-days {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            border: 2px solid #dedede;
+            border-radius: 0.5rem;
+            min-height: 4rem;
+
+            h5 {
+                margin-bottom: -0.25rem;
+                text-align: center;
+            }
+
+            input {
+                width: 3.5rem;
+            }
+
+            .open-days-item {
+                display: flex;
+                flex-direction: column;
+                /*align-items: center;*/
+                width: fit-content;
+                justify-content: center;
+            }
+        }
+    }
+}
+
 .quote-bids-page {
     width: 100%;
     display: flex;
@@ -72,10 +194,27 @@
         position: relative;
         z-index: 1;
         max-width: 1760px;
+        table-layout: fixed;
+
+        tr th:nth-child(1) {
+            width: 5rem;
+        }
+
+        tr th:nth-child(6) {
+            width: 15rem;
+        }
+
+        tr th:nth-child(4),tr th:nth-child(5) {
+            width: 12rem;
+        }
+
+        tr th:nth-child(2), tr th:nth-child(3) {
+            width: 25rem;
+        }
 
         tr td .price .full-price::after {
             content: "00";
-            color: #545454;
+            color: #1e1e1e;
             font-size: 0.875rem;
             position: absolute;
             top: -0.2rem
@@ -159,7 +298,7 @@
         }
 
         .price span, .price .currency {
-            color: #545454;
+            color: #1e1e1e;
         }
 
         .price .currency {
@@ -221,7 +360,7 @@
 
             div {
                 font-weight: 600;
-                color: #545454;
+                color: #1e1e1e;
                 display: flex;
                 height: 100%;
                 align-items: center;
@@ -280,7 +419,7 @@
             overflow-x: scroll;
 
             &::-webkit-scrollbar-thumb{
-                background: #0020DD;
+                background: #3A56EA;
                 border-radius: 1rem;
             }
 
@@ -327,14 +466,14 @@
 
         tr td .price .full-price::after {
             content: "00";
-            color: #545454;
+            color: #1e1e1e;
             font-size: 0.875rem;
             position: absolute;
             top: -0.2rem
         }
 
          .price {
-            color: #0020DD;
+            color: #3A56EA;
             font-size: 1.5rem;
             font-weight: 600;
             display: flex;
@@ -345,7 +484,7 @@
         }
 
          .price span, .price .currency {
-            color: #545454;
+            color: #1e1e1e;
         }
 
          .price .currency {
@@ -373,7 +512,7 @@
 
             .view {
                 background: transparent;
-                color: #0020DD;
+                color: #3A56EA;
                 border: 1px solid #A7A7A7;
             }
         }

@@ -154,7 +154,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                     </td>
                     <td>
                       <div className={"main-text"}>
-                        {references?.length ? references[0] : "#0000000000"}
+                        {references?.length ? references[0] : "N/A"}
                       </div>
                       <div className={"sub-text"}>
                         Value:

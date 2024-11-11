@@ -11,7 +11,7 @@
 
     .page-header h4{
         font-size: 1.25rem;
-        color: #545454;
+        color: #1e1e1e;
         z-index: 5;
     }
 
@@ -33,7 +33,7 @@
             padding: 0 1rem;
             background: white;
             border-radius: 0.75rem;
-            color: #545454;
+            color: #1e1e1e;
             font-size: 0.75rem;
             gap: 1rem;
             border: 1px solid #A7A7A7;
@@ -72,63 +72,6 @@
                 background: transparent;
             }
 
-        .sort-table-header {
-            border: 1px solid transparent;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-
-            .sort-details {
-                display: flex;
-                flex-direction: column;
-                position: relative;
-                justify-content: center;
-                width: calc(100% - 3.5rem);
-
-                span {
-                    font-weight: 400;
-                    opacity: 0;
-                    position: absolute;
-                    transform: translateY(70%);
-                    left: 0;
-                    color: #0020DD;
-                    transition: 90ms ease-in-out;
-                    white-space: nowrap;
-                    z-index: 1;
-                }
-            }
-
-            &:hover, &.active {
-                /*border: 1px solid red;*/
-
-                .sort-details {
-                    span {
-                        opacity: 0.5;
-                    }
-                }
-
-                select {
-                    opacity: 1;
-                }
-            }
-
-            select {
-                width: 3.2rem;
-                text-align: center;
-                font-size: 0.8rem;
-                color: #0020DD;
-                cursor: pointer;
-                height: 1.4rem;
-                opacity: 0;
-                transition: 90ms ease-in-out;
-
-                &:focus-visible {
-                    /*border: 2px solid #e8e8e8 !important;*/
-                    outline: unset;
-                }
-            }
-        }
 
         .id-number {
             font-size: 0.9rem;
@@ -178,7 +121,7 @@
                     display: none;
 
                     path {
-                        fill: #545454;
+                        fill: #1e1e1e;
                         scale: 0.6;
                     }
                 }
@@ -196,7 +139,7 @@
                     display: none;
 
                     path {
-                        fill: #545454;
+                        fill: #1e1e1e;
                         scale: 0.65;
                     }
                 }
@@ -231,7 +174,7 @@
         }
 
         tr th:nth-child(2) {
-            width: 8rem;
+            width: 7.8rem;
         }
 
         tr th:nth-child(3) {
@@ -313,7 +256,7 @@
         border-right: 1px solid #EFEFEF;
 
         div {
-            color: #545454;
+            color: #1e1e1e;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -397,14 +340,14 @@
         scale: 0.75;
 
         &.active svg{
-            fill: #0020DD;
+            fill: #3A56EA;
         }
 
         svg {
             cursor: pointer;
 
             &:hover path {
-                stroke: #0020DD;
+                stroke: #3A56EA;
             }
         }
     }
@@ -477,7 +420,7 @@
 
      p {
         font-size: 0.875rem;
-        color: #545454;
+        color: #1e1e1e;
     }
 
     .refresh {
@@ -504,12 +447,12 @@
         border-radius: 0.5rem;
         /*background: white;*/
         padding:0 1rem;
-        /*color: #545454;*/
+        /*color: #1e1e1e;*/
         gap: 0.5rem;
         font-size: 0.8rem;
 
         /*svg path{*/
-        /*    fill: #545454;*/
+        /*    fill: #1e1e1e;*/
         /*}*/
     }
 

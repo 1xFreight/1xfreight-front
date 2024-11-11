@@ -21,7 +21,7 @@
         /*border-right: 1px solid #EFEFEF;*/
         font-weight: 700;
         font-size: 0.75rem;
-        color: #545454;
+        color: #1e1e1e;
         box-sizing: border-box;
         cursor: pointer;
         /*border-left: 1px solid transparent;*/
@@ -47,7 +47,7 @@
     }
 
     .type-selector:hover {
-        /*border: 1px solid #0020DD;*/
+        /*border: 1px solid #3A56EA;*/
         background: #e3e3e3;
         color: black;
         box-shadow: -1px 1px 1px 0px rgba(80, 80, 80, 0.14);
@@ -56,11 +56,11 @@
 
     .type-selector.active {
         background: white;
-        color: #0020DD;
+        color: #3A56EA;
         box-shadow: -1px 1px 0px 0px rgba(110, 120, 255, 0.05);
         text-shadow: 0 0 1px rgba(0, 32, 221, 0.15);
         /*font-weight: 800;*/
-        /*border-right: 1px solid #0020DD;*/
+        /*border-right: 1px solid #3A56EA;*/
         /*border-bottom: 1px solid #ececec;*/
     }
 }

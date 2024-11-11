@@ -8,6 +8,7 @@ import Cross from "@/public/icons/24px/cross.svg";
 import useStore from "@/common/hooks/use-store.context";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PackingTypeEnum } from "@/common/enums/packing-type.enum";
+import InputMask from "react-input-mask";
 
 enum PackingMethodEnum {
   PALLETIZED = "Palletized",
@@ -171,7 +172,7 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
                   name={"load_number"}
                   placeholder={"0"}
                   required
-                  defaultValue={_defaultDetails?.load_number}
+                  defaultValue={_defaultDetails?.load_number ?? 1}
                 />
               </div>
 
@@ -410,34 +411,40 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
 
             <div>
               <h5>Emergency Contact Phone</h5>
-              <input
-                type={"tel"}
-                name={"emergency_phone"}
-                placeholder={"Type here..."}
-                pattern="^(\+?1)?[0-9]{9,10}$"
-                title={"Invalid phone number, +1 XXXX XXXXXX"}
-                onChange={(ev) =>
-                  (ev.target.value = ev.target.value.replace(/\s/g, ""))
-                }
+              <InputMask
+                mask="(999) 999-9999"
+                placeholder="(123) 456-7890"
+                className="phone-input"
                 defaultValue={_defaultDetails?.emergency_phone1}
-              />
+              >
+                {(inputProps) => (
+                  <input
+                    {...inputProps}
+                    type={"text"}
+                    name={"emergency_phone"}
+                  />
+                )}
+              </InputMask>
             </div>
 
             <div>
               <h5>
                 Emergency Contact Phone <span>(optional)</span>
               </h5>
-              <input
-                type={"text"}
-                name={"emergency_phone2"}
-                placeholder={"Type here..."}
-                pattern="^(\+?1)?[0-9]{9,10}$"
-                title={"Invalid phone number, +1 XXXX XXXXXX"}
-                onChange={(ev) =>
-                  (ev.target.value = ev.target.value.replace(/\s/g, ""))
-                }
-                defaultValue={_defaultDetails?.emergency_phone2}
-              />
+              <InputMask
+                mask="(999) 999-9999"
+                placeholder="(123) 456-7890"
+                className="phone-input"
+                defaultValue={_defaultDetails?.emergency_phone1}
+              >
+                {(inputProps) => (
+                  <input
+                    {...inputProps}
+                    type={"text"}
+                    name={"emergency_phone2"}
+                  />
+                )}
+              </InputMask>
             </div>
           </div>
 

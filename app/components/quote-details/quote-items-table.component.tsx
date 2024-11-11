@@ -28,7 +28,7 @@ export default function QuoteItemsTableComponent({
             {items.map((item, index) => (
               <Fragment key={index}>
                 <tr className={`${item.hazardous_material && "hazard-item"}`}>
-                  <td>{index + 1}</td>
+                  <td>{index + 1}.</td>
                   <td>
                     <div className={"main-text"}>{item.quantity}</div>
                   </td>
@@ -77,7 +77,10 @@ export default function QuoteItemsTableComponent({
                     </td>
                     <td colSpan={5}>
                       <h6>
-                        Emergency Contact: {item.emergency_contact},
+                        Emergency Contact:{" "}
+                        {item.emergency_contact
+                          ? item.emergency_contact + ", "
+                          : ""}
                         {item.emergency_phone} {item.emergency_phone2}
                       </h6>
                     </td>
@@ -87,20 +90,25 @@ export default function QuoteItemsTableComponent({
             ))}
           </tbody>
         </table>
-        <div className={"items-total-details"}>
-          <h3>
-            Est. skid spots: <span>{summary.estimatedSkidSpots}</span>
-          </h3>
-          <h3>
-            Total volume: <span>{summary.totalVolume.toFixed(2)}</span>
-          </h3>
-          <h3>
-            Total weight: <span>{summary.totalWeight}</span>
-          </h3>
-          <h3>
-            Total density: <span>{summary.totalDensity.toFixed(2)}</span>
-          </h3>
-        </div>
+        {/*<div className={"items-total-details"}>*/}
+        {/*  <h3>*/}
+        {/*    Est. skid spots: <span>{summary.estimatedSkidSpots}</span>*/}
+        {/*  </h3>*/}
+        {/*  <h3>*/}
+        {/*    Total volume: <span>{summary.totalVolume.toFixed(2)} </span>*/}
+        {/*    <span className={"unit"}>ft</span>*/}
+        {/*    <span className={"to-degree"}>3</span>*/}
+        {/*  </h3>*/}
+        {/*  <h3>*/}
+        {/*    Total weight: <span>{summary.totalWeight}</span>*/}
+        {/*    <span className={"unit"}>{summary.weight_unit}</span>*/}
+        {/*  </h3>*/}
+        {/*  <h3>*/}
+        {/*    Total density: <span>{summary.totalDensity.toFixed(2)}</span>*/}
+        {/*    <span className={"unit"}>{summary.weight_unit}/ft</span>*/}
+        {/*    <span className={"to-degree"}>3</span>*/}
+        {/*  </h3>*/}
+        {/*</div>*/}
       </div>
     </div>
   );

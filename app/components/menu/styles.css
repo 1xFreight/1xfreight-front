@@ -5,11 +5,125 @@
     background: white;
     align-items: center;
     /*overflow: hidden;*/
-    position: relative;
+    position: sticky;
     z-index: 300;
     border-bottom: 2px solid #e5e5e5;
     display: flex;
     justify-content: center;
+    top:0;
+    transition: height 0.3s ease, background-color 0.3s ease;
+
+    .navigation {
+        display: inline-flex;
+        align-items: center;
+
+        .logo-wrapper {
+            width: 10rem;
+            position: relative;
+            transition: all 150ms ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            height: 3rem;
+            overflow: visible;
+
+            .logo {
+                position: absolute;
+                top: 0;
+                left: 0;
+                transition: all 150ms ease-in-out;
+                height: 3rem;
+                overflow: visible;
+
+                svg {
+                    width: 100%;
+
+                    path {
+                        width: 100%;
+                    }
+                }
+
+                &.full-logo {
+                    opacity: 1;
+                    transition: all 150ms ease-in-out;
+
+                    svg {
+                        height: 2rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    &.scrolled {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+
+        .navigation .logo-wrapper {
+            width: 5rem;
+            display: flex;
+            align-items: center;
+            height: 2.5rem;
+
+            .logo {
+                padding: 0;
+                height: 2.5rem;
+                width: 100%;
+                background: transparent;
+
+                &:hover {
+                    background: #777777;
+                }
+
+                svg {
+                    scale: 0.9;
+                }
+
+            }
+        }
+
+        .admin-menu .new-demo, .seller-menu .get-quote {
+            height: 2.5rem;
+            width: 9rem;
+            font-size: 0.75rem;
+            background: #CAD5FD;
+            border: 1px solid rgba(58, 86, 234, 0.5);
+            color: #3A56EA;
+
+            svg path{
+                stroke: #3A56EA;
+            }
+
+            &:hover {
+                background: white;
+            }
+        }
+
+        .navigation .item {
+            height: 2rem;
+            transition: all 100ms ease-in-out;
+            font-size: 0.95rem;
+
+            &.active {
+                border: 2px dashed transparent;
+                color: #3A56EA;
+
+                svg {
+                    stroke: #3A56EA;
+                }
+            }
+        }
+
+        .user .user-name {
+            width: 0 !important;
+        }
+
+        .avatar {
+            margin-right: 0 !important;
+            border-right: 0;
+        }
+
+    }
 
     &>div {
         display: flex;
@@ -25,7 +139,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10rem;
+    width: 100%;
     transition: all 250ms ease-in-out;
 
     &:hover {
@@ -34,19 +148,11 @@
             filter: grayscale(1) invert(1) drop-shadow(0 1px 1px #888888);
         }
     }
-
-    svg {
-        /*width: 12rem;*/
-        height: 2rem;
-        /*border: 3px solid #EFEFEF;*/
-        /*opacity: 0.5;*/
-
-    }
 }
 
 .main-menu .user-menu {
     display: flex;
-    gap: 2rem;
+    /*gap: 2rem;*/
     align-items: center;
     height: 3.45rem;
 
@@ -54,32 +160,22 @@
         cursor: pointer;
 
         &:hover {
-
             svg path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
-
         }
 
         svg {
             path {
-                fill: #545454;
+                fill: #1e1e1e;
             }
         }
     }
 }
 
-.main-menu .user-menu .user-photo {
-    width: 3.375rem;
-    height: 3.375rem;
-    border: 1px solid #EFEFEF;
-    border-radius: 100%;
-    box-sizing: border-box;
-}
-
 .main-menu .user-menu .user {
     display: flex;
-    gap: .5rem;
+    /*gap: .5rem;*/
     color: #606060;
     letter-spacing: 0.0625rem;
     border: 2px solid #A7A7A7;
@@ -87,6 +183,11 @@
     overflow: hidden;
     font-weight: 500;
     background: #EFEFEF;
+    height: 3.1rem;
+
+    .avatar {
+        margin-right: 0.5rem;
+    }
 }
 
 .main-menu .user-menu .user-name div:nth-child(2){
@@ -101,6 +202,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: all 150ms ease-in-out; /* Smooth transition */
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .main-menu .user-menu .open-extra-menu {
@@ -122,7 +226,7 @@
     right: 5%;
     height: 1.3125rem;
     min-width: 1.3125rem;
-    background: #0020DD;
+    background: #3A56EA;
     color: white;
     border-radius: 100%;
     font-size: 0.625rem;
@@ -154,7 +258,7 @@
     height: 3rem;
     display: flex;
     gap: 1rem;
-    background: #0020DD;
+    background: #3A56EA;
     color: white;
     align-items: center;
     padding: 0 1.5rem;
@@ -164,6 +268,9 @@
     font-weight: 700;
     font-size: 0.85rem;
     border: 2px solid transparent;
+    width: 11rem;
+    white-space: nowrap;
+    justify-content: center;
 
     svg {
         stroke-width: 1px;
@@ -173,10 +280,10 @@
     &:hover {
         border: 2px solid #EFEFEF;
         background: white;
-        color: #0020DD;
+        color: #3A56EA;
 
         svg {
-            stroke: #0020DD;
+            stroke: #3A56EA;
         }
     }
 }
@@ -189,11 +296,11 @@
 
 .admin-menu .item:hover {
     opacity: 0.75;
-    color: #0020DD;
+    color: #3A56EA;
 }
 
 .admin-menu .item:hover svg path {
-    fill: #0020DD;
+    fill: #3A56EA;
 }
 
 .admin-menu .new-demo:hover {
@@ -205,16 +312,19 @@
     gap: 0.5rem;
     transition: all 250ms ease-in-out;
     align-items: center;
-    color: #545454;
+    color: #1e1e1e;
     font-weight: 600;
     padding: 0.5rem 0.75rem;
     border-radius: 00.5rem;
     border: 2px solid transparent;
+    height: 3rem;
+    font-size: 1rem;
+    /*max-width: 10rem;*/
 
     svg {
         transform: scale(0.8);
         stroke-width: 1px;
-        stroke: #545454;
+        stroke: #1e1e1e;
     }
 
     &.active {
@@ -229,15 +339,15 @@
 
 .main-menu .navigation .item:hover {
     /*opacity: 0.75;*/
-    color: #0020DD;
+    color: #3A56EA;
     background: #EFEFEF;
 
 }
 
 .main-menu .navigation .item:hover svg {
-    stroke: #0020DD;
+    stroke: #3A56EA;
     path {
-        fill: #0020DD;
+        fill: #3A56EA;
     }
 }
 
@@ -250,7 +360,7 @@
 
     /*.menu-item-analytics:hover svg {*/
     /*    path:nth-child(1) {*/
-    /*        stroke: #0020DD; !* Make sure the stroke color is applied *!*/
+    /*        stroke: #3A56EA; !* Make sure the stroke color is applied *!*/
     /*        fill: none; !* Remove fill to only see the stroke *!*/
     /*        stroke-width: 1; !* Define the stroke width *!*/
     /*        animation: AnalyticsIconAnim 3.5s ease-in-out forwards;*/
@@ -274,7 +384,7 @@
     /*    }*/
 
     /*    path:nth-child(2) {*/
-    /*        stroke: #0020DD; !* Culoarea stroke-ului pentru linii *!*/
+    /*        stroke: #3A56EA; !* Culoarea stroke-ului pentru linii *!*/
     /*        fill: none;*/
     /*        stroke-width: 1;*/
     /*        stroke-dasharray: 1000;*/
@@ -321,13 +431,13 @@
 @keyframes AnalyticsIconAnim {
     0% {
         stroke-dashoffset: 1000;
-        stroke: #0020DD;
+        stroke: #3A56EA;
         fill: transparent;
     }
     100% {
         stroke-dashoffset: 0;
-        stroke: #0020DD;
-        fill: #0020DD; /* Optional: keep fill transparent if you want to see only the line */
+        stroke: #3A56EA;
+        fill: #3A56EA; /* Optional: keep fill transparent if you want to see only the line */
     }
 }
 

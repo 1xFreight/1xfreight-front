@@ -20,7 +20,7 @@
             border:2px solid #D9D9D9;
 
             svg path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
 
@@ -41,7 +41,7 @@
             stroke-width: 0;
 
             path {
-                fill: #545454;
+                fill: #1e1e1e;
             }
         }
 
@@ -67,7 +67,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #545454;
+        color: #1e1e1e;
         /*background: white;*/
     }
 }

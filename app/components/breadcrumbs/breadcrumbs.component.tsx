@@ -25,7 +25,7 @@ function BreadcrumbsComponent({ items }: BreadcrumbsI) {
               <Link href={href ?? ""}>
                 <p
                   style={{
-                    color: index === items.length - 1 ? "#545454" : "inherit",
+                    color: index === items.length - 1 ? "#1e1e1e" : "inherit",
                   }}
                 >
                   {title}

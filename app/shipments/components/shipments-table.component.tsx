@@ -9,82 +9,28 @@ import ExtraAddressWindowComponent from "@/common/components/extra-addresses-win
 import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { clearText, toShortId } from "@/common/utils/data-convert.utils";
 import Link from "next/link";
-import Cross from "@/public/icons/24px/cross.svg";
 import Calendar from "@/public/icons/24px/calendar.svg";
 import Point from "@/public/icons/35px/map-marker.svg";
 import ShipmentsTableHeader from "@/app/shipments/components/table-header.component";
 import { useDebouncedCallback } from "use-debounce";
-import {
-  deleteCache,
-  deleteCacheById,
-  postWithAuth,
-} from "@/common/utils/fetchAuth.util";
-import ToastTypesEnum from "@/common/enums/toast-types.enum";
-import { usePathname, useRouter } from "next/navigation";
-import useStore from "@/common/hooks/use-store.context";
-import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
-
-export function CancelLoadShipTable({ quote_id }) {
-  const { showToast } = useStore();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const cancelLoad = useDebouncedCallback(() => {
-    postWithAuth(`/quote/cancel/${quote_id}`, {}).then(async (response) => {
-      if (!response.ok) {
-        const errorData = await response.json();
-        return showToast({
-          type: ToastTypesEnum.ERROR,
-          text: errorData.message || "Something went wrong",
-          duration: 5000,
-        });
-      }
-
-      showToast({
-        type: ToastTypesEnum.SUCCESS,
-        text: "Quote was canceled",
-        duration: 5000,
-      });
-
-      deleteCache();
-      router.refresh();
-    });
-  }, 300);
-
-  return (
-    <>
-      <div className={"tooltip"}>
-        <button
-          className={"cancel"}
-          onClick={() => {
-            const confirmAction = document.getElementById(
-              `ship-table-cancel-load-${quote_id}`,
-            );
-            confirmAction.style.display = "flex";
-          }}
-        >
-          <Cross />
-        </button>
-        <span
-          className={"tooltiptext"}
-          style={{
-            right: 0,
-            left: "unset",
-          }}
-        >
-          Cancel
-        </span>
-      </div>
-      <ConfirmActionComponent
-        title={`Cancel load [${toShortId(quote_id)}] ?`}
-        id={`ship-table-cancel-load-${quote_id}`}
-        action={cancelLoad}
-      />
-    </>
-  );
-}
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { useRouter } from "next/navigation";
+import CancelLoadShipTable from "@/app/shipments/components/canel-ship-load.component";
+import { getCurrencySymbol } from "@/common/utils/currency";
 
 export default function ShipmentsTableComponent({ shipments }) {
+  const router = useRouter();
+
+  const prefetchQuoteURL = useDebouncedCallback(
+    (viewLink: string, prefetchQuoteId: string) => {
+      router.prefetch(viewLink);
+      getWithAuth(`/quote/shipments?limit=1&id=${prefetchQuoteId}`).then(
+        (data) => {},
+      );
+    },
+    50,
+  );
+
   return (
     <>
       <div className={"quotes-table-placeholder"}></div>
@@ -231,7 +177,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                                   display: "flex",
                                   gap: "0.5rem",
                                   textTransform: "uppercase",
-                                  color: "#545454",
+                                  color: "#1e1e1e",
                                   fontWeight: 500,
                                   opacity: 0.5,
                                 }}
@@ -306,12 +252,6 @@ export default function ShipmentsTableComponent({ shipments }) {
                       </td>
 
                       <td>
-                        {/*{alreadyArrivedDropAddresses.length === 0 && (*/}
-                        {/*  <>*/}
-                        {/*    <div className={"main-text"}>Awaiting</div>*/}
-                        {/*  </>*/}
-                        {/*)}*/}
-
                         {dropWithDate.length >= 1 && (
                           <>
                             <div
@@ -335,7 +275,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                                   display: "flex",
                                   gap: "0.5rem",
                                   textTransform: "uppercase",
-                                  color: "#545454",
+                                  color: "#1e1e1e",
                                   fontWeight: 500,
                                   opacity: 0.5,
                                 }}
@@ -416,7 +356,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                         <div className={"price"}>
                           <div className={"full-price"}>
                             <span>$</span>
-                            {numberCommaFormat(load_number * bid?.amount)}
+                            {numberCommaFormat(bid?.amount)}
                           </div>
                           <div className={"currency"}>{currency}</div>
                         </div>
@@ -432,7 +372,12 @@ export default function ShipmentsTableComponent({ shipments }) {
                           </div>
 
                           <div className={"tooltip"}>
-                            <Link href={`/shipments/${_id}`}>
+                            <Link
+                              href={`/shipments/${_id}`}
+                              onMouseEnter={() => {
+                                prefetchQuoteURL(`/shipments/${_id}`, _id);
+                              }}
+                            >
                               <button>
                                 <Doc />
                               </button>

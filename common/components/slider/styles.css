@@ -11,7 +11,7 @@
     padding: 0.07rem 0.1rem;
     transition: all 250ms ease-in-out;
     cursor: pointer;
-    outline: 1px solid #545454;
+    outline: 1px solid #1e1e1e;
 
     .slider-thumb {
         width: 1.65rem;
@@ -24,12 +24,12 @@
         border: 2px solid #ffffff;
     }
     &.active {
-        background: #0020DD;
-        /*border-color: #0020DD;*/
+        background: #3A56EA;
+        /*border-color: #3A56EA;*/
 
         .slider-thumb {
             margin-left: calc(3.5rem - 1.65rem);
-            /*background: #0020DD;*/
+            /*background: #3A56EA;*/
             /*border-color: #dcdcdc;*/
             /*outline-color: white;*/
         }

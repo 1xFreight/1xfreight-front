@@ -63,7 +63,7 @@ export default function EmailPage() {
             style={{
               fontSize: "14px",
               fontWeight: "500",
-              color: "#0020DD",
+              color: "#3A56EA",
             }}
           >
             FTL
@@ -146,7 +146,7 @@ export default function EmailPage() {
             style={{
               display: "flex",
               alignItems: "center",
-              color: "#0020DD",
+              color: "#3A56EA",
             }}
           >
             View Quote{" "}
@@ -161,14 +161,14 @@ export default function EmailPage() {
                 id="view-box"
                 width="24"
                 height="24"
-                fill="#0020DD"
+                fill="#3A56EA"
                 opacity="0"
               />
               <path
                 id="Shape"
                 d="M10.22,9.28a.75.75,0,0,1,0-1.06l2.72-2.72H.75A.75.75,0,0,1,.75,4H12.938L10.22,1.281A.75.75,0,1,1,11.281.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.75.75,0,0,1-1.061,0Z"
                 transform="translate(4.25 7.25)"
-                fill="#0020DD"
+                fill="#3A56EA"
               />
             </svg>
           </a>

@@ -59,7 +59,7 @@
     .title {
         font-size: 1.3rem;
         font-weight: 500;
-        color: #545454;
+        color: #1e1e1e;
     }
 
     .subtitle {
@@ -80,7 +80,7 @@
             display: flex;
             gap: 0.5rem;
             font-size: 0.85rem;
-            color: #545454;
+            color: #1e1e1e;
             font-weight: 600;
 
             &>div {
@@ -125,7 +125,7 @@
 
         .title2 {
             font-size: 1.1rem;
-            color: #545454;
+            color: #1e1e1e;
         }
 
         .big-number2 {

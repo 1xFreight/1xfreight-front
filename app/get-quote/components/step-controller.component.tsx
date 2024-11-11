@@ -2,9 +2,10 @@
 
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import React from "react";
+import { stepsMapping } from "@/app/get-quote/constants/steps-mapping";
 
 function StepControllerComponent() {
-  const { stepNumber, setStepNumber, validateAndGoForward, getData } =
+  const { stepNumber, setStepNumber, validateAndGoForward, type } =
     useRegisterQuoteContext();
 
   return (
@@ -19,7 +20,9 @@ function StepControllerComponent() {
             Back
           </button>
           <button className={"next-btn"} onClick={() => validateAndGoForward()}>
-            Next
+            {stepNumber === Object.keys(stepsMapping[type]).length
+              ? "Send"
+              : "Next"}
           </button>
         </div>
       )}

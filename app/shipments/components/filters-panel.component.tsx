@@ -1,10 +1,7 @@
 "use client";
 
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
-import {
-  StatusFilterEnum,
-  TypeFilterEnum,
-} from "@/app/quotes/components/filters-panel/filters-panel.component";
+import { TypeFilterEnum } from "@/app/quotes/components/filters-panel/filters-panel.component";
 import { memo, useEffect, useState } from "react";
 import StatusFilterDropdownComponent from "@/common/components/status-dropdown/status-filter-dropdown.component";
 import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
@@ -12,9 +9,14 @@ import SearchInputComponent from "@/common/components/search-input/search-input.
 import MoreFiltersComponent from "@/common/components/more-filters/more-filters.component";
 import Excel from "@/public/icons/20px/excel 1.svg";
 import { useDebouncedCallback } from "use-debounce";
-import { getWithAuth } from "@/common/utils/fetchAuth.util";
-import TableSortButtonComponent from "@/common/components/table-sort-button/table-sort-button.component";
 import useStore from "@/common/hooks/use-store.context";
+
+export enum CurrencyFilterEnum {
+  ALL = "ALL",
+  USD = "USD",
+  CAD = "CAD",
+  MXN = "MXN",
+}
 
 function FiltersPanelComponent({ totalQuotes }) {
   const [type, setType] = useState<keyof typeof TypeFilterEnum>(
@@ -23,6 +25,7 @@ function FiltersPanelComponent({ totalQuotes }) {
   const [status, setStatus] = useState<Array<QuoteStatusEnum>>([]);
   const [searchText, setSearchText] = useState("");
   const { setFilters, filters } = useStore();
+  const [currency, setCurrency] = useState(CurrencyFilterEnum.ALL);
 
   useEffect(() => {
     const formattedType = type === TypeFilterEnum.ALL ? "" : type;
@@ -32,8 +35,9 @@ function FiltersPanelComponent({ totalQuotes }) {
       searchText,
       type: formattedType,
       status: JSON.stringify(status),
+      currency: currency != CurrencyFilterEnum.ALL ? currency : "",
     });
-  }, [searchText, type, status]);
+  }, [searchText, type, status, currency]);
 
   useEffect(() => {
     const formattedType = type === TypeFilterEnum.ALL ? "" : type;
@@ -43,6 +47,7 @@ function FiltersPanelComponent({ totalQuotes }) {
       searchText,
       type: formattedType,
       status: JSON.stringify(status),
+      currency: "",
     });
   }, []);
 
@@ -58,6 +63,12 @@ function FiltersPanelComponent({ totalQuotes }) {
           typeEnum={TypeFilterEnum}
           type={type}
           setType={setType}
+        />
+
+        <TypeSelectorComponent
+          typeEnum={CurrencyFilterEnum}
+          type={currency}
+          setType={setCurrency}
         />
 
         <StatusFilterDropdownComponent status={status} setStatus={setStatus} />

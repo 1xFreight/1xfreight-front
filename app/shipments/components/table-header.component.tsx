@@ -45,6 +45,14 @@ export default function ShipmentsTableHeader() {
     const sortCopy = sort ? { ...sort } : {};
 
     if (sortCopy.hasOwnProperty(key) && toggle) {
+      if (sortCopy[key] === -1) {
+        tableHeader.classList.add("active");
+        const selectEl = tableHeader.querySelector("select");
+        selectEl.value = "1";
+        sortCopy[key] = 1;
+        return setSort(sortCopy);
+      }
+
       return removeSort(key);
     }
 
@@ -201,7 +209,7 @@ export default function ShipmentsTableHeader() {
             className={"sort-details"}
             onClick={() => addSort(keys.cost, -1, true)}
           >
-            Cost
+            Per Load
             {/*<span>sort by</span>*/}
           </div>
           <select

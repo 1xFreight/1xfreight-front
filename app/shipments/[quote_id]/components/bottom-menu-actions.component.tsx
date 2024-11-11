@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
+import { useRouter } from "next/navigation";
 
 export function AddPO() {
   return (
@@ -25,8 +26,9 @@ export function AddPO() {
 }
 
 export function DuplicateLoad() {
-  const { getFromStore } = useStore();
+  const { getFromStore, addToStore } = useStore();
   const [quote, setQuote] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const data = getFromStore("shipment_quote").data;
@@ -56,10 +58,25 @@ export function DuplicateLoad() {
       : (el.style.display = "none");
   };
 
+  const redirectToGetQuote = () => {
+    addToStore({
+      name: "get-quote-settings",
+      data: quote,
+    });
+
+    router.push("/get-quote");
+  };
+
   if (!quote) return <Loading2Component />;
 
   return (
     <form name={"duplicate-load-data"}>
+      <div className={"edit-full-quote"}>
+        <button type={"button"} onClick={() => redirectToGetQuote()}>
+          Edit Full Quote
+        </button>
+      </div>
+
       <div className={"bottom-menu-action duplicate-load"}>
         <div>
           <h5>Quote valid until:</h5>

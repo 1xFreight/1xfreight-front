@@ -1,6 +1,173 @@
 .request-id-page {
     width: 100%;
     padding-bottom: 2rem;
+
+    .edit-user-box {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border-radius: 1rem;
+        border: 1px dashed #3A56EA;
+        padding: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        color: rgba(30, 30, 30, 0.5);
+
+        button {
+            border-radius: 0.5rem;
+            height: 2rem;
+            padding: 0 1rem;
+            width: fit-content;
+        }
+    }
+
+    .extra-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        h4 {
+            font-size: 1rem;
+
+            span {
+                font-weight: 600;
+            }
+        }
+
+        .details-title {
+            display: inline-flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-right: 1.5rem;
+
+            h4 {
+                color: rgba(0, 0, 0, 0.5);
+                font-weight: 500;
+            }
+
+
+            svg {
+                scale: 1.5;
+                fill: rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .carrier-details {
+            display: inline-flex;
+            gap: 3rem;
+            padding: 0.25rem;
+            width: 100%;
+            align-items: center;
+
+            h4 {
+                font-size: 0.95rem;
+                color: #1e1e1e;
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+
+                h4 {
+                    opacity: 0.5;
+                    margin-top: -0.5rem;
+                }
+            }
+        }
+
+        .rating {
+            margin-left: auto;
+
+        }
+    }
+
+    .insurance-wrapper {
+        display: inline-flex;
+        align-items: center;
+        /*gap: 1rem;*/
+        background: rgba(0, 0, 0, 0.03);
+        width: 100%;
+        padding: 1rem;
+        border-radius: 0.65rem;
+
+        .insurance-details {
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            flex-direction: column;
+            /*border-left: 1px solid rgba(84, 84, 84, 0.1);*/
+            border-right: 1px solid rgba(84, 84, 84, 0.1);
+            height: 100%;
+            justify-content: center;
+            text-align: left;
+
+
+            &:nth-last-of-type(1) {
+                border-right: unset;
+            }
+
+            &>div {
+                display: inline-flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                min-width: 5rem;
+            }
+
+            svg {
+                fill: #F44C3D;
+            }
+
+            h3 {
+              font-size: 0.9rem;
+              color: rgba(84, 84, 84, 0.7);
+                width: 100%;
+            }
+
+            h4 {
+                font-size: 0.65rem;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 0.75);
+                text-align: left;
+                width: 100%;
+
+            }
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .icon-checked {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                /*margin-top: -0.2rem;*/
+                /*margin-left: -0.5rem;*/
+
+                svg {
+                    stroke: #82C181;
+                }
+            }
+
+            .icon-cross {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 0.075rem;
+                /*margin-left: -0.5rem;*/
+
+                svg {
+                    width: 17px;
+                    height: 17px;
+                    stroke-width: 0.15rem;
+                    path {
+                        stroke: #ff4646;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .content-wrapper {
@@ -56,7 +223,7 @@
 
     .request-wrapper {
         width: 100%;
-        border: 1px solid #0020DD;
+        border: 1px solid #3A56EA;
         min-height: 5rem;
         box-sizing: border-box;
         padding: 1rem;
@@ -65,6 +232,38 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .price {
+            font-size: 2.75rem;
+        }
+
+        .price-wrapper {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            h5 {
+                margin-top: -0.75rem;
+            }
+        }
+
+        .valid-until {
+            .sub-text {
+                width: fit-content;
+                padding: 0 1rem;
+                border-radius: 0.35rem;
+
+                &.expired {
+                    background: #FEDCCB;
+                }
+
+                &.active {
+                    background: #F1FBEB;
+                }
+            }
+        }
 
         &>div {
             display: flex;
@@ -80,9 +279,9 @@
         flex-direction: column;
 
         span {
-            font-size: 0.75rem;
-            color: #545454;
-            font-weight: 300;
+            font-size: 0.9rem;
+            color: #1e1e1e;
+            font-weight: 400;
         }
     }
 }

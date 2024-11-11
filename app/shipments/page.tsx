@@ -21,7 +21,7 @@ export default function ShipmentsPage() {
     const ignoreCache = filters?.ignoreCache ?? false;
 
     getWithAuth(
-      `/quote/shipments?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}`,
+      `/quote/shipments?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}&currency=${filters?.currency ?? ""}`,
       ignoreCache,
     ).then((data) => {
       setShipments(data);
@@ -32,7 +32,7 @@ export default function ShipmentsPage() {
         });
       }
     });
-  }, 300);
+  }, 200);
 
   useEffect(() => {
     setLoading(true);

@@ -13,6 +13,7 @@ import QuoteFtlComponent from "@/app/components/quote-details/quote-ftl.componen
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { isValidEmail } from "@/common/utils/email.util";
 import LoadingComponent from "@/common/components/loading/loading.component";
+import useStore from "@/common/hooks/use-store.context";
 
 export default function ReviewComponent() {
   const { getData, type, canChangePage, setCanChangePage, addData } =
@@ -20,6 +21,7 @@ export default function ReviewComponent() {
   const [emailList, setEmailList] = useState([]);
   const [quote, setQuote] = useState<any>();
   const [loading, setLoading] = useState(true);
+  const { session } = useStore();
 
   useEffect(() => {
     const emailPartners = getData("partners");
@@ -27,7 +29,11 @@ export default function ReviewComponent() {
     setEmailList([...emailMembers, ...emailPartners] || []);
     const _default = getData("default");
     const apiFormat = getData("", true);
-    setQuote({ ...apiFormat, default: _default });
+    setQuote({
+      ...apiFormat,
+      default: _default,
+      author: { logo: session.logo, name: session.name },
+    });
     console.log(apiFormat);
     setLoading(false);
   }, [getData]);

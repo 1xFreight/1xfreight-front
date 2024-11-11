@@ -32,7 +32,7 @@ export default function QuotesPage() {
         });
       }
     });
-  }, 300);
+  }, 200);
 
   useEffect(() => {
     getQuotesDebounced();

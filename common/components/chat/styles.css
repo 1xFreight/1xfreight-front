@@ -30,7 +30,7 @@
         background: linear-gradient(white, white) padding-box, linear-gradient(
                 var(--angle),
                 white,
-                #0020DD
+                #3A56EA
         ) border-box;
         animation: 4s rotate-angle linear;
         border: 1px solid transparent;
@@ -39,7 +39,7 @@
     .chat-title {
         svg {
             stroke-width: 2px;
-            stroke: #545454;
+            stroke: #1e1e1e;
             scale: 0.75;
 
             path {
@@ -135,12 +135,12 @@
                 .message-box {
                     background: white;
                     h4 {
-                        color: #545454;
+                        color: #1e1e1e;
                     }
 
                     .tooltip:hover {
                         a {
-                            color: #0020DD;
+                            color: #3A56EA;
                         }
                     }
                 }
@@ -224,7 +224,7 @@
         border-bottom: 1px solid #dedede;
         align-items: center;
         font-weight: 600;
-        color: #545454;
+        color: #1e1e1e;
 
         h5 {
             color: rgba(84, 84, 84, 0.5);
@@ -274,7 +274,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        color: #0020DD;
+        color: #3A56EA;
         transition: all 350ms ease-in-out;
         opacity: 1;
         border: 2px solid transparent;
@@ -296,7 +296,7 @@
         }
 
         &:hover {
-            border-color: #0020DD;
+            border-color: #3A56EA;
 
             span,svg {
                 opacity: 1;
@@ -327,11 +327,11 @@
             width: 7rem;
             border-radius: .45rem;
             background: #F2F4FF;
-            color: #0020DD;
+            color: #3A56EA;
             border: 0;
 
             &:hover {
-                background: #0020DD;
+                background: #3A56EA;
                 color: #F2F4FF;
             }
         }

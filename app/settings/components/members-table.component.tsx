@@ -13,7 +13,7 @@ export interface MemberI {
 }
 
 function MembersTableComponent({ members }: { members: MemberI[] }) {
-  const { showToast } = useStore();
+  const { showToast, addToStore } = useStore();
 
   const debounceUpdateStatus = useDebouncedCallback(
     async (value: string, index: number) => {
@@ -58,41 +58,39 @@ function MembersTableComponent({ members }: { members: MemberI[] }) {
         </thead>
         <tbody className={"fade-in"}>
           {members &&
-            members.map(({ name, email, phone, status, position }, index) => (
-              <tr key={index + email + name}>
-                <td>
-                  <div>{index + 1}</div>
-                </td>
-                <td>
-                  <div className={"main-text"}>{name}</div>
-                </td>
-                <td>
-                  <div className={"main-text"}>{position}</div>
-                </td>
-                <td>
-                  <div className={"main-text"}>{email}</div>
-                </td>
-                <td>
-                  <div className={"main-text"}>{phone}</div>
-                </td>
-                <td>
-                  <div className={`main-text ${status}`}>
-                    <select
-                      defaultValue={status}
-                      onChange={(e) => {
-                        if (e.target.value !== status) {
-                          debounceUpdateStatus(e.target.value, index);
-                          e.target.blur();
-                        }
-                      }}
-                    >
-                      <option value={"active"}>active</option>
-                      <option value={"inactive"}>inactive</option>
-                    </select>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            members.map(
+              ({ name, email, phone, status, position, _id }, index) => (
+                <tr
+                  key={index + email + name}
+                  onClick={() =>
+                    addToStore({
+                      name: "edit-member-data",
+                      data: { name, email, phone, status, position, _id },
+                    })
+                  }
+                  className={"tr-edit-table-hover-effect"}
+                >
+                  <td>
+                    <div>{index + 1}</div>
+                  </td>
+                  <td>
+                    <div className={"main-text"}>{name}</div>
+                  </td>
+                  <td>
+                    <div className={"main-text"}>{position}</div>
+                  </td>
+                  <td>
+                    <div className={"main-text"}>{email}</div>
+                  </td>
+                  <td>
+                    <div className={"main-text"}>{phone}</div>
+                  </td>
+                  <td>
+                    <div className={`main-text ${status}`}>{status}</div>
+                  </td>
+                </tr>
+              ),
+            )}
         </tbody>
       </table>
     </div>

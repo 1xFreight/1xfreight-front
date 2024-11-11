@@ -137,29 +137,21 @@ export default function QuotePreviewCarrier({
   }
 
   return (
-    <div className={"av-q-page page"}>
+    <div className={"av-q-page"}>
       <div className={"container content-wrapper"}>
-        <div
-          style={{
-            minWidth: "60%",
-          }}
-        >
+        <div className={"shipment-column"}>
           <QuoteFtlComponent quote={quote} />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
-            position: existingBid?.valid_until ? "relative" : "sticky",
-          }}
-        >
+        <div className={"chat-column"}>
           {!!existingBid?.valid_until && (
-            <ChatComponent room={params.quote_id + ":" + existingBid?._id} />
+            <ChatComponent
+              room={params.quote_id + ":" + existingBid?._id}
+              title={quote?.author?.name}
+            />
           )}
 
-          <div className={"place-bid"} style={{}}>
+          <div className={"place-bid"}>
             <form name={"bid-details"}>
               <div>
                 <h2>SUBMIT QUOTE</h2>

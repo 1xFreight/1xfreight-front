@@ -17,6 +17,7 @@ import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function BottomMenuComponent({ quoteId }) {
   const [open, setOpen] = useState(false);
@@ -187,9 +188,11 @@ export default function BottomMenuComponent({ quoteId }) {
           {/*  <div className={"main-text"}>BOL #: 567422</div>*/}
           {/*</div>*/}
 
-          <button>
-            <Document /> View BOL
-          </button>
+          <Link href={`/docs/bol/${quoteId}`} target={"_blank"}>
+            <button>
+              <Document /> View BOL
+            </button>
+          </Link>
           <button>
             <Printer /> Print Labels
           </button>

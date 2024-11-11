@@ -14,7 +14,8 @@
         box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
 
         h2 {
-            border-bottom: 1px solid #A7A7A7;
+            /*border-bottom: 1px solid #A7A7A7;*/
+            border-bottom: 2px solid #ececec;
             padding-bottom: 1rem;
         }
 
@@ -38,7 +39,7 @@
         }
 
         input,select {
-            color: #545454;
+            color: #1e1e1e;
         }
 
         .currency {
@@ -75,19 +76,19 @@
                 gap: 0.75rem;
                 border: 2px solid #e8e8e8;
                 transition: all 250ms ease-in-out;
-                color: #545454;
+                color: #1e1e1e;
                 position: relative;
                 flex-direction: row;
 
                 &:hover {
-                    border: 2px solid #0020DD;
+                    border: 2px solid #3A56EA;
                     color: black;
                 }
 
                 svg {
                     min-width: 1rem;
                     stroke-width: 3px;
-                    stroke: #545454;
+                    stroke: #1e1e1e;
                     transition: all 250ms ease-in-out;
 
                     &:hover {

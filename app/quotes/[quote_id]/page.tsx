@@ -1,19 +1,10 @@
 "use client";
 
 import QTableComponent from "@/app/quotes/[quote_id]/components/q-table.component";
-import { mockBids } from "@/app/quotes/[quote_id]/mockBids";
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
 import { useEffect, useState } from "react";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import PaginationComponent from "@/common/components/pagination/pagination.component";
-import { paginationConfig } from "@/common/config/pagination.config";
-import { useDebouncedCallback } from "use-debounce";
-import { isFetchCached, postWithAuth } from "@/common/utils/fetchAuth.util";
-import ToastTypesEnum from "@/common/enums/toast-types.enum";
-import useStore from "@/common/hooks/use-store.context";
-import path from "node:path";
-import { usePathname } from "next/navigation";
 
 enum StatusEnum {
   ALL = "All",

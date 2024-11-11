@@ -5,6 +5,7 @@ import FTL from "@/public/png/full-truck.png";
 import LTL from "@/public/png/half-truck.png";
 import Ocean from "@/public/png/ocean-transportation.png";
 import Air from "@/public/png/air-transportation.png";
+import Truck3d from "@/public/icons/3d/truck.png";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
 
@@ -26,7 +27,12 @@ export default function ModeOfTransportationComponent() {
           className={"item-mode"}
           onClick={() => selectType(QuoteTypeEnum.FTL)}
         >
-          <Image src={FTL} alt={"FTL image"} width={166} />
+          <Image
+            src={FTL}
+            alt={"FTL image"}
+            width={1024}
+            // className={"truck-3d"}
+          />
           <h2>FTL</h2>
         </div>
 

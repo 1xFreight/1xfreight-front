@@ -29,6 +29,14 @@
     gap: 2rem;
     margin-top: 2rem;
 
+    .truck-3d {
+        position: absolute;
+        bottom: -5%;
+        right: 0;
+        /*transform: translate(50%,50%);*/
+        scale: 1.75;
+    }
+
     & .item-mode {
         width: 16rem;
         height: auto;
@@ -47,9 +55,10 @@
         cursor: pointer;
         opacity: 1;
         box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+        overflow: hidden;
 
         &.FCL , &.AIR {
-            border-color: #545454;
+            border-color: #1e1e1e;
             opacity: 0.5;
         }
 
@@ -60,17 +69,17 @@
         & h2 {
             position: absolute;
             bottom: 1.5rem;
-            color: #545454;
+            color: #1e1e1e;
             font-weight: 600;
             font-size: 1.5rem;
         }
 
         &:hover {
-            border-color: #0020DD;
+            border-color: #3A56EA;
             /*opacity: 0.7;*/
 
             h2 {
-                color: #0020DD;
+                color: #3A56EA;
             }
 
             img {
@@ -114,7 +123,7 @@
 
         /*&:hover {*/
         /*    background: #D9D9D9;*/
-        /*    border-color: #0020DD;*/
+        /*    border-color: #3A56EA;*/
         /*    color: black;*/
         /*}*/
 
@@ -148,7 +157,7 @@
         }
 
         input:focus {
-            /*border: 1px solid #0020DD;*/
+            /*border: 1px solid #3A56EA;*/
             outline: unset;
         }
 
@@ -170,7 +179,7 @@
             border-radius: 1rem;
 
             &:hover {
-                border-color: #0020DD;
+                border-color: #3A56EA;
             }
         }
     }
@@ -178,10 +187,10 @@
     input[type="checkbox"] {
         width: 1.5rem;
         height: 1.5rem;
-        accent-color: #0020DD;
+        accent-color: #3A56EA;
 
         &:checked {
-            background: #0020DD;
+            background: #3A56EA;
         }
     }
 
@@ -189,32 +198,32 @@
         width: 1.5rem;
         height: 1.5rem;
         cursor: pointer;
-        accent-color: #0020DD;
+        accent-color: #3A56EA;
     }
 
     h2 {
         font-size: 1.5rem;
-        color: #545454;
+        color: #1e1e1e;
         font-weight: 600;
     }
 
     h4 {
         font-size: 1.25rem;
         font-weight: 300;
-        color: #545454;
+        color: #1e1e1e;
         /*margin-top: 0.5rem;*/
     }
 
     h3 {
         font-size: 1.15rem;
-        color: #545454;
+        color: #1e1e1e;
         font-weight: 500;
     }
 
     h5 {
         font-size: 0.95rem;
         font-weight: 500;
-        color: #545454;
+        color: #1e1e1e;
 
         span {
             color: #A7A7A7;
@@ -242,7 +251,7 @@
         border: 1px solid #A7A7A7;
         border-radius: 1rem;
         padding: 0 2rem;
-        color: #545454;
+        color: #1e1e1e;
     }
 
 }
@@ -289,7 +298,7 @@
 
     h4 {
         font-size: 0.875rem;
-        color:#545454;
+        color:#1e1e1e;
         font-weight: 500;
     }
 

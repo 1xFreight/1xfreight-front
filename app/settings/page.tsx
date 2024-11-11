@@ -16,6 +16,7 @@ import Image from "next/image";
 import ImagePen from "@/public/icons/24px/image-pen.svg";
 import { EquipmentsEnum } from "@/common/enums/equipments.enum";
 import Cross from "@/public/icons/24px/cross.svg";
+import InputMask from "react-input-mask";
 
 enum UserTypePrefEnum {
   LIVE_LOAD = "Live load",
@@ -199,11 +200,17 @@ export default function SettingsPage() {
 
               <div className={"input-wrapper"}>
                 <h5>Phone</h5>
-                <input
-                  type={"text"}
-                  name={"phone"}
+
+                <InputMask
+                  mask="(999) 999-9999"
+                  placeholder="(123) 456-7890"
+                  className="phone-input"
                   defaultValue={session.phone}
-                />
+                >
+                  {(inputProps) => (
+                    <input {...inputProps} type={"text"} name={"phone"} />
+                  )}
+                </InputMask>
               </div>
 
               <div className={"input-wrapper"}>

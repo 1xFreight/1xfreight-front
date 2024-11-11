@@ -5,6 +5,7 @@ import ArrowUp from "@/public/icons/24px/arrow-up.svg";
 import ArrowDown from "@/public/icons/24px/arrow-down.svg";
 import PriceCommaFormat from "@/common/utils/number-comma.utils";
 import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/components/action-button.component";
+import { getCurrencySymbol } from "@/common/utils/currency";
 
 export default function ActiveQuoteComponent() {
   return (
@@ -63,6 +64,9 @@ export default function ActiveQuoteComponent() {
       <div className={"end"}>
         <div className={"price"}>
           <div className={"full-price"}>
+            {/*<div className={"currency-symbol"}>*/}
+            {/*  {getCurrencySymbol(currency)}*/}
+            {/*</div>*/}
             <span>$</span>
             {PriceCommaFormat(1300)}
           </div>

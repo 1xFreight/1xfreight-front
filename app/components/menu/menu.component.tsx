@@ -1,17 +1,14 @@
 "use client";
 
 import Logo from "@/public/logo/1xfreight-logo.svg";
-import Bell from "@/public/icons/40px/bell.svg";
-import Dots from "@/public/icons/24px/3-dots.svg";
+import LogoMini from "@/public/logo/Favicon.svg";
 import "./styles.css";
 import Link from "next/link";
-import AdminMenuComponent from "@/app/components/menu/admin-menu.component";
 import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
 import SellerMenuComponent from "@/app/components/menu/seller-menu.component";
 import AvatarComponent from "@/app/components/avatar/avatar.component";
 import useStore from "@/common/hooks/use-store.context";
-import { memo, useEffect, useState } from "react";
-import ToasterComponent from "@/common/components/toaster/toaster.component";
+import { memo, useEffect } from "react";
 import Logout from "@/public/icons/35px/sign-out.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { postWithAuth } from "@/common/utils/fetchAuth.util";
@@ -19,7 +16,47 @@ import NotificationsComponent from "@/app/components/notification/notifications.
 
 function MainMenu() {
   const { session } = useStore();
-  const [openNotifications, setOpenNotifications] = useState(false);
+
+  const handleScroll = () => {
+    const mainMenu = document.getElementById("main-menu");
+
+    const scrollPosition = window.scrollY;
+    const lowerScrollLimit = 56;
+    const scrollAnimationStart = 75;
+    const upperScrollLimit = 94;
+
+    if (
+      scrollPosition > scrollAnimationStart &&
+      scrollPosition < upperScrollLimit &&
+      mainMenu
+    ) {
+      const scrollReverse = 75 - scrollPosition + scrollAnimationStart;
+
+      mainMenu.style.height = scrollReverse + "px";
+    }
+
+    if (scrollPosition > upperScrollLimit) {
+      mainMenu.style.height = "3.5rem";
+      mainMenu.classList.add("scrolled");
+    }
+
+    if (scrollPosition < lowerScrollLimit) {
+      mainMenu.style.height = "4.6875rem";
+      mainMenu.classList.remove("scrolled");
+    }
+  };
+
+  const debouncedHandleScroll = useDebouncedCallback(() => handleScroll(), 1);
+
+  useEffect(() => {
+    window.addEventListener("scroll", debouncedHandleScroll);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", debouncedHandleScroll);
+    };
+  }, []);
+
   const avatarName =
     session?.role !== "carrier" && session?.name
       ? session?.name
@@ -31,14 +68,15 @@ function MainMenu() {
   );
 
   return (
-    <header className={"main-menu"}>
+    <header className={"main-menu"} id={"main-menu"}>
       <div className={"container"}>
         <div className={"navigation"}>
-          <Link href={"/"} className={"logo"}>
-            <Logo />
-          </Link>
+          <div className={"logo-wrapper"}>
+            <Link href={"/"} className={"logo full-logo"}>
+              <Logo />
+            </Link>
+          </div>
 
-          {/*<AdminMenuComponent />*/}
           {session?.role === "carrier" && <CarrierMenuComponent />}
           {session?.role?.includes("shipper") && <SellerMenuComponent />}
         </div>
@@ -49,14 +87,17 @@ function MainMenu() {
           <div className={"user"}>
             <AvatarComponent username={avatarName} logo={session?.logo} />
 
-            <div className={"user-name"}>
+            <div
+              className={"user-name"}
+              style={{
+                width: (avatarName?.length ?? 5) * 0.76 + "rem",
+              }}
+            >
               <div>
                 {session?.role === "carrier" ? session.email : session?.name}
               </div>
               <div>{session?.role}</div>
             </div>
-
-            <div className={"open-extra-menu"}></div>
           </div>
 
           {session?.role === "carrier" && (

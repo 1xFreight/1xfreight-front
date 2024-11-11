@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { getOrdinalSuffix } from "@/common/utils/number.utils";
 import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/place-autocomplete.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import SwitchComponent from "@/common/components/slider/switch.component";
 import Eye from "@/public/icons/20px/hidden.svg";
 import LocationOpenHoursComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-open-hours.component";
 
@@ -54,8 +53,9 @@ function LocationFormComponent({
       switch (input.id) {
         case "address_street":
           input.value =
-            `${addressDetails?.placeName && addressDetails?.street ? addressDetails?.placeName + ", " : ""}` +
-            (addressDetails?.street ?? "");
+            addressDetails?.street && addressDetails?.streetNumber
+              ? addressDetails?.streetNumber + " " + addressDetails?.street
+              : addressDetails?.street;
           break;
         case "address_city":
           input.value = addressDetails?.city ?? "";

@@ -19,6 +19,7 @@ import { QuoteStatusEnum } from "@/common/enums/quote-status.enum";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
 import AddArrivalTimeComponent from "@/app/active-loads/[quote_id]/components/add-arrival-time.component";
+import { formatDate } from "@/common/utils/date.utils";
 
 export default function ShipmentIdPage({
   params,
@@ -176,43 +177,31 @@ export default function ShipmentIdPage({
 
         <div className={"content-wrapper"}>
           <div className={"shipment-column"}>
-            <div className={"shipment-wrapper"}>
+            <div className={"request-wrapper"}>
               <div>
-                {quote.load_number > 1 && (
-                  <div className={"price-wrapper"}>
-                    <div className={"price"}>
-                      <div className={"full-price"}>
-                        <span>$</span>
-                        {numberCommaFormat(request.amount)}
-                      </div>
-                      <div className={"currency"}>USD</div>
-                    </div>
-                    <h5>Per Load</h5>
-                  </div>
-                )}
-
                 <div className={"price-wrapper"}>
                   <div className={"price"}>
                     <div className={"full-price"}>
                       <span>$</span>
-                      {numberCommaFormat(request.amount * quote.load_number)}
+                      {numberCommaFormat(request?.amount)}
                     </div>
-                    <div className={"currency"}>USD</div>
+                    <div className={"currency"}>{quote.currency}</div>
                   </div>
-                  <h5>Total amount</h5>
+
+                  <h5>per load</h5>
                 </div>
 
                 <div className={"transit-time"}>
                   <h6>Transit Time</h6>
                   <h2>{request.transit_time}</h2>
-                  <div className={`sub-text`}>days</div>
+                  <h6>days</h6>
                 </div>
               </div>
 
-              {request?.notes && (
+              {request.notes && (
                 <div className={"notes"}>
                   <h5>Additional notes:</h5>
-                  <span>{request?.notes}</span>
+                  <span>{request.notes}</span>
                 </div>
               )}
             </div>

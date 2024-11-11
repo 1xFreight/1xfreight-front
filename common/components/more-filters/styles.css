@@ -22,9 +22,9 @@
 
     &.selected {
         border: 1px solid #6B81FF;
-        color: #0020DD;
+        color: #3A56EA;
         svg path {
-            fill: #0020DD;
+            fill: #3A56EA;
         }
     }
 
@@ -89,10 +89,10 @@
             align-items: center;
             justify-content: space-between;
             font-size: 0.9rem;
-            color: #545454;
+            color: #1e1e1e;
 
             & input {
-                border: 1px solid #545454;
+                border: 1px solid #1e1e1e;
                 padding: 0.35rem;
                 border-radius: 0.35rem;
                 width: 12rem;
@@ -170,7 +170,7 @@
             cursor: pointer;
 
             & path {
-                stroke: #545454;
+                stroke: #1e1e1e;
             }
 
             &:hover path {
@@ -180,7 +180,7 @@
 
         & h3 {
             font-size: 1.5rem;
-            color: #545454;
+            color: #1e1e1e;
         }
 
     }
@@ -204,7 +204,7 @@
     padding: 0.75rem;
     position: absolute;
     z-index: 1;
-    color: #545454;
+    color: #1e1e1e;
     border-radius: 0.5rem;
     border: 2px solid #e8e8e8 ;
     margin-top: 0.25rem;
@@ -229,19 +229,19 @@
         }
 
         &:hover {
-            border: 1px solid #0020DD;
-            color: #0020DD;
+            border: 1px solid #3A56EA;
+            color: #3A56EA;
 
             & svg path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
 
         &.active {
-            color: #0020DD;
+            color: #3A56EA;
 
             & svg path {
-                fill: #0020DD;
+                fill: #3A56EA;
             }
         }
 

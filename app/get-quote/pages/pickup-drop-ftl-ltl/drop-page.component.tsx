@@ -41,7 +41,7 @@ export default function DropPageComponent() {
       });
     }
 
-    addBreadcrumb(data[0].address);
+    addBreadcrumb(data[0].city + ", " + data[0].state + ", " + data[0].country);
     addData({ form: "drop", data });
     setCanChangePage(PageStateEnum.CAN_CHANGE);
   };

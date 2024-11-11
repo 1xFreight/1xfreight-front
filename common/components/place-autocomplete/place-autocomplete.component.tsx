@@ -114,28 +114,34 @@ function PlaceAutocompleteComponent({
                 const addressComponents = placeDetails.address_components;
                 fullAddress.placeName = placeDetails.name;
 
+                console.log(addressComponents);
+
                 // Loop through address components to get city, zip, and country
-                addressComponents.forEach((component) => {
+                addressComponents?.forEach((component) => {
                   const types = component.types;
 
                   if (types.includes("locality")) {
-                    fullAddress.city = component.long_name; // City
+                    fullAddress["city"] = component.long_name; // City
                   }
 
                   if (types.includes("postal_code")) {
-                    fullAddress.zipCode = component.long_name; // ZIP Code
+                    fullAddress["zipCode"] = component.long_name; // ZIP Code
                   }
 
                   if (types.includes("country")) {
-                    fullAddress.country = component.short_name; // Country
+                    fullAddress["country"] = component.short_name; // Country
                   }
 
                   if (types.includes("route")) {
-                    fullAddress.street = component.long_name; // Street
+                    fullAddress["street"] = component.long_name; // Street
+                  }
+
+                  if (types.includes("street_number")) {
+                    fullAddress["streetNumber"] = component.long_name; // Street Number
                   }
 
                   if (types.includes("administrative_area_level_1")) {
-                    fullAddress.state = component.short_name; // State
+                    fullAddress["state"] = component.short_name; // State
                   }
 
                   setDetails(fullAddress);
@@ -182,7 +188,8 @@ function PlaceAutocompleteComponent({
           lPrediction?.map((location, index) => (
             <div
               onClick={() => {
-                setInputText(location?.address);
+                setInputText(location.address);
+                setDetails(location);
                 setDefault ? setDefault(location) : "";
               }}
               key={location?.address + index}

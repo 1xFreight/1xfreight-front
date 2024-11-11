@@ -13,6 +13,7 @@ import {
 } from "@/common/utils/fetchAuth.util";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
+import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
 
 export default function QTableComponent({
   quotes,
@@ -21,6 +22,7 @@ export default function QTableComponent({
 }) {
   const { showToast } = useStore();
   const router = useRouter();
+  const { setIsMissingData } = useQuoteContext();
 
   const acceptQuote = useDebouncedCallback((quote_id, bid_id) => {
     postWithAuth("/quote/accept", {
@@ -29,6 +31,11 @@ export default function QTableComponent({
     }).then(async (response) => {
       if (!response.ok) {
         const errorData = await response.json();
+
+        if (errorData?.message === "Missing data") {
+          return setIsMissingData(bid_id);
+        }
+
         return showToast({
           type: ToastTypesEnum.ERROR,
           text: errorData.message || "Something went wrong",
@@ -58,7 +65,7 @@ export default function QTableComponent({
             <th>Valid until</th>
             <th>Estimated per mile</th>
             <th>Per load</th>
-            <th>Total amount</th>
+            {/*<th>Total amount</th>*/}
             <th></th>
           </tr>
         </thead>
@@ -103,15 +110,15 @@ export default function QTableComponent({
                     <div className={"currency"}>USD</div>
                   </div>
                 </td>
-                <td>
-                  <div className={"price"}>
-                    <div className={"full-price"}>
-                      <span>$</span>
-                      {numberCommaFormat(quote.amount * loadNumbers)}
-                    </div>
-                    <div className={"currency"}>USD</div>
-                  </div>
-                </td>
+                {/*<td>*/}
+                {/*  <div className={"price"}>*/}
+                {/*    <div className={"full-price"}>*/}
+                {/*      <span>$</span>*/}
+                {/*      {numberCommaFormat(quote.amount * loadNumbers)}*/}
+                {/*    </div>*/}
+                {/*    <div className={"currency"}>USD</div>*/}
+                {/*  </div>*/}
+                {/*</td>*/}
 
                 <td>
                   <div className={"end"}>

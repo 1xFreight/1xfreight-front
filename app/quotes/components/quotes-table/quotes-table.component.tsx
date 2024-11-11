@@ -28,13 +28,13 @@ interface QuotesTableI {
 export default function QuotesTableComponent({ rows }: QuotesTableI) {
   return (
     <>
-      <div className={"quotes-table-placeholder"}></div>
+      <div className={"quotes-table-placeholder "}></div>
       <div className={"quotes-table"}>
         <table>
           <thead>
             <QuoteTableHeader />
           </thead>
-          <tbody id={"quotes-tbody fast-in-fast"}>
+          <tbody id={"quotes-tbody fade-in-fast"}>
             {rows?.map(
               ({
                 _id,
@@ -180,7 +180,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                                 display: "flex",
                                 gap: "0.5rem",
                                 textTransform: "uppercase",
-                                color: "#545454",
+                                color: "#1e1e1e",
                                 fontWeight: 500,
                                 opacity: 0.5,
                               }}
@@ -275,7 +275,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                                 display: "flex",
                                 gap: "0.5rem",
                                 textTransform: "uppercase",
-                                color: "#545454",
+                                color: "#1e1e1e",
                                 fontWeight: 500,
                                 opacity: 0.5,
                               }}
@@ -373,7 +373,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                     </td>
                     <td>
                       <div className={"main-text"}>
-                        {references?.length ? references[0] : "#0000000000"}
+                        {references?.length ? references[0] : "N/A"}
                       </div>
                       <div
                         className={"sub-text"}
@@ -401,12 +401,13 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       </div>
                     </td>
                     <td>
-                      <Link href={viewLink ? viewLink : ""}>
-                        <QuoteActionButtonComponent
-                          status={btnStatus}
-                          number={bidsNumber}
-                        />
-                      </Link>
+                      <QuoteActionButtonComponent
+                        status={btnStatus}
+                        number={bidsNumber}
+                        viewLink={viewLink}
+                        prefetchQuoteId={_id}
+                      />
+                      {/*</Link>*/}
                     </td>
                   </tr>
                 );

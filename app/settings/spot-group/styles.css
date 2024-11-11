@@ -87,7 +87,7 @@
 
         div {
             font-weight: 600;
-            color: #545454;
+            color: #1e1e1e;
             display: flex;
             height: 100%;
             align-items: center;
@@ -195,7 +195,7 @@
                 padding: 0.35rem;
                 text-transform: capitalize;
                 cursor: pointer;
-                color: #545454;
+                color: #1e1e1e;
 
                 &:hover {
                     background: rgba(0, 32, 221, 0.15);
@@ -217,7 +217,7 @@
         select {
             height: 3.5rem;
             padding-left: 1rem;
-            color: #545454;
+            color: #1e1e1e;
             min-width: 100%;
         }
 
@@ -232,7 +232,7 @@
         border: 1px solid #A7A7A7;
         border-radius: 0.75rem;
         padding: 0 1rem;
-        color: #545454;
+        color: #1e1e1e;
         max-width: calc(100% - 1rem);
     }
 
@@ -260,19 +260,19 @@
             gap: 0.75rem;
             border: 2px solid #e8e8e8;
             transition: all 250ms ease-in-out;
-            color: #545454;
+            color: #1e1e1e;
             position: relative;
             flex-direction: row;
 
             &:hover {
-                border: 2px solid #0020DD;
+                border: 2px solid #3A56EA;
                 color: black;
             }
 
             svg {
                 min-width: 1rem;
                 stroke-width: 3px;
-                stroke: #545454;
+                stroke: #1e1e1e;
                 transition: all 250ms ease-in-out;
 
                 &:hover {

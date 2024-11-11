@@ -40,7 +40,7 @@
 
     &:hover {
         background: rgba(0, 32, 221, 0.05);
-        color: #0020DD;
+        color: #3A56EA;
     }
 
     & svg {
@@ -52,14 +52,14 @@
     }
 
     &.active svg {
-        stroke: #0020DD;
+        stroke: #3A56EA;
         path {
-            fill: #0020DD;
+            fill: #3A56EA;
         }
     }
 
     &.active {
-        color: #0020DD;
+        color: #3A56EA;
     }
 }
 
@@ -138,9 +138,9 @@
 }
 
 .status-filter-dropdown:hover,.status-filter-dropdown.active {
-    color: #0020DD;
+    color: #3A56EA;
     svg path {
-        fill: #0020DD;
+        fill: #3A56EA;
     }
 
     svg {

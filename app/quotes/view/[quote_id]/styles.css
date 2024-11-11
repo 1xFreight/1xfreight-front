@@ -1,0 +1,93 @@
+.view-page {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: start;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    .view-quote-wrapper {
+        width: 100%;
+        max-width: 70rem;
+        min-width: 50rem;
+    }
+
+    .go-back-wrapper {
+        width: 8rem;
+        display: inline-flex;
+        justify-content: end;
+        transform: translateX(-5rem);
+    }
+
+    .menu-sticky {
+        width: 3rem;
+        position: sticky;
+        top: 4.5rem;
+        z-index: 10;
+
+        button {
+            width: 2.75rem;
+            min-width: 2.75rem;
+            height: 2.75rem;
+            min-height: 2.75rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &::after {
+                /*display: none;*/
+                white-space: nowrap;
+                overflow: hidden;
+                width: 0;
+            }
+
+            &:hover {
+                width: 8rem;
+
+                &::after {
+                    display: block;
+                    width: 4rem;
+                }
+            }
+
+            svg {
+                width: 40px;
+            }
+        }
+
+        .go-back-btn {
+
+            &::after {
+                content: "go back";
+            }
+
+            svg {
+                rotate: 180deg;
+            }
+        }
+
+        .cancel-btn {
+            &::after {
+                content: "cancel";
+            }
+
+            &:hover {
+                svg path{
+                    fill: #3A56EA;
+                    stroke: #3A56EA;
+                }
+            }
+
+            svg {
+                scale: 0.8;
+                stroke-width: 2px;
+                /*stroke: #1e1e1e;*/
+            }
+        }
+    }
+}
+
+
+

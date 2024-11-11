@@ -10,3 +10,13 @@ export default function numberCommaFormat(num: number) {
   const numMFormatted = numM.toString().padStart(3, "0");
   return numK + "," + numMFormatted;
 }
+
+export function formatCurrency(amount) {
+  if (!amount) return "";
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+  }).format(amount);
+}

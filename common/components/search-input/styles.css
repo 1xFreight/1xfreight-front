@@ -22,11 +22,11 @@
         border: 1px solid transparent;
         transition: all 250ms ease-in-out;
         font-size: 0.75rem;
-        color: #545454;
+        color: #1e1e1e;
 
         &:focus {
             outline: unset;
-            border: 1px solid #0020DD;
+            border: 1px solid #3A56EA;
         }
 
         &::placeholder {
