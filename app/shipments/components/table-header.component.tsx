@@ -222,7 +222,7 @@ export default function ShipmentsTableHeader() {
           </select>
         </div>
       </th>
-      <th>Actions</th>
+      <th></th>
     </tr>
   );
 }

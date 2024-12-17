@@ -174,143 +174,6 @@
         position: relative;
     }
 
-    .table-quote-preview-wrapper {
-        background: #F9F9F9;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        height: 100%;
-        margin-top: -1.5rem;
-
-    }
-
-    .table-quote-preview {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        border: unset;
-        min-width: 60rem;
-        box-sizing: border-box;
-        position: relative;
-        z-index: 1;
-        max-width: 1760px;
-        table-layout: fixed;
-
-        tr th:nth-child(1) {
-            width: 5rem;
-        }
-
-        tr th:nth-child(6) {
-            width: 15rem;
-        }
-
-        tr th:nth-child(4),tr th:nth-child(5) {
-            width: 12rem;
-        }
-
-        tr th:nth-child(2), tr th:nth-child(3) {
-            width: 25rem;
-        }
-
-        tr td .price .full-price::after {
-            content: "00";
-            color: #1e1e1e;
-            font-size: 0.875rem;
-            position: absolute;
-            top: -0.2rem
-        }
-
-        thead {
-            position: relative;
-            width: 100%;
-            top: 0;
-            z-index: 2;
-        }
-
-        thead tr {
-            width: 100%;
-        }
-
-        tr>th {
-            text-align: left;
-            padding-left: 1.25rem;
-            height: 1rem;
-            border-collapse: collapse;
-            background: #F9F9F9;
-            font-size: 0.75rem;
-            color: #A7A7A7;
-            font-weight: 400;
-            /*min-width: 12.5%;*/
-            /*width: 12.5%;*/
-        }
-
-
-        tr th:nth-child(1) {
-            padding-left: 0.15rem;
-        }
-
-        tr>td:nth-child(1){
-            width: 4rem;
-            /*border-right: 1px solid #EFEFEF;*/
-            padding-left: 0;
-
-            div {
-                display: flex;
-                height: 100%;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                font-weight: 500;
-                margin-top: -1rem;
-                font-size: 1.25rem;
-            }
-        }
-
-        tr>td:nth-last-child(1){
-            /*width: 20rem;*/
-        }
-
-        td {
-            padding-left: 1.25rem;
-            vertical-align: center;
-            position: relative;
-        }
-
-        tr{
-            background: #F9F9F9;
-        }
-
-        tr>td {
-            height: 3rem;
-            box-sizing: border-box;
-            /*width: 10rem;*/
-        }
-
-        .pickup .location>svg:nth-child(1), .drop .location>svg:nth-child(1) {
-            position: absolute;
-            left: calc(-24px - 0.25rem);
-        }
-
-        .pickup .location, .drop .location {
-            display: flex;
-            position: relative;
-            /*width: max-content;*/
-        }
-
-        .price span, .price .currency {
-            color: #1e1e1e;
-        }
-
-        .price .currency {
-            font-size: 1.25rem;
-        }
-
-        .price .full-price {
-            position: relative;
-        }
-
-    }
-
     .sub-text {
         padding-top: 0.25rem;
     }
@@ -465,7 +328,7 @@
         }
 
         tr td .price .full-price::after {
-            content: "00";
+            /*content: "00";*/
             color: #1e1e1e;
             font-size: 0.875rem;
             position: absolute;
@@ -516,5 +379,207 @@
                 border: 1px solid #A7A7A7;
             }
         }
+    }
+
+    .q-preview-select-request-wrapper {
+        background: white;
+        margin-top: -1.5rem;
+
+        &:has(tr:hover) {
+            /*background: blue;*/
+        }
+    }
+
+    .q-preview-select-request {
+        width: 100%;
+
+        .selected-quote-preview-tr {
+
+            td {
+                background: rgba(0, 0, 0, 0.02);
+                border-bottom: 1px solid #617BF4;
+
+                &:hover {
+                    background: rgba(0, 0, 0, 0.02) !important;
+                    cursor: unset !important;
+                }
+
+            }
+
+            td:nth-child(1) {
+                border-left: 1px solid #617BF4;
+            }
+
+            td:nth-last-child(1) {
+                border-right: 1px solid #617BF4;
+                padding-right: 0;
+            }
+
+        }
+
+        .current-open-preview {
+
+            &:hover {
+
+                td {
+                    background: rgba(0, 0, 0, 0.09) !important;
+                }
+            }
+
+            td {
+                background: rgba(0, 0, 0, 0.05) !important;
+                border-top: 1px solid #617BF4;
+                transition: 150ms ease-in-out;
+            }
+
+            td:nth-child(1) {
+                border-left: 1px solid #617BF4;
+            }
+
+            td:nth-last-child(1) {
+                border-right: 1px solid #617BF4;
+            }
+        }
+
+        th {
+            background: white;
+            text-align: left;
+            padding-left: 0.65rem;
+            height: 3rem;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            color: #787878;
+            font-weight: 700;
+            border-bottom: 1px solid #E8E8E8;
+        }
+
+        td {
+            vertical-align: center;
+            padding: 0 0.65rem;
+            height: 4.625rem;
+            box-sizing: border-box;
+            border-bottom: 1px solid #E8E8E8;
+            background: white;
+            transition: 120ms ease-in-out;
+            border-top: 1px solid transparent;
+        }
+
+        tr:hover td {
+            background: rgba(202, 213, 253, 0.5);
+            cursor: pointer;
+        }
+
+        .equipments-table-box {
+            display: -webkit-box;           /* Use a flexible box layout */
+            -webkit-box-orient: vertical;    /* Specify vertical box orientation */
+            -webkit-line-clamp: 2;           /* Limit text to 3 lines */
+            overflow: hidden;                /* Hide overflow text */
+            text-overflow: ellipsis;         /* Show ellipsis (...) at the end */
+        }
+
+        .location-styling {
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            .arrow-styling {
+                width: 3rem;
+                min-width: 3rem;
+
+                svg path {
+                    fill: rgba(0, 32, 221, 0.5);
+                }
+            }
+        }
+
+        .pickup .location, .drop .location {
+            display: flex;
+            position: relative;
+            align-items: center;
+            width: 100%;
+
+            .location svg {
+                width: 50px;
+            }
+
+            &:has(.extra-address) {
+                padding-right: 3.5rem;
+            }
+
+            .extra-address{
+                position: absolute;
+                right: 0;
+            }
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: unset;
+            /*min-width: 100rem;*/
+            box-sizing: border-box;
+            position: relative;
+
+            tr th:nth-child(1) {
+                width: 7rem;
+            }
+
+            tr th:nth-child(3){
+                width: calc(15rem + 30px);
+            }
+            tr th:nth-child(4){
+                width: calc(15rem - 30px);
+            }
+
+            tr th:nth-child(2) {
+                width: 3.5rem;
+            }
+
+            tr th:nth-child(5),tr th:nth-child(6) {
+                width: 10.35rem;
+            }
+
+            tr th:nth-child(7) {
+                width: 7.5rem;
+            }
+
+            tr td:nth-child(7) {
+
+                .sub-text {
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+
+            tr th:nth-child(10) {
+                width: 10rem;
+            }
+
+            tr th:nth-child(9) {
+                width: 10rem;
+            }
+
+            tr th:nth-child(8) {
+                width: 10.5rem;
+            }
+
+            tr td:nth-child(8) {
+                .sub-text {
+                    text-transform: capitalize;
+                }
+            }
+        }
+
+        .id-number {
+            font-size: 0.9rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+
     }
 }

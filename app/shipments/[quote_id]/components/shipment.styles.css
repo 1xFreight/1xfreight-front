@@ -50,8 +50,6 @@
 
                     &:nth-child(2) {
                         left: 100%;
-                        /*display: none;*/
-                        /*transform: translateX(-100%);*/
                     }
                 }
             }

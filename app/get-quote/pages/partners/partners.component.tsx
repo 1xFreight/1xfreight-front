@@ -11,7 +11,7 @@ import { PageStateEnum } from "@/app/get-quote/register-quote.context";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
-import CarriersTableComponent from "@/app/settings/components/carriers-table.component";
+import CarriersTableComponent from "@/app/settings/carriers/components/carriers-table.component";
 
 export default function PartnersComponent() {
   const [searchText, setSearch] = useState<string>();
@@ -21,12 +21,13 @@ export default function PartnersComponent() {
     useRegisterQuoteContext();
 
   const debouncedGetCarriers = useDebouncedCallback(() => {
+    const ignoreCache = true;
     setLoading(true);
-    getWithAuth("/carrier").then((data) => {
+    getWithAuth("/carrier?status=active", ignoreCache).then((data) => {
       setCarriers(data);
       setLoading(false);
     });
-  }, 1000);
+  }, 300);
 
   useEffect(() => {
     debouncedGetCarriers();

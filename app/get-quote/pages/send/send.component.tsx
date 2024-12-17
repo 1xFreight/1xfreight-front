@@ -27,8 +27,7 @@ function SendComponent() {
   }, [debouncedSaveData]);
 
   const retrySaveData = () => {
-    // setStatus(null);
-    // setTimeout(() => setStatus(saveData), 1000);
+    debouncedSaveData(); // Call the debounced function instead of saveData directly
   };
 
   const iconByStatus = () => {

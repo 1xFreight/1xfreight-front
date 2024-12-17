@@ -2,7 +2,7 @@
 
 import "./styles.css";
 import Bell from "@/public/icons/40px/bell.svg";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useStore from "@/common/hooks/use-store.context";
 import { useNotifications } from "@/common/hooks/use-notifications.hook";
 import { useDebouncedCallback } from "use-debounce";
@@ -11,13 +11,15 @@ import RefreshDouble from "@/public/icons/24px/refresh-double.svg";
 import { formatDateTime } from "@/common/utils/date.utils";
 import Cross from "@/public/icons/24px/cross.svg";
 import Link from "next/link";
+import EmptyMail from "@/public/png/mail-empty.png";
+import Image from "next/image";
 
-export default function NotificationsComponent() {
+function NotificationsComponent() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>(null);
-  const { connect, disconnect, getUserNotifications, notificationService } =
+  const { connect, getUserNotifications, notificationService } =
     useNotifications();
-  const { session, showToast } = useStore();
+  const { showToast } = useStore();
 
   const close = () => {
     const notificationCenterDiv = document.getElementById(
@@ -53,6 +55,7 @@ export default function NotificationsComponent() {
   useEffect(() => {
     document.addEventListener("scroll", close);
     initializeNotifications();
+    console.log("rerender notifications");
 
     return () => {
       document.removeEventListener("scroll", close);
@@ -140,8 +143,9 @@ export default function NotificationsComponent() {
                 </div>
               ))}
             {notifications && notifications.length == 0 && (
-              <div className={"notif-item"}>
-                <h4>No new notifications</h4>
+              <div className={"notifications-empty"}>
+                {/*<Image src={EmptyMail} alt={"empty"} width={125} />*/}
+                <h3>No new notifications</h3>
               </div>
             )}
           </div>
@@ -150,3 +154,5 @@ export default function NotificationsComponent() {
     </div>
   );
 }
+
+export default memo(NotificationsComponent);

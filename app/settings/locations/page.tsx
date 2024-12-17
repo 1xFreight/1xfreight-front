@@ -16,12 +16,12 @@ import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
 import { paginationConfig } from "@/common/config/pagination.config";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
+import AddEditModalComponent from "@/app/settings/locations/components/add-edit-modal.component";
 
 export default function SavedLocationsPage() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState();
-  const { showToast } = useStore();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -35,40 +35,6 @@ export default function SavedLocationsPage() {
       setLoading(false);
     });
   }, 350);
-
-  const saveDataDebounced = useDebouncedCallback(() => {
-    const form = document.forms["location-form-Location-0"];
-    const valid = form[0].reportValidity();
-
-    if (!valid) return;
-
-    const formData = new FormData(form);
-    const location = formDataToJSON(formData);
-    location.addTime = "yes";
-    const locationFormatted: any = formatAddressObj(location, "drop");
-    delete locationFormatted.date;
-    delete locationFormatted.address_type;
-    console.log(locationFormatted);
-
-    postWithAuth("/address", locationFormatted).then(async (response) => {
-      if (!response.ok) {
-        const errorData = await response.json();
-        return showToast({
-          type: ToastTypesEnum.ERROR,
-          text: errorData.message || "Something went wrong",
-          duration: 5000,
-        });
-      }
-
-      showToast({
-        type: ToastTypesEnum.SUCCESS,
-        text: "Address was added successfully",
-        duration: 5000,
-      });
-      debouncedGetLocations(true);
-    });
-    setOpen(false);
-  });
 
   useEffect(() => {
     setLoading(true);
@@ -122,16 +88,11 @@ export default function SavedLocationsPage() {
         )}
       </div>
 
-      <RightModalComponent
+      <AddEditModalComponent
         open={open}
         setOpen={setOpen}
-        title={"Add Location"}
-        action={saveDataDebounced}
-      >
-        <div className={"settings-add-location-wrapper"}>
-          <LocationFormComponent title={"Location"} index={0} />
-        </div>
-      </RightModalComponent>
+        debouncedGetLocations={debouncedGetLocations}
+      />
     </div>
   );
 }

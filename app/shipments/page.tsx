@@ -10,6 +10,8 @@ import Loading2Component from "@/common/components/loading/loading-as-page.compo
 import PaginationComponent from "@/common/components/pagination/pagination.component";
 import { paginationConfig } from "@/common/config/pagination.config";
 import useStore from "@/common/hooks/use-store.context";
+import Link from "next/link";
+import EmptyTableComponent from "@/common/components/empty-table.component";
 
 export default function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
@@ -25,6 +27,7 @@ export default function ShipmentsPage() {
       ignoreCache,
     ).then((data) => {
       setShipments(data);
+      // setShipments([]);
       setLoading(false);
       if (ignoreCache) {
         setFilters((prevState) => {
@@ -44,6 +47,21 @@ export default function ShipmentsPage() {
     getShipmentsDebounced();
   }, [filters]);
 
+  const getQuoteButton = (
+    <Link href={"/get-quote"} prefetch>
+      <button
+        style={{
+          width: "10rem",
+          height: "3rem",
+          borderRadius: "0.75rem",
+        }}
+        className={"variant2"}
+      >
+        GET QUOTE
+      </button>
+    </Link>
+  );
+
   return (
     <div className={"shipments-page page"}>
       <div className={"container page-header"}>
@@ -57,6 +75,15 @@ export default function ShipmentsPage() {
       <div className={"container"}>
         {loading ? (
           <Loading2Component />
+        ) : !shipments?.quotes?.length ? (
+          <div
+            style={{
+              width: "100%",
+              height: "calc(100vh - 15rem)",
+            }}
+          >
+            <EmptyTableComponent button={getQuoteButton} />
+          </div>
         ) : (
           <>
             <ShipmentsTableComponent shipments={shipments?.quotes} />

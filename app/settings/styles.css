@@ -45,45 +45,29 @@
             }
         }
 
-        &:not(:nth-child(4)) {
-            svg path {
-                fill: #1e1e1e;
-            }
-        }
-
-        &:nth-child(4) {
-            svg path {
+        .truck-svg {
+              path {
+                stroke-width: 1.7px ;
                 stroke: #1e1e1e;
-                stroke-width: 1.7px;
+                  fill: white;
             }
         }
 
-        &:nth-child(4) {
-            svg path {
-                /*fill: initial;*/
-            }
+        svg path {
+            fill: #1e1e1e;
         }
+
 
         &:hover {
             background: #EFEFEF;
-            /*border-radius: 0.25rem;*/
 
             svg {
                 stroke: #3A56EA;
-            }
-
-            &:not(:nth-child(4)) {
-                svg path {
-                    fill: #3A56EA;
-                }
-            }
-
-            &:nth-child(4) {
-                svg path {
+                path {
                     stroke: #3A56EA;
-                }
-            }
 
+                };
+            }
         }
 
         &.active {
@@ -92,18 +76,10 @@
 
             svg {
                 stroke: #3A56EA;
-            }
-
-            &:not(:nth-child(4)) {
-                svg path {
-                    fill: #3A56EA;
-                }
-            }
-
-            &:nth-child(4) {
-                svg path {
+                path {
                     stroke: #3A56EA;
-                }
+
+                };
             }
         }
 
@@ -113,20 +89,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: white;
         height: 3.5rem;
         border-radius: 1rem;
-        color: #1e1e1e;
         position: relative;
         margin-right: 1.5rem;
-        font-size: 1.1rem;
 
         svg {
             position: absolute;
             left: 1rem;
-            stroke-width: 1px;
-            stroke: #1e1e1e;
-            fill: #1e1e1e;
         }
     }
 
@@ -211,9 +181,8 @@
             outline: 2px solid #9ca4de;
             max-height: 15rem;
             max-width: 15rem;
-            height: 15rem;
-            width: 15rem;
-            aspect-ratio: 1/1;
+            height: auto;
+            width: 17.5rem;
             background: #ececec;
             border-radius: 1.5rem;
         }

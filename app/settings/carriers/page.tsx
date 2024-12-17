@@ -3,7 +3,7 @@
 import "./styles.css";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import PlusCircle from "@/public/icons/24px/plus-circle.svg";
-import CarriersTableComponent from "@/app/settings/components/carriers-table.component";
+import CarriersTableComponent from "@/app/settings/carriers/components/carriers-table.component";
 import RightModalComponent from "@/common/components/right-form-modal/right-modal.component";
 import React, { useEffect, useState } from "react";
 import Import from "@/public/icons/24px/import.svg";

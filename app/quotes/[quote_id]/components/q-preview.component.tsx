@@ -8,142 +8,160 @@ import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
 import { formatDate } from "@/common/utils/date.utils";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
 import RightModalComponent from "@/common/components/right-form-modal/right-modal.component";
+import QuoteModalPreviewComponent from "@/common/components/quote-modal-preview/quote-modal-preview.component";
+import { useEffect, useState } from "react";
+import { toShortId } from "@/common/utils/data-convert.utils";
+import QuoteStatusComponent from "@/app/quotes/components/quotes-table/components/quote-status.component";
+import Arrow from "@/public/icons/40px/Arrow 1.svg";
+import QuoteActionButtonComponent from "@/app/quotes/components/quotes-table/components/action-button.component";
 
 export default function QPreviewComponent() {
+  const [selectedQuoteForPreview, setSelectedQuoteForPreview] = useState(false);
   const { quote } = useQuoteContext();
-  const pickupAddress = quote?.addresses.filter(
+
+  const pickupAddress = quote?.addresses?.filter(
     ({ address_type }) => address_type === "pickup",
   );
-  const dropAddress = quote?.addresses.filter(
+  const dropAddress = quote?.addresses?.filter(
     ({ address_type }) => address_type === "drop",
   );
 
-  const details = quote?.details[0];
-
   return (
-    <div className={"table-quote-preview-wrapper"}>
+    <div className={"container q-preview-select-request-wrapper"}>
       {quote && (
-        <table className={"table-quote-preview"}>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Details</th>
-              <th>Ref#</th>
-              <th>Equipment</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div className={"main-text"}>{quote.type}</div>
-              </td>
-              <td className={"pickup"}>
-                <div className={"location main-text"}>
-                  {/*<ArrowUp />*/}
-                  {pickupAddress[0].address}
+        <>
+          <table className={"q-preview-select-request"}>
+            <tbody>
+              <tr
+                onClick={(ev) => {
+                  setSelectedQuoteForPreview((prevState) => !prevState);
+                }}
+                className={`${selectedQuoteForPreview ? "current-open-preview" : ""}`}
+              >
+                <td>
+                  <div className={"main-text"}>{quote?.type}</div>
+                </td>
+                <td className={"pickup"}>
+                  <div className={"location-styling"}>
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <div className={"location main-text"}>
+                        {pickupAddress[0]?.partial_address ??
+                          pickupAddress[0]?.address}
 
-                  {pickupAddress.length >= 2 && (
-                    <>
-                      <div className={"extra-address"}>
-                        +{pickupAddress.length - 1}
-                        <Info />
-                        <ExtraAddressWindowComponent stops={pickupAddress} />
+                        {pickupAddress.length >= 2 && (
+                          <>
+                            <div className={"extra-address"}>
+                              +{pickupAddress.length - 1}
+                              <Info />
+                            </div>
+                          </>
+                        )}
                       </div>
-                    </>
-                  )}
-                </div>
-                <div className={"date sub-text"}>
-                  {formatDate(pickupAddress[0].date)}
-                  {!!pickupAddress[0].date && " / "}
-                  {pickupAddress[0].time_start}
-                  {!!pickupAddress[0].time_end && " - "}
-                  {pickupAddress[0].time_end}
-                </div>
-              </td>
-              <td className={"drop"}>
-                <div className={"location main-text"}>
-                  {/*<ArrowDown />*/}
-                  {dropAddress[0].address}
+                    </div>
+                    <div className={"arrow-styling"}>
+                      <Arrow />
+                    </div>
+                  </div>
+                  <div className={"sub-text"}>
+                    {pickupAddress[0]?.company_name}
+                  </div>
+                </td>
+                <td className={"drop"}>
+                  <div className={"location-styling"}>
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <div className={"location main-text"}>
+                        {dropAddress[0]?.partial_address ??
+                          dropAddress[0]?.address}
 
-                  {dropAddress.length >= 2 && (
-                    <>
-                      <div className={"extra-address"}>
-                        +{dropAddress.length - 1}
-                        <Info />
-                        <ExtraAddressWindowComponent stops={dropAddress} />
+                        {dropAddress.length >= 2 && (
+                          <>
+                            <div className={"extra-address"}>
+                              +{dropAddress.length - 1}
+                              <Info />
+                            </div>
+                          </>
+                        )}
                       </div>
-                    </>
-                  )}
-                </div>
-                <div className={"date sub-text"}>
-                  {formatDate(dropAddress[0].date)}
-                  {!!dropAddress[0].date && " / "}
-                  {dropAddress[0].time_start}
-                  {!!dropAddress[0].time_end && " - "}
-                  {dropAddress[0].time_end}
-                </div>
-              </td>
-              <td>
-                <div className={"main-text"}>
-                  {numberCommaFormat(details?.weight)} {details?.weight_unit}
-                </div>
-                <div
-                  className={"sub-text"}
-                  style={{
-                    textTransform: "capitalize",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {details?.packing_method?.replace("_", " ") ??
-                    details?.quantity + " items"}
-                </div>
+                    </div>
+                  </div>
+                  <div className={"sub-text"}>
+                    {dropAddress[0]?.company_name}
+                  </div>
+                </td>
+                <td>
+                  <div className={"main-text"}>
+                    {formatDate(pickupAddress[0]?.date)}
+                  </div>
+                </td>
 
-                <div
-                  className={"sub-text"}
-                  style={{
-                    textTransform: "capitalize",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {details?.commodity}
-                </div>
-              </td>
-              <td>
-                <div className={"main-text"}>
-                  {details.references?.length ? details.references[0] : "N/A"}
-                </div>
-                <div
-                  className={"sub-text"}
-                  style={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Value:
-                  {" " +
-                    numberCommaFormat(details?.goods_value) +
-                    ` ${quote.currency}`}
-                </div>
-                <div
-                  className={"sub-text"}
-                  style={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {" " + quote.quote_type.replace("_", " ")}
-                </div>
-              </td>
-              <td>
-                <div className={"main-text"}>
-                  {quote?.equipments?.join(",")}
-                </div>
-              </td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+                <td>
+                  <div className={"main-text"}>
+                    {formatDate(dropAddress[0]?.date)}
+                  </div>
+                </td>
+                <td>
+                  <div className={"main-text"}>
+                    {numberCommaFormat(quote?.details[0]?.weight)}{" "}
+                    {quote?.details[0]?.weight_unit}
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className={"main-text"}
+                    dangerouslySetInnerHTML={{
+                      __html: quote?.references?.length
+                        ? quote?.references[0]
+                            ?.replace(/ /g, "&nbsp;")
+                            .replace("/", " ")
+                        : "N/A",
+                    }}
+                  ></div>
+                </td>
+                <td>
+                  <div className={"main-text equipments-table-box"}>
+                    {quote?.equipments?.join(",")}
+                  </div>
+                </td>
+                {/*<td*/}
+                {/*    onClick={(ev) => {*/}
+                {/*      ev.preventDefault();*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*  <QuoteActionButtonComponent*/}
+                {/*      status={btnStatus}*/}
+                {/*      number={bidsNumber}*/}
+                {/*      viewLink={viewLink}*/}
+                {/*      prefetchQuoteId={_id}*/}
+                {/*  />*/}
+                {/*  /!*</Link>*!/*/}
+                {/*</td>*/}
+              </tr>
+              {selectedQuoteForPreview && (
+                <tr className={"selected-quote-preview-tr"}>
+                  <td
+                    colSpan={10}
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <QuoteModalPreviewComponent
+                      quote={quote}
+                      // setQuote={setSelectedQuoteForPreview}
+                    />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   );

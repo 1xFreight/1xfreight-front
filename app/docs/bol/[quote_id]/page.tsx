@@ -1,20 +1,66 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { toShortId } from "@/common/utils/data-convert.utils";
+import {
+  clearText,
+  concatReferencesByType,
+  toShortId,
+} from "@/common/utils/data-convert.utils";
 import "./styles.css";
-import PointOnMap from "@/public/icons/point-on-map.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
-import Image from "next/image";
 import { formatDate } from "@/common/utils/date.utils";
-import html2pdf from "html2pdf.js"; // Import html2pdf
+import { generateCustomID } from "@/common/utils/number.utils";
+import jsPDF from "jspdf";
+import * as htmlToImage from "html-to-image";
+import Image from "next/image";
+import FTL from "@/public/png/full-truck.png";
+import LTL from "@/public/png/half-truck.png";
+import Ocean from "@/public/png/ocean-transportation.png";
+import Air from "@/public/png/air-transportation.png";
+import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
+import MapMarker from "@/public/png/map-marker.png";
+import Dollar from "@/public/png/dollar.png";
+import Mail from "@/public/icons/pdf-icons/mail.svg";
+import Phone from "@/public/icons/pdf-icons/phone.svg";
+import Notes from "@/public/icons/30px/sticky-notes-2.svg";
+import Watch from "@/public/icons/30px/clock.svg";
+import Canada from "@/public/png/maple 1.png";
+import USA from "@/public/png/usa 1.png";
+import Mexico from "@/public/png/mexican-republic-map-black-shape 1.png";
+import useStore from "@/common/hooks/use-store.context";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import SendToCarrierButton from "@/app/docs/bol/[quote_id]/components/send-to-carrier.button";
+
+const typeImageMapping = {
+  [QuoteTypeEnum.FTL]: FTL,
+  [QuoteTypeEnum.LTL]: LTL,
+  [QuoteTypeEnum.FCL]: Ocean,
+  [QuoteTypeEnum.AIR]: Air,
+};
+
+const brokerCountryImageMapping = {
+  ["US"]: USA,
+  ["MX"]: Mexico,
+  ["CA"]: Canada,
+};
 
 export default function ViewBOLPage({ params }) {
   const [quote, setQuote] = useState();
   const [loading, setLoading] = useState(true);
   const [referenceNumber, setReference] = useState<string>("");
-  const pdfRef = useRef(null); // Reference for .bol element
+  const [selectedEquipment, setSelectedEquipment] = useState<string>("");
+  const [bolId, setBolId] = useState<string>("");
+  const [bolNotes, setBolNotes] = useState<string>("");
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const { showToast, session } = useStore();
+  const [billingInfo, setBillingInfo] = useState({
+    bill_to: null,
+    billing_address: null,
+    billing_email: null,
+    billing_phone: null,
+    type: "collect",
+  });
 
   const getQuote = useDebouncedCallback(() => {
     getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
@@ -22,37 +68,57 @@ export default function ViewBOLPage({ params }) {
         const quoteObj = { ...data?.quotes[0] };
         setQuote(quoteObj);
         setLoading(false);
-        identifyRef(quoteObj.references);
+        setReference(concatReferencesByType(quoteObj.references));
+        setSelectedEquipment(quoteObj?.equipments[0]);
+        setBolId(toShortId(params.quote_id));
+        changeBillingInfo("prepaid");
       },
     );
   });
 
-  const identifyRef = (quoteRefs = null) => {
-    let quoteReferences = [];
-    if (!quoteRefs) {
-      quoteReferences = quote?.references;
-    } else {
-      quoteReferences = [...quoteRefs];
-    }
+  const changeBillingInfo = (
+    type: "prepaid" | "collect" | "third-party",
+    address_id = null,
+  ) => {
+    switch (type) {
+      case "prepaid":
+        setBillingInfo({
+          bill_to: session?.name,
+          billing_address: session?.billing_address,
+          billing_email: session?.billing_email,
+          billing_phone: session?.billing_phone,
+          type: "prepaid",
+        });
+        break;
 
-    if (!quoteReferences.length) {
-      setReference("N/A");
-      return "N/A";
-    }
-    if (quoteReferences.length === 1) {
-      setReference(quoteReferences[0]);
-      return quoteReferences[0];
-    }
+      case "collect":
+        const locations = quote?.addresses;
+        let collectLocation;
 
-    quoteReferences.forEach((reference) => {
-      if (reference.includes("BOL")) {
-        setReference(reference);
-        return reference;
-      }
-    });
+        address_id
+          ? (collectLocation = locations?.find(({ _id }) => _id === address_id))
+          : (collectLocation = locations[0]);
 
-    setReference(quoteReferences[0]);
-    return quoteReferences[0];
+        setBillingInfo({
+          bill_to: collectLocation?.company_name,
+          billing_address: collectLocation?.address,
+          billing_email: collectLocation?.contact_email,
+          billing_phone: collectLocation?.contact_phone,
+          type: "collect",
+        });
+        break;
+
+      case "third-party":
+        const carrier = quote?.local_carrier;
+        setBillingInfo({
+          bill_to: carrier?.name,
+          billing_address: carrier?.address,
+          billing_email: carrier?.email,
+          billing_phone: carrier?.phone,
+          type: "third-party",
+        });
+        break;
+    }
   };
 
   useEffect(() => {
@@ -60,367 +126,531 @@ export default function ViewBOLPage({ params }) {
   }, []);
 
   // Function to generate PDF
-  const downloadPDF = async () => {
-    const options = {
-      margin: 0, // Adjust margins as needed
-      filename: `BOL_${referenceNumber}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().set(options).from(pdfRef.current).save();
+  const downloadPDF = async (getPdf = false) => {
+    try {
+      const domElement = document.getElementById("pdfRef"); // Ensure your target element has this ID
+
+      if (!domElement) {
+        console.error("Element with ID 'pdfRef' not found.");
+        return;
+      }
+
+      // Convert the DOM element to a PNG image
+
+      const dataUrl = await htmlToImage.toJpeg(domElement, {
+        quality: 1, // Lower quality for smaller size
+        pixelRatio: 2,
+      });
+
+      // Initialize jsPDF with US Letter format
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "in",
+        format: "letter", // US Letter format
+      });
+
+      // Calculate dimensions to fit the image into US Letter size
+      const pageWidth = 8.5; // US Letter width in inches
+      const pageHeight = 11; // US Letter height in inches
+
+      const imgProps = pdf.getImageProperties(dataUrl);
+      const imgWidth = pageWidth - 1; // Leave 0.5 inch margin on both sides
+      const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Maintain aspect ratio
+
+      // Add the image to the PDF
+      const xOffset = 0.35; // Center horizontally with a 0.5-inch margin
+      const yOffset = 0.35; // Top margin
+      pdf.addImage(dataUrl, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
+
+      // Save the PDF
+
+      if (getPdf) {
+        const pdfBlob = pdf.output("blob");
+        const fileName = `BOL_${bolId}.pdf`; // Replace `bolId` with your ID variable
+
+        return new File([pdfBlob], fileName, { type: "application/pdf" });
+      } else {
+        pdf.save(`BOL_${bolId}.pdf`);
+      }
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (
     <div className={"bol-page"}>
-      <div className={"container"}>
-        <div className={"bol-page-title"}>
-          <h2>BOL</h2>
-          <button onClick={downloadPDF}>Download</button>
-          <h5>#{toShortId(params.quote_id)}</h5>
+      <div className={"container bol-wrapper"}>
+        <div className={"bol-page-actions"}>
+          <h2>Edit BOL</h2>
+
+          <div className={"reference-edit-input"}>
+            <input
+              type={"text"}
+              placeholder={"Reference number"}
+              value={referenceNumber}
+              onChange={(ev) => setReference(ev.target.value)}
+            />
+            {/*<button>Default</button>*/}
+          </div>
+          <div className={"reference-edit-input"}>
+            <input
+              type={"text"}
+              placeholder={"Bol id"}
+              value={bolId}
+              onChange={(ev) => setBolId(ev.target.value)}
+            />
+          </div>
+          <div className={"reference-edit-input"}>
+            <select
+              onChange={(ev) => setSelectedEquipment(ev.target.value)}
+              value={selectedEquipment}
+            >
+              {quote?.equipments?.map((equipment) => (
+                <option key={equipment}>{equipment}</option>
+              ))}
+            </select>
+          </div>
+          <div className={"reference-edit-input"}>
+            <textarea
+              placeholder={"Bol Notes"}
+              value={bolNotes}
+              onChange={(ev) => setBolNotes(ev.target.value)}
+              style={{
+                width: "100%",
+                padding: "0.5rem 1rem",
+              }}
+              rows={8}
+            />
+          </div>
+
+          <div className={"payment-terms"}>
+            <h5>Payment Terms:</h5>
+
+            <select onChange={(ev) => changeBillingInfo(ev.target.value)}>
+              <option value={"prepaid"}>Prepaid</option>
+              <option value={"collect"}>Collect</option>
+              <option value={"third-party"}>Third-party</option>
+            </select>
+
+            {billingInfo?.type === "collect" && (
+              <select
+                onChange={(ev) => {
+                  changeBillingInfo("collect", ev.target.value);
+                }}
+              >
+                {quote?.addresses?.map((location) => (
+                  <option key={location._id} value={location._id}>
+                    {location.company_name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+          <button onClick={() => downloadPDF()}>Download</button>
+          <SendToCarrierButton quote={quote} downloadPDF={downloadPDF} />
         </div>
 
-        {/* Main content */}
         <div
-          className={"bol"}
+          className="bol"
           ref={pdfRef}
+          id={"pdfRef"}
           style={{
-            width: "100%",
-            maxWidth: "77.5rem",
+            width: "1760px",
             background: "white",
-            minHeight: "30rem",
+            minHeight: "1024px", // Height for US Letter format
             boxSizing: "border-box",
-            padding: ".5rem",
-            minWidth: "1000px",
+            padding: "2rem",
           }}
         >
-          <div
-            className={"bol-title"}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.25rem",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-flex",
-                gap: "0.5rem",
-                alignItems: "center",
-              }}
-            >
-              {!!quote?.author?.logo && (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${quote?.author?.logo}`}
-                  alt={"logo"}
-                  width={1000}
-                  height={100}
-                  className={"quote-author-logo-img"}
-                  quality={80}
-                  style={{
-                    borderRadius: "0.5rem",
-                    width: "40px", // Let CSS control width
-                    height: "40px", // Let CSS control height
-                    maxWidth: "100%", // Ensure it doesn't exceed the container
-                    objectFit: "contain", // Ensure the image fits the box without cropping
-                  }}
-                />
-              )}
-              <h2
-                style={{
-                  color: "#3A56EA",
-                  fontWeight: 700,
-                }}
-              >
-                {quote?.author?.name}
-              </h2>
+          <div className={"header-pdf"}>
+            <div className={"left-header"}>
+              <div className={"pdf-date-created"}>{formatDate(Date.now())}</div>
+              <img
+                src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${quote?.author?.logo}`}
+                alt={"logo"}
+              />
+              <div className={"bol-legal-subtitle"}>
+                STRAIGHT BILL OF LADING ( ORIGINAL NON NEGOTIABLE)
+              </div>
             </div>
-            <div
-              className={"reference-edit"}
-              id={"reference-edit"}
-              style={{
-                display: "inline-flex",
-                gap: "0.5rem",
-                alignItems: "center",
-                position: "relative",
-                zIndex: 15,
-              }}
-            >
-              <button
-                className={"reference-bol"}
-                style={{
-                  background: "transparent",
-                  boxShadow: "unset",
-                  border: "unset",
-                  height: "2rem",
-                }}
-              >
-                {referenceNumber}
-              </button>
-              <div
-                className={"reference-edit-box"}
-                onBlur={(ev) => {
-                  const newRefValue =
-                    document.getElementById("edit-ref")?.value;
-                  setReference(newRefValue ?? referenceNumber);
-                }}
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  marginTop: "1rem",
-                  background: "rgba(0, 0, 0, 0.1)",
-                  backdropFilter: "blur(10px)",
-                  padding: "0.75rem",
-                  borderRadius: "0.5rem",
-                  zIndex: 20,
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                  display: "none",
-                  width: "20rem",
-                  border: "1px solid rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <div
-                  className={"edit-ref-title"}
-                  style={{
-                    display: "inline-flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <h6>edit reference number:</h6>
-                  <button
-                    onClick={(ev) => {
-                      document.getElementById("edit-ref").value = identifyRef();
-                    }}
-                    id={"undo-edit-reference"}
-                    style={{
-                      padding: "0.15rem 0.35rem",
-                      borderRadius: "0.5rem",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    default
-                  </button>
+
+            <div className={"bol-text"}>BOL</div>
+          </div>
+
+          <div className={"ids-and-refs"}>
+            <div className={"left-div"}>
+              <div className={"bol-id"}>{bolId}</div>
+              <div className={"ref-div"}>
+                <div>
+                  <span>Ref #</span> {referenceNumber}
                 </div>
-                <input
-                  type={"text"}
-                  defaultValue={referenceNumber}
-                  id={"edit-ref"}
-                  onChange={(ev) => {
-                    if (ev.target.value !== referenceNumber) {
-                      document.getElementById(
-                        "undo-edit-reference",
-                      ).style.display = "flex";
-                    }
-                  }}
-                />
+                <div>{selectedEquipment}</div>
+              </div>
+            </div>
+
+            <div className={"right-part"}>
+              <div className={"quote-author-name"}>
+                {quote?.local_carrier?.name}
+              </div>
+              <div className={"quote-type-img"}>
+                <img src={typeImageMapping[quote?.type]?.src} alt={"type"} />
               </div>
             </div>
           </div>
 
-          <div
-            className={"locations"}
-            style={{
-              width: "100%",
-              display: "flex",
-              gap: "1rem",
-              marginTop: "0.6rem",
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            <div
-              className={"pickup"}
-              style={{
-                maxWidth: "380px",
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "0.5rem",
-                background: "rgba(222, 222, 222, 0.2)",
-                border: "1px solid rgba(222, 222, 222, 0.5)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <h3>Pickup</h3>
-              {quote?.addresses.map((address, index) => {
-                if (address.address_type === "pickup")
-                  return (
-                    <div
-                      key={index + address.address}
-                      className={"location-item"}
-                      style={{
-                        border: "1px solid #dedede",
-                        margin: "0.5rem",
-                        borderRadius: "0.5rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        position: "relative",
-                        padding: "0.75rem",
-                      }}
-                    >
-                      <div
-                        className={"address"}
-                        style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
-                        }}
-                      >
-                        <h5
-                          className={"company-name"}
-                          style={{
-                            color: "#3A56EA",
-                            fontWeight: 500,
-                          }}
-                        >
-                          {address.company_name}
-                        </h5>
-                        <h5>{address.street},</h5>
-                        <h5>{address.partial_address}</h5>
+          <div className={"locations-wrapper-pdf"}>
+            <div className={"pickup-wrapper-pdf"}>
+              {quote?.addresses?.map((address) => {
+                if (address?.address_type !== "pickup") return;
+                return (
+                  <div key={address._id} className={"location-item"}>
+                    <div className={"location-header"}>
+                      <div className={"icon-box"}>
+                        <Image src={MapMarker} alt={"map-marker"} width={150} />
                       </div>
-                      <div
-                        className={"conact-details"}
-                        style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
-                        }}
-                      >
-                        <h5>
-                          {address.contact_name} {address.contact_phone}
-                        </h5>
-                        <h5>{address.contact_email}</h5>
+                      <div className={"location-datetime"}>
+                        Pickup{" "}
+                        {!!address?.date && `on ${formatDate(address.date)}`}
+                        {(address.time_start?.length < 10 ||
+                          address.time_end?.length < 10) &&
+                          " at "}
+                        {address.time_start?.length < 10
+                          ? address.time_start
+                          : ""}
+                        {address.time_end?.length < 10 &&
+                          ` - ${address.time_end}`}
                       </div>
-                      <div
-                        style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
-                        }}
-                      >
-                        {address.open_hours?.split(",").map((openHoursLine) => (
-                          <h5
-                            key={openHoursLine}
-                            className={"formatted-open-hours"}
-                          >
-                            {openHoursLine}
-                          </h5>
-                        ))}
-                      </div>
-                      {!!address.date && (
-                        <div>
-                          <h5>
-                            Delivery on: {formatDate(address.date)}
-                            {address.time_start || address.time_end ? ", " : ""}
-                            {address.time_start}{" "}
-                            {address.time_start && address.time_end
-                              ? " - "
-                              : ""}{" "}
-                            {address.time_end}
-                          </h5>
-                        </div>
-                      )}
                     </div>
-                  );
+                    <div className={"location-details"}>
+                      <div className={"location-address"}>
+                        <div className={"location-company"}>
+                          {address?.company_name}
+                        </div>
+                        <div>{address?.street}</div>
+                        <div>{address?.partial_address}</div>
+                      </div>
+
+                      <div className={"location-company-contacts"}>
+                        <div className={"company-contact"}>
+                          {address?.contact_name}
+                        </div>
+
+                        <div className={"contacts-info"}>
+                          <div>
+                            <Mail />
+                            {address?.contact_email}
+                          </div>
+                          <div>
+                            <Phone />
+                            {address?.contact_phone}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={"location-notifications"}>
+                      <Notes />
+                      {address?.notes}
+                    </div>
+
+                    <div className={"location-open-hours"}>
+                      <Watch />
+                      {address?.open_hours}
+                    </div>
+                  </div>
+                );
               })}
+            </div>
+            <div className={"drop-wrapper-pdf"}>
+              {quote?.addresses?.map((address) => {
+                if (address?.address_type !== "drop") return;
+                return (
+                  <div key={address._id} className={"location-item"}>
+                    <div className={"location-header"}>
+                      <div className={"icon-box"}>
+                        <img src={MapMarker?.src} alt={"map-marker"} />
+                      </div>
+                      <div className={"location-datetime"}>
+                        Drop{" "}
+                        {!!address?.date && `on ${formatDate(address.date)}`}
+                        {(address.time_start?.length < 10 ||
+                          address.time_end?.length < 10) &&
+                          " at "}
+                        {address.time_start?.length < 10
+                          ? address.time_start
+                          : ""}
+                        {address.time_end?.length < 10 &&
+                          ` - ${address.time_end}`}
+                      </div>
+                    </div>
+                    <div className={"location-details"}>
+                      <div className={"location-address"}>
+                        <div className={"location-company"}>
+                          {address?.company_name}
+                        </div>
+                        <div>{address?.street}</div>
+                        <div>{address?.partial_address}</div>
+                      </div>
+
+                      <div className={"location-company-contacts"}>
+                        <div className={"company-contact"}>
+                          {address?.contact_name}
+                        </div>
+
+                        <div className={"contacts-info"}>
+                          <div>
+                            <Mail />
+                            {address?.contact_email}
+                          </div>
+                          <div>
+                            <Phone />
+                            {address?.contact_phone}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={"location-notifications"}>
+                      <Notes />
+                      {address?.notes}
+                    </div>
+
+                    <div className={"location-open-hours"}>
+                      <Watch />
+                      {address?.open_hours}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {!!quote?.details_?.customs_broker_name && (
+            <div className={"customs-broker"}>
+              <div className={"country-png"}>
+                <img
+                  src={
+                    brokerCountryImageMapping[
+                      quote?.details_?.customs_broker_country
+                    ].src
+                  }
+                  alt={"country"}
+                />
+              </div>
+
+              <div className={"broker"}>
+                {quote?.details_?.customs_broker_name}
+              </div>
+
+              <div className={"broker"}>
+                <Mail />
+                {quote?.details_?.customs_broker_email}
+              </div>
+              <div className={"broker"}>
+                <Phone />
+                {quote?.details_?.customs_broker_phone}
+              </div>
+            </div>
+          )}
+
+          <div className={"billing-info"}>
+            <div className={"dollar-png"}>
+              <img src={Dollar?.src} alt={"dollar"} />
             </div>
 
-            <div
-              className={"drop"}
-              style={{
-                maxWidth: "380px",
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "0.5rem",
-                background: "rgba(222, 222, 222, 0.2)",
-                border: "1px solid rgba(222, 222, 222, 0.5)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <h3>Delivery</h3>
-              {quote?.addresses.map((address, index) => {
-                if (address.address_type === "drop")
-                  return (
-                    <div
-                      key={index + address.address}
-                      className={"location-item"}
-                      style={{
-                        border: "1px solid #dedede",
-                        margin: "0.5rem",
-                        borderRadius: "0.5rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        position: "relative",
-                        padding: "0.75rem",
-                      }}
-                    >
-                      <div
-                        className={"address"}
+            <div className={"billing-to"}>
+              Bill to: <span>{billingInfo?.bill_to}</span>
+            </div>
+
+            <div className={"billing-to"}>
+              <img src={MapMarker?.src} alt={"map-marker"} />
+              <span>{billingInfo?.billing_address}</span>
+            </div>
+
+            <div className={"contacts-info"}>
+              <div>
+                <Mail />
+                {billingInfo?.billing_email}
+              </div>
+              <div>
+                <Phone />
+                {billingInfo?.billing_phone}
+              </div>
+            </div>
+          </div>
+
+          <div className={"items-table"}>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Quantity</th>
+                  <th>Handling unit</th>
+                  <th>Dimensions</th>
+                  <th>Commodity</th>
+                  <th>Hazmat</th>
+                  <th>Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {quote?.type !== QuoteTypeEnum.LTL && (
+                  <>
+                    <tr>
+                      <td>1</td>
+                      <td>{quote?.details_?.quantity}</td>
+                      <td>{clearText(quote?.details_?.packing_method)}</td>
+                      <td></td>
+                      <td>{quote?.details_?.commodity}</td>
+                      <td>
+                        {quote?.details_?.hazardous_goods ? (
+                          <div className={"hazard-td"}>
+                            <div>UN: {quote?.details_?.un_number}</div>
+                            <div>
+                              Contact: {quote?.details_?.emergency_contact},{" "}
+                              {quote?.details_?.emergency_phone1}
+                            </div>
+                          </div>
+                        ) : (
+                          "------"
+                        )}
+                      </td>
+                      <td>
+                        {quote?.details_?.weight} {quote?.details_?.weight_unit}
+                      </td>
+                    </tr>
+
+                    <tr className={"total-tr"}>
+                      <td>Total</td>
+                      <td>{quote?.details_?.quantity}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td
                         style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
+                          fontWeight: 600,
                         }}
                       >
-                        <h5
-                          className={"company-name"}
+                        {quote?.details_?.weight} {quote?.details_?.weight_unit}
+                      </td>
+                    </tr>
+                  </>
+                )}
+
+                {quote?.items?.map((item, index) => (
+                  <>
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{item?.quantity}</td>
+                      <td>{item?.handling_unit}</td>
+                      <td>
+                        {item.width} x {item.length} x {item.height}
+                      </td>
+                      <td>{item.commodity}</td>
+                      <td>
+                        {item.un_number ? (
+                          <div className={"hazard-td"}>
+                            <div>UN: {item.un_number}</div>
+                            <div>
+                              Contact: {item.emergency_contact},{" "}
+                              {item.emergency_phone}
+                            </div>
+                          </div>
+                        ) : (
+                          "------"
+                        )}
+                      </td>
+                      <td>{item.weight} lb/unit</td>
+                    </tr>
+
+                    {index + 1 == quote?.items?.length && (
+                      <tr className={"total-tr"}>
+                        <td>Total</td>
+                        <td>{quote?.details_?.quantity}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td
                           style={{
-                            color: "#3A56EA",
-                            fontWeight: 500,
+                            fontWeight: 600,
                           }}
                         >
-                          {address.company_name}
-                        </h5>
-                        <h5>{address.street},</h5>
-                        <h5>{address.partial_address}</h5>
-                      </div>
-                      <div
-                        className={"conact-details"}
-                        style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
-                        }}
-                      >
-                        <h5>
-                          {address.contact_name} {address.contact_phone}
-                        </h5>
-                        <h5>{address.contact_email}</h5>
-                      </div>
-                      <div
-                        style={{
-                          borderBottom: "1px dashed rgba(0, 0, 0, 0.3)",
-                          paddingBottom: "0.5rem",
-                        }}
-                      >
-                        {address.open_hours?.split(",").map((openHoursLine) => (
-                          <h5
-                            key={openHoursLine}
-                            className={"formatted-open-hours"}
-                          >
-                            {openHoursLine}
-                          </h5>
-                        ))}
-                      </div>
-                      {!!address.date && (
-                        <div>
-                          <h5>
-                            Delivery on: {formatDate(address.date)}
-                            {address.time_start || address.time_end ? ", " : ""}
-                            {address.time_start}{" "}
-                            {address.time_start && address.time_end
-                              ? " - "
-                              : ""}{" "}
-                            {address.time_end}
-                          </h5>
-                        </div>
-                      )}
-                    </div>
-                  );
-              })}
+                          {quote?.details_?.weight}{" "}
+                          {quote?.details_?.weight_unit}
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {bolNotes && (
+            <div className={"bol-notes"}>
+              <h3>Notes:</h3>
+
+              <span>{bolNotes}</span>
             </div>
+          )}
+
+          <div className={"sign-divs"}>
+            {quote?.addresses &&
+              [
+                ...quote?.addresses
+                  ?.sort((a, b) => {
+                    // First sort by address_type ("pickup" before "drop")
+                    if (a.address_type === b.address_type) {
+                      // If address_type is the same, sort by order
+                      return a.order - b.order;
+                    }
+                    return a.address_type === "pickup" ? -1 : 1;
+                  })
+                  .map((address) => address.company_name),
+                quote?.author?.name,
+              ].map((name) => (
+                <div className={"sign-item"} key={name}>
+                  <div className={"sign-item-row"}>
+                    <div className={"name"}>{name}</div>
+                    <div className={"sign-extra"}>
+                      <span>Units</span>
+                    </div>
+                  </div>
+
+                  <div className={"sign-item-row"}>
+                    <div className={"sign"}>
+                      <span>Sign</span>
+                    </div>
+                    <div className={"sign-extra"}>
+                      <span>Date</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <div className={"info-footer"}>
+            Notice: Freight moving under this Bill of Lading is subject to
+            classifications and tariffs established by the carrier and are
+            available to the shipper upon request. This notice supersedes and
+            negates any claimed oral or written contract, promise,
+            representation, or understanding between parties, except to the
+            extent of any written contract signed by both parties to the
+            contract. The carrier certifies that only ARB-compliant equipment
+            will be dispatched on California highways or railways. Any
+            unauthorized alteration or use of this Bill of Lading, or the
+            tendering of this shipment to any carrier other than that designated
+            by the company, may VOID the company’s obligations to make any
+            payments relating to this shipment and VOID all rate quotes. All
+            shippers, consignors, consignees, freight forwarders, or freight
+            brokers are jointly and severally liable for the freight charges
+            relating to this shipment. I hereby declare that the contents of
+            this consignment are fully and accurately described above by the
+            proper shipping name, are classified, packaged, marked, and
+            labeled/placarded, and are in all respects in proper condition for
+            transport according to applicable international and national
+            governmental regulations.
           </div>
         </div>
       </div>

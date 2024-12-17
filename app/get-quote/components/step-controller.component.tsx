@@ -19,7 +19,10 @@ function StepControllerComponent() {
           >
             Back
           </button>
-          <button className={"next-btn"} onClick={() => validateAndGoForward()}>
+          <button
+            className={`next-btn ${stepNumber === Object.keys(stepsMapping[type]).length ? "variant2" : ""}`}
+            onClick={() => validateAndGoForward()}
+          >
             {stepNumber === Object.keys(stepsMapping[type]).length
               ? "Send"
               : "Next"}

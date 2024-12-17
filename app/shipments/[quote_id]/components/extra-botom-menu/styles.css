@@ -1,0 +1,109 @@
+.extra-bottom-menu {
+    margin-bottom: 0.25rem;
+    display: inline-flex;
+    width: 67.5rem;
+    padding: 0.15rem 0.15rem;
+    justify-content: space-between;
+    border-radius: 0.75rem;
+    gap: 0.5rem;
+
+    .status-div-wrapper {
+        width: 9rem;
+        display: inline-flex;
+        justify-content: start;
+    }
+
+    .request-extra-menu {
+        display: inline-flex;
+        width: 48rem;
+        padding: 0.25rem 0.35rem;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 0.75rem;
+        border: 1px solid #96AAFB;
+        gap: 1rem;
+        white-space: nowrap;
+        height: calc(100% + 2px);
+        /*backdrop-filter: blur(5px);*/
+        /*-webkit-backdrop-filter: blur(5px);*/
+
+        .request-amount {
+            background: #6B81FF;
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0 0.5rem;
+        }
+    }
+
+    .status-div , .cancel-load-div, .request-extra-menu {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .status-div {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #C6ECBD;
+        color: white;
+        position: relative;
+        background: #82C181;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .cancel-load-div-wrapper {
+        width: 9rem;
+        display: inline-flex;
+        justify-content: end;
+        align-items: center;
+        height: 100%;
+    }
+
+    .cancel-load-div {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #FDB297;
+        color: #F44C3D;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        opacity: 0;
+        height: 100%;
+        transition: 150ms ease-in-out;
+        cursor: pointer;
+        background: white;
+
+        &:hover {
+            color: white;
+            background: #F44C3D;
+        }
+    }
+
+
+
+}
+@keyframes extraMenuItemAnimation {
+    0% {
+        width: 0;
+        border-radius: 100%;
+        color: transparent;
+    }
+    25% {
+        width: 0;
+    }
+    26% {
+        width: 2rem;
+        opacity: 1;
+    }
+    50% {
+        border-radius: 1rem;
+    }
+    100% {
+        width: 9rem;
+        border-radius: 0.75rem;
+        opacity: 1;
+    }
+}

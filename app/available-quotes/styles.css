@@ -6,10 +6,20 @@
         z-index: 10;
     }
 
+    .remove-filters {
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        padding: 0 0.5rem;
+        border-radius: 0.65rem;
+        height: calc(3rem - 2px);
+    }
+
     .filters-panel {
         z-index: 10;
         display: flex;
-        justify-content: start;
+        justify-content: start !important;
+        flex-direction: row;
+        gap: 1rem;
 
         .search-input-custom {
             width: 30rem;
@@ -28,26 +38,6 @@
             svg path {
                 fill: rgba(0, 32, 221, 0.5);
             }
-        }
-    }
-
-    .pickup .location, .drop .location {
-        display: flex;
-        position: relative;
-        align-items: center;
-        width: 100%;
-
-        .location svg {
-            width: 50px;
-        }
-
-        &:has(.extra-address) {
-            padding-right: 3.5rem;
-        }
-
-        .extra-address{
-            position: absolute;
-            right: 0;
         }
     }
 

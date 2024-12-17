@@ -1,16 +1,94 @@
+.analytics-page {
+    .analytics-header-banner {
+        width: 100%;
+        margin-top: 1.5rem;
+        border-radius: .75rem;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        box-sizing: border-box;
+
+        .header-text {
+            font-size: 4rem;
+            font-weight: 500;
+            color: #1e1e1e;
+        }
+
+        img {
+            width: 5.75rem;
+            height: 5.75rem;
+        }
+    }
+
+     .page-header h4{
+        font-size: 1.25rem;
+        color: #1e1e1e;
+    }
+
+    .filter-box {
+        display: inline-flex;
+        justify-content: start;
+        width: 100%;
+        gap: 1rem;
+        margin-top: 1rem;
+        align-items: center;
+        height: 100%;
+
+        .date-daterange {
+            padding-left: 1rem;
+            height: 3rem;
+        }
+
+
+    }
+
+     .page-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        /*height: 3rem;*/
+        margin-top: 1rem;
+        z-index: 10;
+    }
+
+    .arrow-style {
+        svg path {
+            fill: #3A56EA;
+        }
+    }
+
+    .search-analytics-input {
+        width: 20rem;
+        height: 3.1rem;
+        padding: 0 1rem;
+    }
+}
+
 .analytic-tab {
-    background: white;
-    box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
     margin-top: 1rem;
     width: 100%;
-    padding: 1.5rem;
     border-radius: 0.75rem;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+
+    .analytics-general-wrapper {
+        max-width: 21rem;
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+        /*display: none;*/
+        height: fit-content;
+
+    }
 
     .general-analytics {
         display: flex;
         align-items: flex-start;
+
+
 
         .subscription-status {
             background: #82C181;
@@ -85,7 +163,7 @@
 
             &>div {
                 width: 2.5rem;
-                background: rgba(0, 32, 221, 0.3);
+                background: #617BF4;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -99,6 +177,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
+        width: 100%;
 
         &.smaller {
             margin-top: 0.35rem;
@@ -159,6 +238,216 @@
                     }
                 }
             }
+        }
+    }
+}
+
+.statistics-carrier-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    justify-content: start;
+    align-items: center;
+    gap: 2rem;
+
+
+    .analytics-card-row {
+        width: 100%;
+        border-bottom: 1px dashed #d9d9d9;
+        border-radius: 0.5rem;
+        padding: 1rem 1rem 4rem 1rem;
+        display: flex;
+        flex-direction: column;
+
+        &:nth-last-of-type(1) {
+            border-bottom: unset;
+        }
+    }
+
+    .analytics-card-container, .performance-tab {
+        display: flex;
+
+        .title {
+            color: rgba(30, 30, 30, 0.4);
+            font-weight: 400;
+            font-size: 1rem;
+        }
+    }
+
+    .analytics-card-container {
+        &>div {
+            max-width: 50%;
+            width: 100%;
+        }
+    }
+
+    .main-info-line {
+        display: inline-flex;
+        gap: 5rem;
+        margin-bottom: 1.25rem;
+        /*background: rgba(30, 30, 30, 0.025);*/
+        /*border-radius: 0.5rem;*/
+        /*padding: 0.5rem;*/
+        /*border: 1px dashed rgba(30, 30, 30, 0.1);*/
+    }
+
+    .performance-tab {
+        gap: 0.35rem;
+        flex-direction: column;
+
+        .performance-container {
+            display: inline-flex;
+            gap: 5rem;
+
+            .percent-div {
+                font-size: 1.5rem;
+                font-weight: 500;
+
+                &.red {
+                    color: #F44C3D;
+                }
+
+                &.yellow {
+                    color: #face72;
+                }
+
+                &.green {
+                    color: #A9D9A3;
+                }
+
+                span {
+                    font-size: 0.9rem;
+                    font-weight: 400;
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    .currencies-data {
+        min-width: 30rem;
+        margin-right: 1.5rem;
+        border-right: 1px solid rgba(30, 30, 30, 0.075);
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .currency-main, .weight-main {
+        font-size: 1.5rem;
+        color: #1e1e1e;
+
+        .currency-symbol {
+            width: 2rem;
+            height: 2rem;
+            background: #1e1e1e;
+            border-radius: 0.65rem;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+    }
+
+    .currency-sub {
+        span {
+            font-weight: 500;
+            color: rgba(30, 30, 30, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .currency-symbol {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 0.45rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1e1e1e;
+        }
+    }
+
+    .currency-main, .weight-main , .currency-sub {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .currencies-total {
+        display: inline-flex;
+        gap: 1rem;
+    }
+
+    .currency-chart {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15rem;
+    }
+
+    .card-header {
+        display: flex;
+        width: 100%;
+        /*justify-content: space-between;*/
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+
+        .lane-header {
+            display: inline-flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .card-carrier-title {
+            margin-left: 0.5rem;
+        }
+    }
+
+    .weight-main-wrapper {
+        display: inline-flex;
+        gap: 1rem;
+        align-items: center;
+
+        .approx-symbol {
+            font-size: 2rem;
+            opacity: 0.25;
+        }
+    }
+
+    .analytics-data-box {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+
+        div {
+            display: inline-flex;
+            justify-content: space-between;
+            color: rgba(30, 30, 30, 0.75);
+
+            &:nth-of-type(odd) {
+                background: rgba(58, 86, 234, 0.05);
+            }
+
+            span {
+                color: #1e1e1e;
+                font-weight: 600;
+            }
+        }
+
+    }
+
+    .distance-tab {
+        margin-top: 2rem;
+
+        .title {
+            margin-bottom: 0.5rem;
+
         }
     }
 }

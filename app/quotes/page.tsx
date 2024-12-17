@@ -10,9 +10,11 @@ import { useDebouncedCallback } from "use-debounce";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
 import { paginationConfig } from "@/common/config/pagination.config";
 import useStore from "@/common/hooks/use-store.context";
+import EmptyTableComponent from "@/common/components/empty-table.component";
+import Link from "next/link";
 
 export default function QuotesPage() {
-  const [quotes, setQuotes] = useState();
+  const [quotes, setQuotes] = useState<any>();
   const [page, setPage] = useState(1);
   const { filters, setFilters } = useStore();
   const [loading, setLoading] = useState(true);
@@ -25,6 +27,7 @@ export default function QuotesPage() {
       ignoreCache,
     ).then((data) => {
       setQuotes(data);
+      // setQuotes([]);
       setLoading(false);
       if (ignoreCache) {
         setFilters((prevState) => {
@@ -43,6 +46,21 @@ export default function QuotesPage() {
     getQuotesDebounced();
   }, [filters]);
 
+  const getQuoteButton = (
+    <Link href={"/get-quote"} prefetch>
+      <button
+        style={{
+          width: "10rem",
+          height: "3rem",
+          borderRadius: "0.75rem",
+        }}
+        className={"variant2"}
+      >
+        GET QUOTE
+      </button>
+    </Link>
+  );
+
   return (
     <div className={"quotes-page page"}>
       <div className={"container page-header"}>
@@ -56,6 +74,15 @@ export default function QuotesPage() {
       <div className={"container"}>
         {loading ? (
           <Loading2Component />
+        ) : !quotes?.quotes?.length ? (
+          <div
+            style={{
+              width: "100%",
+              height: "calc(100vh - 15rem)",
+            }}
+          >
+            <EmptyTableComponent button={getQuoteButton} />
+          </div>
         ) : (
           <>
             <QuotesTableComponent rows={quotes?.quotes} />

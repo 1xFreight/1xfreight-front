@@ -20,12 +20,13 @@ export default function TeamMembersComponent() {
   const [members, setMembers] = useState([]);
 
   const getMembersDebounced = useDebouncedCallback(() => {
+    const ignoreCache = true;
     setLoading(true);
-    getWithAuth("/users/members").then((data) => {
+    getWithAuth("/users/members?status=active", ignoreCache).then((data) => {
       setMembers(data);
       setLoading(false);
     });
-  }, 1000);
+  }, 300);
 
   useEffect(() => {
     getMembersDebounced();

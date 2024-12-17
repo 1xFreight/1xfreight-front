@@ -13,35 +13,7 @@ export interface MemberI {
 }
 
 function SpotTableComponent({ members }: { members: MemberI[] }) {
-  const { showToast } = useStore();
-
-  const debounceUpdateStatus = useDebouncedCallback(
-    async (value: string, index: number) => {
-      const { name, _id } = members[index];
-
-      postWithAuth("/users/update-member", { status: value, _id }).then(
-        async (response) => {
-          if (!response.ok) {
-            const errorData = await response.json();
-            return showToast({
-              type: ToastTypesEnum.ERROR,
-              text: errorData.message || "Something went wrong",
-              duration: 5000,
-            });
-          }
-
-          showToast({
-            type: ToastTypesEnum.SUCCESS,
-            text: `${name} status was changed to ${value}`,
-            duration: 5000,
-          });
-
-          members[index].status = value;
-        },
-      );
-    },
-    500,
-  );
+  const { addToStore } = useStore();
 
   return (
     <div className={"spot-table-settings"}>
@@ -57,7 +29,16 @@ function SpotTableComponent({ members }: { members: MemberI[] }) {
         <tbody className={"fade-in"}>
           {members &&
             members.map(({ name, status, carriers }, index) => (
-              <tr key={index + name}>
+              <tr
+                key={index + name}
+                className={"tr-edit-table-hover-effect"}
+                onClick={() =>
+                  addToStore({
+                    name: "edit-spot-group-data",
+                    data: members[index],
+                  })
+                }
+              >
                 <td>
                   <div>{index + 1}</div>
                 </td>
@@ -68,20 +49,7 @@ function SpotTableComponent({ members }: { members: MemberI[] }) {
                   <div className={"main-text"}>{carriers.length}</div>
                 </td>
                 <td>
-                  <div className={`main-text ${status}`}>
-                    <select
-                      defaultValue={status}
-                      onChange={(e) => {
-                        if (e.target.value !== status) {
-                          debounceUpdateStatus(e.target.value, index);
-                          e.target.blur();
-                        }
-                      }}
-                    >
-                      <option value={"active"}>active</option>
-                      <option value={"inactive"}>inactive</option>
-                    </select>
-                  </div>
+                  <div className={`main-text ${status}`}>{status}</div>
                 </td>
               </tr>
             ))}

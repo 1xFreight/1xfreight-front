@@ -27,7 +27,6 @@ export default function AddEditModalComponent({
     const userData = getFromStore("edit-carrier-data");
     if (userData) {
       setDefaultCarrierData(userData.data);
-      console.log(userData.data);
       setIsEdit(true);
       deleteFromStore("edit-carrier-data");
       setOpen(true);

@@ -135,7 +135,7 @@ export function formatAddressObj(obj: any, type: string | undefined) {
   obj.contact_email
     ? (formattedAddress["contact_email"] = obj.contact_email)
     : "";
-  obj.open_hours && obj.open_hours !== "Mon - Sun: 1:00 AM - 1:00 AM"
+  obj.open_hours && obj.open_hours !== "Mon - Sun: closed"
     ? (formattedAddress["open_hours"] = obj.open_hours)
     : "";
 
@@ -185,6 +185,10 @@ export function formatShipmentLTL(obj: any) {
     density: obj.density,
     weight: obj.weight,
     quantity: obj.quantity,
+    customs_broker_email: obj.customs_broker_email,
+    customs_broker_phone: obj.customs_broker_phone,
+    customs_broker_name: obj.customs_broker_name,
+    customs_broker_country: obj.customs_broker_country,
   };
 }
 
@@ -246,6 +250,18 @@ export function formatShipmentObj(obj: any) {
   formattedShipment["goods_value"] = obj.goods_value;
   formattedShipment["load_number"] = obj.load_number;
   formattedShipment["packing_type"] = obj.packing_type;
+  obj.customs_broker_email
+    ? (formattedShipment["customs_broker_email"] = obj.customs_broker_email)
+    : "";
+  obj.customs_broker_name
+    ? (formattedShipment["customs_broker_name"] = obj.customs_broker_name)
+    : "";
+  obj.customs_broker_phone
+    ? (formattedShipment["customs_broker_phone"] = obj.customs_broker_phone)
+    : "";
+  obj.customs_broker_country
+    ? (formattedShipment["customs_broker_country"] = obj.customs_broker_country)
+    : "";
 
   return formattedShipment;
 }
@@ -264,6 +280,8 @@ export function formatReview(obj: any) {
 }
 
 export function toShortId(id: string) {
+  if (!id) return "";
+
   return id.substring(id.length - 7, id.length).toUpperCase();
 }
 
@@ -274,4 +292,23 @@ export function convertStringToBool(text: string) {
 export function clearText(text: string) {
   if (!text) return;
   return text.toLowerCase().replaceAll("_", " ").trim();
+}
+
+export function concatReferencesByType(references: Array<string>) {
+  const result = {};
+  let resultText = "";
+
+  references.map((reference) => {
+    const refType = reference.split("/")[0];
+    const refNumber = reference.split("/")[1];
+
+    result[refType] =
+      (result[refType] ? result[refType] + ", " : "") + refNumber;
+  });
+
+  Object.keys(result).map(
+    (refType) => (resultText += refType + ": " + result[refType] + "; "),
+  );
+
+  return resultText;
 }

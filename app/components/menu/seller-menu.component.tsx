@@ -9,8 +9,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { memo } from "react";
 
-export default function SellerMenuComponent() {
+function SellerMenuComponent() {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -81,3 +82,5 @@ export default function SellerMenuComponent() {
     </div>
   );
 }
+
+export default memo(SellerMenuComponent);

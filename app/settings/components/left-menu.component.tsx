@@ -13,9 +13,12 @@ import { usePathname } from "next/navigation";
 import "../styles.css";
 import { postWithAuth } from "@/common/utils/fetchAuth.util";
 import { useDebouncedCallback } from "use-debounce";
+import { UserRolesEnum } from "@/common/enums/user-roles.enum";
+import useStore from "@/common/hooks/use-store.context";
 
 export default function LeftMenuComponent() {
   const pathname = usePathname();
+  const { session } = useStore();
 
   const logoutDebounced = useDebouncedCallback(
     () => postWithAuth("/auth/logout", {}).then(() => window.location.reload()),
@@ -25,38 +28,65 @@ export default function LeftMenuComponent() {
   const menuItems = [
     {
       title: "Contact Info & Branding",
-      icon: <Slider />,
+      icon: <Slider className={""} />,
       href: "/settings",
+      roles: [
+        UserRolesEnum.SHIPPER,
+        UserRolesEnum.SHIPPER_DEMO,
+        UserRolesEnum.SHIPPER_MEMBER,
+      ],
     },
     {
       title: "Users",
       icon: <User />,
       href: "/settings/users",
+      roles: [UserRolesEnum.SHIPPER, UserRolesEnum.SHIPPER_DEMO],
     },
     {
       title: "Carriers",
-      icon: <Truck />,
+      icon: <Truck className={"truck-svg"} />,
       href: "/settings/carriers",
+      roles: [
+        UserRolesEnum.SHIPPER,
+        UserRolesEnum.SHIPPER_DEMO,
+        UserRolesEnum.SHIPPER_MEMBER,
+      ],
     },
     {
       title: "Spot Group Emails",
-      icon: <Mail />,
+      icon: <Mail className={"email-svg"} />,
       href: "/settings/spot-group",
+      roles: [
+        UserRolesEnum.SHIPPER,
+        UserRolesEnum.SHIPPER_DEMO,
+        UserRolesEnum.SHIPPER_MEMBER,
+      ],
     },
     {
       title: "Saved Locations",
       icon: <MapMarker />,
       href: "/settings/locations",
+      roles: [
+        UserRolesEnum.SHIPPER,
+        UserRolesEnum.SHIPPER_DEMO,
+        UserRolesEnum.SHIPPER_MEMBER,
+      ],
     },
     {
       title: "Change Password",
       icon: <Lock />,
       href: "/settings/password",
+      roles: [
+        UserRolesEnum.SHIPPER,
+        UserRolesEnum.SHIPPER_DEMO,
+        UserRolesEnum.SHIPPER_MEMBER,
+      ],
     },
     {
       title: "Billing",
       icon: <Card />,
       href: "/settings/billing",
+      roles: [UserRolesEnum.SHIPPER, UserRolesEnum.SHIPPER_DEMO],
     },
   ];
 
@@ -65,16 +95,21 @@ export default function LeftMenuComponent() {
       <div>
         <h2>My Settings</h2>
 
-        {menuItems.map(({ title, icon, href }) => (
-          <Link
-            href={href}
-            className={`menu-item ${pathname === href ? "active" : ""}`}
-            key={title}
-          >
-            {icon}
-            {title}
-          </Link>
-        ))}
+        {menuItems.map(({ title, icon, href, roles }) => {
+          if (!roles.includes(session.role)) return "";
+
+          return (
+            <Link
+              href={href}
+              className={`menu-item ${pathname === href ? "active" : ""}`}
+              key={title}
+              prefetch
+            >
+              {icon}
+              {title}
+            </Link>
+          );
+        })}
       </div>
 
       <button onClick={() => logoutDebounced()}>

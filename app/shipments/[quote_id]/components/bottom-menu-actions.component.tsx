@@ -8,6 +8,22 @@ import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import { useRouter } from "next/navigation";
 
+export function SaveAsTemplate() {
+  return (
+    <div>
+      <form name={"save_as_template"} className={"save-as-template"}>
+        <h5>Template name:</h5>
+        <input
+          type={"text"}
+          placeholder={"Type here..."}
+          name={"name"}
+          required
+        />
+      </form>
+    </div>
+  );
+}
+
 export function AddPO() {
   return (
     <div
@@ -58,23 +74,14 @@ export function DuplicateLoad() {
       : (el.style.display = "none");
   };
 
-  const redirectToGetQuote = () => {
-    addToStore({
-      name: "get-quote-settings",
-      data: quote,
-    });
-
-    router.push("/get-quote");
-  };
-
   if (!quote) return <Loading2Component />;
 
   return (
     <form name={"duplicate-load-data"}>
       <div className={"edit-full-quote"}>
-        <button type={"button"} onClick={() => redirectToGetQuote()}>
-          Edit Full Quote
-        </button>
+        {/*<button type={"button"} onClick={() => redirectToGetQuote()}>*/}
+        {/*  Edit Full Quote*/}
+        {/*</button>*/}
       </div>
 
       <div className={"bottom-menu-action duplicate-load"}>

@@ -27,7 +27,7 @@ export default function RqTemplatesComponent() {
 
   const getTemplatesDebounced = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/quote/templates").then((data) => {
+    getWithAuth("/quote/templates", true).then((data) => {
       setTemplates(data);
       setLoading(false);
     });

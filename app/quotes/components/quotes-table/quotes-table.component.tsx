@@ -20,74 +20,84 @@ import { filters } from "css-select";
 import useStore from "@/common/hooks/use-store.context";
 import QuoteTableHeader from "@/app/quotes/components/quotes-table/components/table-header.component";
 import Arrow from "@/public/icons/40px/Arrow 1.svg";
+import QuoteModalPreviewComponent from "@/common/components/quote-modal-preview/quote-modal-preview.component";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
 }
 
 export default function QuotesTableComponent({ rows }: QuotesTableI) {
+  const [selectedQuoteForPreview, setSelectedQuoteForPreview] =
+    useState<any>(null);
+
   return (
-    <>
-      <div className={"quotes-table-placeholder "}></div>
-      <div className={"quotes-table"}>
-        <table>
-          <thead>
-            <QuoteTableHeader />
-          </thead>
-          <tbody id={"quotes-tbody fade-in-fast"}>
-            {rows?.map(
-              ({
+    <div className={"quotes-table"}>
+      <table>
+        <thead>
+          <QuoteTableHeader />
+        </thead>
+        <tbody id={"quotes-tbody fade-in-fast"}>
+          {rows?.map(
+            (
+              {
                 _id,
                 status,
                 addresses,
-                currency,
                 references,
                 type,
-                quote_type,
                 details,
                 equipments,
                 bids,
-              }) => {
-                const pickupAddress = addresses.filter(
-                  ({ address_type }) => address_type === "pickup",
-                );
-                const dropAddress = addresses.filter(
-                  ({ address_type }) => address_type === "drop",
-                );
+              },
+              index,
+            ) => {
+              const pickupAddress = addresses.filter(
+                ({ address_type }) => address_type === "pickup",
+              );
+              const dropAddress = addresses.filter(
+                ({ address_type }) => address_type === "drop",
+              );
 
-                const pickupWithDate = pickupAddress.filter((address) =>
-                  address.hasOwnProperty("date"),
-                );
+              const shipment = details[0];
+              const bidsNumber = bids?.length;
+              const btnStatus =
+                status == QuoteStatusEnum.CANCELED
+                  ? QuoteStatusEnum.CANCELED
+                  : bidsNumber && bidsNumber > 0
+                    ? QuoteStatusEnum.BOOKED
+                    : QuoteStatusEnum.REQUESTED;
 
-                const dropWithDate = dropAddress.filter((address) =>
-                  address.hasOwnProperty("date"),
-                );
+              let viewLink;
 
-                const shipment = details[0];
-                const bidsNumber = bids?.length;
-                const btnStatus =
-                  status == QuoteStatusEnum.CANCELED
-                    ? QuoteStatusEnum.CANCELED
-                    : bidsNumber && bidsNumber > 0
-                      ? QuoteStatusEnum.BOOKED
-                      : QuoteStatusEnum.REQUESTED;
+              switch (btnStatus) {
+                case "booked":
+                  viewLink = `/quotes/${_id}`;
+                  break;
+                case "canceled":
+                  viewLink = `/quotes/view/${_id}`;
+                  break;
+                case "requested":
+                  viewLink = `/quotes/view/${_id}`;
+                  break;
+              }
 
-                let viewLink;
+              return (
+                <>
+                  <tr
+                    key={_id}
+                    onClick={(ev) => {
+                      const quote = rows[index];
 
-                switch (btnStatus) {
-                  case "booked":
-                    viewLink = `/quotes/${_id}`;
-                    break;
-                  case "canceled":
-                    viewLink = `/quotes/view/${_id}`;
-                    break;
-                  case "requested":
-                    viewLink = `/quotes/view/${_id}`;
-                    break;
-                }
+                      setSelectedQuoteForPreview((prevState) => {
+                        if (prevState?._id === quote._id) {
+                          return null;
+                        }
 
-                return (
-                  <tr key={_id}>
+                        return quote;
+                      });
+                    }}
+                    className={`${selectedQuoteForPreview?._id == _id ? "current-open-preview" : ""}`}
+                  >
                     <td>
                       <div className={"id-number"}>{toShortId(_id)}</div>
                       <QuoteStatusComponent status={status} />
@@ -110,10 +120,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               <>
                                 <div className={"extra-address"}>
                                   +{pickupAddress.length - 1}
-                                  <Info />
-                                  <ExtraAddressWindowComponent
-                                    stops={pickupAddress}
-                                  />
+                                  {/*<Info />*/}
                                 </div>
                               </>
                             )}
@@ -142,10 +149,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                               <>
                                 <div className={"extra-address"}>
                                   +{dropAddress.length - 1}
-                                  <Info />
-                                  <ExtraAddressWindowComponent
-                                    stops={dropAddress}
-                                  />
+                                  {/*<Info />*/}
                                 </div>
                               </>
                             )}
@@ -157,265 +161,73 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                       </div>
                     </td>
                     <td>
-                      {pickupWithDate.length >= 1 && (
-                        <>
-                          <div
-                            className={"main-text tooltip"}
-                            style={{
-                              cursor: "pointer",
-                              minWidth: "6rem",
-                            }}
-                          >
-                            <div
-                              className={"main-text"}
-                              style={{
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {formatDate(pickupWithDate[0].date)}
-                            </div>
-                            <div
-                              className={"sub-text"}
-                              style={{
-                                display: "flex",
-                                gap: "0.5rem",
-                                textTransform: "uppercase",
-                                color: "#1e1e1e",
-                                fontWeight: 500,
-                                opacity: 0.5,
-                              }}
-                            >
-                              {formatTime(pickupWithDate[0].time_start)}
-                              {pickupWithDate[0].time_end
-                                ? " - " + formatTime(pickupWithDate[0].time_end)
-                                : ""}
-                            </div>
-
-                            <span
-                              className={"tooltiptext tooltip-datetime-box"}
-                            >
-                              {pickupWithDate.map((address, index) => (
-                                <div
-                                  className={"main-text tooltip-datetime-item"}
-                                  key={
-                                    address._id + index + address.address_type
-                                  }
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    textAlign: "left",
-                                  }}
-                                >
-                                  <div className={"point-on-map-svg"}>
-                                    <Point />
-
-                                    <h5
-                                      style={{
-                                        textTransform: "capitalize",
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                      }}
-                                    >
-                                      {" "}
-                                      {address.address}{" "}
-                                    </h5>
-                                  </div>
-
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      gap: "1rem",
-                                    }}
-                                  >
-                                    <div className={"calendar-svg"}>
-                                      <Calendar />
-
-                                      {formatDate(address.date)}
-                                    </div>
-
-                                    <div
-                                      className={"sub-text tooltip-datetime"}
-                                    >
-                                      {formatTime(address.time_start)}
-                                      {address.time_end
-                                        ? " - " + formatTime(address.time_end)
-                                        : ""}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </span>
-                          </div>
-                        </>
-                      )}
+                      <div className={"main-text"}>
+                        {formatDate(pickupAddress[0]?.date)}
+                      </div>
                     </td>
 
                     <td>
-                      {dropWithDate.length >= 1 && (
-                        <>
-                          <div
-                            className={"main-text tooltip"}
-                            style={{
-                              cursor: "pointer",
-                              minWidth: "6rem",
-                            }}
-                          >
-                            <div
-                              className={"main-text"}
-                              style={{
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {formatDate(dropWithDate[0].date)}
-                            </div>
-                            <div
-                              className={"sub-text"}
-                              style={{
-                                display: "flex",
-                                gap: "0.5rem",
-                                textTransform: "uppercase",
-                                color: "#1e1e1e",
-                                fontWeight: 500,
-                                opacity: 0.5,
-                              }}
-                            >
-                              {formatTime(dropWithDate[0].time_start)}
-                              {dropWithDate[0].time_end
-                                ? " - " + formatTime(dropWithDate[0].time_end)
-                                : ""}
-                            </div>
-
-                            <span
-                              className={"tooltiptext tooltip-datetime-box"}
-                            >
-                              {dropWithDate.map((address, index) => (
-                                <div
-                                  className={"main-text tooltip-datetime-item"}
-                                  key={
-                                    address._id + index + address.address_type
-                                  }
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    textAlign: "left",
-                                  }}
-                                >
-                                  <div className={"point-on-map-svg"}>
-                                    <Point />
-
-                                    <h5
-                                      style={{
-                                        textTransform: "capitalize",
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                      }}
-                                    >
-                                      {" "}
-                                      {address.address}{" "}
-                                    </h5>
-                                  </div>
-
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      gap: "1rem",
-                                    }}
-                                  >
-                                    <div className={"calendar-svg"}>
-                                      <Calendar />
-
-                                      {formatDate(address.date)}
-                                    </div>
-
-                                    <div
-                                      className={"sub-text tooltip-datetime"}
-                                    >
-                                      {formatTime(address.time_start)}
-                                      {address.time_end
-                                        ? " - " + formatTime(address.time_end)
-                                        : ""}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </span>
-                          </div>
-                        </>
-                      )}
+                      <div className={"main-text"}>
+                        {formatDate(dropAddress[0]?.date)}
+                      </div>
                     </td>
                     <td>
                       <div className={"main-text"}>
                         {numberCommaFormat(shipment?.weight)}{" "}
                         {shipment?.weight_unit}
                       </div>
-                      <div
-                        className={"sub-text"}
-                        style={{
-                          textTransform: "capitalize",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {shipment?.packing_method?.replace("_", " ") ??
-                          shipment?.quantity + " items"}
-                      </div>
-
-                      <div
-                        className={"sub-text"}
-                        style={{
-                          textTransform: "capitalize",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {shipment?.commodity}
-                      </div>
                     </td>
                     <td>
-                      <div className={"main-text"}>
-                        {references?.length ? references[0] : "N/A"}
-                      </div>
                       <div
-                        className={"sub-text"}
-                        style={{
-                          whiteSpace: "nowrap",
+                        className={"main-text"}
+                        dangerouslySetInnerHTML={{
+                          __html: references?.length
+                            ? references[0]
+                                .replace(/ /g, "&nbsp;")
+                                .replace("/", " ")
+                            : "N/A",
                         }}
-                      >
-                        Value:
-                        {" " +
-                          numberCommaFormat(shipment?.goods_value) +
-                          ` ${currency}`}
-                      </div>
-                      <div
-                        className={"sub-text"}
-                        style={{
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {" " + quote_type.replace("_", " ")}
-                      </div>
+                      ></div>
                     </td>
                     <td>
                       <div className={"main-text equipments-table-box"}>
                         {equipments?.join(",")}
                       </div>
                     </td>
-                    <td>
+                    <td
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                      }}
+                    >
                       <QuoteActionButtonComponent
                         status={btnStatus}
                         number={bidsNumber}
                         viewLink={viewLink}
                         prefetchQuoteId={_id}
                       />
-                      {/*</Link>*/}
                     </td>
                   </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
-      </div>
-    </>
+                  {selectedQuoteForPreview?._id == _id && (
+                    <tr className={"selected-quote-preview-tr"}>
+                      <td
+                        colSpan={10}
+                        style={{
+                          position: "relative",
+                        }}
+                      >
+                        <QuoteModalPreviewComponent
+                          quote={selectedQuoteForPreview}
+                          setQuote={setSelectedQuoteForPreview}
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </>
+              );
+            },
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }

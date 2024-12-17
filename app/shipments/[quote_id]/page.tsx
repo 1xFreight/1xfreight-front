@@ -43,7 +43,7 @@ export default function ShipmentIdPage({
     getWithAuth(`/quote/shipments?limit=1&id=${params.quote_id}`).then(
       (data) => {
         setQuote({ ...data?.quotes[0] });
-        setRequest(data?.quotes[0].bid);
+        setRequest(data?.quotes[0]?.bid);
         addToStore({ name: "shipment_quote", data: data?.quotes[0] });
         setLoading(false);
       },
@@ -84,7 +84,15 @@ export default function ShipmentIdPage({
 
   return (
     <div className={"shipment-id-page"}>
-      <BottomMenuComponent quoteId={params.quote_id} />
+      <BottomMenuComponent
+        quoteId={params.quote_id}
+        status={quote.status}
+        request={{
+          ...request,
+          currency: quote?.currency,
+          carrierName: quote?.local_carrier?.name,
+        }}
+      />
       <ConfirmActionComponent
         id={"confirm-cancel-load"}
         title={"Cancel this load ?"}
@@ -153,7 +161,7 @@ export default function ShipmentIdPage({
               {request.notes && (
                 <div className={"notes"}>
                   <h5>Additional notes:</h5>
-                  <span>{request.notes}</span>
+                  <h3>{request.notes}</h3>
                 </div>
               )}
             </div>

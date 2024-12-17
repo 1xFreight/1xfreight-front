@@ -20,6 +20,7 @@ function PlaceAutocompleteComponent({
   setInputText,
   setDefault,
   setDetails,
+  uniqueKey,
 }: {
   inputText: string;
   setInputText: Dispatch<SetStateAction<string>>;
@@ -144,7 +145,7 @@ function PlaceAutocompleteComponent({
                     fullAddress["state"] = component.short_name; // State
                   }
 
-                  setDetails(fullAddress);
+                  setDetails({ ...fullAddress, uniqueKey });
                 });
               }
             },
@@ -189,7 +190,7 @@ function PlaceAutocompleteComponent({
             <div
               onClick={() => {
                 setInputText(location.address);
-                setDetails(location);
+                setDetails({ ...location, uniqueKey });
                 setDefault ? setDefault(location) : "";
               }}
               key={location?.address + index}

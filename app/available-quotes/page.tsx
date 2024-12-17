@@ -2,11 +2,8 @@
 
 import "./styles.css";
 import QuotesTableComponent from "@/app/available-quotes/components/quotes-table/quotes-table.component";
-import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
-import FiltersPanelComponent from "@/app/quotes/components/filters-panel/filters-panel.component";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
-import LoadingComponent from "@/common/components/loading/loading.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { useDebouncedCallback } from "use-debounce";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
@@ -19,10 +16,11 @@ export default function AvailableQuotes() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const { filters, setFilters } = useStore();
 
   const getQuotesDebounced = useDebouncedCallback(() => {
     getWithAuth(
-      `/quote/carrier?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      `/quote/carrier?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}&sort=${filters?.sort ?? ""}`,
     ).then((data) => {
       setQuotes(data);
       setLoading(false);
@@ -33,6 +31,10 @@ export default function AvailableQuotes() {
     setLoading(true);
     getQuotesDebounced();
   }, [page, search]);
+
+  useEffect(() => {
+    getQuotesDebounced();
+  }, [filters]);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),
@@ -46,17 +48,37 @@ export default function AvailableQuotes() {
       </div>
 
       <div className={"container filters-panel"}>
-        <SearchInputComponent
-          setSearch={setSearchDebounced}
-          placeholder={"Search quotes..."}
-        />
+        <div
+          style={{
+            width: "30rem",
+          }}
+        >
+          <SearchInputComponent
+            setSearch={setSearchDebounced}
+            placeholder={"Search quotes..."}
+          />
+        </div>
+
+        <button
+          className={"remove-filters"}
+          onClick={() => setFilters({ ...filters, sort: "{}" })}
+          style={{
+            display: filters?.sort && filters?.sort != "{}" ? "block" : "none",
+          }}
+        >
+          Remove Sort
+        </button>
       </div>
 
       <div className={"container"}>
         {loading ? (
           <Loading2Component />
         ) : (
-          <>
+          <div
+            style={{
+              width: "100%",
+            }}
+          >
             <QuotesTableComponent rows={quotes?.quotes} />
             <div
               style={{
@@ -71,7 +93,7 @@ export default function AvailableQuotes() {
                 pages={quotes?.totalQuotes}
               />
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

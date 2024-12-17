@@ -7,7 +7,7 @@
     /*overflow: hidden;*/
     position: sticky;
     z-index: 300;
-    border-bottom: 2px solid #e5e5e5;
+    border-bottom: 1px solid #CBCBCB;
     display: flex;
     justify-content: center;
     top:0;
@@ -176,9 +176,9 @@
 .main-menu .user-menu .user {
     display: flex;
     /*gap: .5rem;*/
-    color: #606060;
+    color: #1e1e1e;
     letter-spacing: 0.0625rem;
-    border: 2px solid #A7A7A7;
+    border: 1px solid #1e1e1e;
     border-radius: 1rem;
     overflow: hidden;
     font-weight: 500;

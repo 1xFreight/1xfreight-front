@@ -7,6 +7,7 @@ import "./styles.css";
 import { formDataToJSON } from "@/common/utils/formData.util";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
+import { json } from "node:stream/consumers";
 
 export default function PickupPageComponent() {
   const [numberOfLocations, setNumberOfLocations] = useState<number>(1);

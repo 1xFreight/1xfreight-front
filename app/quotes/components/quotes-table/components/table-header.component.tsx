@@ -173,7 +173,7 @@ export default function QuoteTableHeader() {
             className={"sort-details"}
             onClick={() => addSort(keys.weight, -1, true)}
           >
-            Details
+            Weight
           </div>
           <select
             defaultValue={"-1"}

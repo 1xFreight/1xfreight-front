@@ -7,6 +7,7 @@ function RightModalComponent({
   children,
   title,
   action,
+  extraButton,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -47,6 +48,8 @@ function RightModalComponent({
           <button className="cancel" onClick={closeModal}>
             Cancel
           </button>
+          {extraButton}
+
           <button
             className="confirm"
             onClick={() => (action ? action() : null)}

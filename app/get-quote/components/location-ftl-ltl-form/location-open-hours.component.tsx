@@ -1,9 +1,11 @@
+"use client";
+
 import { generatePickHours } from "@/common/utils/time.utils";
 import SwitchComponent from "@/common/components/slider/switch.component";
 import React, { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 
-const defaultLocationShift = "1:00 AM - 1:00 AM";
+const defaultLocationShift = "closed";
 export default function LocationOpenHoursComponent({
   defaultData,
   index,
@@ -18,6 +20,20 @@ export default function LocationOpenHoursComponent({
     saturday: defaultLocationShift,
     sunday: defaultLocationShift,
   });
+  const [locationIsClosed, setLocationIsClosed] = useState(false);
+  const [locationIsNonstop, setLocationIsNonstop] = useState(false);
+
+  const triggerLocationSwitch = (state, type: "closed" | "nonstop") => {
+    if (type === "closed") {
+      state ? setLocationIsNonstop(false) : "";
+      setLocationIsClosed(state);
+    }
+
+    if (type === "nonstop") {
+      state ? setLocationIsClosed(false) : "";
+      setLocationIsNonstop(state);
+    }
+  };
 
   const setOpenHours = () => {
     const openHours = {};
@@ -27,14 +43,21 @@ export default function LocationOpenHoursComponent({
     const closesAt = document.getElementById(
       `closes-at-${index}`,
     ) as HTMLSelectElement;
+
     const isOpenNonstop = document.getElementById(
       `open_nonstop-${index}`,
+    ) as HTMLInputElement;
+
+    const isClosed = document.getElementById(
+      `closed-${index}`,
     ) as HTMLInputElement;
 
     const shift =
       isOpenNonstop.value === "true"
         ? "24/7"
-        : readBy.value.toUpperCase() + " - " + closesAt?.value?.toUpperCase();
+        : isClosed.value === "true"
+          ? "closed"
+          : readBy.value.toUpperCase() + " - " + closesAt?.value?.toUpperCase();
 
     [
       "monday",
@@ -51,6 +74,9 @@ export default function LocationOpenHoursComponent({
       weekDayCheckbox.checked ? (openHours[weekDay] = shift) : "";
       weekDayCheckbox.checked = false;
     });
+
+    setLocationIsClosed(false);
+    setLocationIsNonstop(false);
 
     setLocationOpenHours((prevState) => {
       return {
@@ -120,7 +146,13 @@ export default function LocationOpenHoursComponent({
   }, [locationOpenHours]);
 
   return (
-    <div className={"location-details"}>
+    <div
+      className={"location-details"}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h3>Location Details:</h3>
 
       <div
@@ -146,7 +178,6 @@ export default function LocationOpenHoursComponent({
             placeholder={"Type here..."}
             name={"contact_name"}
             defaultValue={defaultData?.contact_name}
-            disabled={!!defaultData?.contact_name && disableExistingData}
           />
         </div>
 
@@ -158,15 +189,14 @@ export default function LocationOpenHoursComponent({
             placeholder="(123) 456-7890"
             className="phone-input"
             defaultValue={defaultData?.contact_phone}
-            disabled={!!defaultData?.contact_phone && disableExistingData}
-            required
+            required={false}
           >
             {(inputProps) => (
               <input
                 {...inputProps}
                 type={"text"}
                 name={"contact_phone"}
-                disabled={!!defaultData?.contact_phone && disableExistingData}
+                required={false}
               />
             )}
           </InputMask>
@@ -181,7 +211,6 @@ export default function LocationOpenHoursComponent({
             placeholder={"Type here..."}
             name={"contact_email"}
             defaultValue={defaultData?.contact_email}
-            disabled={!!defaultData?.contact_email && disableExistingData}
           />
         </div>
 
@@ -304,7 +333,20 @@ export default function LocationOpenHoursComponent({
 
           <div>
             <h5>Open 24/7</h5>
-            <SwitchComponent inputName={`open_nonstop-${index}`} />
+            <SwitchComponent
+              inputName={`open_nonstop-${index}`}
+              onClick={(state) => triggerLocationSwitch(state, "nonstop")}
+              defaultState={locationIsNonstop}
+            />
+          </div>
+
+          <div>
+            <h5>Closed</h5>
+            <SwitchComponent
+              inputName={`closed-${index}`}
+              onClick={(state) => triggerLocationSwitch(state, "closed")}
+              defaultState={locationIsClosed}
+            />
           </div>
         </div>
 

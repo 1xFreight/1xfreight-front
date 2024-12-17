@@ -1,0 +1,213 @@
+.quote-modal-preview {
+    position: relative;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    animation: tableQuotePreviewAnimation 300ms ease-in-out both;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+    .qm-preview-actions {
+        display: inline-flex;
+        gap: 0.6rem;
+        height: 2.5rem ;
+        border: unset ;
+        justify-content: end;
+        width: 100% ;
+        max-width: 100% ;
+        overflow: visible ;
+        margin-top: auto;
+
+        button {
+            width: 12rem;
+            height: 2.5rem;
+            border-radius: 0.6rem;
+            position: relative;
+
+            svg {
+                position: absolute;
+                scale: 1.2;
+            }
+        }
+    }
+
+    .locations-wrapper {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        height: 100%;
+
+        .between-address-arrow {
+            height: 100%;
+            width: 50px;
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+        .pickup-locations {
+            border-bottom: 0.1rem dashed rgba(30, 30, 30, 0.25);
+            border-image: repeating-linear-gradient(90deg, rgba(30, 30, 30, 0.25) 0, rgba(30, 30, 30, 0.25) 5px, transparent 5px, transparent 10px) 30; /* Adjust the dash length and gap */
+            padding-bottom: 1rem;
+
+        }
+
+        .pickup-locations, .drop-locations {
+            width: 100%;
+            display: inline-flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            height: 100%;
+            align-items: center;
+
+            h3 {
+                width: 6rem;
+            }
+
+            .location-item {
+                margin-left: 0.5rem;
+                padding: 0.25rem;
+                border-radius: 0.5rem;
+                height: 100%;
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: 30%;
+
+                .sub-text-address {
+                    color: rgba(30, 30, 30, 0.5);
+                    font-size: 0.75rem;
+                }
+
+                .main-text-address {
+                    font-size: 0.95rem;
+                    color: #1e1e1e;
+                    font-weight: 500;
+                }
+
+
+
+                .location-details-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .company-name {
+                    color: #3A56EA;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+
+    .details-wrapper {
+        display: inline-flex;
+        flex-wrap: wrap;
+        margin-left: -0.75rem;
+        margin-bottom: -0.75rem;
+        width: calc(100% + 1.5rem);
+        height: calc(100% + 1.5rem);
+        border-top: 1px solid rgba(187, 187, 187, 0.5);
+        padding: 0.5rem;
+
+
+        &>div {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(187, 187, 187, 0.3);
+            height: 1.5rem;
+            width: 25%;
+            max-width: 25%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            svg {
+                stroke: #617BF4;
+                stroke-width: 0.1rem;
+                transform: scale(0.65);
+                width: 2rem;
+
+                path {
+                    stroke: #617BF4;
+                }
+            }
+
+            span {
+                width: 2rem;
+                display: flex;
+                justify-content: center;
+                font-weight: 700;
+                align-self: center;
+                color:#617BF4;
+            }
+
+            h4 {
+                width: 11rem;
+                text-transform: lowercase;
+                color: rgba(30, 30, 30, 0.5);
+                font-size: 1rem;
+                font-weight: 400;
+                border-right: 2px solid rgba(255, 255, 255, 0.5);
+                margin-right: 0.25rem;
+                display: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            h3 {
+                width: calc(100% - 10rem - 2rem);
+                font-weight: 500;
+                font-size: 0.95rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .quote-short-id {
+        color: #BBBBBB;
+    }
+
+    .quote-type {
+       display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.9rem;
+        background: #ecebeb;
+        height: 2rem;
+        padding: 0 0.5rem;
+        border-radius: 0.5rem;
+        color: #1e1e1e;
+        font-weight: 500;
+
+        span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: rgba(30, 30, 30, 0.5);
+        }
+    }
+
+    .qm-header {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+@keyframes tableQuotePreviewAnimation {
+    0% {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+    }
+    100% {
+        height: 25rem;
+        opacity: 1;
+    }
+}

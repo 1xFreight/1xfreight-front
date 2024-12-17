@@ -16,7 +16,7 @@ import Loading2Component from "@/common/components/loading/loading-as-page.compo
 function AuthProvider({ children }: { children: ReactNode }) {
   const [authStatus, setAuthStatus] = useState<null | boolean>(null);
   const [validPath, setValidPath] = useState<null | boolean>(true);
-  const { session, setSession, showToast } = useStore();
+  const { session, setSession, showToast, setCurrencies } = useStore();
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,9 +73,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
       });
   }, 350);
 
+  const getCurrencies = useDebouncedCallback(() => {
+    getWithAuth("/currency/daily")
+      .then((data) => {
+        setCurrencies(data);
+      })
+      .catch(() => {});
+  }, 350);
+
   useEffect(() => {
     if (!authStatus && authStatus !== false) {
       checkAuth();
+      getCurrencies();
     }
     if (token) {
       const currentToken = Cookies.get("accessToken");
@@ -89,6 +98,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (session === "check") {
       checkAuth();
+      getCurrencies();
     }
   }, [session]);
 

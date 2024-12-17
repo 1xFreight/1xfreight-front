@@ -56,6 +56,43 @@
   font-weight: 900;
 }
 
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Host-Grotesk';
+  src: url("../public/fonts/host-grotesk/ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -78,9 +115,9 @@
 /*}*/
 
 body {
-  background: #EFEFEF;
-  font-family: "SF Pro Display", sans-serif;
-  letter-spacing: 0.0625rem;
+  background: #F3F3F3;
+  font-family: "Host-Grotesk", sans-serif;
+  letter-spacing: 0.0525rem;
   scroll-behavior: smooth;
 
   ::-webkit-calendar-picker-indicator {
@@ -115,7 +152,7 @@ body {
 }
 
 .page {
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -128,20 +165,23 @@ button {
   color: black;
   overflow: hidden;
   border: 1px solid #d9d9d9;
-  transition: all 50ms ease-out;
+  transition: all 100ms ease-out;
   text-transform: unset;
   font-weight: 500;
   box-shadow: 1px 2px 2px #d9d9d9;
 
   &.variant2 {
-    background-color: rgba(199, 207, 255, 0.8);
-    color: #363636;
+    background-color: #617BF4;
+    color: white;
     box-shadow: 1px 2px 2px #d9d9d9;
-    border-color: #bbc5fd;
+
+    &:hover {
+      border-color: #617BF4;
+    }
 
     svg {
       path {
-        fill: #363636;
+        fill: white;
         transition: all 50ms ease-out;
       }
     }
@@ -527,6 +567,7 @@ input[type=number] {
       padding: 0 0.5rem;
       display: none;
       top: 50%;
+      z-index: 1;
       transform: translateY(-50%);
     }
   }
@@ -593,16 +634,24 @@ h6 {
   font-weight: 400;
 }
 
-.price span, .price .currency {
-  color: #545454;
-}
-
 .price .currency {
   font-size: 1.25rem;
 }
 
 .price .full-price {
   position: relative;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  span {
+    text-align: right;
+    width: 2.75rem;
+    color: #545454;
+    font-size: 1.25rem;
+    vertical-align: bottom;
+  }
 }
 
 .price {
@@ -615,25 +664,22 @@ h6 {
   justify-content: space-between;
 }
 
-.price span, .price .currency {
-  color: #545454;
-}
 
 .price .currency {
-  font-size: 1.25rem;
+  display: none;
 }
 
 .price .full-price {
   position: relative;
 }
 
-.price .full-price::after {
-  content: "00";
-  color: #545454;
-  font-size: 0.875rem;
-  position: absolute;
-  top: -0.2rem
-}
+/*.price .full-price::after {*/
+  /*content: "00";*/
+/*  color: #545454;*/
+/*  font-size: 0.875rem;*/
+/*  position: absolute;*/
+/*  top: -0.2rem*/
+/*}*/
 
 .price-wrapper {
   display: flex;
@@ -803,5 +849,39 @@ h6 {
       /*border: 2px solid #e8e8e8 !important;*/
       outline: unset;
     }
+  }
+}
+
+.extra-address {
+  display: flex;
+  align-items: center;
+  width: 1.5rem;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #6B81FF;
+  font-weight: 600;
+  gap: 0.3rem;
+  margin: 0 0.3rem;
+  height: 1.25rem;
+  cursor: pointer;
+  transition: all 250ms ease-in-out;
+  position: relative;
+
+  .location svg {
+    width: 50px;
+  }
+
+  & svg {
+    position: unset;
+  }
+
+}
+
+@keyframes RotateCircleAnimation {
+  from {
+    rotate: 0;
+  }
+  to {
+    rotate: 360deg;
   }
 }

@@ -9,6 +9,7 @@ import useStore from "@/common/hooks/use-store.context";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PackingTypeEnum } from "@/common/enums/packing-type.enum";
 import InputMask from "react-input-mask";
+import CustomBrokersComponent from "@/app/get-quote/components/custom-brokers.component";
 
 enum PackingMethodEnum {
   PALLETIZED = "Palletized",
@@ -25,6 +26,7 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
   const { session } = useStore();
   const [list, setList] = useState(session?.equipments ?? []);
   const { addData } = useRegisterQuoteContext();
+
   const removeItem = (email: string) => {
     setList(list.filter((em) => em !== email));
   };
@@ -446,6 +448,10 @@ function ShipmentDetailsComponent({ _default }: { _default: any }) {
                 )}
               </InputMask>
             </div>
+          </div>
+
+          <div>
+            <CustomBrokersComponent _defaultDetails={_defaultDetails} />
           </div>
 
           <div className={"instructions"}>

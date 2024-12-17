@@ -18,3 +18,9 @@ export function formatBytes(bytes) {
 
   return `${formattedValue} ${size}`;
 }
+
+export function generateCustomID() {
+  const part1 = Math.floor(10000 + Math.random() * 90000); // Generate a random 5-digit number
+  const part2 = Math.floor(1000 + Math.random() * 9000); // Generate a random 4-digit number
+  return `${part1}-${part2}`;
+}

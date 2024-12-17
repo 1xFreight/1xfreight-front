@@ -31,7 +31,7 @@ function QuoteActionButtonComponent({
   return (
     <Link href={viewLink ? viewLink : ""} onMouseEnter={prefetchQuoteURL}>
       <button
-        className={`quote-action-button ${status == QuoteStatusEnum.BOOKED ? "variant2" : ""} ${status == QuoteStatusEnum.CANCELED ? "red-variant" : ""}`}
+        className={`quote-action-button ${status == QuoteStatusEnum.BOOKED ? "variant2" : ""}`}
         // disabled={status === QuoteStatusEnum.REQUESTED}
       >
         {textMapping[status]}

@@ -66,6 +66,9 @@ export default function SettingsPage() {
       auto_delivery: convertStringToBool(newUserData.auto_delivery),
       auto_commodity: convertStringToBool(newUserData.auto_commodity),
       default_comment: newUserData.default_comment,
+      billing_address: newUserData.billing_address,
+      billing_phone: newUserData.billing_phone,
+      billing_email: newUserData.billing_email,
       equipments: list,
     };
   };
@@ -217,6 +220,45 @@ export default function SettingsPage() {
                 <h5>Email</h5>
                 <input type={"text"} disabled defaultValue={session.email} />
               </div>
+
+              <h2>Billing Information</h2>
+
+              <div className={"input-wrapper"}>
+                <h5>Address</h5>
+                <input
+                  type={"text"}
+                  name={"billing_address"}
+                  defaultValue={session.billing_address}
+                />
+              </div>
+
+              <div className={"input-wrapper"}>
+                <h5>Email</h5>
+                <input
+                  type={"text"}
+                  name={"billing_email"}
+                  defaultValue={session.billing_email}
+                />
+              </div>
+
+              <div className={"input-wrapper"}>
+                <h5>Phone</h5>
+
+                <InputMask
+                  mask="(999) 999-9999"
+                  placeholder="(123) 456-7890"
+                  className="phone-input"
+                  defaultValue={session.billing_phone}
+                >
+                  {(inputProps) => (
+                    <input
+                      {...inputProps}
+                      type={"text"}
+                      name={"billing_phone"}
+                    />
+                  )}
+                </InputMask>
+              </div>
             </div>
 
             <div className={"user-pref"}>
@@ -267,7 +309,7 @@ export default function SettingsPage() {
                   src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${session?.logo}`}
                   alt={"logo"}
                   width={200}
-                  height={100}
+                  height={200}
                   className={"logo-img"}
                   quality={90}
                 />

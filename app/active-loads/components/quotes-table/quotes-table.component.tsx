@@ -1,3 +1,5 @@
+"use client";
+
 import "./styles.css";
 import ArrowUp from "@/public/icons/24px/arrow-up.svg";
 import ArrowDown from "@/public/icons/24px/arrow-down.svg";
@@ -12,29 +14,28 @@ import ConfirmActionComponent from "@/common/components/confirm-action/confirm-a
 import Cross from "@/public/icons/24px/cross.svg";
 import { clearText } from "@/common/utils/data-convert.utils";
 import Arrow from "@/public/icons/40px/Arrow 1.svg";
+import TableHeaderComponent from "@/app/active-loads/components/quotes-table/components/table-header.component";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
 }
 
 export default function QuotesTableComponent({ rows }: QuotesTableI) {
+  const prefetchQuoteURL = useDebouncedCallback((prefetchQuoteId) => {
+    getWithAuth(`/quote/active-loads?limit=1&id=${prefetchQuoteId}`).then(
+      (data) => {},
+    );
+  }, 50);
+
   return (
     <>
       <div className={"quotes-table-placeholder"}></div>
       <div className={"quotes-table"}>
         <table>
           <thead>
-            <tr className={"fade-in"}>
-              <th></th>
-              <th>Type</th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Details</th>
-              <th>Ref#</th>
-              <th>Equipment</th>
-              <th>Your offer (per load)</th>
-              <th></th>
-            </tr>
+            <TableHeaderComponent />
           </thead>
           <tbody className={"fade-in"}>
             {rows?.map(
@@ -48,7 +49,6 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 type,
                 quote_type,
                 details,
-                goods_value,
                 carrier_bid,
                 user,
               }) => {
@@ -223,7 +223,11 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           gap: "0.5rem",
                         }}
                       >
-                        <Link href={`/active-loads/${_id}`}>
+                        <Link
+                          href={`/active-loads/${_id}`}
+                          prefetch
+                          onMouseEnter={() => prefetchQuoteURL(_id)}
+                        >
                           <button>View</button>
                         </Link>
                       </div>

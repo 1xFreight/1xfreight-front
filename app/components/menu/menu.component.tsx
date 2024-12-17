@@ -1,7 +1,6 @@
 "use client";
 
 import Logo from "@/public/logo/1xfreight-logo.svg";
-import LogoMini from "@/public/logo/Favicon.svg";
 import "./styles.css";
 import Link from "next/link";
 import CarrierMenuComponent from "@/app/components/menu/carrier-menu.component";
@@ -13,6 +12,57 @@ import Logout from "@/public/icons/35px/sign-out.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { postWithAuth } from "@/common/utils/fetchAuth.util";
 import NotificationsComponent from "@/app/components/notification/notifications.component";
+
+export function UserMenuComponent({ session }) {
+  const avatarName =
+    session?.role !== "carrier" && session?.name
+      ? session?.name
+      : session?.email;
+
+  const logoutDebounced = useDebouncedCallback(
+    () => postWithAuth("/auth/logout", {}).then(() => window.location.reload()),
+    400,
+  );
+
+  return (
+    <div className={"user-menu"}>
+      <NotificationsComponent />
+
+      <div className={"user"}>
+        <AvatarComponent username={avatarName} logo={session?.logo} />
+
+        <div
+          className={"user-name"}
+          style={{
+            width: (avatarName?.length ?? 5) * 0.76 + "rem",
+          }}
+        >
+          <div>
+            {session?.role === "carrier" ? session.email : session?.name}
+          </div>
+          <div>{session?.role}</div>
+        </div>
+      </div>
+
+      {session?.role === "carrier" && (
+        <div className={"tooltip sign-out"} onClick={logoutDebounced}>
+          <Logout />
+          <span
+            className={"tooltiptext"}
+            style={{
+              bottom: "unset",
+              top: "100%",
+              padding: "0.25rem 0.25rem",
+              width: "fit-content",
+            }}
+          >
+            sign out
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function MainMenu() {
   const { session } = useStore();
@@ -57,16 +107,6 @@ function MainMenu() {
     };
   }, []);
 
-  const avatarName =
-    session?.role !== "carrier" && session?.name
-      ? session?.name
-      : session?.email;
-
-  const logoutDebounced = useDebouncedCallback(
-    () => postWithAuth("/auth/logout", {}).then(() => window.location.reload()),
-    400,
-  );
-
   return (
     <header className={"main-menu"} id={"main-menu"}>
       <div className={"container"}>
@@ -80,43 +120,7 @@ function MainMenu() {
           {session?.role === "carrier" && <CarrierMenuComponent />}
           {session?.role?.includes("shipper") && <SellerMenuComponent />}
         </div>
-
-        <div className={"user-menu"}>
-          <NotificationsComponent />
-
-          <div className={"user"}>
-            <AvatarComponent username={avatarName} logo={session?.logo} />
-
-            <div
-              className={"user-name"}
-              style={{
-                width: (avatarName?.length ?? 5) * 0.76 + "rem",
-              }}
-            >
-              <div>
-                {session?.role === "carrier" ? session.email : session?.name}
-              </div>
-              <div>{session?.role}</div>
-            </div>
-          </div>
-
-          {session?.role === "carrier" && (
-            <div className={"tooltip sign-out"} onClick={logoutDebounced}>
-              <Logout />
-              <span
-                className={"tooltiptext"}
-                style={{
-                  bottom: "unset",
-                  top: "100%",
-                  padding: "0.25rem 0.25rem",
-                  width: "fit-content",
-                }}
-              >
-                sign out
-              </span>
-            </div>
-          )}
-        </div>
+        <UserMenuComponent session={session} />
       </div>
     </header>
   );

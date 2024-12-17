@@ -214,36 +214,14 @@ export default function ShipmentIdPage({
               {getNextStatus() !== QuoteStatusEnum.CANCELED && (
                 <button
                   onClick={updateStatus}
-                  style={{
-                    width: "100%",
-                  }}
+                  className={"change-status-button"}
                 >
-                  <span>{clearText(getNextStatus())}</span>
+                  Change status to <span>{clearText(getNextStatus())}</span>
                 </button>
               )}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  marginTop: "0.5rem",
-                }}
-              >
-                <button
-                  style={{
-                    maxWidth: "50%",
-                    width: "100%",
-                  }}
-                >
-                  View BOL
-                </button>
-                <button
-                  style={{
-                    maxWidth: "50%",
-                    width: "100%",
-                  }}
-                >
-                  DOCS
-                </button>
+              <div className={"docs-buttons"}>
+                <button>View BOL</button>
+                <button>DOCS</button>
               </div>
             </div>
 

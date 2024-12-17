@@ -9,16 +9,18 @@ import { useDebouncedCallback } from "use-debounce";
 import PaginationComponent from "@/common/components/pagination/pagination.component";
 import { paginationConfig } from "@/common/config/pagination.config";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
+import useStore from "@/common/hooks/use-store.context";
 
 export default function AvailableQuotes() {
   const [quotes, setQuotes] = useState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const { filters } = useStore();
 
   const getQuotesDebounced = useDebouncedCallback(() => {
     getWithAuth(
-      `/quote/active-loads?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}`,
+      `/quote/active-loads?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${search ?? ""}&sort=${filters?.sort ?? ""}`,
     ).then((data) => {
       setQuotes(data);
       setLoading(false);
@@ -29,6 +31,10 @@ export default function AvailableQuotes() {
     setLoading(true);
     getQuotesDebounced();
   }, [page, search]);
+
+  useEffect(() => {
+    getQuotesDebounced();
+  }, [filters]);
 
   const setSearchDebounced = useDebouncedCallback(
     (text) => setSearch(text),

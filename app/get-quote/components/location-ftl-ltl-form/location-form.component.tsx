@@ -14,6 +14,7 @@ import PlaceAutocompleteComponent from "@/common/components/place-autocomplete/p
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import Eye from "@/public/icons/20px/hidden.svg";
 import LocationOpenHoursComponent from "@/app/get-quote/components/location-ftl-ltl-form/location-open-hours.component";
+import SwitchComponent from "@/common/components/slider/switch.component";
 
 export enum ShippingHoursEnum {
   BY_APPOINTMENT = "By Appointment",
@@ -24,12 +25,14 @@ interface LocationFormComponentI {
   index: number;
   title: string;
   _default?: any;
+  disableSaveLocation: boolean;
 }
 
 function LocationFormComponent({
   index,
   title,
   _default,
+  disableSaveLocation = false,
 }: LocationFormComponentI) {
   const [address, setAddress] = useState<string>(_default?.address ?? "");
   const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -45,8 +48,9 @@ function LocationFormComponent({
 
   useEffect(() => {
     if (!addressDetails) return;
+    const inputSelector = `#address-details${addressDetails?.uniqueKey} input, #address-details${addressDetails?.uniqueKey} select`;
 
-    const inputs = document.querySelectorAll("#address-details input");
+    const inputs = document.querySelectorAll(inputSelector);
 
     // Update the value for each input based on its id or a custom logic
     inputs.forEach((input) => {
@@ -55,7 +59,7 @@ function LocationFormComponent({
           input.value =
             addressDetails?.street && addressDetails?.streetNumber
               ? addressDetails?.streetNumber + " " + addressDetails?.street
-              : addressDetails?.street;
+              : (addressDetails?.street ?? "");
           break;
         case "address_city":
           input.value = addressDetails?.city ?? "";
@@ -107,6 +111,37 @@ function LocationFormComponent({
     setDefaultData(data);
     setTimeout(() => setLoading(false), 500);
   };
+
+  // Function to get the short name of a state using Google Maps Geocoding API
+  async function getShortStateName(stateName) {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY; // Replace with your Google Maps API key
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(stateName)}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.status === "OK") {
+        const result = data.results[0];
+
+        // Find the administrative_area_level_1 component
+        const stateComponent = result.address_components.find((component) =>
+          component.types.includes("administrative_area_level_1"),
+        );
+
+        if (stateComponent) {
+          return stateComponent.short_name; // Returns "BC" for "British Columbia"
+        } else {
+          // throw new Error("State information not found.");
+        }
+      } else {
+        // throw new Error("Geocoding API request failed.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return "";
+    }
+  }
 
   return (
     <div className={"rq-location-form"}>
@@ -164,51 +199,92 @@ function LocationFormComponent({
                     setInputText={setAddress}
                     setDefault={updateDefault}
                     setDetails={setAddressDetails}
+                    uniqueKey={`-${title}-${index}`}
                   />
                 )}
               </div>
 
               <h5>Manual Address Entry</h5>
 
-              <div className={"address-details"} id={"address-details"}>
+              <div
+                className={"address-details"}
+                id={`address-details-${title}-${index}`}
+              >
                 <input
                   type={"text"}
                   name={"street"}
                   placeholder={"Address"}
-                  id={"address_street"}
+                  id={`address_street`}
                   defaultValue={defaultData?.street}
                 />
                 <input
                   type={"text"}
                   name={"city"}
                   placeholder={"City*"}
-                  id={"address_city"}
+                  id={`address_city`}
                   required
                   defaultValue={defaultData?.city}
                 />
                 <input
                   type={"text"}
                   name={"state"}
-                  placeholder={"State*"}
-                  id={"address_state"}
+                  placeholder={"State(abbreviation)*"}
+                  id={`address_state`}
                   required
                   defaultValue={defaultData?.state}
+                  onChange={(ev) => {
+                    const input = ev.target;
+
+                    const validity = input.checkValidity();
+
+                    if (!validity && input.value.length <= 3) {
+                      input.setCustomValidity("");
+                    }
+                  }}
+                  onBlur={async (ev) => {
+                    const input = ev.target;
+
+                    input.value =
+                      (await getShortStateName(ev.target.value)) ?? input.value;
+
+                    // Check if input exceeds 3 characters
+                    if (input.value.length > 3) {
+                      input.setCustomValidity(
+                        "State abbreviation must be 3 characters or less.",
+                      );
+                    } else {
+                      input.setCustomValidity(""); // Clear the validation message if valid
+                    }
+
+                    // Optionally transform the input to a short name if needed
+                    input.value =
+                      (await getShortStateName(input.value)) ?? input.value;
+
+                    // Display the validation message if invalid
+                    input.reportValidity();
+                  }}
+                  minLength={2}
                 />
                 <input
                   type={"text"}
                   name={"zipcode"}
                   placeholder={"Zipcode"}
-                  id={"address_zipcode"}
+                  id={`address_zipcode`}
                   defaultValue={defaultData?.zipcode}
                 />
-                <input
-                  type={"text"}
-                  name={"country"}
-                  placeholder={"Country*"}
-                  id={"address_country"}
+                <select
+                  defaultValue={defaultData?.country ?? "US"}
+                  id={`address_country`}
+                  style={{
+                    paddingLeft: "1rem",
+                  }}
+                  name={`country`}
                   required
-                  defaultValue={defaultData?.country}
-                />
+                >
+                  <option value={"US"}>US</option>
+                  <option value={"CA"}>CA</option>
+                  <option value={"MX"}>MX</option>
+                </select>
               </div>
             </div>
 
@@ -366,6 +442,35 @@ function LocationFormComponent({
                 maxLength={255}
               />
             </div>
+
+            {!disableSaveLocation && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                  flexDirection: "column",
+                }}
+              >
+                <h3
+                  style={{
+                    margin: "0",
+                  }}
+                >
+                  Save location
+                </h3>
+                <h6
+                  style={{
+                    marginBottom: "0.5rem",
+                    padding: 0,
+                    height: "fit-content",
+                  }}
+                >
+                  Location will be saved in Settings/Saved Locations, and you
+                  will be able to edit it.
+                </h6>
+                <SwitchComponent inputName={`save-location`} />
+              </div>
+            )}
           </form>
         )}
       </div>

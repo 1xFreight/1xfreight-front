@@ -9,10 +9,14 @@ import {
   useState,
 } from "react";
 import { QuoteTypeEnum } from "@/common/enums/quote-type.enum";
-import { convertQuoteToApiFormat } from "@/common/utils/data-convert.utils";
+import {
+  convertQuoteToApiFormat,
+  formatAddressObj,
+} from "@/common/utils/data-convert.utils";
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
+import ToastTypesEnum from "@/common/enums/toast-types.enum";
 
 export enum PageStateEnum {
   CAN_CHANGE = "CAN_CHANGE",
@@ -79,13 +83,14 @@ export const RegisterQuoteContextProvider = ({
     PageStateEnum.INVALID,
   );
   const [dataCollector, setDataCollector] = useState<Array<any>>([]);
-  const { session, getFromStore } = useStore();
+  const { session, getFromStore, deleteFromStore } = useStore();
 
   const getLastDataDebounced = useDebouncedCallback(() => {
     getWithAuth(
       `/quote?limit=1&sort=${JSON.stringify({
         createdAt: -1,
       })}`,
+      true,
     ).then((res) => {
       let _default = {};
       let addresses = [];
@@ -173,7 +178,33 @@ export const RegisterQuoteContextProvider = ({
     });
   };
 
+  const saveLocation = useDebouncedCallback((newLocation) => {
+    postWithAuth("/address", newLocation).then(async (response) => {});
+  }, 300);
+
+  const saveLocations = () => {
+    const pickup = dataCollector.find(({ form }) => form === "pickup")?.data;
+    const drop = dataCollector.find(({ form }) => form === "drop")?.data;
+    const locations = [...pickup, ...drop];
+
+    locations.map((location) => {
+      if (location["save-location"] === "true") {
+        const locationFormatted: any = formatAddressObj(location, "drop");
+        delete locationFormatted.date;
+        delete locationFormatted.address_type;
+
+        postWithAuth("/address", locationFormatted).then(
+          async (response) => {},
+        );
+      }
+    });
+  };
+
   const saveData = useCallback(async () => {
+    try {
+      saveLocations();
+    } catch {}
+
     return postWithAuth(
       "/quote/create",
       convertQuoteToApiFormat(dataCollector, type!),
@@ -190,9 +221,6 @@ export const RegisterQuoteContextProvider = ({
   useEffect(() => {
     const getQuoteSettings = getFromStore("get-quote-settings");
 
-    console.log("SETTINGS");
-    console.log(getQuoteSettings);
-
     if (getQuoteSettings) {
       addData({
         form: "default",
@@ -200,6 +228,7 @@ export const RegisterQuoteContextProvider = ({
       });
       setType(getQuoteSettings.data.type);
       setStepNumber(3);
+      deleteFromStore("get-quote-settings");
     }
 
     if (

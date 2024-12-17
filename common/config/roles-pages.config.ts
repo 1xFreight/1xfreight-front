@@ -9,6 +9,7 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/docs/labels",
     "/goto",
   ],
   [UserRolesEnum.SHIPPER_DEMO]: [
@@ -18,6 +19,7 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/docs/labels",
     "/goto",
   ],
   [UserRolesEnum.SHIPPER_MEMBER]: [
@@ -27,6 +29,7 @@ export const RolesPagesConfig = {
     "/settings",
     "/get-quote",
     "/docs/bol",
+    "/docs/labels",
     "/goto",
   ],
   [UserRolesEnum.CARRIER]: [
@@ -34,6 +37,7 @@ export const RolesPagesConfig = {
     "/active-loads",
     "/history",
     "/docs/bol",
+    "/docs/labels",
     "/goto",
   ],
 };
