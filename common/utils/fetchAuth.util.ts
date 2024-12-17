@@ -18,6 +18,7 @@ export function getWithAuth(path: string, ignoreCache = false) {
   return fetch(cacheKey, {
     credentials: "include",
     method: "GET",
+    mode: "no-cors",
   })
     .then((response) => {
       if (!response.ok) {
@@ -65,6 +66,7 @@ export function getCacheTimestamp(id: string) {
 
 export function postWithAuth(path: string, body: any) {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
+    mode: "no-cors",
     credentials: "include",
     method: "POST",
     body: JSON.stringify(body),
