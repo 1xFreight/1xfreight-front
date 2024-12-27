@@ -79,23 +79,6 @@ export default function CustomBrokersComponent({ _defaultDetails }) {
             defaultValue={_defaultDetails?.customs_broker_email}
           />
         </div>
-
-        <div>
-          <h5>Country</h5>
-          <select
-            defaultValue={_defaultDetails?.customs_broker_country ?? "US"}
-            style={{
-              paddingLeft: "1rem",
-            }}
-            name={`customs_broker_country`}
-            id={`customs_broker_country_select`}
-            required
-          >
-            <option value={"US"}>US</option>
-            <option value={"CA"}>CA</option>
-            <option value={"MX"}>MX</option>
-          </select>
-        </div>
       </div>
     </div>
   );

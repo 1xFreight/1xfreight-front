@@ -12,6 +12,7 @@ import { paginationConfig } from "@/common/config/pagination.config";
 import useStore from "@/common/hooks/use-store.context";
 import Link from "next/link";
 import EmptyTableComponent from "@/common/components/empty-table.component";
+import { LoadScript } from "@react-google-maps/api";
 
 export default function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
@@ -104,5 +105,6 @@ export default function ShipmentsPage() {
         )}
       </div>
     </div>
+    // </LoadScript>
   );
 }

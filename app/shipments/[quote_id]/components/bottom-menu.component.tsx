@@ -264,13 +264,13 @@ export default function BottomMenuComponent({ quoteId, status, request }) {
           <Link href={`/docs/bol/${quoteId}`} target={"_blank"} prefetch>
             <button>
               <Document />
-              View BOL
+              Generate BOL
             </button>
           </Link>
           <Link href={`/docs/labels/${quoteId}`} target={"_blank"} prefetch>
             <button>
               <Printer />
-              View Labels
+              Generate Label
             </button>
           </Link>
           <button

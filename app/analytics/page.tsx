@@ -10,6 +10,7 @@ import StatisticsTableComponent from "@/app/analytics/components/statistics-tabl
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import useStore from "@/common/hooks/use-store.context";
 import { CurrencyEnum } from "@/common/enums/currency.enum";
+import DatePickRangeComponent from "@/app/analytics/components/date-pick-range.component";
 
 export enum AnalyticsTypeEnum {
   carrier = "Carrier",
@@ -21,12 +22,23 @@ export enum SortAnalyticsByEnum {
   loads = "# of Loads",
   weight = "Weight",
   cwt = "CWT",
+  pickup = "On time Pickup",
+  delivery = "On time Delivery",
+}
+
+export enum SortDirectionEnum {
+  asc = "Ascended",
+  desc = "Descended",
 }
 
 export default function AnalyticsPage() {
   const [userAnalytics, setUserAnalytics] = useState<any>(null);
   const [type, setType] = useState("carrier");
   const [sort, setSort] = useState("price");
+  const [limit, setLimit] = useState(5);
+  const [sortDirection, setSortDirection] = useState("desc");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [searchText, setSearchText] = useState("");
   const { currencies, session } = useStore();
 
@@ -91,7 +103,7 @@ export default function AnalyticsPage() {
   };
 
   const getAnalyticsDebounced = useDebouncedCallback(() => {
-    getWithAuth("/analytics").then((data) => setUserAnalytics(data));
+    getWithAuth("/analytics").then((data) => setUserAnalytics(data[0]));
   }, 350);
 
   useEffect(() => {
@@ -107,6 +119,13 @@ export default function AnalyticsPage() {
       </div>
       <div className={"container"}>
         <div className={"filter-box"}>
+          <DatePickRangeComponent
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+          />
+
           <TypeSelectorComponent
             typeEnum={AnalyticsTypeEnum}
             setType={setType}
@@ -119,6 +138,12 @@ export default function AnalyticsPage() {
             type={sort}
           />
 
+          <TypeSelectorComponent
+            typeEnum={SortDirectionEnum}
+            setType={setSortDirection}
+            type={sortDirection}
+          />
+
           <input
             type={"text"}
             placeholder={"Search..."}
@@ -126,6 +151,12 @@ export default function AnalyticsPage() {
             value={searchText}
             onChange={(ev) => setSearchText(ev.target.value)}
           />
+
+          <select value={limit} onChange={(ev) => setLimit(ev.target.value)}>
+            <option value={"5"}>Show 5</option>
+            <option value={"15"}>Show 15</option>
+            <option value={"25"}>Show 25</option>
+          </select>
         </div>
 
         <div className={"analytic-tab"}>
@@ -140,7 +171,9 @@ export default function AnalyticsPage() {
                 {/*<div className={"subtitle"}>*/}
                 {/*  Based on data for the entire period of using the platform*/}
                 {/*</div>*/}
-                <div className={"big-number"}>{userAnalytics?.totalQuotes}</div>
+                <div className={"big-number"}>
+                  {userAnalytics?.quotes_number}
+                </div>
               </div>
 
               <div></div>
@@ -150,25 +183,25 @@ export default function AnalyticsPage() {
               {Object.values(QuoteTypeEnum).map((mode) => (
                 <div key={mode} className={mode}>
                   <div>{mode}</div>
-                  {userAnalytics[`${mode.toLowerCase()}Quotes`]}
+                  {userAnalytics[`${mode.toLowerCase()}`]}
                 </div>
               ))}
             </div>
 
             <div className={"statistics smaller"}>
               <div>
-                <div>
-                  <div className={"title2"}>Team members:</div>
-                  <div className={"big-number2"}>
-                    {userAnalytics?.userTeamMembersNumber}
+                {userAnalytics?.team_members && (
+                  <div>
+                    <div className={"title2"}>Team members:</div>
+                    <div className={"big-number2"}>
+                      {userAnalytics?.team_members}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div>
                   <div className={"title2"}>Carriers:</div>
-                  <div className={"big-number2"}>
-                    {userAnalytics?.userCarriersNumber}
-                  </div>
+                  <div className={"big-number2"}>{userAnalytics?.carriers}</div>
                 </div>
               </div>
             </div>
@@ -179,6 +212,10 @@ export default function AnalyticsPage() {
               type={type}
               sort={sort}
               searchText={searchText}
+              startDate={startDate}
+              endDate={endDate}
+              limit={limit}
+              sortDirection={sortDirection}
             />
           </div>
         </div>

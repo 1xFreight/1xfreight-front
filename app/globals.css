@@ -353,10 +353,26 @@ button:disabled {
 }
 
 select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  /*-webkit-appearance: none;*/
+  /*-moz-appearance: none;*/
+  /*appearance: none;*/
+  /*position: relative;*/
+
+  /*option::after {*/
+  /*  content: "▼";            !* or use a character code, e.g. "\25BC" *!*/
+  /*  position: absolute;*/
+  /*  !*right: 10px;             !* move arrow horizontally *!*!*/
+  /*  !*top: 50%;*!*/
+  /*  !*transform: translateY(-50%) scale(1.3); !* enlarge arrow and center vertically *!*!*/
+  /*  pointer-events: none;    !* so it's not clickable *!*/
+  /*  color: #333;             !* arrow color *!*/
+  /*  font-size: 0.8rem;       !* you can adjust the size *!*/
+  /*  right: 0;*/
+  /*  z-index: 111;*/
+  /*}*/
 }
+
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

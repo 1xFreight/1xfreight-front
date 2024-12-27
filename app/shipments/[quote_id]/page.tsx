@@ -24,6 +24,7 @@ import useStore from "@/common/hooks/use-store.context";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import { useRouter } from "next/navigation";
+import ShipmentMapComponent from "@/common/components/shipment-map/shipment-map.component";
 
 export default function ShipmentIdPage({
   params,
@@ -170,6 +171,10 @@ export default function ShipmentIdPage({
           </div>
 
           <div className={"chat-column"}>
+            <div className={"chat-wrapper"}>
+              <ShipmentMapComponent quoteLocations={quote?.addresses} />
+            </div>
+
             <div className={"chat-wrapper"}>
               <ChatComponent
                 room={params.quote_id + ":" + request?._id}

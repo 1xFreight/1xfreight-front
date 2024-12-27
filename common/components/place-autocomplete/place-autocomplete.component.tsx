@@ -30,24 +30,15 @@ function PlaceAutocompleteComponent({
   const [gPrediction, setGPredictions] = useState<any[]>([]);
   const [lPrediction, setLPredictions] = useState<any[]>([]);
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: options.apiKey,
-    language: options.language,
-    libraries: options.libs,
-    preventGoogleFontsLoading: true,
-  });
-
   useEffect(() => {
-    if (isLoaded) {
-      const gService = new google.maps.places.AutocompleteService();
+    const gService = new google.maps.places.AutocompleteService();
 
-      setService(gService);
+    setService(gService);
 
-      if (gService && inputText) {
-        getDebouncedPredictions();
-      }
+    if (gService && inputText) {
+      getDebouncedPredictions();
     }
-  }, [isLoaded]);
+  }, []);
 
   const getDebouncedPredictions = useDebouncedCallback(() => {
     service?.getPlacePredictions(

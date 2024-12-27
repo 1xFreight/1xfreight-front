@@ -1,0 +1,86 @@
+.marker-label {
+    /*text-shadow: 1px 1px 3px white;*/
+    /*background: white;*/
+    /*border-radius: 0.25rem;*/
+    /*padding: 0 0.5rem;*/
+    font-size: 1rem;
+    border: 1px solid rgba(84, 84, 84, 0.5);
+    /*box-shadow: 0 0 4px rgba(58, 86, 234, 0.2);*/
+    color: #1e1e1e;
+    font-weight: 500;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.15rem;
+    /*backdrop-filter: blur(3px);*/
+
+
+    span {
+        color: #6B81FF;
+    }
+}
+
+.gm-style .gmnoprint span {
+    display: none;
+}
+
+/* Fullscreen Control */
+.gm-fullscreen-control,.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom{
+    /*background-color: #6B81FF !important; !* Example: Change background color *!*/
+    border-radius: 8px; /* Example: Add rounded corners */
+    padding: 8px !important;
+    background: rgba(30, 30, 30, 0.15) !important;
+    color: black;
+    backdrop-filter: blur(3px);
+    scale: 0.9;
+
+    div {
+        background-color: transparent !important;
+        box-shadow: unset !important;
+    }
+
+    button {
+        border-radius: 8px;
+        box-shadow: unset;
+        margin-bottom: 0.1rem !important;
+        background: rgba(30, 30, 30, 0.15) !important;
+        backdrop-filter: blur(3px);
+    }
+
+    img {
+        filter: grayscale(1) brightness(0);
+    }
+}
+
+
+.gmnoprint[style*="z-index: 1000001;"] {
+    display: none !important;
+}
+
+.gm-style-mtc {
+    scale: 0.9;
+
+
+    button {
+        background: rgba(30, 30, 30, 0.15) !important;
+        border-radius: 8px;
+        box-shadow: unset;
+        font-size: 1rem !important;
+        margin-right: 0.25rem !important;
+        color: black !important;
+        backdrop-filter: blur(3px);
+    }
+
+    ul {
+        display: none;
+    }
+}
+
+
+/* Map Type Control */
+.gmnoprint.gm-style-mtc {
+    background-color: #ffffff !important; /* Change background color */
+    border: 1px solid #ddd !important; /* Add border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 14px !important; /* Change font size */
+
+}

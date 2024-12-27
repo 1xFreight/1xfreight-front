@@ -431,7 +431,9 @@ export default function ViewBOLPage({ params }) {
                 <img
                   src={
                     brokerCountryImageMapping[
-                      quote?.details_?.customs_broker_country
+                      quote?.addresses?.filter(
+                        ({ address_type }) => address_type === "drop",
+                      )[0].country
                     ].src
                   }
                   alt={"country"}
@@ -467,7 +469,7 @@ export default function ViewBOLPage({ params }) {
               <span>{billingInfo?.billing_address}</span>
             </div>
 
-            <div className={"contacts-info"}>
+            <div className={"contacts-info-billing"}>
               <div>
                 <Mail />
                 {billingInfo?.billing_email}
@@ -478,6 +480,16 @@ export default function ViewBOLPage({ params }) {
               </div>
             </div>
           </div>
+
+          {bolNotes && (
+            <div className={"billing-info"}>
+              <div className={"info-png"}>i</div>
+
+              <div className={"billing-to"}>
+                <span>{bolNotes}</span>
+              </div>
+            </div>
+          )}
 
           <div className={"items-table"}>
             <table>
@@ -586,14 +598,6 @@ export default function ViewBOLPage({ params }) {
               </tbody>
             </table>
           </div>
-
-          {bolNotes && (
-            <div className={"bol-notes"}>
-              <h3>Notes:</h3>
-
-              <span>{bolNotes}</span>
-            </div>
-          )}
 
           <div className={"sign-divs"}>
             {quote?.addresses &&
