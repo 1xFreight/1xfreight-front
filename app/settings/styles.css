@@ -177,7 +177,7 @@
         }
 
         .logo-img {
-            border: 2px solid #c9c9c9;
+            border: 1px solid #c9c9c9;
             outline: 2px solid #9ca4de;
             max-height: 15rem;
             max-width: 15rem;
@@ -302,7 +302,7 @@
 
     .input-chips-wrapper {
         padding: 1rem;
-        border: 2px solid #e5e5e5;
+        border: 1px solid #e5e5e5;
         border-radius: 0.5rem;
         display: flex;
         flex-direction: row;
@@ -320,12 +320,12 @@
             align-items: center;
             display: flex;
             gap: 0.75rem;
-            border: 2px solid #e8e8e8;
+            border: 1px solid #e8e8e8;
             transition: all 250ms ease-in-out;
             color: #1e1e1e;
 
             &:hover {
-                border: 2px solid #3A56EA;
+                border: 1px solid #3A56EA;
                 color: black;
             }
 

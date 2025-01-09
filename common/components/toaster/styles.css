@@ -1,7 +1,7 @@
 .toast-card {
     height: 3.5rem;
     background: white;
-    border: 2px solid #A7A7A7;
+    border: 1px solid #A7A7A7;
     border-radius: 0.75rem;
     display: flex;
     width: max-content;
@@ -19,7 +19,7 @@
     svg {
         background: #F9F9F9;
         border-radius: 100%;
-        border: 2px solid transparent;
+        border: 1px solid transparent;
         width: 1.75rem;
         height: 1.75rem;
     }

@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useStore from "@/common/hooks/use-store.context";
 import { CurrencyEnum } from "@/common/enums/currency.enum";
 import DoughnutChart from "@/app/analytics/components/doughnut-chart-currency.component";
-import { SortAnalyticsByEnum } from "@/app/analytics/page";
+import { AnalyticsTypeEnum, SortAnalyticsByEnum } from "@/app/analytics/page";
 import ArrowRight from "@/public/icons/40px/Arrow 1.svg";
 import numberCommaFormat, {
   formatComma,
@@ -91,7 +91,7 @@ export default function StatisticsTableComponent({
   };
 
   const getAnalyticsDebounced = useDebouncedCallback(() => {
-    const endpoint = type === "lanes" ? "lanes" : "carrier";
+    const endpoint = type === AnalyticsTypeEnum.lanes ? "lanes" : "carrier";
     let sortText = "";
     const sortDirectionFormatted = sortDirection == "asc" ? 1 : -1;
 
@@ -347,7 +347,7 @@ export default function StatisticsTableComponent({
                   {/*  CWT: <span>{row.total_cwt.toFixed(2)} cwt</span>*/}
                   {/*</div>*/}
                   <div>
-                    Average {session.currency} per LB:{" "}
+                    Average Cost (LB):{" "}
                     <span>
                       $
                       {formatComma(
@@ -362,7 +362,7 @@ export default function StatisticsTableComponent({
                     </span>
                   </div>
                   <div>
-                    Average {session.currency} per KG:{" "}
+                    Average Cost (KG):{" "}
                     <span>
                       $
                       {formatComma(
@@ -377,14 +377,14 @@ export default function StatisticsTableComponent({
                     </span>
                   </div>
                   <div>
-                    Average LB per load:{" "}
+                    Average Weight of Load (LB):{" "}
                     <span>
                       {formatComma(row.total_weight_lb / row.number_of_loads)}{" "}
                       lb/load
                     </span>
                   </div>
                   <div>
-                    Average KG per load:{" "}
+                    Average Weight of Load (KG):{" "}
                     <span>
                       {formatComma(row.total_weight_kg / row.number_of_loads)}{" "}
                       kg/load
@@ -403,7 +403,7 @@ export default function StatisticsTableComponent({
 
                   <div className={"analytics-data-box"}>
                     <div>
-                      Average {session?.currency} per mile:{" "}
+                      Average Cost (Mi):{" "}
                       <span>
                         $
                         {formatComma(
@@ -419,7 +419,7 @@ export default function StatisticsTableComponent({
                     </div>
 
                     <div>
-                      Average miles per load:{" "}
+                      Average Load Distance:{" "}
                       <span>
                         {formatComma(row.total_miles_est / row.number_of_loads)}{" "}
                         mile/load
@@ -427,7 +427,7 @@ export default function StatisticsTableComponent({
                     </div>
 
                     <div>
-                      Average load price:{" "}
+                      Average Load Cost:{" "}
                       <span>
                         {formatComma(
                           (row.total_miles_est / row.number_of_loads) *

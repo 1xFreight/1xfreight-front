@@ -105,7 +105,7 @@
             font-size: 0.95rem;
 
             &.active {
-                border: 2px dashed transparent;
+                border: 1px dashed transparent;
                 color: #3A56EA;
 
                 svg {
@@ -178,7 +178,7 @@
     /*gap: .5rem;*/
     color: #1e1e1e;
     letter-spacing: 0.0625rem;
-    border: 1px solid #1e1e1e;
+    border: 1px solid #A7A7A7;
     border-radius: 1rem;
     overflow: hidden;
     font-weight: 500;
@@ -267,7 +267,7 @@
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.85rem;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     width: 11rem;
     white-space: nowrap;
     justify-content: center;
@@ -278,7 +278,7 @@
     }
 
     &:hover {
-        border: 2px solid #EFEFEF;
+        border: 1px solid #EFEFEF;
         background: white;
         color: #3A56EA;
 
@@ -316,7 +316,7 @@
     font-weight: 600;
     padding: 0.5rem 0.75rem;
     border-radius: 00.5rem;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     height: 3rem;
     font-size: 1rem;
     /*max-width: 10rem;*/
@@ -328,7 +328,7 @@
     }
 
     &.active {
-        border: 2px dashed #e5e5e5;
+        border: 1px dashed #e5e5e5;
         color: black;
 
         svg {

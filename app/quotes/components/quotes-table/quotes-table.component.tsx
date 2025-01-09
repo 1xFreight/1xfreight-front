@@ -27,6 +27,7 @@ interface QuotesTableI {
 }
 
 export default function QuotesTableComponent({ rows }: QuotesTableI) {
+  const { filters, setFilters } = useStore();
   const [selectedQuoteForPreview, setSelectedQuoteForPreview] =
     useState<any>(null);
 
@@ -218,6 +219,12 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                         <QuoteModalPreviewComponent
                           quote={selectedQuoteForPreview}
                           setQuote={setSelectedQuoteForPreview}
+                          refreshFn={() => {
+                            setFilters((prevState) => {
+                              return { ...prevState, ignoreCache: true };
+                            });
+                            // setSelectedQuoteForPreview(null);
+                          }}
                         />
                       </td>
                     </tr>

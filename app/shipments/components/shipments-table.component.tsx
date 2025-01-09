@@ -2,15 +2,9 @@
 
 import Arrow from "@/public/icons/40px/Arrow 1.svg";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
-import Doc from "@/public/icons/35px/document.svg";
-import Archive from "@/public/icons/35px/archives 1.svg";
-import Info from "@/public/icons/14px/info-circle.svg";
-import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
 import { formatDate, formatTime } from "@/common/utils/date.utils";
 import { clearText, toShortId } from "@/common/utils/data-convert.utils";
 import Link from "next/link";
-import Calendar from "@/public/icons/24px/calendar.svg";
-import Point from "@/public/icons/35px/map-marker.svg";
 import ShipmentsTableHeader from "@/app/shipments/components/table-header.component";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
@@ -193,7 +187,11 @@ export default function ShipmentsTableComponent({ shipments }) {
                           </div>
                         </td>
 
-                        <td>
+                        <td
+                          onClick={(ev) => {
+                            ev.stopPropagation();
+                          }}
+                        >
                           <Link
                             href={`/shipments/${_id}`}
                             onMouseEnter={() => {
@@ -217,6 +215,7 @@ export default function ShipmentsTableComponent({ shipments }) {
                             <QuoteModalPreviewComponent
                               quote={selectedQuoteForPreview}
                               setQuote={setSelectedQuoteForPreview}
+                              shipmentsButtons
                             />
                           </td>
                         </tr>

@@ -1,55 +1,59 @@
+"use client";
+
 import "./styles.css";
-import ArrowUp from "@/public/icons/24px/arrow-up.svg";
-import ArrowDown from "@/public/icons/24px/arrow-down.svg";
-import Info from "@/public/icons/14px/info-circle.svg";
 import { QuotePreviewI } from "@/common/interfaces/quote-preview.interface";
 import numberCommaFormat from "@/common/utils/number-comma.utils";
-import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
-import { formatDate } from "@/common/utils/date.utils";
 import Image from "next/image";
 import Link from "next/link";
-import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
-import Cross from "@/public/icons/24px/cross.svg";
+import Arrow from "@/public/icons/40px/Arrow 1.svg";
+import { useDebouncedCallback } from "use-debounce";
+import { getWithAuth } from "@/common/utils/fetchAuth.util";
+import { Fragment, useState } from "react";
+import { clearText, toShortId } from "@/common/utils/data-convert.utils";
+import TableHeaderComponent from "@/app/history/components/quotes-table/components/table-header.component";
+import { getCurrencySymbol } from "@/common/utils/currency";
+import QuoteModalPreviewComponent from "@/common/components/quote-modal-preview/quote-modal-preview.component";
 
 interface QuotesTableI {
   rows: QuotePreviewI[];
 }
 
 export default function QuotesTableComponent({ rows }: QuotesTableI) {
+  const [selectedQuoteForPreview, setSelectedQuoteForPreview] =
+    useState<any>(null);
+
+  const prefetchQuoteURL = useDebouncedCallback((prefetchQuoteId) => {
+    getWithAuth(`/quote/carrier/history?limit=1&id=${prefetchQuoteId}`).then(
+      (data) => {},
+    );
+  }, 50);
+
   return (
     <>
-      <div className={"quotes-table-placeholder"}></div>
-      <div className={"quotes-table"}>
+      <div className={"history-quotes-table"}>
         <table>
           <thead>
-            <tr className={"fade-in"}>
-              <th></th>
-              <th>Type</th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Details</th>
-              <th>Ref#</th>
-              <th>Equipment</th>
-              <th>Your offer (per load)</th>
-              <th></th>
-            </tr>
+            <TableHeaderComponent />
           </thead>
           <tbody className={"fade-in"}>
             {rows?.map(
-              ({
-                _id,
-                status,
-                addresses,
-                equipments,
-                currency,
-                references,
-                type,
-                quote_type,
-                details,
-                goods_value,
-                carrier_bid,
-                user,
-              }) => {
+              (
+                {
+                  _id,
+                  addresses,
+                  equipments,
+                  currency,
+                  type,
+                  quote_type,
+                  details,
+                  carrier_bid,
+                  user,
+                  deadline_date,
+                  status,
+                  references,
+                },
+                index,
+              ) => {
                 const pickupAddress = addresses.filter(
                   ({ address_type }) => address_type === "pickup",
                 );
@@ -60,158 +64,152 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 const qUser = user[0];
 
                 return (
-                  <tr key={_id}>
-                    <td>
-                      {qUser?.logo && (
-                        <div className={"quote-shipper-logo"}>
-                          <Image
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${qUser?.logo}`}
-                            alt={"logo"}
-                            width={150}
-                            height={150}
-                          />
-                        </div>
-                      )}
+                  <Fragment key={_id}>
+                    <tr
+                      onClick={(ev) => {
+                        const quote = rows[index];
 
-                      {!qUser?.logo && qUser.name}
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{type}</div>
-                    </td>
-                    <td className={"pickup"}>
-                      <div className={"location-styling"}>
-                        <ArrowUp />
-                        <div>
-                          <div className={"location main-text"}>
-                            {pickupAddress[0].address}
+                        setSelectedQuoteForPreview((prevState) => {
+                          if (prevState?._id === quote._id) {
+                            return null;
+                          }
 
-                            {pickupAddress.length >= 2 && (
-                              <>
-                                <div className={"extra-address"}>
-                                  +{pickupAddress.length - 1}
-                                  <Info />
-                                  <ExtraAddressWindowComponent
-                                    stops={pickupAddress}
-                                  />
-                                </div>
-                              </>
-                            )}
+                          return quote;
+                        });
+                      }}
+                      className={`${selectedQuoteForPreview?._id == _id ? "current-open-preview" : ""}`}
+                    >
+                      <td>
+                        {qUser?.logo && (
+                          <div className={"quote-shipper-logo"}>
+                            <Image
+                              src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${qUser?.logo}`}
+                              alt={"logo"}
+                              width={150}
+                              height={150}
+                            />
                           </div>
-                          <div className={"date sub-text"}>
-                            {formatDate(pickupAddress[0].date)}
-                            {!!pickupAddress[0].date && " / "}
-                            {pickupAddress[0].time_start}
-                            {" - "}
-                            {pickupAddress[0].time_end}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={"drop"}>
-                      <div className={"location-styling"}>
-                        <ArrowDown />
+                        )}
 
-                        <div>
-                          <div className={"location main-text"}>
-                            {dropAddress[0].address}
-
-                            {dropAddress.length >= 2 && (
-                              <>
-                                <div className={"extra-address"}>
-                                  +{dropAddress.length - 1}
-                                  <Info />
-                                  <ExtraAddressWindowComponent
-                                    stops={dropAddress}
-                                  />
-                                </div>
-                              </>
-                            )}
-                          </div>
-                          <div className={"date sub-text"}>
-                            {formatDate(dropAddress[0].date)}
-                            {!!dropAddress[0].date && " / "}
-                            {dropAddress[0].time_start}
-                            {!!dropAddress[0].time_end && " - "}
-                            {dropAddress[0].time_end}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>
-                        {numberCommaFormat(shipment.weight)}{" "}
-                        {shipment.weight_unit}
-                      </div>
-                      <div
-                        className={"sub-text"}
-                        style={{
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {shipment.packing_method?.replace("_", " ")}/
-                        {shipment.commodity}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>
-                        {references?.length ? references[0] : "N/A"}
-                      </div>
-                      <div className={"sub-text"}>
-                        Value:
-                        {" " +
-                          numberCommaFormat(shipment.goods_value) +
-                          ` ${currency} /`}
-                        {" " + quote_type.replace("_", " ")}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={"main-text"}>{equipments?.join(",")}</div>
-                    </td>
-                    <td>
-                      {carrier_bid && (
-                        <div className={"end"}>
-                          <div className={"price"}>
-                            <div className={"full-price"}>
-                              <span>$</span>
-                              {numberCommaFormat(carrier_bid.amount)}
-                            </div>
-                            <div className={"currency"}>{currency}</div>
-                          </div>
-                        </div>
-                      )}
-                    </td>
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5rem",
-                        }}
-                      >
-                        <Link href={`/available-quotes/${_id}`}>
-                          <button>Quote</button>
-                        </Link>
-
+                        {!qUser?.logo && qUser.name}
+                      </td>
+                      <td>
                         <div
-                          onClick={() => {
-                            document.getElementById(
-                              "decline-action",
-                            ).style.display = "flex";
-                          }}
+                          className={`main-text table-status ${status}`}
                           style={{
-                            width: "2rem",
+                            textTransform: "capitalize",
+                            textAlign: "center",
                           }}
                         >
-                          <Cross />
+                          {clearText(status)}
                         </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>{type}</div>
+                      </td>
+                      <td className={"pickup"}>
+                        <div className={"location-styling"}>
+                          <div
+                            style={{
+                              width: "100%",
+                            }}
+                          >
+                            <div className={"location main-text"}>
+                              {pickupAddress[0]?.partial_address ??
+                                pickupAddress[0]?.address}
 
-                        <ConfirmActionComponent
-                          title={"Decline Quote ?"}
-                          id={"decline-action"}
-                        />
-                      </div>
-                    </td>
-                  </tr>
+                              {pickupAddress.length >= 2 && (
+                                <>
+                                  <div className={"extra-address"}>
+                                    +{pickupAddress.length - 1}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className={"arrow-styling"}>
+                            <Arrow />
+                          </div>
+                        </div>
+                      </td>
+                      <td className={"drop"}>
+                        <div className={"location-styling"}>
+                          <div
+                            style={{
+                              width: "100%",
+                            }}
+                          >
+                            <div className={"location main-text"}>
+                              {dropAddress[0]?.partial_address ??
+                                dropAddress[0]?.address}
+
+                              {dropAddress.length >= 2 && (
+                                <>
+                                  <div className={"extra-address"}>
+                                    +{dropAddress.length - 1}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>
+                          {numberCommaFormat(shipment?.weight)}{" "}
+                          {shipment?.weight_unit}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={"main-text"}>
+                          {references[0] ?? "N/A"}
+                        </div>
+                      </td>
+                      <td>
+                        {carrier_bid && (
+                          <div className={"end"}>
+                            <div className={"price"}>
+                              <div className={"full-price"}>
+                                <span>{getCurrencySymbol(currency)}</span>
+                                {numberCommaFormat(carrier_bid.amount)}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </td>
+                      <td onClick={(ev) => ev.stopPropagation()}>
+                        <div className={"av-actions"}>
+                          <Link
+                            href={`/history/${_id}`}
+                            prefetch
+                            onMouseEnter={() => prefetchQuoteURL(_id)}
+                          >
+                            <button className={"variant2"}>View</button>
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+
+                    {selectedQuoteForPreview?._id == _id && (
+                      <tr
+                        className={"selected-quote-preview-tr"}
+                        // key={_id + index}
+                      >
+                        <td
+                          colSpan={10}
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <QuoteModalPreviewComponent
+                            quote={selectedQuoteForPreview}
+                            setQuote={setSelectedQuoteForPreview}
+                            hideActions
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 );
               },
             )}

@@ -10,6 +10,7 @@ export default {
             test: /\.svg$/i,
             use: ['@svgr/webpack'],
         });
+
         return config;
     },
     eslint:{
@@ -18,4 +19,5 @@ export default {
     typescript:{
         ignoreBuildErrors:true
     },
+
 };

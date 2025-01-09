@@ -10,10 +10,11 @@ import StatisticsTableComponent from "@/app/analytics/components/statistics-tabl
 import TypeSelectorComponent from "@/common/components/type-selector/type-selector.component";
 import useStore from "@/common/hooks/use-store.context";
 import { CurrencyEnum } from "@/common/enums/currency.enum";
+import { Button, DatePicker } from "antd";
 import DatePickRangeComponent from "@/app/analytics/components/date-pick-range.component";
 
 export enum AnalyticsTypeEnum {
-  carrier = "Carrier",
+  carrier = "Carriers",
   lanes = "Lanes",
 }
 
@@ -31,76 +32,19 @@ export enum SortDirectionEnum {
   desc = "Descended",
 }
 
+const onChange = (date, dateString) => {
+  console.log(date, dateString);
+};
+
 export default function AnalyticsPage() {
   const [userAnalytics, setUserAnalytics] = useState<any>(null);
-  const [type, setType] = useState("carrier");
+  const [type, setType] = useState(AnalyticsTypeEnum.carrier);
   const [sort, setSort] = useState("price");
   const [limit, setLimit] = useState(5);
   const [sortDirection, setSortDirection] = useState("desc");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchText, setSearchText] = useState("");
-  const { currencies, session } = useStore();
-
-  const getUserMainCurrency = (
-    usd_total: number,
-    mxn_total: number,
-    cad_total: number,
-    getValue = null,
-  ) => {
-    let userBaseCurrency = CurrencyEnum.USD;
-
-    if (session?.currency) {
-      userBaseCurrency = session.currency;
-    }
-
-    switch (userBaseCurrency) {
-      case CurrencyEnum.USD:
-        const toUsdCurrency =
-          mxn_total * currencies.mxn_to_usd +
-          cad_total * currencies.cad_to_usd +
-          usd_total;
-        return !getValue ? (
-          <div className={"currency-main"}>
-            {" "}
-            <div className={"currency-symbol"}>$</div>
-            {toUsdCurrency.toFixed(2)}
-          </div>
-        ) : (
-          toUsdCurrency
-        );
-
-      case CurrencyEnum.CAD:
-        const toCadCurrency =
-          mxn_total * currencies.mxn_to_cad +
-          usd_total * currencies.usd_to_cad +
-          cad_total;
-        return !getValue ? (
-          <div className={"currency-main"}>
-            {" "}
-            <div className={"currency-symbol"}>C$</div>
-            {toCadCurrency.toFixed(2)}
-          </div>
-        ) : (
-          toCadCurrency
-        );
-
-      case CurrencyEnum.MXN:
-        const toMxnCurrency =
-          usd_total * currencies.usd_to_mxn +
-          cad_total * currencies.cad_to_mxn +
-          mxn_total;
-        return !getValue ? (
-          <div className={"currency-main"}>
-            {" "}
-            <div className={"currency-symbol"}>MX$</div>
-            {toMxnCurrency.toFixed(2)}
-          </div>
-        ) : (
-          toMxnCurrency
-        );
-    }
-  };
 
   const getAnalyticsDebounced = useDebouncedCallback(() => {
     getWithAuth("/analytics").then((data) => setUserAnalytics(data[0]));
@@ -119,19 +63,30 @@ export default function AnalyticsPage() {
       </div>
       <div className={"container"}>
         <div className={"filter-box"}>
+          <div className={"select-analytics-type"}>
+            {Object.values(AnalyticsTypeEnum).map((typeEl) => (
+              <div
+                className={`select-analytics-type-item ${typeEl === type ? "active" : ""}`}
+                key={typeEl}
+                onClick={() => setType(typeEl as AnalyticsTypeEnum)}
+              >
+                {typeEl}
+              </div>
+            ))}
+            <div></div>
+          </div>
+        </div>
+
+        <div className={"filter-box"}>
           <DatePickRangeComponent
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate}
           />
+        </div>
 
-          <TypeSelectorComponent
-            typeEnum={AnalyticsTypeEnum}
-            setType={setType}
-            type={type}
-          />
-
+        <div className={"filter-box"}>
           <TypeSelectorComponent
             typeEnum={SortAnalyticsByEnum}
             setType={setSort}

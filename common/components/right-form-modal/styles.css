@@ -79,7 +79,7 @@
             &.cancel {
                 background: white;
                 color: #1e1e1e;
-                border: 2px solid #A7A7A7;
+                border: 1px solid #A7A7A7;
 
                 &:hover {
                     color: black;

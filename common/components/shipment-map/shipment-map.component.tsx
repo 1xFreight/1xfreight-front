@@ -12,6 +12,7 @@ import {
 } from "@react-google-maps/api";
 import SparkleGif from "@/public/gif/sparkle-white-transparent-optimized.gif";
 import GreenCirclePng from "@/public/png/location-circle-greenchecked.png";
+import LocationPng from "@/public/png/sparkle.png";
 import { useDebouncedCallback } from "use-debounce";
 
 // Custom map container style
@@ -264,16 +265,15 @@ export default function ShipmentMapComponent({ quoteLocations }) {
               key={location.id + index}
               position={location.position}
               icon={{
-                url: location.isLocationChecked
-                  ? GreenCirclePng?.src
-                  : SparkleGif?.src,
-                scaledSize: location.isLocationChecked
-                  ? new window.google.maps.Size(40, 40)
-                  : new window.google.maps.Size(60, 60), // Safe access
-                anchor: location.isLocationChecked
-                  ? new window.google.maps.Point(15, 15)
-                  : new window.google.maps.Point(30, 33), // Safe access,
-                labelOrigin: new window.google.maps.Point(30, -10),
+                url: LocationPng?.src,
+                scaledSize: new window.google.maps.Size(40, 40), // Safe access
+                // scaledSize: location.isLocationChecked
+                // ? new window.google.maps.Size(40, 40)
+                // : new window.google.maps.Size(30, 30), // Safe access
+                // anchor: location.isLocationChecked
+                //   ? new window.google.maps.Point(0, 0)
+                //   : new window.google.maps.Point(30, 33), // Safe access,
+                labelOrigin: new window.google.maps.Point(17, -15),
               }}
               label={{
                 text: location.company_name, // Text to display

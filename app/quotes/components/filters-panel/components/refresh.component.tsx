@@ -25,11 +25,26 @@ export default function RefreshComponent() {
   }, [filters]);
 
   return (
-    <div className={"refresh"}>
+    <div
+      style={{
+        display: "flex",
+        gap: "2.25rem",
+        alignItems: "center",
+        marginLeft: "auto",
+      }}
+    >
       <p>Last refreshed at: {time}</p>
 
       <button
-        className={"refresh-btn"}
+        style={{
+          width: "3rem",
+          height: "3rem",
+          background: "white",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "0.65rem",
+          display: "flex",
+        }}
         onClick={() => setFilters({ ...filters, ignoreCache: true })}
       >
         <Refresh />

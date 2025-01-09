@@ -24,6 +24,7 @@
         border: unset;
         min-width: 62.5rem;
         box-sizing: border-box;
+         margin-bottom: 2rem;
     }
 
      thead {

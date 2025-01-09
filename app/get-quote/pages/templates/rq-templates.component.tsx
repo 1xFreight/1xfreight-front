@@ -2,32 +2,30 @@
 
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
 import "./styles.css";
-import ArrowUp from "@/public/icons/24px/arrow-up.svg";
-import ArrowDown from "@/public/icons/24px/arrow-down.svg";
-import Edit from "@/public/icons/24px/edit-circle.svg";
 import Chevron from "@/public/icons/16px/chevron-right.svg";
-import { mockData } from "@/app/quotes/components/quotes-table/mock-data";
-import Info from "@/public/icons/14px/info-circle.svg";
-import ExtraAddressWindowComponent from "@/common/components/extra-addresses-window/extra-address-window.component";
 import useRegisterQuoteContext from "@/app/get-quote/use-register-quote-context.hook";
 import { PageStateEnum } from "@/app/get-quote/register-quote.context";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import { useDebouncedCallback } from "use-debounce";
-import LoadingComponent from "@/common/components/loading/loading.component";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
-import { formatDate } from "@/common/utils/date.utils";
+import EmptyTableComponent from "@/common/components/empty-table.component";
 
 export default function RqTemplatesComponent() {
-  const { setCanChangePage, canChangePage, addData, validateAndGoForward } =
-    useRegisterQuoteContext();
+  const {
+    setCanChangePage,
+    canChangePage,
+    addData,
+    validateAndGoForward,
+    type,
+  } = useRegisterQuoteContext();
   const [templates, setTemplates] = useState();
   const [loading, setLoading] = useState(true);
 
   const getTemplatesDebounced = useDebouncedCallback(() => {
     setLoading(true);
-    getWithAuth("/quote/templates", true).then((data) => {
+    getWithAuth(`/quote/templates?type=${type ?? ""}`, true).then((data) => {
       setTemplates(data);
       setLoading(false);
     });
@@ -103,59 +101,43 @@ export default function RqTemplatesComponent() {
                       </td>
                       <td className={"pickup"}>
                         <div className={"location-styling"}>
-                          <ArrowUp />
+                          {/*<ArrowUp />*/}
                           <div>
                             <div className={"location main-text"}>
-                              {pickupAddress[0].address}
+                              {pickupAddress[0].partial_address}
 
                               {pickupAddress.length >= 2 && (
                                 <>
                                   <div className={"extra-address"}>
                                     +{pickupAddress.length - 1}
-                                    <Info />
-                                    <ExtraAddressWindowComponent
-                                      stops={pickupAddress}
-                                    />
                                   </div>
                                 </>
                               )}
                             </div>
                             <div className={"date sub-text"}>
-                              {formatDate(pickupAddress[0].date)}
-                              {!!pickupAddress[0].date && " / "}
-                              {pickupAddress[0].time_start}
-                              {" - "}
-                              {pickupAddress[0].time_end}
+                              {pickupAddress[0]?.company_name}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className={"drop"}>
                         <div className={"location-styling"}>
-                          <ArrowDown />
+                          {/*<ArrowDown />*/}
 
                           <div>
                             <div className={"location main-text"}>
-                              {dropAddress[0].address}
+                              {dropAddress[0].partial_address}
 
                               {dropAddress.length >= 2 && (
                                 <>
                                   <div className={"extra-address"}>
                                     +{dropAddress.length - 1}
-                                    <Info />
-                                    <ExtraAddressWindowComponent
-                                      stops={dropAddress}
-                                    />
                                   </div>
                                 </>
                               )}
                             </div>
                             <div className={"date sub-text"}>
-                              {formatDate(dropAddress[0].date)}
-                              {!!dropAddress[0].date && " / "}
-                              {dropAddress[0].time_start}
-                              {!!dropAddress[0].time_end && " - "}
-                              {dropAddress[0].time_end}
+                              {dropAddress[0]?.company_name}
                             </div>
                           </div>
                         </div>
@@ -204,6 +186,19 @@ export default function RqTemplatesComponent() {
                 })}
             </tbody>
           </table>
+        )}
+        {templates && !templates?.length && (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <EmptyTableComponent button={<h5>No templates found</h5>} />
+          </div>
         )}
       </div>
     </div>

@@ -1,15 +1,26 @@
-.av-quotes-page {
+.history-quotes-page {
     gap: 1rem;
+    padding-bottom: 1rem;
 
     .page-header {
         /*height: 3rem;*/
         z-index: 10;
     }
 
+    .remove-filters {
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        padding: 0 0.5rem;
+        border-radius: 0.65rem;
+        height: calc(3rem - 2px);
+    }
+
     .filters-panel {
         z-index: 10;
         display: flex;
-        justify-content: start;
+        justify-content: start !important;
+        flex-direction: row;
+        gap: 1rem;
 
         .search-input-custom {
             width: 30rem;
@@ -21,10 +32,13 @@
         align-items: center;
         position: relative;
 
-        svg {
-            min-width: 1rem;
-            position: absolute;
-            left: -2rem;
+        .arrow-styling {
+            width: 3rem;
+            min-width: 3rem;
+
+            svg path {
+                fill: rgba(0, 32, 221, 0.5);
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import PaginationComponent from "@/common/components/pagination/pagination.compo
 import { paginationConfig } from "@/common/config/pagination.config";
 import useStore from "@/common/hooks/use-store.context";
 import SearchInputComponent from "@/common/components/search-input/search-input.component";
+import RefreshComponent from "@/app/quotes/components/filters-panel/components/refresh.component";
 
 export default function AvailableQuotes() {
   const [quotes, setQuotes] = useState();
@@ -68,6 +69,8 @@ export default function AvailableQuotes() {
         >
           Remove Sort
         </button>
+
+        <RefreshComponent />
       </div>
 
       <div className={"container"}>

@@ -11,7 +11,7 @@
         font-weight: 500;
 
         &:focus-visible {
-            /*border: 2px solid #e8e8e8 !important;*/
+            /*border: 1px solid #e8e8e8 !important;*/
             outline: unset;
         }
     }
@@ -56,7 +56,7 @@
                 cursor: pointer;
 
                 &:focus-visible {
-                    /*border: 2px solid #e8e8e8 !important;*/
+                    /*border: 1px solid #e8e8e8 !important;*/
                     outline: unset;
                 }
             }
@@ -65,7 +65,7 @@
 
         &:hover {
             .sort-column{
-                border: 2px solid rgba(0, 32, 221, 1) !important;
+                border: 1px solid rgba(0, 32, 221, 1) !important;
                 /*color: #3A56EA;*/
                 transition: all 250ms ease-in-out;
             }

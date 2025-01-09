@@ -18,13 +18,14 @@ export default function AvatarComponent({
   if (logo) {
     return (
       <div className={"avatar"}>
-        <Image
-          src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${logo}`}
-          alt={"logo"}
-          width={56}
-          height={48}
-          quality={95}
-        />
+        <div className={"avatar-img-wrapper"}>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${logo}`}
+            alt={"logo"}
+            width={150}
+            height={150}
+          />
+        </div>
       </div>
     );
   }

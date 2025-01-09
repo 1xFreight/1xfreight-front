@@ -54,7 +54,7 @@
                 margin: 1rem 0;
                 padding: 1rem 0;
                 border-top: 2px dashed #F44C3D;
-                border-bottom: 2px dashed #F44C3D;
+                border-bottom: 1px dashed #F44C3D;
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
@@ -171,9 +171,6 @@
     }
 
     .bol {
-        background: white;
-        box-sizing: border-box;
-        padding: .5rem;
 
 
         .header-pdf {
@@ -192,6 +189,7 @@
             .bol-text {
                 font-size: 90px;
                 font-weight: 700;
+                line-height: 1.1;
             }
 
             .bol-legal-subtitle {
@@ -465,10 +463,18 @@
             margin-top: 16px;
             gap: 2rem;
 
+            &.bol-notes {
+                min-height: 80px;
+                height: fit-content;
+            }
+
             .info-png {
                 font-size: 40px;
                 font-weight: 700;
                 color: #F0F2FF;
+                min-width: 80px;
+                height: 100%;
+                background: #929295;
             }
 
 

@@ -81,7 +81,7 @@
         padding: 1rem;
         box-sizing: border-box;
         border-radius: 0.5rem;
-        border: 2px solid #e8e8e8;
+        border: 1px solid #e8e8e8;
 
         & .item {
             display: flex;
@@ -206,7 +206,7 @@
     z-index: 1;
     color: #1e1e1e;
     border-radius: 0.5rem;
-    border: 2px solid #e8e8e8 ;
+    border: 1px solid #e8e8e8 ;
     margin-top: 0.25rem;
 
     & .owner-item {

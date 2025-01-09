@@ -9,7 +9,6 @@ import { toShortId } from "@/common/utils/data-convert.utils";
 
 export default function CancelLoadShipTable({ quote_id }) {
   const { showToast } = useStore();
-  const pathname = usePathname();
   const router = useRouter();
 
   const cancelLoad = useDebouncedCallback(() => {

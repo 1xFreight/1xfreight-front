@@ -60,7 +60,7 @@
                 margin: 1rem 0;
                 padding: 1rem 0;
                 border-top: 2px dashed #F44C3D;
-                border-bottom: 2px dashed #F44C3D;
+                border-bottom: 1px dashed #F44C3D;
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;

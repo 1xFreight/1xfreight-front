@@ -34,6 +34,35 @@
         align-items: center;
         height: 100%;
 
+        .select-analytics-type {
+            display: inline-flex;
+            gap: 0.25rem;
+
+            .select-analytics-type-item {
+                width: 10rem;
+                height: 3rem;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 0.5rem;
+                background: rgba(30, 30, 30, 0.05);
+                font-weight: 500;
+                color: #1e1e1e;
+                cursor: pointer;
+                transition: all 90ms ease-in-out;
+
+                &:hover {
+                    background: rgba(30, 30, 30, 0.15);
+                }
+
+                &.active {
+                    background: #3A56EA;
+                    color: white;
+                }
+
+            }
+        }
+
         .date-daterange {
             padding-left: 1rem;
             height: 3rem;
@@ -115,25 +144,17 @@
     .date-pick-analytics {
         position: relative;
         display: inline-flex;
-
-        .backdrop-pick-range {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(30, 30, 30, 0.1);
-        }
+        width: 100%;
 
 
         .last-days-buttons {
             display: inline-flex;
-            flex-wrap: wrap;
             gap: 0.5rem;
 
             button {
                 padding: 0.25rem 0.5rem;
                 border-radius: 0.5rem;
+                box-shadow: unset;
             }
 
             .close-btn {
@@ -150,22 +171,14 @@
     .date-input-analytics {
         display: flex;
         gap: 0.5rem;
-        position: absolute;
-        background: white;
-        border: 1px solid rgba(30, 30, 30, 0.1);
-        left: 0;
-        bottom: calc(-100% - 13.75rem);
-        flex-direction: column;
-        padding: 1rem;
+        /*flex-direction: column;*/
         border-radius: 0.5rem;
-        width: 26rem;
-        z-index: 100;
 
         .close-modal {
-            width: 100%;
             display: inline-flex;
             justify-content: space-between;
             align-items: center;
+            margin-right: 4rem;
 
             h5 {
                 font-size: 1.1rem;
@@ -200,6 +213,25 @@
             align-items: center;
             justify-content: space-between;
 
+            &:hover {
+                svg {
+                    path {
+                        fill: white;
+                    }
+                }
+            }
+
+            svg {
+                position: absolute;
+                left: 0.1rem;
+                z-index: 1;
+                scale: 0.75;
+
+                path {
+                    fill: rgba(30, 30, 30, 0.3);
+                }
+            }
+
             h5 {
                 z-index: 1;
                 left: 1rem;
@@ -207,8 +239,47 @@
             }
 
             input {
-                padding: 0 1rem;
+                padding-left: 2rem;
                 height: 3rem;
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: start;
+                width: 12rem;
+                transition: 90ms ease-in-out;
+
+                &:hover {
+                    background: rgba(30, 30, 30, 0.3);
+                    color: white;
+
+                    &.hide-date::after {
+                        color: white;
+                    }
+                }
+
+                &.hide-date {
+                    color: transparent;
+
+                    &.start {
+                        &::after {
+                            content: "Select start date";
+                        }
+                    }
+
+                    &.end {
+                        &::after {
+                            content: "Select end date";
+                        }
+                    }
+
+                    &::after {
+                        content: "Select date...";
+                        color: rgba(30, 30, 30, 0.3);
+                        position: absolute;
+                        transition: all 90ms;
+                        /*padding-left: 1rem;*/
+                    }
+                }
             }
         }
     }

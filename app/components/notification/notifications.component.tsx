@@ -2,24 +2,24 @@
 
 import "./styles.css";
 import Bell from "@/public/icons/40px/bell.svg";
-import { memo, useEffect, useState } from "react";
-import useStore from "@/common/hooks/use-store.context";
-import { useNotifications } from "@/common/hooks/use-notifications.hook";
-import { useDebouncedCallback } from "use-debounce";
-import ToastTypesEnum from "@/common/enums/toast-types.enum";
+import { memo, useContext, useEffect, useState } from "react";
 import RefreshDouble from "@/public/icons/24px/refresh-double.svg";
 import { formatDateTime } from "@/common/utils/date.utils";
 import Cross from "@/public/icons/24px/cross.svg";
 import Link from "next/link";
-import EmptyMail from "@/public/png/mail-empty.png";
-import Image from "next/image";
+import { NotificationContext } from "@/common/contexts/notifications.context";
+import useStore from "@/common/hooks/use-store.context";
+import { UserRolesEnum } from "@/common/enums/user-roles.enum";
 
 function NotificationsComponent() {
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState<any[]>(null);
-  const { connect, getUserNotifications, notificationService } =
-    useNotifications();
-  const { showToast } = useStore();
+  const { session } = useStore();
+  const {
+    clearAllNotifications,
+    deleteOneNotification,
+    notifications,
+    setNotifications,
+  } = useContext(NotificationContext);
 
   const close = () => {
     const notificationCenterDiv = document.getElementById(
@@ -27,52 +27,50 @@ function NotificationsComponent() {
     );
 
     if (!notificationCenterDiv) return;
+    setNotifications((prevState) =>
+      prevState?.map((notification) => {
+        return { ...notification, isNewNotification: false };
+      }),
+    );
     notificationCenterDiv.style.animation =
       "anim2 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) reverse both";
     setTimeout(() => setOpen(false), 200);
   };
 
-  const handleNewMessage = useDebouncedCallback(
-    (message) => {
-      setNotifications((prev) => [message, ...prev]);
-      showToast({
-        type: ToastTypesEnum.INFO,
-        text: "You got a notification",
-      });
-    },
-    1000,
-    { leading: true },
-  );
-
-  const initializeNotifications = useDebouncedCallback(() => {
-    connect()
-      .then(() => getUserNotifications().then((re) => setNotifications(re)))
-      .then(() =>
-        notificationService.socket.on("new-notification", handleNewMessage),
-      );
-  }, 350);
-
   useEffect(() => {
     document.addEventListener("scroll", close);
-    initializeNotifications();
-    console.log("rerender notifications");
 
     return () => {
       document.removeEventListener("scroll", close);
     };
   }, []);
 
-  const clearAllNotifications = useDebouncedCallback(() => {
-    notificationService.socket.emit("clear-all");
-    setNotifications([]);
-  }, 300);
+  const identifyNotificationSubType = (text: string) => {
+    if (session?.role != UserRolesEnum.CARRIER) {
+      if (text.includes("New Chat Message")) {
+        return "Chat";
+      }
 
-  const deleteOneNotification = useDebouncedCallback((id) => {
-    notificationService.socket.emit("clear-one", { _id: id });
-    setNotifications((prevState) =>
-      prevState.filter((notif) => notif._id != id),
-    );
-  });
+      if (text.includes("updated quote status")) {
+        return "Shipments";
+      }
+
+      return "Quotes";
+    } else {
+      if (text.includes("New Chat Message")) {
+        return "Chat";
+      }
+
+      if (
+        text.includes("Shipment was canceled") ||
+        text.includes("accepted your quote")
+      ) {
+        return "Active Loads";
+      }
+
+      return "Available Quotes";
+    }
+  };
 
   return (
     <div className={"notifications"}>
@@ -123,20 +121,29 @@ function NotificationsComponent() {
               notifications.map((notif, index) => (
                 <div className={"notif-item"} key={notif.text + index}>
                   <div className={"notif-content"}>
-                    <h4>{notif.text}</h4>
+                    <div className={"notif-item-title"}>
+                      <h5>{identifyNotificationSubType(notif.text)} </h5>
+                      {notif?.isNewNotification && (
+                        <div className={"new-notification-circle"}></div>
+                      )}
+                      <span>{formatDateTime(notif.createdAt)}</span>
+                    </div>
                     <div onClick={() => deleteOneNotification(notif._id)}>
                       <Cross />
                     </div>
                   </div>
 
+                  <div className={"notif-content main-content"}>
+                    <h4>{notif.text}</h4>
+                  </div>
+
                   <div className={"notif-meta"}>
-                    <h5>{formatDateTime(notif.createdAt)}</h5>
                     {notif.button_name && (
                       <Link
                         href={notif.button_link}
                         onClick={() => setOpen(false)}
                       >
-                        <button>{notif.button_name}</button>
+                        <div>{notif.button_name}</div>
                       </Link>
                     )}
                   </div>

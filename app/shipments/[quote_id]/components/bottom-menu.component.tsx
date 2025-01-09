@@ -170,6 +170,7 @@ export default function BottomMenuComponent({ quoteId, status, request }) {
       deadline_date: obj.deadline_date,
       deadline_time: obj.deadline_time,
       quote_id: quoteId,
+      keepTheSameCarrier: obj.keepCarrier,
     };
 
     postWithAuth(`/quote/duplicate-load`, duplicateLoadData).then(

@@ -16,7 +16,6 @@ import {
 import { getWithAuth, postWithAuth } from "@/common/utils/fetchAuth.util";
 import useStore from "@/common/hooks/use-store.context";
 import { useDebouncedCallback } from "use-debounce";
-import ToastTypesEnum from "@/common/enums/toast-types.enum";
 
 export enum PageStateEnum {
   CAN_CHANGE = "CAN_CHANGE",
@@ -72,8 +71,8 @@ export const RegisterQuoteContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [stepNumber, setStepNumber] = useState<number>(1);
-  const [type, setType] = useState<QuoteTypeEnum | null>(null);
+  const [stepNumber, setStepNumber] = useState<number>(3);
+  const [type, setType] = useState<QuoteTypeEnum | null>(QuoteTypeEnum.FCL);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsItem[]>([
     {
       title: "Request Quote",

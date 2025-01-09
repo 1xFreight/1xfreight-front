@@ -10,8 +10,6 @@ import "./styles.css";
 import { useDebouncedCallback } from "use-debounce";
 import { getWithAuth } from "@/common/utils/fetchAuth.util";
 import { formatDate } from "@/common/utils/date.utils";
-import { generateCustomID } from "@/common/utils/number.utils";
-import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 import Image from "next/image";
 import FTL from "@/public/png/full-truck.png";
@@ -29,8 +27,11 @@ import Canada from "@/public/png/maple 1.png";
 import USA from "@/public/png/usa 1.png";
 import Mexico from "@/public/png/mexican-republic-map-black-shape 1.png";
 import useStore from "@/common/hooks/use-store.context";
-import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import SendToCarrierButton from "@/app/docs/bol/[quote_id]/components/send-to-carrier.button";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
+import { white } from "next/dist/lib/picocolors";
 
 const typeImageMapping = {
   [QuoteTypeEnum.FTL]: FTL,
@@ -125,22 +126,21 @@ export default function ViewBOLPage({ params }) {
     getQuote();
   }, []);
 
-  // Function to generate PDF
   const downloadPDF = async (getPdf = false) => {
     try {
-      const domElement = document.getElementById("pdfRef"); // Ensure your target element has this ID
+      const pdfHtmlElement = document.getElementById("pdfRef"); // Ensure your target element has this ID
 
-      if (!domElement) {
+      if (!pdfHtmlElement) {
         console.error("Element with ID 'pdfRef' not found.");
         return;
       }
 
-      // Convert the DOM element to a PNG image
-
-      const dataUrl = await htmlToImage.toJpeg(domElement, {
-        quality: 1, // Lower quality for smaller size
-        pixelRatio: 2,
-      });
+      // PDF PAGE PARAMETERS
+      const pageWidth = 8.5; // US Letter width in inches
+      const pageHeight = 11; // US Letter height in inches
+      const xOffset = 0.5; // Center horizontally with a 0.5-inch margin
+      const yOffset = 0.5; // Top margin
+      const fileName = `BOL_${bolId}.pdf`;
 
       // Initialize jsPDF with US Letter format
       const pdf = new jsPDF({
@@ -149,29 +149,105 @@ export default function ViewBOLPage({ params }) {
         format: "letter", // US Letter format
       });
 
-      // Calculate dimensions to fit the image into US Letter size
-      const pageWidth = 8.5; // US Letter width in inches
-      const pageHeight = 11; // US Letter height in inches
+      const openFullSizeHtmlElement = () => {
+        pdfHtmlElement.style.position = "fixed";
+        pdfHtmlElement.style.maxWidth = "1600px";
+        pdfHtmlElement.style.minWidth = "1600px";
+        pdfHtmlElement.style.top = "0";
+        pdfHtmlElement.style.left = "0";
+        pdfHtmlElement.style.padding = "0";
+        pdfHtmlElement.style.zIndex = "999999999";
+      };
 
-      const imgProps = pdf.getImageProperties(dataUrl);
-      const imgWidth = pageWidth - 1; // Leave 0.5 inch margin on both sides
-      const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Maintain aspect ratio
+      const toggleBackFullSizeHtmlElement = () => {
+        pdfHtmlElement.style.position = "relative";
+        pdfHtmlElement.style.maxWidth = "unset";
+        pdfHtmlElement.style.minWidth = "unset";
+        pdfHtmlElement.style.padding = "2rem";
+        pdfHtmlElement.style.zIndex = "1";
+      };
 
-      // Add the image to the PDF
-      const xOffset = 0.35; // Center horizontally with a 0.5-inch margin
-      const yOffset = 0.35; // Top margin
-      pdf.addImage(dataUrl, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
+      const addImageToPdf = (img: any) => {
+        pdf.addImage(
+          img.htmlImg,
+          "JPEG",
+          xOffset,
+          yOffset,
+          img.fullHeightHtmlImg.imgWidth,
+          img.fullHeightHtmlImg.imgHeight,
+        );
+      };
 
-      // Save the PDF
+      const closeFn = () => {
+        toggleBackFullSizeHtmlElement();
 
-      if (getPdf) {
-        const pdfBlob = pdf.output("blob");
-        const fileName = `BOL_${bolId}.pdf`; // Replace `bolId` with your ID variable
+        if (getPdf) {
+          const pdfBlob = pdf.output("blob");
 
-        return new File([pdfBlob], fileName, { type: "application/pdf" });
-      } else {
-        pdf.save(`BOL_${bolId}.pdf`);
+          return new File([pdfBlob], fileName, { type: "application/pdf" });
+        } else {
+          pdf.save(fileName);
+        }
+      };
+
+      const imgFromHtml = async (htmlElement: HTMLElement) => {
+        const htmlImg = await htmlToImage.toJpeg(pdfHtmlElement, {
+          quality: 1, // Lower quality for smaller size
+          pixelRatio: 2,
+          backgroundColor: "white",
+        });
+
+        const imgProps = pdf.getImageProperties(htmlImg);
+        const imgWidth = pageWidth - 1; // Leave 0.5 inch margin on both sides
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Maintain aspect ratio
+
+        return {
+          htmlImg,
+          imgProps,
+          imgHeight,
+          imgWidth,
+          id: htmlElement.id,
+        };
+      };
+
+      openFullSizeHtmlElement();
+
+      const fullHeightHtmlImg = await imgFromHtml(pdfHtmlElement);
+
+      if (fullHeightHtmlImg.imgHeight > pageHeight - 0.5) {
+        const pdfPartElement1 = document.getElementById("pdf-part-1");
+        const pdfPartElement2 = document.getElementById("pdf-part-2");
+        const pdfPartElement3 = document.getElementById("pdf-part-3");
+
+        if (!pdfPartElement1 || !pdfPartElement2 || !pdfPartElement3) {
+          console.error("Elements not found! Image cant be generated!");
+          return;
+        }
+
+        const imgElement1 = await imgFromHtml(pdfPartElement1);
+        const imgElement2 = await imgFromHtml(pdfPartElement2);
+        const imgElement3 = await imgFromHtml(pdfPartElement3);
+
+        if (imgElement1.imgHeight + imgElement2.imgHeight <= pageHeight - 0.5) {
+          addImageToPdf(imgElement1);
+          addImageToPdf(imgElement2);
+          await pdf.addPage();
+          addImageToPdf(imgElement3);
+
+          return closeFn();
+        }
+
+        addImageToPdf(imgElement1);
+        await pdf.addPage();
+        addImageToPdf(imgElement2);
+        addImageToPdf(imgElement3);
+
+        return closeFn();
       }
+
+      addImageToPdf(fullHeightHtmlImg);
+
+      return closeFn();
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -262,320 +338,288 @@ export default function ViewBOLPage({ params }) {
             padding: "2rem",
           }}
         >
-          <div className={"header-pdf"}>
-            <div className={"left-header"}>
-              <div className={"pdf-date-created"}>{formatDate(Date.now())}</div>
-              <img
-                src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${quote?.author?.logo}`}
-                alt={"logo"}
-              />
-              <div className={"bol-legal-subtitle"}>
-                STRAIGHT BILL OF LADING ( ORIGINAL NON NEGOTIABLE)
-              </div>
-            </div>
-
-            <div className={"bol-text"}>BOL</div>
-          </div>
-
-          <div className={"ids-and-refs"}>
-            <div className={"left-div"}>
-              <div className={"bol-id"}>{bolId}</div>
-              <div className={"ref-div"}>
-                <div>
-                  <span>Ref #</span> {referenceNumber}
+          <div
+            id={"pdf-part-1"}
+            style={{
+              background: "white",
+            }}
+          >
+            <div className={"header-pdf"}>
+              <div className={"left-header"}>
+                <div className={"pdf-date-created"}>
+                  {formatDate(Date.now())}
                 </div>
-                <div>{selectedEquipment}</div>
-              </div>
-            </div>
-
-            <div className={"right-part"}>
-              <div className={"quote-author-name"}>
-                {quote?.local_carrier?.name}
-              </div>
-              <div className={"quote-type-img"}>
-                <img src={typeImageMapping[quote?.type]?.src} alt={"type"} />
-              </div>
-            </div>
-          </div>
-
-          <div className={"locations-wrapper-pdf"}>
-            <div className={"pickup-wrapper-pdf"}>
-              {quote?.addresses?.map((address) => {
-                if (address?.address_type !== "pickup") return;
-                return (
-                  <div key={address._id} className={"location-item"}>
-                    <div className={"location-header"}>
-                      <div className={"icon-box"}>
-                        <Image src={MapMarker} alt={"map-marker"} width={150} />
-                      </div>
-                      <div className={"location-datetime"}>
-                        Pickup{" "}
-                        {!!address?.date && `on ${formatDate(address.date)}`}
-                        {(address.time_start?.length < 10 ||
-                          address.time_end?.length < 10) &&
-                          " at "}
-                        {address.time_start?.length < 10
-                          ? address.time_start
-                          : ""}
-                        {address.time_end?.length < 10 &&
-                          ` - ${address.time_end}`}
-                      </div>
-                    </div>
-                    <div className={"location-details"}>
-                      <div className={"location-address"}>
-                        <div className={"location-company"}>
-                          {address?.company_name}
-                        </div>
-                        <div>{address?.street}</div>
-                        <div>{address?.partial_address}</div>
-                      </div>
-
-                      <div className={"location-company-contacts"}>
-                        <div className={"company-contact"}>
-                          {address?.contact_name}
-                        </div>
-
-                        <div className={"contacts-info"}>
-                          <div>
-                            <Mail />
-                            {address?.contact_email}
-                          </div>
-                          <div>
-                            <Phone />
-                            {address?.contact_phone}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={"location-notifications"}>
-                      <Notes />
-                      {address?.notes}
-                    </div>
-
-                    <div className={"location-open-hours"}>
-                      <Watch />
-                      {address?.open_hours}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className={"drop-wrapper-pdf"}>
-              {quote?.addresses?.map((address) => {
-                if (address?.address_type !== "drop") return;
-                return (
-                  <div key={address._id} className={"location-item"}>
-                    <div className={"location-header"}>
-                      <div className={"icon-box"}>
-                        <img src={MapMarker?.src} alt={"map-marker"} />
-                      </div>
-                      <div className={"location-datetime"}>
-                        Drop{" "}
-                        {!!address?.date && `on ${formatDate(address.date)}`}
-                        {(address.time_start?.length < 10 ||
-                          address.time_end?.length < 10) &&
-                          " at "}
-                        {address.time_start?.length < 10
-                          ? address.time_start
-                          : ""}
-                        {address.time_end?.length < 10 &&
-                          ` - ${address.time_end}`}
-                      </div>
-                    </div>
-                    <div className={"location-details"}>
-                      <div className={"location-address"}>
-                        <div className={"location-company"}>
-                          {address?.company_name}
-                        </div>
-                        <div>{address?.street}</div>
-                        <div>{address?.partial_address}</div>
-                      </div>
-
-                      <div className={"location-company-contacts"}>
-                        <div className={"company-contact"}>
-                          {address?.contact_name}
-                        </div>
-
-                        <div className={"contacts-info"}>
-                          <div>
-                            <Mail />
-                            {address?.contact_email}
-                          </div>
-                          <div>
-                            <Phone />
-                            {address?.contact_phone}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={"location-notifications"}>
-                      <Notes />
-                      {address?.notes}
-                    </div>
-
-                    <div className={"location-open-hours"}>
-                      <Watch />
-                      {address?.open_hours}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {!!quote?.details_?.customs_broker_name && (
-            <div className={"customs-broker"}>
-              <div className={"country-png"}>
                 <img
-                  src={
-                    brokerCountryImageMapping[
-                      quote?.addresses?.filter(
-                        ({ address_type }) => address_type === "drop",
-                      )[0].country
-                    ].src
-                  }
-                  alt={"country"}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/file-system/image/${quote?.author?.logo}`}
+                  alt={"logo"}
                 />
+                <div className={"bol-legal-subtitle"}>
+                  STRAIGHT BILL OF LADING ( ORIGINAL NON NEGOTIABLE)
+                </div>
               </div>
 
-              <div className={"broker"}>
-                {quote?.details_?.customs_broker_name}
-              </div>
-
-              <div className={"broker"}>
-                <Mail />
-                {quote?.details_?.customs_broker_email}
-              </div>
-              <div className={"broker"}>
-                <Phone />
-                {quote?.details_?.customs_broker_phone}
-              </div>
-            </div>
-          )}
-
-          <div className={"billing-info"}>
-            <div className={"dollar-png"}>
-              <img src={Dollar?.src} alt={"dollar"} />
+              <div className={"bol-text"}>BOL</div>
             </div>
 
-            <div className={"billing-to"}>
-              Bill to: <span>{billingInfo?.bill_to}</span>
-            </div>
-
-            <div className={"billing-to"}>
-              <img src={MapMarker?.src} alt={"map-marker"} />
-              <span>{billingInfo?.billing_address}</span>
-            </div>
-
-            <div className={"contacts-info-billing"}>
-              <div>
-                <Mail />
-                {billingInfo?.billing_email}
+            <div className={"ids-and-refs"}>
+              <div className={"left-div"}>
+                <div className={"bol-id"}>{bolId}</div>
+                <div className={"ref-div"}>
+                  <div>
+                    <span>Ref #</span> {referenceNumber}
+                  </div>
+                  <div>{selectedEquipment}</div>
+                </div>
               </div>
-              <div>
-                <Phone />
-                {billingInfo?.billing_phone}
+
+              <div className={"right-part"}>
+                <div className={"quote-author-name"}>
+                  {quote?.local_carrier?.name}
+                </div>
+                <div className={"quote-type-img"}>
+                  <img src={typeImageMapping[quote?.type]?.src} alt={"type"} />
+                </div>
               </div>
             </div>
-          </div>
 
-          {bolNotes && (
+            <div className={"locations-wrapper-pdf"}>
+              <div className={"pickup-wrapper-pdf"}>
+                {quote?.addresses?.map((address) => {
+                  if (address?.address_type !== "pickup") return;
+                  return (
+                    <div key={address._id} className={"location-item"}>
+                      <div className={"location-header"}>
+                        <div className={"icon-box"}>
+                          <Image
+                            src={MapMarker}
+                            alt={"map-marker"}
+                            width={150}
+                          />
+                        </div>
+                        <div className={"location-datetime"}>
+                          Pickup{" "}
+                          {!!address?.date && `on ${formatDate(address.date)}`}
+                          {(address.time_start?.length < 10 ||
+                            address.time_end?.length < 10) &&
+                            " at "}
+                          {address.time_start?.length < 10
+                            ? address.time_start
+                            : ""}
+                          {address.time_end?.length < 10 &&
+                            ` - ${address.time_end}`}
+                        </div>
+                      </div>
+                      <div className={"location-details"}>
+                        <div className={"location-address"}>
+                          <div className={"location-company"}>
+                            {address?.company_name}
+                          </div>
+                          <div>{address?.street}</div>
+                          <div>{address?.partial_address}</div>
+                        </div>
+
+                        <div className={"location-company-contacts"}>
+                          <div className={"company-contact"}>
+                            {address?.contact_name}
+                          </div>
+
+                          <div className={"contacts-info"}>
+                            <div>
+                              <Mail />
+                              {address?.contact_email}
+                            </div>
+                            <div>
+                              <Phone />
+                              {address?.contact_phone}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={"location-notifications"}>
+                        <Notes />
+                        {address?.notes}
+                      </div>
+
+                      <div className={"location-open-hours"}>
+                        <Watch />
+                        {address?.open_hours}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className={"drop-wrapper-pdf"}>
+                {quote?.addresses?.map((address) => {
+                  if (address?.address_type !== "drop") return;
+                  return (
+                    <div key={address._id} className={"location-item"}>
+                      <div className={"location-header"}>
+                        <div className={"icon-box"}>
+                          <img src={MapMarker?.src} alt={"map-marker"} />
+                        </div>
+                        <div className={"location-datetime"}>
+                          Drop{" "}
+                          {!!address?.date && `on ${formatDate(address.date)}`}
+                          {(address.time_start?.length < 10 ||
+                            address.time_end?.length < 10) &&
+                            " at "}
+                          {address.time_start?.length < 10
+                            ? address.time_start
+                            : ""}
+                          {address.time_end?.length < 10 &&
+                            ` - ${address.time_end}`}
+                        </div>
+                      </div>
+                      <div className={"location-details"}>
+                        <div className={"location-address"}>
+                          <div className={"location-company"}>
+                            {address?.company_name}
+                          </div>
+                          <div>{address?.street}</div>
+                          <div>{address?.partial_address}</div>
+                        </div>
+
+                        <div className={"location-company-contacts"}>
+                          <div className={"company-contact"}>
+                            {address?.contact_name}
+                          </div>
+
+                          <div className={"contacts-info"}>
+                            <div>
+                              <Mail />
+                              {address?.contact_email}
+                            </div>
+                            <div>
+                              <Phone />
+                              {address?.contact_phone}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={"location-notifications"}>
+                        <Notes />
+                        {address?.notes}
+                      </div>
+
+                      <div className={"location-open-hours"}>
+                        <Watch />
+                        {address?.open_hours}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {!!quote?.details_?.customs_broker_name && (
+              <div className={"customs-broker"}>
+                <div className={"country-png"}>
+                  <img
+                    src={
+                      brokerCountryImageMapping[
+                        quote?.addresses?.filter(
+                          ({ address_type }) => address_type === "drop",
+                        )[0].country
+                      ].src
+                    }
+                    alt={"country"}
+                  />
+                </div>
+
+                <div className={"broker"}>
+                  {quote?.details_?.customs_broker_name}
+                </div>
+
+                <div className={"broker"}>
+                  <Mail />
+                  {quote?.details_?.customs_broker_email}
+                </div>
+                <div className={"broker"}>
+                  <Phone />
+                  {quote?.details_?.customs_broker_phone}
+                </div>
+              </div>
+            )}
+
             <div className={"billing-info"}>
-              <div className={"info-png"}>i</div>
+              <div className={"dollar-png"}>
+                <img src={Dollar?.src} alt={"dollar"} />
+              </div>
 
               <div className={"billing-to"}>
-                <span>{bolNotes}</span>
+                Bill to: <span>{billingInfo?.bill_to}</span>
+              </div>
+
+              <div className={"billing-to"}>
+                <img src={MapMarker?.src} alt={"map-marker"} />
+                <span>{billingInfo?.billing_address}</span>
+              </div>
+
+              <div className={"contacts-info-billing"}>
+                <div>
+                  <Mail />
+                  {billingInfo?.billing_email}
+                </div>
+                <div>
+                  <Phone />
+                  {billingInfo?.billing_phone}
+                </div>
               </div>
             </div>
-          )}
 
-          <div className={"items-table"}>
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Quantity</th>
-                  <th>Handling unit</th>
-                  <th>Dimensions</th>
-                  <th>Commodity</th>
-                  <th>Hazmat</th>
-                  <th>Weight</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quote?.type !== QuoteTypeEnum.LTL && (
-                  <>
-                    <tr>
-                      <td>1</td>
-                      <td>{quote?.details_?.quantity}</td>
-                      <td>{clearText(quote?.details_?.packing_method)}</td>
-                      <td></td>
-                      <td>{quote?.details_?.commodity}</td>
-                      <td>
-                        {quote?.details_?.hazardous_goods ? (
-                          <div className={"hazard-td"}>
-                            <div>UN: {quote?.details_?.un_number}</div>
-                            <div>
-                              Contact: {quote?.details_?.emergency_contact},{" "}
-                              {quote?.details_?.emergency_phone1}
+            {bolNotes && (
+              <div className={"billing-info bol-notes"}>
+                <div className={"info-png"}>i</div>
+
+                <div className={"billing-to"}>
+                  <span>{bolNotes}</span>
+                </div>
+              </div>
+            )}
+
+            <div className={"items-table"} id={"pdf-1"}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Quantity</th>
+                    <th>Handling unit</th>
+                    <th>Dimensions</th>
+                    <th>Commodity</th>
+                    <th>Hazmat</th>
+                    <th>Weight</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {quote?.type !== QuoteTypeEnum.LTL && (
+                    <>
+                      <tr>
+                        <td>1</td>
+                        <td>{quote?.details_?.quantity}</td>
+                        <td>{clearText(quote?.details_?.packing_method)}</td>
+                        <td></td>
+                        <td>{quote?.details_?.commodity}</td>
+                        <td>
+                          {quote?.details_?.hazardous_goods ? (
+                            <div className={"hazard-td"}>
+                              <div>UN: {quote?.details_?.un_number}</div>
+                              <div>
+                                Contact: {quote?.details_?.emergency_contact},{" "}
+                                {quote?.details_?.emergency_phone1}
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          "------"
-                        )}
-                      </td>
-                      <td>
-                        {quote?.details_?.weight} {quote?.details_?.weight_unit}
-                      </td>
-                    </tr>
+                          ) : (
+                            "------"
+                          )}
+                        </td>
+                        <td>
+                          {quote?.details_?.weight}{" "}
+                          {quote?.details_?.weight_unit}
+                        </td>
+                      </tr>
 
-                    <tr className={"total-tr"}>
-                      <td>Total</td>
-                      <td>{quote?.details_?.quantity}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td
-                        style={{
-                          fontWeight: 600,
-                        }}
-                      >
-                        {quote?.details_?.weight} {quote?.details_?.weight_unit}
-                      </td>
-                    </tr>
-                  </>
-                )}
-
-                {quote?.items?.map((item, index) => (
-                  <>
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{item?.quantity}</td>
-                      <td>{item?.handling_unit}</td>
-                      <td>
-                        {item.width} x {item.length} x {item.height}
-                      </td>
-                      <td>{item.commodity}</td>
-                      <td>
-                        {item.un_number ? (
-                          <div className={"hazard-td"}>
-                            <div>UN: {item.un_number}</div>
-                            <div>
-                              Contact: {item.emergency_contact},{" "}
-                              {item.emergency_phone}
-                            </div>
-                          </div>
-                        ) : (
-                          "------"
-                        )}
-                      </td>
-                      <td>{item.weight} lb/unit</td>
-                    </tr>
-
-                    {index + 1 == quote?.items?.length && (
                       <tr className={"total-tr"}>
                         <td>Total</td>
                         <td>{quote?.details_?.quantity}</td>
@@ -592,14 +636,68 @@ export default function ViewBOLPage({ params }) {
                           {quote?.details_?.weight_unit}
                         </td>
                       </tr>
-                    )}
-                  </>
-                ))}
-              </tbody>
-            </table>
+                    </>
+                  )}
+
+                  {quote?.items?.map((item, index) => (
+                    <>
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{item?.quantity}</td>
+                        <td>{item?.handling_unit}</td>
+                        <td>
+                          {item.width} x {item.length} x {item.height}
+                        </td>
+                        <td>{item.commodity}</td>
+                        <td>
+                          {item.un_number ? (
+                            <div className={"hazard-td"}>
+                              <div>UN: {item.un_number}</div>
+                              <div>
+                                Contact: {item.emergency_contact},{" "}
+                                {item.emergency_phone}
+                              </div>
+                            </div>
+                          ) : (
+                            "------"
+                          )}
+                        </td>
+                        <td>{item.weight} lb/unit</td>
+                      </tr>
+
+                      {index + 1 == quote?.items?.length && (
+                        <tr className={"total-tr"}>
+                          <td>Total</td>
+                          <td>{quote?.details_?.quantity}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td
+                            style={{
+                              fontWeight: 600,
+                            }}
+                          >
+                            {quote?.details_?.weight}{" "}
+                            {quote?.details_?.weight_unit}
+                          </td>
+                        </tr>
+                      )}
+                    </>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className={"sign-divs"}>
+          <div
+            className={"sign-divs"}
+            id={"pdf-part-2"}
+            style={{
+              background: "white",
+              paddingBottom: "20px",
+            }}
+          >
             {quote?.addresses &&
               [
                 ...quote?.addresses
@@ -612,7 +710,7 @@ export default function ViewBOLPage({ params }) {
                     return a.address_type === "pickup" ? -1 : 1;
                   })
                   .map((address) => address.company_name),
-                quote?.author?.name,
+                quote?.local_carrier?.name,
               ].map((name) => (
                 <div className={"sign-item"} key={name}>
                   <div className={"sign-item-row"}>
@@ -634,7 +732,13 @@ export default function ViewBOLPage({ params }) {
               ))}
           </div>
 
-          <div className={"info-footer"}>
+          <div
+            className={"info-footer"}
+            id={"pdf-part-3"}
+            style={{
+              background: "white",
+            }}
+          >
             Notice: Freight moving under this Bill of Lading is subject to
             classifications and tariffs established by the carrier and are
             available to the shipper upon request. This notice supersedes and

@@ -1,0 +1,101 @@
+.routing-and-dates {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    position: relative;
+    box-shadow: -1px 1px 3px 0px rgba(0,3,51,0.14);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    .title {
+        border-bottom: 1px solid #ececec;
+    }
+
+    .incoterms {
+        select {
+            padding-left: 1rem;
+        }
+    }
+
+    .location-form {
+        box-shadow: unset !important;
+    }
+
+    .addresses-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .open-hidden-form {
+            width: 100%;
+            height: 2.75rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            padding: 0 1rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+
+            svg {
+                z-index: 1;
+            }
+        }
+
+        .hidden-address-form {
+            overflow: hidden;
+            height: 0;
+            transition: height 250ms ease-in-out;
+        }
+
+        .autocomplete-loading-1,.autocomplete-loading-2 {
+            opacity: 0;
+            transition: all 150ms ease-in-out;
+            width: 50rem;
+        }
+
+        #port-of-loading,#port-of-discharge {
+            z-index: 200;
+            position: relative;
+            width: 50rem;
+        }
+
+        .port-of-loading,.port-of-discharge {
+            margin-top: 1rem;
+
+
+        }
+
+        &:has(#port-of-loading:focus-within) {
+            .autocomplete-loading-1 {
+                opacity: 1;
+                z-index: 1;
+            }
+        }
+
+        &:has(#port-of-discharge:focus-within) {
+            .autocomplete-loading-2 {
+                opacity: 1;
+                z-index: 1;
+            }
+        }
+    }
+
+    .date-cargo {
+
+        input {
+            width: 15rem;
+        }
+    }
+
+    .routing-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+
+    }
+}

@@ -1,9 +1,185 @@
 .shipment-id-page {
     width: 100%;
-    padding-bottom: 7rem;
     position: relative;
     display: flex;
     justify-content: center;
+    margin-bottom: 3rem;
+    align-items: center;
+    height: 100%;
+
+    .vcd-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+
+        .ca-backdrop {
+            background: #A7A7A7;
+            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .view-docs {
+            display: flex;
+            background: white;
+            position: relative;
+            width: 50rem;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            flex-direction: column;
+            gap: 0.25rem;
+            border: 1px solid #dedede;
+            min-height: 20rem;
+            max-height: 55rem;
+            overflow-y: auto;
+
+            .vd-container {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+                justify-content: center;
+
+                .doc-item {
+                    width: 100%;
+                    display: inline-flex;
+                    gap: 1rem;
+                    align-items: center;
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    border-top: 1px solid transparent;
+                    border-left: 1px solid transparent;
+                    border-right: 1px solid transparent;
+                    border-bottom: 1px solid rgba(30, 30, 30, 0.05);
+                    height: 2.5rem;
+                    transition: 100ms ease-in-out;
+                    box-sizing: content-box;
+
+
+                    &:hover {
+                        background: rgba(30, 30, 30, 0.05);
+                        border: 1px solid #3A56EA;
+
+                        .doc-size, .doc-time {
+                            color: rgba(30, 30, 30, 1);
+                        }
+                    }
+
+                    .doc-item-icon {
+                    }
+
+                    .doc-name {
+                        white-space: nowrap;
+                        width: 25rem;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .doc-size {
+                        white-space: nowrap;
+                        width: 10rem;
+                        color: rgba(30, 30, 30, 0.5);
+                        font-size: 0.7rem;
+                    }
+
+                    .doc-time {
+                        font-size: 0.7rem;
+                        width: 14rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: start;
+                        color: rgba(30, 30, 30, 0.5);
+                    }
+
+                }
+            }
+
+            .vd-header {
+                display: inline-flex;
+                width: 100%;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .close {
+                cursor: pointer;
+
+                &:hover {
+                    svg {
+                        path {
+                            stroke: rgba(237, 0, 0, 0.8);
+                        }
+                    }
+                }
+
+                svg {
+                    width: 1.5rem;
+                    stroke-width: 3px;
+                    transition: all 250ms ease-in-out;
+
+                    path {
+                        stroke: rgba(84, 84, 84, 0.5);
+                    }
+                }
+            }
+
+            .ca-title {
+                color: #1e1e1e;
+                font-size: 1.1rem;
+                font-weight: 600;
+                line-height: 1.1;
+                text-align: center;
+                padding: 0.5rem 1rem;
+            }
+
+            .ca-actions {
+                display: flex;
+                gap: 0.5rem;
+                width: 100%;
+                justify-content:center;
+                border-top: 2px solid #dedede;
+                padding-top: 0.5rem;
+                /*margin-top: 0.5rem;*/
+            }
+
+
+            button {
+                /*width: 100%;*/
+                max-width: 50%;
+                height: 3rem;
+                border-radius: 0.5rem;
+                width: 9rem;
+                font-size: 0.85rem;
+
+                &.cancel {
+                    background: white;
+                    color: #1e1e1e;
+                    border: 1px solid #A7A7A7;
+
+                    &:hover {
+                        color: black;
+                        border-color: #1e1e1e;
+                        background: #dedede;
+                    }
+                }
+
+                &:hover {
+                }
+            }
+        }
+    }
 
     .arrival-time-modal {
         position: fixed;
@@ -34,7 +210,7 @@
             &.cancel {
                 background: white;
                 color: #1e1e1e;
-                border: 2px solid #A7A7A7;
+                border: 1px solid #A7A7A7;
 
                 &:hover {
                     color: black;
@@ -142,7 +318,7 @@
 
                 &:hover {
                     background: white;
-                    border: 2px solid rgba(237, 0, 0, 1);
+                    border: 1px solid rgba(237, 0, 0, 1);
                 }
             }
         }
@@ -175,20 +351,14 @@
             background: white;
             padding: 1.5rem;
             border-radius: 1rem;
-            display: flex;
-            flex-direction: column;
+            display: inline-flex;
             gap: 0.5rem;
             width: 100%;
 
-            .docs-buttons {
-                display: inline-flex;
-                gap: 0.55rem;
-                margin-top: 0.25rem;
-
-                button {
-                    max-width: 50%;
-                    width: 100%;
-                }
+            button {
+                max-width: 25%;
+                width: 100%;
+                height: 3.75rem;
             }
 
             .change-status-button {
@@ -196,8 +366,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 0 1rem;
-                height: 3.75rem;
-                width: 100%;
+                max-width: 75%;
 
                 span {
                     background: rgba(30, 30, 30, 0.1);
@@ -272,6 +441,10 @@
             font-size: 2.75rem;
         }
 
+        .full-price {
+            width: fit-content;
+        }
+
         .price-wrapper {
             padding: 0.5rem;
             border-radius: 0.5rem;
@@ -313,6 +486,19 @@
             font-size: 0.75rem;
             color: #1e1e1e;
             font-weight: 300;
+        }
+    }
+
+
+
+    @keyframes rotateIconX {
+        from {
+            transform: rotate(0deg);
+            transform-origin: center center;
+        }
+        to {
+            transform: rotate(360deg);
+            transform-origin: center center;
         }
     }
 }

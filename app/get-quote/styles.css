@@ -2,7 +2,7 @@
     width: 100%;
     background: white;
     box-sizing: border-box;
-    border-bottom: 2px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     height: 3.5rem;
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@
     & .item-mode {
         width: 16rem;
         height: auto;
-        border: 2px solid white;
+        border: 1px solid white;
         border-radius: 1rem;
         background: white;
         display: flex;
@@ -101,7 +101,7 @@
     position: absolute;
     bottom: 0;
     background: white;
-    border: 2px solid #e5e5e5;
+    border: 1px solid #e5e5e5;
     box-sizing: border-box;
     padding-left: 22.5rem;
     display: flex;

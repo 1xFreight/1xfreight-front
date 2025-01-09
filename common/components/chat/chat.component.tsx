@@ -14,7 +14,12 @@ import LoadingCircle from "@/common/components/loading/loading-circle.component"
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import { useRouter } from "next/navigation";
 
-export default function ChatComponent({ room, title }) {
+export default function ChatComponent({
+  room,
+  title,
+  setMessagesList,
+  disableSendMessages,
+}) {
   const [messages, setMessages] = useState<any[]>(null);
   const { connect, disconnect, sendMessage, joinRoom, chatService } = useChat();
   const { session, showToast } = useStore();
@@ -34,6 +39,10 @@ export default function ChatComponent({ room, title }) {
 
   const handleNewMessage = (message) => {
     setMessages((prev) => [...prev, message]);
+
+    if (setMessagesList) {
+      setMessagesList((prev) => [...prev, message]);
+    }
   };
 
   const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -44,7 +53,14 @@ export default function ChatComponent({ room, title }) {
 
   const initializeChat = useDebouncedCallback(() => {
     connect()
-      .then(() => joinRoom(room).then((re) => setMessages(re)))
+      .then(() =>
+        joinRoom(room).then((re) => {
+          setMessages(re);
+          if (setMessagesList) {
+            setMessagesList(re);
+          }
+        }),
+      )
       .then(() =>
         chatService.socket.on(ChatEventsEnum.NEW_MESSAGE, handleNewMessage),
       );
@@ -176,14 +192,18 @@ export default function ChatComponent({ room, title }) {
           display: "none",
         }}
         id={"logo-file-input"}
+        disabled={disableSendMessages}
       />
 
       <div className={"chat-input"}>
         <input
           type={"text"}
           id={"chat-message-input"}
-          placeholder={"Message..."}
+          placeholder={
+            !!disableSendMessages ? "Cant send messages..." : "Message..."
+          }
           onKeyDown={keyDownHandler}
+          disabled={!!disableSendMessages}
         />
 
         <button onClick={sendMessageDebounced}>SEND</button>

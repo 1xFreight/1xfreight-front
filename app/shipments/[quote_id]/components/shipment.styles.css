@@ -6,7 +6,7 @@
     .status-item {
         display: flex;
         width: calc(100% / 6);
-        /*border: 2px solid #dedede;*/
+        /*border: 1px solid #dedede;*/
         height: 3rem;
         align-items: center;
         justify-content: center;

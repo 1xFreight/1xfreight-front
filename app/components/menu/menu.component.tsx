@@ -72,18 +72,7 @@ function MainMenu() {
 
     const scrollPosition = window.scrollY;
     const lowerScrollLimit = 56;
-    const scrollAnimationStart = 75;
     const upperScrollLimit = 94;
-
-    if (
-      scrollPosition > scrollAnimationStart &&
-      scrollPosition < upperScrollLimit &&
-      mainMenu
-    ) {
-      const scrollReverse = 75 - scrollPosition + scrollAnimationStart;
-
-      mainMenu.style.height = scrollReverse + "px";
-    }
 
     if (scrollPosition > upperScrollLimit) {
       mainMenu.style.height = "3.5rem";
@@ -101,7 +90,6 @@ function MainMenu() {
   useEffect(() => {
     window.addEventListener("scroll", debouncedHandleScroll);
 
-    // Cleanup the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", debouncedHandleScroll);
     };

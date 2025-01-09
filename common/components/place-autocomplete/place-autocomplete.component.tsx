@@ -21,6 +21,8 @@ function PlaceAutocompleteComponent({
   setDefault,
   setDetails,
   uniqueKey,
+  onlyPorts,
+  showSavedLocations = true,
 }: {
   inputText: string;
   setInputText: Dispatch<SetStateAction<string>>;
@@ -41,12 +43,27 @@ function PlaceAutocompleteComponent({
   }, []);
 
   const getDebouncedPredictions = useDebouncedCallback(() => {
+    const types = [];
+
+    if (onlyPorts) {
+      types.push("establishment");
+    }
+
     service?.getPlacePredictions(
       {
         componentRestrictions: options.componentRestrictions,
-        input: inputText,
+        input: `${onlyPorts ? "Port " : ""}` + inputText,
+        types,
       },
       (predictions) => {
+        if (onlyPorts) {
+          const filteredPredictions = predictions?.filter((prediction) =>
+            prediction.description.toLowerCase().includes("port"),
+          );
+
+          return setGPredictions(filteredPredictions);
+        }
+
         setGPredictions(predictions);
       },
     );
@@ -66,6 +83,8 @@ function PlaceAutocompleteComponent({
   }, [inputText]);
 
   const getPlaceDetailsByAddress = (address: string) => {
+    if (!setDetails) return;
+
     const placesService = new google.maps.places.PlacesService(
       document.createElement("div"), // dummy element
     );
@@ -88,8 +107,6 @@ function PlaceAutocompleteComponent({
             placeName: place.name,
           };
 
-          console.log(place.name);
-
           // Now use the place_id to fetch detailed information with getDetails
           //@ts-ignore
           placesService.getDetails(
@@ -105,8 +122,6 @@ function PlaceAutocompleteComponent({
                 // Access address components
                 const addressComponents = placeDetails.address_components;
                 fullAddress.placeName = placeDetails.name;
-
-                console.log(addressComponents);
 
                 // Loop through address components to get city, zip, and country
                 addressComponents?.forEach((component) => {
@@ -165,7 +180,7 @@ function PlaceAutocompleteComponent({
               <h4>{description}</h4>
             </div>
           ))}
-        {inputText && !!lPrediction?.length && (
+        {inputText && showSavedLocations && !!lPrediction?.length && (
           <h3
             style={{
               marginBottom: "0",
@@ -176,6 +191,7 @@ function PlaceAutocompleteComponent({
           </h3>
         )}
         {inputText &&
+          showSavedLocations &&
           !!lPrediction.length &&
           lPrediction?.map((location, index) => (
             <div

@@ -224,7 +224,7 @@ button:disabled {
   height: fit-content;
   text-transform: lowercase;
   font-weight: 500 !important;
-  /*border: 2px solid transparent;*/
+  /*border: 1px solid transparent;*/
   white-space: nowrap;
   font-size: 0.8rem !important;
 
@@ -258,6 +258,11 @@ button:disabled {
     /*background: #90be6d;*/
     background: rgba(23, 54, 243, 0.8);
     color: white;
+  }
+
+  &.canceled {
+    color: white;
+    background: #F97D63;
   }
 }
 
@@ -387,7 +392,7 @@ input,select {
 }
 
 input , select, textarea {
-  border: 2px solid #e8e8e8 !important;
+  border: 1px solid #e8e8e8 !important;
   border-radius: 0.65rem !important;
 
 }
@@ -862,7 +867,7 @@ h6 {
     border: unset !important;
 
     &:focus-visible {
-      /*border: 2px solid #e8e8e8 !important;*/
+      /*border: 1px solid #e8e8e8 !important;*/
       outline: unset;
     }
   }

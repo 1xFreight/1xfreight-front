@@ -23,19 +23,39 @@
     display: none;
 }
 
-/* Fullscreen Control */
+
+
+
+button.gm-control-active.gm-fullscreen-control {
+    background: rgba(30, 30, 30, 0.15) !important;
+}
+
+.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom {
+
+    &:has(button.gm-control-active) {
+        background: transparent;
+    }
+
+    button.gm-control-active {
+        /*backdrop-filter: blur(3px) !important;*/
+        background: rgba(30, 30, 30, 0.15) !important;
+    }
+}
+
+
+    /* Fullscreen Control */
 .gm-fullscreen-control,.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom{
-    /*background-color: #6B81FF !important; !* Example: Change background color *!*/
     border-radius: 8px; /* Example: Add rounded corners */
     padding: 8px !important;
-    background: rgba(30, 30, 30, 0.15) !important;
+    /*background: rgba(30, 30, 30, 0.15) !important;*/
     color: black;
-    backdrop-filter: blur(3px);
+    /*backdrop-filter: blur(3px);*/
     scale: 0.9;
 
     div {
         background-color: transparent !important;
         box-shadow: unset !important;
+        /*backdrop-filter: blur(3px) !important;*/
     }
 
     button {
@@ -43,7 +63,7 @@
         box-shadow: unset;
         margin-bottom: 0.1rem !important;
         background: rgba(30, 30, 30, 0.15) !important;
-        backdrop-filter: blur(3px);
+        /*backdrop-filter: blur(3px);*/
     }
 
     img {
@@ -58,6 +78,7 @@
 
 .gm-style-mtc {
     scale: 0.9;
+    /*backdrop-filter: blur(3px);*/
 
 
     button {
@@ -67,7 +88,7 @@
         font-size: 1rem !important;
         margin-right: 0.25rem !important;
         color: black !important;
-        backdrop-filter: blur(3px);
+        /*backdrop-filter: blur(3px);*/
     }
 
     ul {
@@ -82,5 +103,5 @@
     border: 1px solid #ddd !important; /* Add border */
     border-radius: 4px; /* Rounded corners */
     font-size: 14px !important; /* Change font size */
-
+    /*backdrop-filter: blur(3px);*/
 }

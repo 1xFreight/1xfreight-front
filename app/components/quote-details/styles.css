@@ -173,7 +173,7 @@
     }
 
     .details-wrapper {
-        border: 2px solid rgba(84, 84, 84, 0.1);
+        border: 1px solid rgba(84, 84, 84, 0.1);
         padding: 0.75rem;
         border-radius: 0.5rem;
         background: rgba(84, 84, 84, 0.05);
@@ -480,7 +480,7 @@
         display: flex;
         width: 100%;
         border-radius: 1rem;
-        border: 2px solid #ED0000;
+        border: 1px solid #ED0000;
         padding: 1rem;
         color: white;
         align-items: center;

@@ -104,6 +104,27 @@ export default function GetQuotePage() {
 
         break;
       }
+
+      case QuoteTypeEnum.FCL: {
+        const RoutingAndDatesPage = dynamic(
+          () =>
+            import(
+              "@/app/get-quote/pages/routing-and-dates/routing-and-dates.component"
+            ),
+        );
+
+        setSteps([
+          <ModeOfTransportationComponent key={"page-1"} />,
+          <TemplatesPage key={"page-2"} />,
+          <RoutingAndDatesPage key={"page-3"} />,
+          <PartnersPage key={"page-6"} />,
+          <MembersPage key={"page-7"} />,
+          <ReviewPage key={"page-8"} />,
+          <SendPage key={"page-9"} />,
+        ]);
+
+        break;
+      }
     }
   };
 

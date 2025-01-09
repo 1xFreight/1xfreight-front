@@ -96,7 +96,7 @@ function FiltersPanelComponent({ totalQuotes }) {
         <h6>{totalQuotes ? totalQuotes + " Shipments" : ""} </h6>
 
         <a
-          href={`${process.env.NEXT_PUBLIC_API_URL}/quote/shipments/export`}
+          href={`${process.env.NEXT_PUBLIC_API_URL}/quote/shipments/export?searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}&currency=${filters?.currency ?? ""}`}
           style={{
             height: "100%",
           }}

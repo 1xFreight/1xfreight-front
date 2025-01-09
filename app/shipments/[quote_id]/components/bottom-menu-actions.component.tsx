@@ -7,6 +7,9 @@ import Loading2Component from "@/common/components/loading/loading-as-page.compo
 import { disablePastDates } from "@/common/utils/date.utils";
 import { generatePickHours } from "@/common/utils/time.utils";
 import { useRouter } from "next/navigation";
+import SwitchComponent from "@/common/components/slider/switch.component";
+import Sparkle from "@/public/png/sparkle.png";
+import Image from "next/image";
 
 export function SaveAsTemplate() {
   return (
@@ -41,12 +44,12 @@ export function AddPO() {
   );
 }
 
-export function DuplicateLoad() {
+export function DuplicateLoad({ directQuote }) {
   const { getFromStore, addToStore } = useStore();
-  const [quote, setQuote] = useState(null);
-  const router = useRouter();
+  const [quote, setQuote] = useState(directQuote);
 
   useEffect(() => {
+    if (directQuote) return;
     const data = getFromStore("shipment_quote").data;
     setQuote(data);
   }, []);
@@ -85,6 +88,14 @@ export function DuplicateLoad() {
       </div>
 
       <div className={"bottom-menu-action duplicate-load"}>
+        <div
+          style={{
+            paddingLeft: "0.1rem",
+          }}
+        >
+          <h5>Keep Same Carrier</h5>
+          <SwitchComponent inputName={"keepCarrier"} />
+        </div>
         <div>
           <h5>Quote valid until:</h5>
           <div className={"date-time-inputs"}>
@@ -107,29 +118,74 @@ export function DuplicateLoad() {
           // if (!address.time_start) return;
           return (
             <div key={address.address} className={"addresses-input"}>
-              <h5>
-                {address.address}{" "}
-                <span>{address.address_type.toUpperCase()}</span>
+              <div className={"address-title"}>
                 <span
                   style={{
-                    display: "flex",
-                    gap: "0.25rem",
+                    width: "7rem",
+                    fontWeight: 500,
+                    color: "rgba(30,30,30,0.6)",
                   }}
                 >
-                  <input
-                    style={{
-                      height: "fit-content",
-                      alignSelf: "center",
-                    }}
-                    type={"checkbox"}
-                    onChange={(ev) => addTime(index, ev.target.checked)}
-                    defaultChecked
-                    name={`add-time-${index}`}
-                  />
-                  add time
+                  {address.address_type.toUpperCase()} {address.order}
                 </span>
-              </h5>
-              <div className={"date-time-inputs"} id={`add-time-${index}`}>
+
+                <div
+                  style={{
+                    display: "inline-flex",
+                    width: "100%",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image
+                      src={Sparkle}
+                      alt={"location"}
+                      width={20}
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        marginTop: "-0.5rem",
+                      }}
+                    />
+
+                    <h5>{address.address} </h5>
+                  </span>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      style={{
+                        height: "fit-content",
+                        alignSelf: "center",
+                        scale: "1.5",
+                      }}
+                      type={"checkbox"}
+                      onChange={(ev) => addTime(index, ev.target.checked)}
+                      // defaultChecked
+                      name={`add-time-${index}`}
+                    />
+                    Add Time
+                  </div>
+                </div>
+              </div>
+              <div
+                className={"date-time-inputs"}
+                id={`add-time-${index}`}
+                style={{
+                  display: "none",
+                }}
+              >
                 <input
                   type={"date"}
                   min={disablePastDates()}

@@ -19,23 +19,26 @@ export default function QuotesPage() {
   const { filters, setFilters } = useStore();
   const [loading, setLoading] = useState(true);
 
-  const getQuotesDebounced = useDebouncedCallback(() => {
-    const ignoreCache = filters?.ignoreCache ?? false;
+  const getQuotesDebounced = useDebouncedCallback(
+    (ignoreCacheAtGet = false) => {
+      const ignoreCache = filters?.ignoreCache ?? ignoreCacheAtGet;
 
-    getWithAuth(
-      `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}`,
-      ignoreCache,
-    ).then((data) => {
-      setQuotes(data);
-      // setQuotes([]);
-      setLoading(false);
-      if (ignoreCache) {
-        setFilters((prevState) => {
-          return { ...prevState, ignoreCache: false };
-        });
-      }
-    });
-  }, 200);
+      getWithAuth(
+        `/quote?skip=${(page - 1) * paginationConfig.pageLimit}&limit=${paginationConfig.pageLimit}&searchText=${filters?.searchText ?? ""}&pickupDate=${filters?.pickupDate ?? ""}&dropDate=${filters?.dropDate ?? ""}&owner=${filters?.owners?.map(({ _id }) => _id) || []}&status=${filters?.status}&type=${filters?.type}&sort=${filters?.sort ?? ""}`,
+        ignoreCache,
+      ).then((data) => {
+        setQuotes(data);
+        // setQuotes([]);
+        setLoading(false);
+        if (ignoreCache) {
+          setFilters((prevState) => {
+            return { ...prevState, ignoreCache: false };
+          });
+        }
+      });
+    },
+    200,
+  );
 
   useEffect(() => {
     getQuotesDebounced();

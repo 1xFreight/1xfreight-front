@@ -21,7 +21,7 @@ import {
 } from "@/common/utils/fetchAuth.util";
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import useStore from "@/common/hooks/use-store.context";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toShortId } from "@/common/utils/data-convert.utils";
 import TableHeaderComponent from "@/app/available-quotes/components/quotes-table/components/table-header.component";
@@ -104,9 +104,8 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                 const qUser = user[0];
 
                 return (
-                  <>
+                  <Fragment key={_id}>
                     <tr
-                      key={_id}
                       onClick={(ev) => {
                         const quote = rows[index];
 
@@ -221,7 +220,7 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           </div>
                         )}
                       </td>
-                      <td>
+                      <td onClick={(ev) => ev.stopPropagation()}>
                         <div className={"av-actions"}>
                           <Link
                             href={`/available-quotes/${_id}`}
@@ -230,16 +229,6 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           >
                             <button className={"variant2"}>View</button>
                           </Link>
-                          <button
-                            onClick={() => {
-                              setDeclineQuoteId(_id);
-                              document.getElementById(
-                                "decline-action",
-                              ).style.display = "flex";
-                            }}
-                          >
-                            Decline
-                          </button>
                         </div>
                       </td>
                     </tr>
@@ -255,11 +244,24 @@ export default function QuotesTableComponent({ rows }: QuotesTableI) {
                           <QuoteModalPreviewComponent
                             quote={selectedQuoteForPreview}
                             setQuote={setSelectedQuoteForPreview}
+                            hideActions
+                            customButtons={
+                              <button
+                                onClick={() => {
+                                  setDeclineQuoteId(_id);
+                                  document.getElementById(
+                                    "decline-action",
+                                  ).style.display = "flex";
+                                }}
+                              >
+                                Decline
+                              </button>
+                            }
                           />
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 );
               },
             )}

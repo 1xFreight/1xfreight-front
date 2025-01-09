@@ -14,6 +14,7 @@ import {
 import ToastTypesEnum from "@/common/enums/toast-types.enum";
 import ConfirmActionComponent from "@/common/components/confirm-action/confirm-action.component";
 import useQuoteContext from "@/app/quotes/[quote_id]/use-quote.context";
+import { getCurrencySymbol } from "@/common/utils/currency";
 
 export default function QTableComponent({
   quotes,
@@ -22,7 +23,7 @@ export default function QTableComponent({
 }) {
   const { showToast } = useStore();
   const router = useRouter();
-  const { setIsMissingData } = useQuoteContext();
+  const { setIsMissingData, quote } = useQuoteContext();
 
   const acceptQuote = useDebouncedCallback((quote_id, bid_id) => {
     postWithAuth("/quote/accept", {
@@ -72,29 +73,32 @@ export default function QTableComponent({
         <tbody>
           {!!quotes &&
             !!quotes.length &&
-            quotes.map((quote, index) => (
-              <tr key={`${quote.user.email}-${index}`}>
+            quotes.map((carrierQuote, index) => (
+              <tr key={`${carrierQuote.user.email}-${index}`}>
                 <td>
                   <div className={"number"}>{index + 1}</div>
                 </td>
                 <td>
-                  <div className={"main-text"}>{quote.local_carrier?.name}</div>
-                  <div className={"sub-text"}>{quote.user.email}</div>
+                  <div className={"main-text"}>
+                    {carrierQuote.local_carrier?.name}
+                  </div>
+                  <div className={"sub-text"}>{carrierQuote.user.email}</div>
                 </td>
                 <td>
                   <div>
                     <div className={"main-text"}>
-                      {formatDate(quote.valid_until)}
+                      {formatDate(carrierQuote.valid_until)}
                     </div>
-                    <div className={`sub-text ${quote.status}`}>
-                      {quote.status}
+                    <div className={`sub-text ${carrierQuote.status}`}>
+                      {carrierQuote.status}
                     </div>
                   </div>
                 </td>
                 <td>
                   <div>
                     <div className={"main-text"}>
-                      $ {(quote.amount / estimatedMiles).toFixed(2)}
+                      {getCurrencySymbol(quote?.currency)}{" "}
+                      {(carrierQuote.amount / estimatedMiles).toFixed(2)}
                     </div>
                     <div className={"sub-text"}>
                       Total estimated miles: {estimatedMiles}
@@ -104,8 +108,8 @@ export default function QTableComponent({
                 <td>
                   <div className={"price"}>
                     <div className={"full-price"}>
-                      <span>$</span>
-                      {numberCommaFormat(quote.amount)}
+                      <span>{getCurrencySymbol(quote?.currency)}</span>
+                      {numberCommaFormat(carrierQuote.amount)}
                     </div>
                     <div className={"currency"}>USD</div>
                   </div>
@@ -122,23 +126,26 @@ export default function QTableComponent({
 
                 <td>
                   <div className={"end"}>
-                    <Link href={`${quote.quote_id}/${quote._id}`}>
+                    <Link href={`${carrierQuote.quote_id}/${carrierQuote._id}`}>
                       <button className={"accept"}>View Details</button>
                     </Link>
                     <button
                       className={"accept  variant2"}
                       onClick={() => {
-                        document.getElementById(quote._id).style.display =
-                          "flex";
+                        document.getElementById(
+                          carrierQuote._id,
+                        ).style.display = "flex";
                       }}
                     >
                       Accept Quote
                     </button>
                   </div>
                   <ConfirmActionComponent
-                    title={`Accept ${quote.user.email} quote ?`}
-                    id={quote._id}
-                    action={() => acceptQuote(quote.quote_id, quote._id)}
+                    title={`Accept ${carrierQuote.user.email} quote ?`}
+                    id={carrierQuote._id}
+                    action={() =>
+                      acceptQuote(carrierQuote.quote_id, carrierQuote._id)
+                    }
                   />
                 </td>
               </tr>

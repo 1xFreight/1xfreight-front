@@ -17,6 +17,7 @@
         input,select {
             height: 3.5rem;
             padding-left: 1rem;
+            border-color: rgba(97, 123, 244, 0.3) !important;
         }
 
     }
@@ -34,12 +35,22 @@
     .duplicate-load {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 2rem;
 
+        .addresses-input {
+            border-top: 1px solid rgba(30, 30, 30, 0.1);
+            padding-top: 0.5rem;
+
+            .address-title {
+                display: inline-flex;
+                padding-bottom: 0.5rem;
+                align-items: center;
+                width: 100%;
+            }
+        }
 
 
         h5 {
-            background: rgba(0,0,0, 0.05);
             padding: 0.25rem;
             border-radius: 0.5rem;
             display: flex;

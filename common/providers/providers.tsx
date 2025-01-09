@@ -7,6 +7,7 @@ import ToasterComponent from "@/common/components/toaster/toaster.component";
 import { LoadScript } from "@react-google-maps/api";
 import Loading2Component from "@/common/components/loading/loading-as-page.component";
 import { Library } from "@googlemaps/js-api-loader";
+import { NotificationContextProvider } from "@/common/contexts/notifications.context";
 
 const options = {
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
@@ -25,8 +26,10 @@ export default function Providers({ children }: { children: ReactNode }) {
       libraries={options.libs}
     >
       <StoreContextProvider>
-        <ToasterComponent />
-        <AuthProvider>{children}</AuthProvider>
+        <NotificationContextProvider>
+          <ToasterComponent />
+          <AuthProvider>{children}</AuthProvider>
+        </NotificationContextProvider>
       </StoreContextProvider>
     </LoadScript>
   );

@@ -147,19 +147,58 @@
 
         .notif-item {
             padding: 0.5rem;
-            background: rgb(238, 238, 238);
+            /*background: rgb(238, 238, 238);*/
             border-radius: 0.5rem;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+            transition: 90ms ease-in-out;
+
+            &:hover {
+                background: rgba(30, 30, 30, 0.03);
+
+                .notif-meta div {
+                    border: 1px solid #CAD5FD;
+                }
+            }
+
 
             h4 {
                 font-size: 0.9rem;
-                line-height: 1;
+                line-height: 1.5;
+                font-weight: 400;
             }
 
             .notif-content {
                 display: flex;
                 align-items: start;
                 gap: 0.5rem;
+                justify-content: space-between;
+
+                &.main-content {
+                    margin-top: 1rem;
+                }
+
+                .notif-item-title {
+                   display: inline-flex;
+                    align-items: center;
+                    gap: 1rem;
+
+                    h5 {
+                        color: #787878;
+
+                    }
+
+                    span {
+                        color: #BBBBBB;
+                        font-size: 0.8rem;
+                    }
+                }
+
+                .new-notification-circle {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 100%;
+                    background: #3A56EA;
+                }
 
                 svg {
                     width: 20px;
@@ -167,7 +206,8 @@
                     cursor: pointer;
 
                     path {
-                        stroke-width: 2px;
+                        stroke-width: 3px;
+                        stroke: #BBBBBB;
                     }
 
                     &:hover path {
@@ -179,28 +219,28 @@
 
         .notif-meta {
             display: flex;
-            justify-content: space-between;
-            align-items: start;
+            justify-content: start;
             /*flex-direction: row-reverse;*/
             margin-top: 0.5rem;
+            width: 100%;
 
-            h5 {
-                opacity: 0.35;
-                font-weight: 400;
-                font-size: 0.8rem;
-                color: rgba(0, 32, 221, 1);
-            }
-
-            button {
-                height: 2.5rem;
-                font-size: 0.8rem;
-                width: 7rem;
+            div {
+                font-size: 0.85rem;
                 border-radius: 0.65rem;
-                /*background: rgba(0, 32, 221, 0.25);*/
+                /*color: rgba(30, 30, 30, 0.8);*/
+                color: #617BF4;
+                padding: 0.25rem 0.5rem;
+                background: transparent;
+                transition: all 150ms ease-in-out;
+                font-weight: 500;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: -0.5rem;
+                border: 1px solid transparent;
 
                 &:hover {
-                    background: rgba(0, 32, 221, 0.5);
-                    color: white;
+                    background: #CAD5FD;
                 }
             }
         }

@@ -65,19 +65,13 @@
                 }
             }
 
+
             td {
                 background: rgba(0, 0, 0, 0.05) !important;
-                border-top: 1px solid #617BF4 !important;
+                border-bottom: 1px solid #617BF4;
                 transition: 150ms ease-in-out;
             }
 
-            td:nth-child(1) {
-                border-left: 1px solid #617BF4;
-            }
-
-            td:nth-last-child(1) {
-                border-right: 1px solid #617BF4;
-            }
         }
 
         th {
@@ -167,7 +161,7 @@
         button {
             height: 2.5rem;
             border-radius: 0.5rem;
-            width: 7rem;
+            width: 10rem;
         }
     }
 
@@ -196,7 +190,7 @@
     }
 
     tr th:nth-child(7) {
-        width: 10rem;
+        width: 12rem;
     }
 
     tr th:nth-child(8) {
@@ -204,7 +198,7 @@
     }
 
     tr th:nth-child(9) {
-        width: 15rem;
+        width: 11rem;
     }
 
 }

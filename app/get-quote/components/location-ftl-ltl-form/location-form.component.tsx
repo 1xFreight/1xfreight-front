@@ -26,6 +26,7 @@ interface LocationFormComponentI {
   title: string;
   _default?: any;
   disableSaveLocation: boolean;
+  hideIndex: boolean;
 }
 
 function LocationFormComponent({
@@ -33,6 +34,7 @@ function LocationFormComponent({
   title,
   _default,
   disableSaveLocation = false,
+  hideIndex = false,
 }: LocationFormComponentI) {
   const [address, setAddress] = useState<string>(_default?.address ?? "");
   const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -148,7 +150,7 @@ function LocationFormComponent({
       <div className={"location-form"}>
         <div className={"form-header"}>
           <h2>
-            {getOrdinalSuffix(index)} {title}
+            {!hideIndex && getOrdinalSuffix(index)} {title}
           </h2>
         </div>
 
